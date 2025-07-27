@@ -1,0 +1,18 @@
+{
+    "id": "busterb",
+    "name": "Busted Buffoons",
+    "display_name": "Busted Buffoons",
+    "author": [
+        "FirstTry"
+    ],
+    "description": "A small content mod containing jokers i made in my free time, feel free to throw tomatoes.",
+    "prefix": "busterb",
+    "main_file": "bustedbuffoons.lua",
+    "version": "1.0.0",
+	"dependencies": [
+		"Talisman (>=2.2.0a)",
+		"Steamodded (>=1.0.0~BETA-0614a)",
+		"Lovely (>=0.7)",
+        "Balatro (>=1.0.1o)"
+	],
+}
