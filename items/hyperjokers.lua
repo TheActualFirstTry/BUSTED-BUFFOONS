@@ -41,7 +41,11 @@ SMODS.Joker {
     },
     loc_vars = function(self, info_queue, card)
         return { 
-            vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod, card.ability.extra.stockpile, card.ability.extra.stockpile_return, card.ability.extra.stockpile_add },
+            vars = { card.ability.extra.xmult, 
+            card.ability.extra.xmult_mod, 
+            card.ability.extra.stockpile, 
+            card.ability.extra.stockpile_return, 
+            card.ability.extra.stockpile_add },
         }
     end,
     calculate = function(self, card, context)
@@ -158,7 +162,7 @@ SMODS.Joker {
     loc_txt = {
         name = "{C:dark_edition}MINOS PRIME // ULTRAKILL{}",
         text = {
-            "This Joker creates {C:attention}#3#{} {C:dark_edition}Negative{} {C:spectral}Spectral{} cards",
+            "This Joker creates {C:attention}#3#{} Random {C:dark_edition}Negative{} {C:spectral}Spectral{} cards",
             "per {C:attention}discard{}, gaining {X:mult,C:white}X#2#{} Mult",
             "for each {C:spectral}Spectral{} card created",
             "{C:inactive}(Currently {X:mult,C:white}X#1#{} {C:inactive}Mult){}"
@@ -513,7 +517,7 @@ SMODS.Joker {
     config = {
         extra = {
             xchips = 6,         
-            interest = 6,       
+            money = 6,       
             xchips_mod = 6,    
             dollar_mod = 6     
         }
@@ -522,29 +526,28 @@ SMODS.Joker {
         name = "{C:gold,E:1,s:2}SISYPHUS PRIME // ULTRAKILL{}",
         text = {
             "After selecting a {C:attention}Boss Blind{},",
-            "This Joker gains {C:attention}X#3#{} {X:chips,C:white}XChips{} and",
-			"{C:attention}+#4#{} {C:money}interest gained before selection{}.",
+            "This Joker gains {C:attention}X#3#{}{X:chips,C:white}XChips{} and {C:gold}+#4#${}{}.",
             "{C:inactive}(Current: {}{X:chips,C:white}X#1#{}{C:inactive}, {}{C:money}$#2#{C:inactive} per blind)"
         }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.xchips, card.ability.extra.interest, card.ability.extra.xchips_mod, card.ability.extra.dollar_mod } }
+        return { vars = { card.ability.extra.xchips, card.ability.extra.money, card.ability.extra.xchips_mod, card.ability.extra.dollar_mod } }
     end,
     calculate = function(self, card, context)
         if context.joker_main then
             return {
                 x_chips = card.ability.extra.xchips,
-                message = "X" .. card.ability.extra.xchips .. " Chips!",
+                message = "Destroy!",
                 sound = "busterb_destroy",
                 colour = G.C.CHIPS
             }
         end
 
         if context.end_of_round and context.cardarea == G.jokers and not context.blueprint then
-            G.GAME.dollars = G.GAME.dollars + card.ability.extra.interest
+            G.GAME.dollars = G.GAME.dollars + card.ability.extra.money
             return {
-                dollars = card.ability.extra.interest,
-                message = "+$" .. card.ability.extra.interest,
+                dollars = card.ability.extra.money,
+                message = "Keep em' coming!",
                 sound = "busterb_keepemcoming",
                 colour = G.C.MONEY
             }
@@ -552,7 +555,7 @@ SMODS.Joker {
 
         if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then
             card.ability.extra.xchips = card.ability.extra.xchips * card.ability.extra.xchips_mod
-            card.ability.extra.interest = card.ability.extra.interest + card.ability.extra.dollar_mod
+            card.ability.extra.money = card.ability.extra.money + card.ability.extra.dollar_mod
             return {
                 message = "Yes, that's it!",
                 sound = "busterb_yesthatsit",
@@ -930,11 +933,7 @@ SMODS.Joker {
         ) then
             card.ability.extra.hypermult = card.ability.extra.hypermult + card.ability.extra.hypermult_add
             card_eval_status_text(card, 'extra', nil, nil, nil, {
-                message = localize({
-                    type = "variable",
-                    key = "a_xmult",
-                    vars = { (card.ability.extra.hypermult) }
-                }),
+                message = "+ ^" .. card.ability.extra.hypermult,
                 colour = G.C.DARK_EDITION
             })
         end
@@ -984,7 +983,7 @@ SMODS.Atlas {
       --  extra = {
     --        xchipsndollar_mod = 1, --1
   --          xchips = 1, --2
---            interest_value = 1, --3
+--            money_value = 1, --3
             --stockpile = 1, --4
           --  add = 1, --5
         --    stockpile_return = 1, --6
@@ -1013,7 +1012,7 @@ SMODS.Atlas {
             --vars = {
 --                card.ability.extra.xchipsndollar_mod,
              --   card.ability.extra.xchips,
-           --     card.ability.extra.interest_value,
+           --     card.ability.extra.money_value,
          --       card.ability.extra.add,
          --       card.ability.extra.stockpile_return,
         --        card.ability.extra.stockpile,
@@ -1023,12 +1022,12 @@ SMODS.Atlas {
 --        }
  --   end,
 --    calculate = function(self, card, context)
---        -- Stockpile XChips and Interest 
+--        -- Stockpile XChips and money 
 --        if context.individual and context.cardarea == G.play then
 --            local is_talisman = context.other_card.seal and context.other_card.seal == 'Gold'
 --            if is_talisman then
 --                card.ability.extra.xchips = card.ability.extra.xchips + card.ability.extra.xchipsndollar_mod
---                card.ability.extra.interest_value = card.ability.extra.interest_value + card.ability.extra.xchipsndollar_mod
+--                card.ability.extra.money_value = card.ability.extra.money_value + card.ability.extra.xchipsndollar_mod
 --                card_eval_status_text(card, 'extra', nil, nil, nil, {
 --                    message = localize('k_upgrade_ex'),
 --                    colour = G.C.GOLD,
@@ -1037,7 +1036,7 @@ SMODS.Atlas {
 --            end
 --            card.ability.extra.stockpile = card.ability.extra.stockpile * 2
 --            local total_xchips = card.ability.extra.stockpile * card.ability.extra.xchips
---            local total_dollar = card.ability.extra.stockpile * card.ability.extra.interest_value
+--            local total_dollar = card.ability.extra.stockpile * card.ability.extra.money_value
 --            if context.other_card == context.scoring_hand[#context.scoring_hand] then
 --                card.ability.extra.stockpile = card.ability.extra.stockpile_return
 --                card:juice_up(0.5, 0.5)
@@ -1143,7 +1142,7 @@ SMODS.Joker {
     config = {
         extra = {
             extra_joker_slots = 2,
-            interest_multiplier = 2,
+            money_multiplier = 2,
             triggered = false,
             dollars = 4,
         }
@@ -1152,7 +1151,7 @@ SMODS.Joker {
         name = "{C:white,E:1,s:2}DREAM{} {C:hearts,E:1,s:2}ENA{}",
         text = {
             "Spawns a random free voucher in the shop.",
-            "Gains {C:attention}+#1#{} {C:money}interest{} and {C:attention}+#2#{} {C:attention}Joker Slots{}",
+            "Gains {C:gold}+#1#${} and {C:attention}+#2#{} {C:attention}Joker Slots{}",
             "per redeemed voucher.",
             "{C:inactive}(Raked in dough from bought vouchers: {}{C:money}$#3#{C:inactive}.){}"
         }
@@ -1160,7 +1159,7 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.interest_multiplier,
+                card.ability.extra.money_multiplier,
                 card.ability.extra.extra_joker_slots,
                 card.ability.extra.dollars
             }
@@ -1174,12 +1173,12 @@ SMODS.Joker {
                 voucher.cost = 0
                 card.ability.extra.triggered = true
         end
-        -- Buying a voucher increases interest and joker slots
+        -- Buying a voucher increases moneys and joker slots
         if context.buying_card and context.card.ability.set == "Voucher" then
             G.jokers.config.card_limit = lenient_bignum(
                 G.jokers.config.card_limit + card.ability.extra.extra_joker_slots
             )
-            card.ability.extra.dollars = lenient_bignum(card.ability.extra.dollars * card.ability.extra.interest_multiplier)
+            card.ability.extra.dollars = lenient_bignum(card.ability.extra.dollars * card.ability.extra.money_multiplier)
             card.ability.extra.triggered = false
         end
         -- end of round dollars
