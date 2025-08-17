@@ -1,1 +1,1 @@
-WAIT FUCK, INSTALL TALISMAN FIRST
+Install Talisman for this btw
