@@ -21,7 +21,7 @@ SMODS.Consumable {
             0.1 + 0.03 * math.sin(1.8 * G.TIMERS.REAL), nil, 0.6)
         card.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, card.children.center, scale_mod, rotate_mod)
     end,},
-    soul_rate = 0.75,
+    soul_rate = 0.1,
     can_repeat_soul = true,
     soul_set = 'Planet',
     loc_txt = {
@@ -68,3 +68,51 @@ SMODS.DrawStep {
    end,
    conditions = { vortex = false, facing = 'front' },
 }
+
+--SMODS.Atlas {
+-- key = "atlas_Offer",
+-- path = "Offer.png",
+-- px = 71,
+-- py = 95
+--}
+-- I lied -- NEW CONSUMABLE = WISHLIST 
+-- CARD TYPE/POOL = CONSUMABLE/MECHANICAL CARD
+-- I've decided to not add this for now, but you're supposed to use this with a selected card so it can appear in the shop at random. Ignore it's name Offer, it's now called Supply and Demand in my notes.
+--SMODS.Consumable {
+--    key = 'offer',
+--    set = 'Mechanical',
+--    atlas = "atlas_Offer",
+--    pos = { x = 0, y = 0 },
+--    soul_pos = { x = 0, y = 1, draw = function(card, scale_mod, rotate_mod)
+--        local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
+--            0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
+--            (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
+--        local rotate_mod = 0.1 * math.sin(1.219 * G.TIMERS.REAL) +
+--            0.07 * math.sin((G.TIMERS.REAL) * math.pi * 5) * (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 2
+--        card.children.floating_sprite.role.draw_major = card
+--        card.children.floating_sprite:draw_shader('dissolve', 0, nil, nil, card.children.center, scale_mod, rotate_mod,
+--            nil,
+--            0.1 + 0.03 * math.sin(1.8 * G.TIMERS.REAL), nil, 0.6)
+--        card.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, card.children.center, scale_mod, rotate_mod)
+--    end,},
+--    soul_rate = 0.01,
+--    can_repeat_soul = true,
+--    soul_set = 'Mechanical',
+--    
+--    loc_txt = {
+--        name = "Offer",
+--        text = {
+-- "1 of 6 Gifts will be given:",
+-- "A random {C:attention}Non-Common or Non-Uncommon Joker{}",
+-- "A random {V:1}Fantastic{} Joker",
+-- "2 {C:legendary}Legendary{} Jokers",
+-- "10 Random Negative Spectral Cards",
+-- "1 {C:dark_edition}Negative {C:attention}Judgement{}, 1 {C:dark_edition}Negative {C:spectral}Wraith{}, 1 {C:dark_edition}Negative {C:legendary}Soul{}, and 1 {C:dark_edition}Negative {V:1}Dream{}",
+-- "{C:spectral,X:white}Minos Prime{}"
+--}
+--    },
+-- loc_vars = function(self, info_queue, card)
+-- return { vars = { colours = {HEX('b00b69')} } }
+-- end,
+    -- When used, the card will give 1 of 6 things
+--    use = function(self, card, area, copier)

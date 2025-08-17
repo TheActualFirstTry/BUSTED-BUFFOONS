@@ -1,3 +1,7 @@
 assert(SMODS.load_file("items/hyperjokers.lua"))()
 assert(SMODS.load_file("items/rarities.lua"))()
 assert(SMODS.load_file("items/theonlyconsumableinthemod.lua"))()
+assert(SMODS.load_file("items/rarejoker.lua"))()
+-- assert(SMODS.load_file("items/gradients.lua"))()
+assert(SMODS.load_file("items/deck.lua"))()
+assert(SMODS.load_file("items/pools.lua"))()

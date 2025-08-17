@@ -11,8 +11,8 @@ SMODS.Joker {
     key = "spinel",
     atlas = "j_spinel",
     rarity = "busterb_Fantastic",
-    s = { ["Fantastic"] = true },
-    cost = 8,
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    cost = 100,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
@@ -25,7 +25,8 @@ SMODS.Joker {
             xmult_mod = 6,       
             stockpile = 1,         
             stockpile_return = 1,
-            stockpile_add = 1
+            stockpile_add = 1,
+            high_card = 6
         }
     },
     loc_txt = {
@@ -34,6 +35,7 @@ SMODS.Joker {
             "This Joker gains {X:mult,C:white}X#2#{} Mult every 4 Aces or 4 Face cards scored.",
             "Stockpiles {X:mult,C:white}XMult{} per card played,",
             "applies on the last card and resets after.",
+            "Levels up High Card by +#6# levels if played.",
             "Gains {X:dark_edition,C:white}+#5#{} Extra Stockpiling Power at the start of a boss blind.",
             "{C:inactive}(Current Mult from 4 Aces/Face: {}{X:mult,C:white}X#1#{}{C:inactive}){}",
             "{C:inactive}(Stockpiling Power: {}{X:dark_edition,C:white}X#4#{}{C:inactive}){}"
@@ -45,7 +47,8 @@ SMODS.Joker {
             card.ability.extra.xmult_mod, 
             card.ability.extra.stockpile, 
             card.ability.extra.stockpile_return, 
-            card.ability.extra.stockpile_add },
+            card.ability.extra.stockpile_add,
+            card.ability.extra.high_card },
         }
     end,
     calculate = function(self, card, context)
@@ -53,19 +56,19 @@ SMODS.Joker {
         -- Apply base xmult during main scoring
         if context.joker_main then
             return {
-                xmult = card.ability.extra.xmult,
+                Xmult = card.ability.extra.xmult
             }
         end
 
         -- Stockpile xmult for each played card
         if context.individual and context.cardarea == G.play then
             card.ability.extra.stockpile = card.ability.extra.stockpile * 2
-            local total_xmult = card.ability.extra.stockpile * card.ability.extra.xmult
+            local total_xmult = (card.ability.extra.stockpile * card.ability.extra.xmult)
             if context.other_card == context.scoring_hand[#context.scoring_hand] then
                 card:juice_up(0.5, 0.5)
                 play_sound('holo1', 1, 0.5)
                 return {
-                    xmult = total_xmult
+                    Xmult = total_xmult
                 }
             end
             return {
@@ -73,8 +76,7 @@ SMODS.Joker {
                 colour = G.C.RED,
                 card = card
             }
-        end
-
+    end
         -- Check for 4 Aces or 4 Face cards
         if context.before then
             local ace_count = 0
@@ -117,6 +119,15 @@ SMODS.Joker {
                 card = card
             }
         end
+        -- if played hand is a high card, level up hand to 6 levels.
+        if context.before and context.scoring_name == "High Card" and not context.blueprint then
+            return {
+                level_up = card.ability.extra.high_card,
+                message = localize('k_level_up_ex'),
+                color = G.C.HEARTS,
+                card = card
+            }
+        end
     end
 }
  -- Minos Prime
@@ -144,12 +155,12 @@ SMODS.Joker {
     key = "minosprime",
     atlas = "minos",
     rarity = "busterb_Fantastic",
-    cost = 8,
+    cost = 100,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
     blueprint_compat = true,
-    pools = { ["Fantastic"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
     config = {
@@ -232,12 +243,12 @@ SMODS.Joker {
   key = "papyrus",
   atlas = "great_papyrus",
   rarity = "busterb_Fantastic",
-  cost = 8,
+  cost = 100,
   discovered = true,
   unlocked = true,
   blueprint_compat = true,
   eternal_compat = true,
-  pools = { ["Fantastic"] = true },
+  pools = { ["Fantastic"] = true, ["bustjokers"] = true },
   pos = { x = 0, y = 0 },
   soul_pos = { x = 0, y = 1 },
   loc_txt = {
@@ -307,17 +318,17 @@ SMODS.Joker {
 	discovered = true,
     blueprint_compat = true,
     rarity = "busterb_Fantastic",
-    cost = 8,
-    pools = { ["Fantastic"] = true },
+    cost = 100,
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     pos = { x = 0, y = 0 },
 	soul_pos = { x = 0, y = 1 },
-    config = { extra = { first_hand_triggered = false } },
+    config = { extra = { edition = 'e_polychrome'} },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'e_polychrome', set = 'Edition', config = { extra = 1.5 } }
         return { vars = {} }
     end,
     calculate = function(self, card, context)
-        if context.before and context.main_eval and G.GAME.current_round.hands_played == 0 and not card.ability.extra.first_hand_triggered then
+        if context.before and context.main_eval and G.GAME.current_round.hands_played == 0 then
             local polychrome_cards = 0
             for _, playing_card in ipairs(context.scoring_hand) do
                 if not playing_card.edition or not playing_card.edition.polychrome then
@@ -333,27 +344,14 @@ SMODS.Joker {
             end
         end
 
-        if context.repetition and context.cardarea == G.play and G.GAME.current_round.hands_played == 0 and not card.ability.extra.first_hand_triggered then
+        if context.repetition and context.cardarea == G.play and G.GAME.current_round.hands_played == 0 then
             if context.other_card.edition and context.other_card.edition.polychrome then
                 return {
                     repetitions = 1
                 }
             end
         end
-        if context.joker_main and G.GAME.current_round.hands_played == 0 and not card.ability.extra.first_hand_triggered then
-            card.ability.extra.first_hand_triggered = true
-            return nil, true
         end
-        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
-            card.ability.extra.first_hand_triggered = false
-            return nil, true
-        end
-    end,
-     add_to_deck = function(self, card, from_debuff)
-        if not G.GAME.current_round.rainbow_reset then
-            G.GAME.current_round.rainbow_reset = true
-                end
-            end
 }
 
 -- Noisette
@@ -375,8 +373,8 @@ SMODS.Joker {
     discovered = true,
     blueprint_compat = true,
     rarity = "busterb_Fantastic",
-    cost = 8,
-    pools = { ["Fantastic"] = true },
+    cost = 100,
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
     loc_txt = {
@@ -432,50 +430,85 @@ SMODS.Joker {
     atlas = "sans",
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    pools = { ["Fantastic"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     rarity = "busterb_Fantastic",
-    cost = 8,
+    cost = 100,
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
     config = {
         extra = {
+            xchips_mod = 2,
+            xmult_mod = 2,
+            prestige = 1,
+            prestige_add = 1,
             xchips = 1,
             xmult = 1,
-            xchips_mod = 1,
-            xmult_mod = 1
+            dolar = 5
+        },
+        immutable = {
+            max_prestige = 1000
         }
     },
     loc_txt = {
         name = "sans.",
         text = {
-            "* human, i remember i gain {X:chips,C:white}X2{} Chips and {X:mult,C:white}X2{} Mult per scored {C:clubs}Club{} card.",
-			"{C:inactive,s:0.4}(jk){}",
-            "{C:inactive}(Currently {}{X:chips,C:white}X#1#{} {C:inactive}and{} {X:mult,C:white}X#2#{}{C:inactive}){}"
+            "* human, i remember i gain {X:chips,C:white}X#3#{} chips and {X:mult,C:white}X#4#{} mult per scored {C:clubs}club{} card.",
+			"{C:inactive,s:0.75}(jk, here lemme explain:{}",
+            "{C:inactive,s:0.75}if you score a {}{C:clubs,s:0.75}club{} {C:inactive,s:0.75}card,{}",
+            "{C:inactive,s:0.75}i gain {}{X:chips,C:white,s:0.75}X#3#{} {C:inactive,s:0.75}chips and {}{X:mult,C:white,s:0.75}X#4#{}{C:inactive,s:0.75} mult.{}",
+            "{C:inactive,s:0.75}if you defeat a {}{C:attention,s:0.75}Boss Blind{}{C:inactive,s:0.75},{}",
+            "{C:inactive,s:0.75}i gain {}{X:dark_edition,C:white,s:0.75}+#6#{} {C:dark_edition,s:0.75}prestige{}{C:inactive,s:0.75},{}",
+            "{C:inactive,s:0.75}and {C:dark_edition,s:0.75}prestige{}{C:inactive,s:0.75} is permanent {}{}{X:chips,C:white,s:0.75}xchips{}{C:inactive} and {}{X:mult,C:white,s:0.75}xmult{}{C:inactive,s:0.75}.{}",
+            "{C:inactive,s:0.75}and the ceiling only goes as far as {}{X:dark_edition,C:white,s:0.75}#7#{}{C:inactive,s:0.75}.{}",
+            "{C:inactive,s:0.75}so that's how the prestige system works, capisce?){}",
+            "{C:gold}you also get flat $#8# for each club too btw{}",
+            "{C:inactive}(currently {}{X:chips,C:white}X#1#{} {C:inactive}and{} {X:mult,C:white}X#2#{}{C:inactive}){}",
+            "{C:inactive}(current {C:dark_edition}prestige{}{C:inactive}: {}{X:dark_edition,C:white}#5#{}{C:inactive}){}"
         }
     },
     loc_vars = function(self, info_queue, card)
         return {
-            vars = { card.ability.extra.xchips, card.ability.extra.xmult }
+            vars = { 
+                card.ability.extra.xchips, 
+                card.ability.extra.xmult, 
+                card.ability.extra.xchips_mod, 
+                card.ability.extra.xmult_mod, 
+                card.ability.extra.prestige, 
+                card.ability.extra.prestige_add, 
+                card.ability.immutable.max_prestige,
+                card.ability.extra.dolar
+            }
         }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
             if context.other_card:is_suit("Clubs") then
-                card.ability.extra.xchips = card.ability.extra.xchips +  card.ability.extra.xchips_mod
-                card.ability.extra.xmult = card.ability.extra.xmult +  card.ability.extra.xmult_mod
-                return {
+                card.ability.extra.xchips = math.min(1e300 , card.ability.extra.xchips * card.ability.extra.xchips_mod)
+                card.ability.extra.xmult = math.min(1e300, card.ability.extra.xmult * card.ability.extra.xmult_mod)
+                G.GAME.dollars = G.GAME.dollars + card.ability.extra.dolar
+                card_eval_status_text(card, "extra", nil, nil, nil, {
                     message = localize("k_upgrade_ex"),
-                    colour = G.C.MULT
-                }
+                    colour = G.C.CHIPS
+                })
             end
         end
         if context.joker_main then
             return {
                 x_chips = card.ability.extra.xchips,
                 x_mult = card.ability.extra.xmult,
-                message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}},
                 colour = G.C.MULT
+            }
+        end
+        -- prestige system, boss blind defeated = resets xchips and xmult, then prestige = prestige + prestige_add, prestige = permanent xchips and xmult, does not increase beyond max_prestige, use math.min
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint and G.GAME.blind.boss then
+            card.ability.extra.prestige = math.min(card.ability.extra.prestige + card.ability.extra.prestige_add, card.ability.immutable.max_prestige)
+            card.ability.extra.xchips = card.ability.extra.prestige
+            card.ability.extra.xmult = card.ability.extra.prestige
+            return {
+                message = localize("k_upgrade_ex"),
+                colour = G.C.DARK_EDITION,
+                card = card
             }
         end
     end
@@ -506,14 +539,14 @@ SMODS.Joker {
     key = "sisyphus",
     atlas = "j_sisyphus_prime",
     rarity = "busterb_Fantastic",
-    cost = 8,
+    cost = 100,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    pools = { ["Fantastic"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     config = {
         extra = {
             xchips = 6,         
@@ -526,13 +559,14 @@ SMODS.Joker {
         name = "{C:gold,E:1,s:2}SISYPHUS PRIME // ULTRAKILL{}",
         text = {
             "After selecting a {C:attention}Boss Blind{},",
-            "This Joker gains {C:attention}X#3#{}{X:chips,C:white}XChips{} and {C:gold}+#4#${}{}.",
+            "This Joker gains {X:attention,C:white}X#3#{} {X:chips,C:white}XChips{} and {C:gold}+#4#${}{}.",
             "{C:inactive}(Current: {}{X:chips,C:white}X#1#{}{C:inactive}, {}{C:money}$#2#{C:inactive} per blind)"
         }
     },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.xchips, card.ability.extra.money, card.ability.extra.xchips_mod, card.ability.extra.dollar_mod } }
     end,
+
     calculate = function(self, card, context)
         if context.joker_main then
             return {
@@ -562,7 +596,17 @@ SMODS.Joker {
                 colour = G.C.GOLD
             }
         end
+        remove_from_deck = function(self, card, from_debuff)
+        if not from_debuff then
+        return nil
+        else
+        G.GAME.chips = G.GAME.blind.chips
+        G.STATE = G.STATES.HAND_PLAYED
+        G.STATE_COMPLETE = true
+        end_round()
     end
+end
+end
 }
 
 -- Dark Donald
@@ -600,14 +644,14 @@ SMODS.Joker {
     key = "dd1",
     atlas = "dark_donald",
     rarity = "busterb_Fantastic",
-    cost = 8,
+    cost = 100,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
     blueprint_compat = true,
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    pools = { ["Fantastic"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     config = {
         extra = {
             multiplier = 2
@@ -663,7 +707,7 @@ SMODS.Joker {
                 card = card
             }
         end
-        if context.setting_blind and not (context.blueprint_card or card).getting_sliced and G.GAME.blind.boss then
+        if context.setting_blind and not context.blueprint and G.GAME.blind.boss then
             G.E_MANAGER:add_event(Event({
                 trigger = 'after',
                 delay = 0.2,
@@ -700,7 +744,7 @@ SMODS.Joker {
     name = "Garnet",
     key = "garnet",
     atlas = "garnet",
-    pools = { ["Fantastic"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     config = {
         extra = {
             Sapphire = 1.5,
@@ -711,7 +755,7 @@ SMODS.Joker {
         }
     },
     loc_txt = {
-        name = "{C:clubs}GAR{}{C:hearts}NET{}",
+        name = "{X:clubs,C:hearts}GAR{}{X:hearts,C:clubs}NET{}",
         text = {
             "Gives {X:chips,C:white}X#4#{} Chips and {X:mult,C:white}X#5#{} Mult each hand.",
             "Played {C:clubs}Clubs{} cards increase {X:chips,C:white}XChips{} by {C:attention}#1#{}.",
@@ -728,7 +772,7 @@ SMODS.Joker {
         x = 0,
         y = 1
     },
-    cost = 8,
+    cost = 100,
     rarity = "busterb_Fantastic",
     blueprint_compat = true,
     eternal_compat = true,
@@ -794,8 +838,8 @@ SMODS.Joker {
     atlas = "PeacockS",
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    pools = { ["Fantastic"] = true },
-    cost = 8,
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    cost = 100,
     rarity = "busterb_Fantastic",
     blueprint_compat = true,
     eternal_compat = true,
@@ -825,13 +869,14 @@ SMODS.Joker {
     end,
 
     loc_vars = function(self, info_queue, card)
+        local polychance, polyodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_peacock_polychrome')
         return {
             vars = {
                 card.ability.extra.SA2XChips,
                 card.ability.extra.SA2XMult,
                 card.ability.extra.SA2Mod,
-                G.GAME.probabilities.normal,
-                card.ability.extra.odds
+                polychance,
+                polyodds
             }
         }
     end,
@@ -847,8 +892,7 @@ SMODS.Joker {
                     { message = localize("k_upgrade_ex"), colour = G.C.PURPLE })
                 return { card = card }
             else
-                local chance = pseudorandom('peacock_polychrome')
-                if chance < G.GAME.probabilities.normal / card.ability.extra.odds then
+                if SMODS.pseudorandom_probability(card, 'busterb_peacock_polychrome', 1, card.ability.extra.odds, 'busterb_peacock_polychrome') then
                     context.other_card:set_edition({ polychrome = true }, true)
                     card.ability.extra.SA2XChips = card.ability.extra.SA2XChips + card.ability.extra.SA2Mod
                     card.ability.extra.SA2XMult = card.ability.extra.SA2XMult + card.ability.extra.SA2Mod
@@ -879,7 +923,7 @@ SMODS.Joker {
     atlas = "THSonic",
     rarity = "busterb_Fantastic",
     cost = 20,
-    pools = { ["Fantastic"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     blueprint_compat = true,
     perishable_compat = false,
     discovered = true,
@@ -931,7 +975,7 @@ SMODS.Joker {
             context.hand_drawn or
             context.remove_playing_cards
         ) then
-            card.ability.extra.hypermult = card.ability.extra.hypermult + card.ability.extra.hypermult_add
+            card.ability.extra.hypermult = math.min(1e300, card.ability.extra.hypermult + card.ability.extra.hypermult_add)
             card_eval_status_text(card, 'extra', nil, nil, nil, {
                 message = "+ ^" .. card.ability.extra.hypermult,
                 colour = G.C.DARK_EDITION
@@ -971,14 +1015,14 @@ SMODS.Atlas {
 --    key = "new_sisyphus",
 --    atlas = "placeholder",
 --    rarity = "busterb_Fantastic",
---    cost = 8,
+--    cost = 100,
 --    discovered = true,
 --    unlocked = true,
 --    eternal_compat = true,
 --    blueprint_compat = true,
     --pos = { x = 0, y = 0 },
   --  soul_pos = { x = 0, y = 1 },
---    pools = { ["Fantastic"] = true },
+--    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     --config = {
       --  extra = {
     --        xchipsndollar_mod = 1, --1
@@ -1057,7 +1101,7 @@ SMODS.Atlas {
 --            card.ability.extra.stockpile = card.ability.extra.stockpile_return
 --            return {
 --                message = "Reset",
---                colour = G.C.INACTIVE,
+--                colour = G.C:inactive,
 --                card = card
 --            }
 --        end
@@ -1132,21 +1176,21 @@ SMODS.Joker {
     atlas = "bbqena",
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    pools = { ["Fantastic"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     rarity = "busterb_Fantastic",
-    cost = 8,
+    cost = 100,
     blueprint_compat = true,
     eternal_compat = true,
     unlocked = true,
     discovered = true,
     config = {
         extra = {
-            extra_joker_slots = 2,
+            joker_slots = 2,
             money_multiplier = 2,
             triggered = false,
             dollars = 4,
-        }
-    },
+        },
+},
     loc_txt = {
         name = "{C:white,E:1,s:2}DREAM{} {C:hearts,E:1,s:2}ENA{}",
         text = {
@@ -1160,8 +1204,8 @@ SMODS.Joker {
         return {
             vars = {
                 card.ability.extra.money_multiplier,
-                card.ability.extra.extra_joker_slots,
-                card.ability.extra.dollars
+                card.ability.extra.joker_slots,
+				card.ability.extra.dollars
             }
         }
     end,
@@ -1176,19 +1220,54 @@ SMODS.Joker {
         -- Buying a voucher increases moneys and joker slots
         if context.buying_card and context.card.ability.set == "Voucher" then
             G.jokers.config.card_limit = lenient_bignum(
-                G.jokers.config.card_limit + card.ability.extra.extra_joker_slots
-            )
+			G.jokers.config.card_limit + math.min(100, to_big(card.ability.extra.joker_slots))
+		)
             card.ability.extra.dollars = lenient_bignum(card.ability.extra.dollars * card.ability.extra.money_multiplier)
             card.ability.extra.triggered = false
         end
-        -- end of round dollars
-        if context.end_of_round and context.cardarea == G.jokers and not context.blueprint then
-            G.GAME.dollars = G.GAME.dollars + card.ability.extra.dollars
-            return {
-                dollars = card.ability.extra.dollars,
-                message = "+$" .. card.ability.extra.dollars,
-                colour = G.C.MONEY
-            }
+    end,
+       calc_dollar_bonus = function(self, card)
+		return lenient_bignum(card.ability.extra.dollars)
+    end
+}
+-- Maxwell
+SMODS.Atlas {
+    key = "a_maxwell",
+    path = "Maxwell.png",
+    px = 71,
+    py = 95
+}
+SMODS.Joker {
+    key = "maxwell",
+    atlas = "a_maxwell",
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 0, y = 1 },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    rarity = "busterb_Fantastic",
+    cost = 100,
+    blueprint_compat = true,
+    eternal_compat = true,
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = "{C:blue,E:1,s:2}MAXWELL{}",
+        text = {
+            "For {C:attention}every card held in hand{}, create a {C:attention}random{} {C:dark_edition}negative{} {C:attention}consumable{}.",
+            "Sell this joker to spawn a {C:dark_edition}negative{} {V:1,E:1,s:1.5}Dream{} {C:attention}card{}."
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+		return { vars = { colours = {HEX('b00b69')} } }
+    end,
+    calculate = function(self, card, context)
+        -- For every card held in hand, create a random negative consumable
+        if context.individual and context.cardarea == G.hand then
+            local maxwell_notebook = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('maxwell')).key
+            SMODS.add_card({ key = maxwell_notebook, edition = 'e_negative' })
+        end
+        -- sell this joker to create a negative dream card.
+        if context.selling_self then
+            SMODS.add_card({ key = "c_busterb_dream", edition = 'e_negative' })
         end
     end
 }
