@@ -1195,7 +1195,7 @@ SMODS.Joker {
         name = "{C:white,E:1,s:2}DREAM{} {C:hearts,E:1,s:2}ENA{}",
         text = {
             "Spawns a random free voucher in the shop.",
-            "Gains {C:gold}+#1#${} and {C:attention}+#2#{} {C:attention}Joker Slots{}",
+            "Gains {X:gold,C:white}X$#1#{} and {C:attention}+#2#{} {C:attention}Joker Slots{}",
             "per redeemed voucher.",
             "{C:inactive}(Raked in dough from bought vouchers: {}{C:money}$#3#{C:inactive}.){}"
         }
@@ -1271,3 +1271,47 @@ SMODS.Joker {
         end
     end
 }
+
+-- 14th Fantastic Joker: "" - Destroys the joker to the right to create a random negative joker.
+
+-- SMODS.Atlas {
+--    key = "",
+--    path = "",
+--    px = 71,
+--    py = 95
+-- }
+
+-- SMODS.Joker {
+-- key = "",
+--    atlas = "",
+--    pos = { x = 0, y = 0 },
+--    soul_pos = { x = 0, y = 1 },
+--    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+--    rarity = "busterb_Fantastic",
+--    cost = 100,
+--    blueprint_compat = true,
+--    eternal_compat = true,
+--    unlocked = true,
+--    discovered = true,
+--    loc_txt = {
+--        name = "",
+--        text = {
+--            "",
+--            ""
+--        }
+--    },
+--    loc_vars = function(self, info_queue, card)
+--		return { vars = {} }
+--    end,
+--    calculate = function(self, card, context)
+--        end
+--    end
+-- }
+
+
+-- SMODS.Atlas {
+--    key = "",
+--    path = "",
+--    px = 71,
+--    py = 95
+-- }

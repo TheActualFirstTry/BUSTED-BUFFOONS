@@ -25,14 +25,14 @@ SMODS.ObjectType{
         SMODS.ObjectType.inject(self)
     end,
 }
---SMODS.ObjectType{
---    key = "Grandiose",
---    default = "j_busterb_asriel",
---    cards = {},
---    inject = function(self)
---        SMODS.ObjectType.inject(self)
---    end,
---}
+SMODS.ObjectType{
+    key = "Grandiose",
+    default = "j_busterb_asriel",
+    cards = {},
+    inject = function(self)
+        SMODS.ObjectType.inject(self)
+    end,
+}
 --SMODS.ObjectType{
 --    key = "Ritualistic",
 --    default = "j_busterb_thrash",
