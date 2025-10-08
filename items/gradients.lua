@@ -1,19 +1,19 @@
---Epileptic color for Grandiose
---SMODS.Gradient{
---    key = "Epileptic",
---    colours = {
---        HEX('FF0000'),
---        HEX('FF7F00'),
---        HEX('FFFF00'),
---        HEX('00FF00'),
---        HEX('00FFFF'),
---        HEX('0000FF'),
---        HEX('8B00FF'),
---        HEX('FF00FF')
---    },
---    cycle = 0.1,
---    interpolation = 'trig',
---}
+-- Epileptic color for Grandiose
+SMODS.Gradient{
+    key = "epileptic",
+    colours = {
+        HEX('FF0000'),
+        HEX('FF7F00'),
+        HEX('FFFF00'),
+        HEX('00FF00'),
+        HEX('00FFFF'),
+        HEX('0000FF'),
+        HEX('8B00FF'),
+        HEX('FF00FF')
+    },
+    cycle = 0.75,
+    interpolation = 'trig',
+}
 SMODS.Gradient{
     key = "grand",
     colours = {

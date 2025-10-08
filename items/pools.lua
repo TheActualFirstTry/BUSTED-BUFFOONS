@@ -7,16 +7,25 @@ SMODS.ObjectType{
         SMODS.ObjectType.inject(self)
     end,
 }
--- Mechanical Cards
-SMODS.ConsumableType{
-    key = "mechanical",
-    default = "c_busterb_offer",
+-- Secret Jokers
+SMODS.ObjectType{
+    key = "bustjokers",
+    default = "j_busterb_astro",
     cards = {},
-    collection_rows = { 4, 4 },
-    primary_colour = HEX('40FF83'),
-    secondary_colour = HEX('40FF83'),
-    shop_rate = 0.05
+    inject = function(self)
+        SMODS.ObjectType.inject(self)
+    end,
 }
+-- Bootleg Cards
+--SMODS.ConsumableType{
+--    key = "Bootleg",
+--    default = "c_busterb_offer",
+--    cards = {},
+--    collection_rows = { 4, 4 },
+--    primary_colour = HEX('40FF83'),
+--    secondary_colour = HEX('40FF83'),
+--    shop_rate = 0.05
+--}
 SMODS.ObjectType{
     key = "Fantastic",
     default = "j_busterb_spinel",
@@ -24,14 +33,16 @@ SMODS.ObjectType{
     inject = function(self)
         SMODS.ObjectType.inject(self)
     end,
+--    shop_rate = 0.000000000001
 }
 SMODS.ObjectType{
     key = "Grandiose",
-    default = "j_busterb_asriel",
+    default = "j_busterb_igor",
     cards = {},
     inject = function(self)
         SMODS.ObjectType.inject(self)
     end,
+--    shop_rate = 0.000000000000000000001
 }
 --SMODS.ObjectType{
 --    key = "Ritualistic",

@@ -35,7 +35,7 @@ SMODS.Joker {
             "This Joker gains {X:mult,C:white}X#2#{} Mult every 4 Aces or 4 Face cards scored.",
             "Stockpiles {X:mult,C:white}XMult{} per card played,",
             "applies on the last card and resets after.",
-            "Levels up High Card by +#6# levels if played.",
+            "Levels up High Card by {C:attention}+#6#{} levels if played.",
             "Gains {X:dark_edition,C:white}+#5#{} Extra Stockpiling Power at the start of a boss blind.",
             "{C:inactive}(Current Mult from 4 Aces/Face: {}{X:mult,C:white}X#1#{}{C:inactive}){}",
             "{C:inactive}(Stockpiling Power: {}{X:dark_edition,C:white}X#4#{}{C:inactive}){}"
@@ -254,7 +254,7 @@ SMODS.Joker {
   loc_txt = {
     name = "{C:clubs}The Great Papyrus{}",
     text = {
-      "This Joker adds a {C:tarot}free Mega Arcana Pack{} to the {C:attention}shop{}",
+      "This Joker adds a free {C:tarot}Mega Arcana Pack{} to the {C:attention}shop{}",
       "{X:dark_edition,C:edition}Doubles{} {X:mult,C:white}XMult{} each time you skip a {C:attention}Booster Pack{}",
       "{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}"
     }
@@ -355,10 +355,6 @@ SMODS.Joker {
 }
 
 -- Noisette
-
-SMODS.current_mod.optional_features = function()
-    return { retrigger_joker = true }
-end
 
 SMODS.Atlas {
     key = "noisette",
@@ -654,21 +650,25 @@ SMODS.Joker {
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     config = {
         extra = {
-            multiplier = 2
+            multiplier = 2,
+            conduit = 1
         }
     },
     loc_txt = {
         name = "{C:tarot,E:1,s:2}DARK DONALD{}",
         text = {
             "If played hand contains a {C:attention}Flush{},",
-            "all {C:attention}poker hands{} have their",
-            "levels {C:attention}multiplied by #1#{},",
-            "Disables {C:attention}Boss Blinds{}."
+            "all {C:attention}poker hands{} are",
+            "leveled up by  ( {X:gold,C:white}#2#{C:green} x {X:spectral,C:white}#1#{} ),",
+            "Disables {C:attention}Boss Blinds{}.",
+            "Increase {C:gold}Base{} by {C:spectral}Multiplier{}",
+            "after defeating the {C:attention}boss blind{}.",
+            "{s:0.5,C:gold}Base{} {s:0.5}={} {s:0.5,X:gold,C:white}#2#{}{s:0.5},{} {s:0.5,C:spectral}Multiplier{} {s:0.5}={} {s:0.5,X:spectral,C:white}#1#{}"
         }
     },
     loc_vars = function(self, info_queue, card)
         return {
-            vars = { to_big(card.ability.extra.multiplier) }
+            vars = { to_big(card.ability.extra.multiplier), to_big(card.ability.extra.conduit) }
         }
     end,
 	 add_to_deck = function(self, card, from_debuff)
@@ -680,33 +680,57 @@ SMODS.Joker {
         end
     end,
     calculate = function(self, card, context)
-        if context.before and next(context.poker_hands["Flush"]) and not context.blueprint then
-            G.E_MANAGER:add_event(Event({
-                trigger = 'after',
-                delay = 0.4,
-                func = function()
-                    play_sound('busterb_makudonarudo')
-                    card:juice_up(0.3, 0.5)
-                    update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.9, delay = 0 },
-                        { level = 'x' .. to_big(card.ability.extra.multiplier) })
-                    for poker_hand_key, hand in pairs(G.GAME.hands) do
-                        local current_level = hand.level or 1
-                        local levels_to_add = math.max(0, math.floor(current_level * (to_big(card.ability.extra.multiplier) - 1)))
-                        if levels_to_add > to_big(0) then
-                            level_up_hand(card, poker_hand_key, true, levels_to_add)
-                        end
-                    end
-                    update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
-                        { mult = 0, chips = 0, handname = '', level = '' })
-                    return true
-                end
-            }))
-            return {
-                message = localize('k_level_up_ex'),
-                colour = G.C.MULT,
-                card = card
-            }
+if context.end_of_round and context.main_eval and not context.blueprint and G.GAME.blind.boss then
+    card.ability.extra.conduit = card.ability.extra.conduit * card.ability.extra.multiplier
+    card_eval_status_text(card, 'extra', nil, nil, nil,
+    { message = localize("k_upgrade_ex"), colour = G.C.PURPLE, sound = "busterb_lovin" })
+    end
+if context.before and next(context.poker_hands["Flush"]) and not context.blueprint then
+    return {func = function()
+         update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
+            { handname = localize('k_all_hands'), chips = '...', mult = '...', level = '' })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                G.TAROT_INTERRUPT_PULSE = true
+                return true
+            end
+        }))
+        update_hand_text({ delay = 0 }, { mult = '+', StatusText = true })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                return true
+            end
+        }))
+        update_hand_text({ delay = 0 }, { chips = '+', StatusText = true })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                G.TAROT_INTERRUPT_PULSE = nil
+                return true
+            end
+        }))
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.9, delay = 0 }, { level = '+' .. card.ability.extra.conduit*card.ability.extra.multiplier })
+        delay(1.3)
+        for poker_hand_key, _ in pairs(G.GAME.hands) do
+            level_up_hand(card, poker_hand_key, true, (card.ability.extra.conduit*card.ability.extra.multiplier))
         end
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
+            { mult = 0, chips = 0, handname = '', level = '' })
+    end},
+    play_sound('busterb_makudonarudo')
+end
+
         if context.setting_blind and not context.blueprint and G.GAME.blind.boss then
             G.E_MANAGER:add_event(Event({
                 trigger = 'after',
@@ -939,28 +963,28 @@ SMODS.Joker {
     },
     config = {
         extra = {
-            hypermult = 1.1,
-            hypermult_add = 0.01,
-            hypermult_add_mod = 2
+            xmult = 1.1,
+            xmult_add = 0.01,
+            xmult_add_mod = 2
         }
     },
     loc_txt = {
-        name = "{X:dark_edition,C:white}TRUE{} {X:dark_edition,C:white}HYPER{} {X:dark_edition,C:white}SONIC{}",
+        name = "{C:enhanced}TRUE HYPER SONIC{}",
         text = {
             "Discarded cards, cards played, cards scored,",
             "cards held in hands, used discards, and played hands",
-            "contribute to this joker's {X:dark_edition,C:white}^Mult{} by {X:dark_edition,C:white}+#2#{}.",
-            "Selecting a blind multiplies added {X:dark_edition,C:white}^Mult{} by {X:dark_edition,C:white}X#3#{}.",
-            "{C:inactive}(Currently {}{X:dark_edition,C:white}^#1#{}{C:inactive} Mult){}",
+            "contribute to this joker's {X:mult,C:white}XMult{} by {X:dark_edition,C:white}+#2#{}.",
+            "Selecting a blind multiplies added {X:mult,C:white}XMult{} by {X:dark_edition,C:white}X#3#{}.",
+            "{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}",
         }
     },
     
     loc_vars = function(self, info_queue, card)
         return {
             vars = { 
-                card.ability.extra.hypermult, 
-                card.ability.extra.hypermult_add, 
-                card.ability.extra.hypermult_add_mod 
+                card.ability.extra.xmult, 
+                card.ability.extra.xmult_add, 
+                card.ability.extra.xmult_add_mod 
             }
         }
     end,
@@ -975,28 +999,23 @@ SMODS.Joker {
             context.hand_drawn or
             context.remove_playing_cards
         ) then
-            card.ability.extra.hypermult = math.min(1e300, card.ability.extra.hypermult + card.ability.extra.hypermult_add)
+            card.ability.extra.xmult = math.min(1e300, card.ability.extra.xmult + card.ability.extra.xmult_add)
             card_eval_status_text(card, 'extra', nil, nil, nil, {
-                message = "+ ^" .. card.ability.extra.hypermult,
+                message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } },
                 colour = G.C.DARK_EDITION
             })
         end
 
-        -- Apply hypermult when joker is used
         if context.joker_main then
             return {
-                e_mult = card.ability.extra.hypermult,
-                message = "^".. card.ability.extra.hypermult,
-                colour = G.C.DARK_EDITION,
+                x_mult = card.ability.extra.xmult,
                 card = card
             }
         end
-        -- Selected blind multiplies hypermult_add by hypermult_add_mod
         if context.setting_blind and not context.blueprint then
-            card.ability.extra.hypermult_add = card.ability.extra.hypermult_add * card.ability.extra.hypermult_add_mod
+            card.ability.extra.xmult_add = card.ability.extra.xmult_add * card.ability.extra.xmult_add_mod
             return {
                 message = localize("k_upgrade_ex"),
-                colour = G.C.DARK_EDITION,
                 card = card
             }
         end
@@ -1272,41 +1291,245 @@ SMODS.Joker {
     end
 }
 
--- 14th Fantastic Joker: "" - Destroys the joker to the right to create a random negative joker.
+SMODS.Atlas{
+    key = "Neo",
+    path = "Neo.png",
+    px = 71,
+    py = 95,
 
--- SMODS.Atlas {
---    key = "",
---    path = "",
---    px = 71,
---    py = 95
--- }
+}
+SMODS.Joker{
+   key = "neometalsonic",
+    atlas = "Neo",
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 0, y = 1},
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    rarity = "busterb_Fantastic",
+    cost = 100,
+    config = {
+        extra = {
+            -- effect 1
+            randomitems = 5,
+            -- effect 4
+--            doublemoney = 2,
+            -- effect 2
+            handndiscard = 1,
+            -- effect 3
+            jokerslot = 1,
+            -- effect 6
+            --lvl = 5,
+            -- effect 7
+            echipsemult = 2,
+        },
+        immutable = {
+            rnpjokers = 7,
+            totalitems = 10,
+            moneymultceiling = 1e100,
+            echipemultincreaseprevention = 100,
+            hndlimit = 100,
+            slotlimit = 100
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = "{C:spectral,s:2}NEO METAL SONIC{}",
+        text = {
+            "Does {C:green}1 of 8{} effects at random when scoring or using discards:",
+            "1. Creates {C:attention}#1#{} random {C:dark_edition}Negative{} consumables.",
+            "2. Adds {C:attention}#2#{} hand(s) and discard(s).",
+            "3. Adds {C:dark_edition}#3#{} joker slot(s).",
+--            "4. Multiplies your Money by X#2#, no limits.",
+            "4. Doubles your Money, no limits.",
+            "5. Removes the stickers of all your jokers.",
+            "6. Squares all of your current {C:chips}chips{} and {C:mult}mult{} by {X:spectral,C:white}^#4#{}.",
+            "7. Creates a {C:attention}Double Tag{}.",
+            "8. Creates {c:attention}#5#{} random {C:dark_edition}Negative{} perishable jokers.",
+            "{C:diamonds}(WARNING: VERY UNSTABLE){}"
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { 
+        math.min(card.ability.extra.randomitems,card.ability.immutable.totalitems),
+--        card.ability.extra.doublemoney, 
+        card.ability.extra.handndiscard,         
+        math.min(card.ability.extra.jokerslot, card.ability.immutable.slotlimit),               
+        math.min(card.ability.extra.echipsemult, card.ability.immutable.echipemultincreaseprevention),
+        card.ability.immutable.rnpjokers,
+        colours = {HEX('B00B69')}
+        } }
+    end,
+    calculate = function(self, card, context) 
+        if context.joker_main or context.pre_discard then
+            local randomeffect = pseudorandom(pseudoseed("busterb_neo"), 1, 8)
+            if randomeffect == 1 then
+                print("Effect 1")
+                for i = 1, card.ability.extra.randomitems do
+                    local neoitems = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('neo1')).key
+                    SMODS.add_card({ key = neoitems, edition = 'e_negative' })
+                    print("Success")
+                end
+            end
+            if randomeffect == 2 then
+                print("Effect 2")
+                G.E_MANAGER:add_event(Event({
+                func = function()
+                    ease_discard(card.ability.extra.handndiscard)
+                    ease_hands_played(card.ability.extra.handndiscard)
+                    SMODS.calculate_effect(
+                        { message = localize { type = 'variable', key = 'a_hands', vars = { card.ability.extra.hands } } },
+                        context.blueprint_card or card)
+                    return true,
+                    print("Success")
+                end
+            }))
+            end
+            if randomeffect == 3 then
+                print("Effect 3")
+                G.jokers.config.card_limit = lenient_bignum(
+			    G.jokers.config.card_limit + math.min(card.ability.extra.jokerslot, card.ability.immutable.slotlimit))
+                print("Success")
+                
+            end
+            if randomeffect == 4 then
+                print("Effect 4")
+                    return {
+                        --ease_dollars(math.min(card.ability.extra.doublemoney, card.ability.immutable.moneymultceiling) * G.GAME.dollars))
+                        ease_dollars(G.GAME.dollars),
+                        --ease_dollars(math.min(card.ability.immutable.moneymultceiling, G.GAME.dollars))
+                        --ease_dollars(math.min(card.ability.immutable.moneymultceiling, G.GAME.dollars * (card.extra.ability.doublemoney - 1)))
+                        print("Success")
+                    }                
+            end
+            if randomeffect == 5 then
+                print("Effect 5")
+                local total = 0
+                for i, v in pairs(SMODS.Sticker.obj_table) do
+                    for i2, v2 in pairs(G.jokers.cards) do
+                        if v2.ability and v2.ability[i] then
+                            v2:remove_sticker(i)
+                            total = total + 1
+                            print("Success")
+                        end
+                    end
+                end
+                return total
+            end
+            if randomeffect == 6 then
+                print("Effect 6")
+                return {
+                    echips = math.min(card.ability.extra.echipsemult, card.ability.immutable.echipemultincreaseprevention),
+                    emult = math.min(card.ability.extra.echipsemult, card.ability.immutable.echipemultincreaseprevention),
+                    print("Success")
+                }
+            end
+            if randomeffect == 7 then
+                print("Effect 7")
+                     G.E_MANAGER:add_event(Event({
+                        func = (function()
+                                add_tag(Tag('tag_double'))
+                                play_sound('generic1', 0.9 + math.random() * 0.1, 0.8)
+                                play_sound('holo1', 1.2 + math.random() * 0.1, 0.4)
+                            return true,
+                            print("Success")
+                        end)
+                    }))
+                return nil, true
+            end
+            
+            if randomeffect == 8 then
+                print("Effect 8")
+                for i = 1, card.ability.immutable.rnpjokers do
+                    local neojokers = pseudorandom_element(G.P_CENTER_POOLS.Joker, pseudoseed('neo2')).key
+                    SMODS.add_card({ key = neojokers, edition = 'e_negative', force_stickers = true, stickers = {"perishable"} })
+                    print("Success")
+                end
+            end
+        end
+    end
+}
 
--- SMODS.Joker {
--- key = "",
---    atlas = "",
---    pos = { x = 0, y = 0 },
---    soul_pos = { x = 0, y = 1 },
---    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
---    rarity = "busterb_Fantastic",
---    cost = 100,
---    blueprint_compat = true,
---    eternal_compat = true,
---    unlocked = true,
---    discovered = true,
---    loc_txt = {
---        name = "",
---        text = {
---            "",
---            ""
---        }
---    },
---    loc_vars = function(self, info_queue, card)
---		return { vars = {} }
---    end,
---    calculate = function(self, card, context)
---        end
---    end
--- }
+-- 15th Fantastic Joker: "" - Destroys the joker to the right to create a random negative joker of any rarity.
+
+ SMODS.Atlas {
+    key = "tf2spy",
+    path = "Spy.png",
+    px = 71,
+    py = 95
+ }
+ SMODS.Sound {
+    key = "crit",
+    path = "crit.ogg",
+}
+
+ SMODS.Joker {
+ key = "spy",
+    atlas = "tf2spy",
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 0, y = 1 },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    rarity = "busterb_Fantastic",
+    cost = 100,
+    blueprint_compat = true,
+    eternal_compat = true,
+    unlocked = true,
+    discovered = true,
+    loc_txt = {
+        name = "{s:2,C:legendary}SPY{}",
+        text = {
+            "When {C:attention}selecting blind{},",
+            "Destroy the {C:attention}joker{} to the right",
+            "to create a joker of {V:1}any rarity{}."
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+		return { vars = { colours = { SMODS.Gradients["busterb_epileptic"] } } }
+    end,
+calculate = function(self, card, context)
+    if context.setting_blind and not context.blueprint then
+            local my_pos = nil
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i] == card then
+                    my_pos = i
+                    break
+                end
+            end
+            if my_pos and G.jokers.cards[my_pos + 1] and not SMODS.is_eternal(G.jokers.cards[my_pos + 1], card) and not G.jokers.cards[my_pos + 1].getting_sliced then
+                local sliced_card = G.jokers.cards[my_pos + 1]
+                sliced_card.getting_sliced = true
+                G.GAME.joker_buffer = G.GAME.joker_buffer - 1
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.GAME.joker_buffer = 0
+                        card:juice_up(0.8, 0.8)
+                        sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
+                        play_sound('busterb_crit', 0.96 + math.random() * 0.08)
+                        return true
+                    end
+                }))
+                card_eval_status_text(card, "extra", nil, nil, nil, {
+				message = localize({
+					type = "variable",
+					key = "a_spy",
+					vars = { 1 },
+				}),
+				colour = SMODS.Gradients["busterb_epileptic"],
+				no_juice = true,
+			})
+                local _, key = pseudorandom_element(SMODS.Rarities, "spytf2") if key == "cry_cursed" then key = "cry_exotic" end if key == "crp_abysmal" then key = "crp_mythic" end if key == "unik_detrimental" then key = "unik_ancient" end
+                SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative' }
+			return nil, true
+		    end
+        end
+    end,
+    remove_from_deck = function(self, card)
+  if not G.CONTROLLER.locks.selling_card  then
+    SMODS.add_card{ key = "j_busterb_spy", edition = 'e_negative', force_stickers = true, stickers = {"eternal"} }
+  end
+end
+}
 
 
 -- SMODS.Atlas {

@@ -24,14 +24,25 @@ SMODS.Rarity {
     end,
 }
 SMODS.Rarity {
+    key = "Secret",
+    loc_txt = {
+    name = "Secret",
+    },
+    default_weight = 0,
+    pools = { ["Secret"] = true },
+    badge_colour = SMODS.Gradients["busterb_epileptic"],
+    get_weight = function(self, weight, object_type)
+        return weight
+    end,
+}
+SMODS.Rarity {
     key = "Grandiose",
     loc_txt = {
     name = "Grandiose",
     },
     default_weight = 0,
-    pools = { ["Grandiose"] = true },
-    badge_colour = HEX('f7b4c6'),
---    badge_colour = SMODS.Gradients["busterb_grand"], -- Will use this when i figure it out.
+    pools = { ["Secret"] = true },
+    badge_colour = SMODS.Gradients["busterb_grand"],
     get_weight = function(self, weight, object_type)
         return weight
     end,
