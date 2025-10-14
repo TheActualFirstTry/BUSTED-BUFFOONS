@@ -1,1 +1,0 @@
--- Nostalgic Spinel - Deals X6000 Mult for every scored Queen.
