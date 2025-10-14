@@ -20,9 +20,9 @@ SMODS.Joker{
     eternal_compat = true,
     config = {
         extra = {
-            Xchips = 1,
-            Xchipsincrement = 1,
-            Xchipsincrementmultiplier = 2,
+            eechips = 1,
+            eechipsincrement = 1,
+            eechipsincrementmultiplier = 2,
             jokerslot = 1,
         },
         immutable = {
@@ -32,17 +32,17 @@ SMODS.Joker{
     loc_txt = {
         name = "{V:1,s:2}Stultus Astronomicus{}",
         text = {
-            "Gains {X:chips,C:white}X#2#{} chips at the end of the round.",
-            "Multiply gained {X:chips,C:white}XChips{} by {B:1,C:white}#3#{} when ante changes.",
-            "{C:inactive}(Currently {X:chips,C:white}X#1#{C:inactive} chips){}"
+            "Gains {B:2,C:white}^^#2#{} chips at the end of the round.",
+            "Multiply gained {B:2,C:white}^^Chips{} by {B:1,C:white}#3#{} when ante changes.",
+            "{C:inactive}(Currently {B:2,C:white}^^#1#{C:inactive} Chips){}"
         }
     },
     loc_vars = function(self, info_queue, card)
 		return { vars = { 
-            card.ability.extra.Xchips, 
-            card.ability.extra.Xchipsincrement, 
-            card.ability.extra.Xchipsincrementmultiplier, 
-            colours = {HEX('00FFFF')}} }
+            card.ability.extra.eechips, 
+            card.ability.extra.eechipsincrement, 
+            card.ability.extra.eechipsincrementmultiplier, 
+            colours = {HEX('00FFFF'), SMODS.Gradients["busterb_eechipsgradient"]}} }
     end,
     calculate = function(self, card, context)
 
@@ -51,20 +51,20 @@ SMODS.Joker{
                 end
         if context.joker_main then
             return {
-                xchips = card.ability.extra.Xchips
+                eechips = card.ability.extra.eechips
             }
         end
         if context.end_of_round and context.main_eval then
-                card.ability.extra.Xchips = card.ability.extra.Xchips + card.ability.extra.Xchipsincrement
+                card.ability.extra.eechips = card.ability.extra.eechips + card.ability.extra.eechipsincrement
                 return {
-                message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.Xchips } },
+                message = localize { type = 'variable', key = 'a_xchips', vars = { card.ability.extra.eechips } },
                 colour = HEX('00FFFF')
                 }
             end
         if context.ante_change then
-            card.ability.extra.Xchipsincrement = card.ability.extra.Xchipsincrement * card.ability.extra.Xchipsincrementmultiplier
+            card.ability.extra.eechipsincrement = card.ability.extra.eechipsincrement * card.ability.extra.eechipsincrementmultiplier
                 return {
-                message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.Xchipsincrement } },
+                message = localize { type = 'variable', key = 'a_xchips', vars = { card.ability.extra.eechipsincrement } },
                 colour = HEX('00FFFF')
                 }
             end

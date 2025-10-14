@@ -81,6 +81,11 @@ SMODS.Joker{
       triggered = false
         }
     },
+    draw = function(self, card, layer)
+        if card.config.center.discovered or card.bypass_discovery_center then
+            card.children.center:draw_shader('polychrome', nil, card.ARGS.send_to_shader)
+        end
+    end,
     loc_txt = {
         name = "{V:1,s:2}Spes, Somnia, et Hypermors{}",
         text = {

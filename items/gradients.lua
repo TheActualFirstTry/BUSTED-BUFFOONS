@@ -41,3 +41,16 @@ SMODS.Gradient{
     cycle = 1,
     interpolation = 'trig',
 }
+SMODS.Gradient{
+    key = "eechipsgradient",
+    colours = {
+        G.C.SECONDARY_SET.Spectral,
+        G.C.SECONDARY_SET.Planet,
+        G.C.CHIPS,
+        G.C.RARITY[1],
+        HEX('00FFFF'),
+        HEX('0000FF')
+    },
+    cycle = 1,
+    interpolation = 'trig',
+}

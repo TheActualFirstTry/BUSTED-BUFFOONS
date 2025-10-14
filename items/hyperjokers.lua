@@ -1510,12 +1510,8 @@ calculate = function(self, card, context)
                     end
                 }))
                 card_eval_status_text(card, "extra", nil, nil, nil, {
-				message = localize({
-					type = "variable",
-					key = "a_spy",
-					vars = { 1 },
-				}),
-				colour = SMODS.Gradients["busterb_epileptic"],
+				message = "Critical Hit!",
+				colour = G.C.GREEN,
 				no_juice = true,
 			})
                 local _, key = pseudorandom_element(SMODS.Rarities, "spytf2") if key == "cry_cursed" then key = "cry_exotic" end if key == "crp_abysmal" then key = "crp_mythic" end if key == "unik_detrimental" then key = "unik_ancient" end
