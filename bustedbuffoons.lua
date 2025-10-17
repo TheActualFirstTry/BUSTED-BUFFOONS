@@ -10,5 +10,13 @@ assert(SMODS.load_file("items/grandjokers.lua"))()
 assert(SMODS.load_file("items/secret_jokers.lua"))()
 --assert(SMODS.load_file("items/unused for now/testingjokers.lua"))()
 SMODS.current_mod.optional_features = function()
-    return { retrigger_joker = true }
+    return { retrigger_joker = true,
+    	cardareas = {
+        post_trigger = true,
+		deck = true,
+		discard = true,
+	},
+}
 end
+-- 900n1 Gambapack
+if next(SMODS.find_mod("900N1GAMBLE")) then assert(SMODS.load_file("items/crossmodshit/crk.lua"))() assert(SMODS.load_file("items/crossmodshit/silencedenhancement.lua"))() end
