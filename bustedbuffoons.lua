@@ -20,3 +20,6 @@ SMODS.current_mod.optional_features = function()
 end
 -- 900n1 Gambapack
 if next(SMODS.find_mod("900N1GAMBLE")) then assert(SMODS.load_file("items/crossmodshit/crk.lua"))() assert(SMODS.load_file("items/crossmodshit/silencedenhancement.lua"))() end
+
+--Paradox's Stupid Ideas
+if next(SMODS.find_mod("paradox_ideas")) then assert(SMODS.load_file("items/crossmodshit/thrash.lua"))() end
