@@ -45,14 +45,6 @@ SMODS.ObjectType{
 --    shop_rate = 0.000000000000000000001
 }
 --SMODS.ObjectType{
---    key = "Ritualistic",
---    default = "j_busterb_thrash",
---    cards = {},
---    inject = function(self)
---        SMODS.ObjectType.inject(self)
---    end,
---}
---SMODS.ObjectType{
 --    key = "Anti",
 --    default = "j_busterb_thrash",
 --    cards = {},

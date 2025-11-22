@@ -32,11 +32,10 @@ SMODS.Joker {
     loc_txt = {
         name = "{C:hearts,E:1,s:2}Your New Best Friend, Spinel{}",
         text = {
-            "This Joker gains {X:mult,C:white}X#2#{} Mult every 4 Aces or 4 Face cards scored.",
+            "{X:mult,C:white}X#2#{} Mult every 4 Aces or 4 Face cards scored.",
             "Stockpiles {X:mult,C:white}XMult{} per card played,",
             "applies on the last card and resets after.",
-            "Levels up High Card by {C:attention}+#6#{} levels if played.",
-            "Gains {X:dark_edition,C:white}+#5#{} Extra Stockpiling Power at the start of a boss blind.",
+            "{X:dark_edition,C:white}+#5#{} Stockpile Power when selecting boss blind.",
             "{C:inactive}(Current Mult from 4 Aces/Face: {}{X:mult,C:white}X#1#{}{C:inactive}){}",
             "{C:inactive}(Stockpiling Power: {}{X:dark_edition,C:white}X#4#{}{C:inactive}){}"
         }
@@ -132,7 +131,7 @@ SMODS.Joker {
 }
  -- Minos Prime
 
- to_big = to_big or function(x) return x end
+-- to_big = to_big or function(x) return x end
 
 -- Register sounds for Minos Prime
 SMODS.Sound{
@@ -376,30 +375,40 @@ SMODS.Joker {
     loc_txt = {
         name = "{C:diamonds}Ooh la belle Noisette{}",
         text = {
-            "This Joker gains {C:attention}#1# Retrigger{} each time a",
-            "{C:attention}Boss Blind{} is defeated,",
-            "re-triggers the {C:attention}rightmost Joker{}",
-            "{C:inactive}(Currently:{} {C:attention} #2# {}{C:inactive} Retriggers){}"
+            "This Joker gains {C:attention}#2# Retrigger{}",
+            "whenever ante changes,",
+            "re-triggers the {C:attention}Joker to the right{}",
+            "{C:inactive}(Currently:{} {C:attention} #1# {}{C:inactive} Retriggers){}"
         }
     },
     config = {
-        extra = { repetitions = 1 },
-        immutable = { max_retriggers = 25 }
+        extra = { repetitions = 1, morerepeat = 1 },
+        immutable = { max_retriggers = 25, morerepeatmax = 100 }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { 1, card.ability.extra.repetitions } }
+        return { vars = { 
+            math.min(card.ability.immutable.max_retriggers, card.ability.extra.repetitions),
+            math.min(card.ability.immutable.morerepeatmax, card.ability.extra.morerepeat)
+         } }
     end,
     calculate = function(self, card, context)
-        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint and G.GAME.blind.boss then
-            card.ability.extra.repetitions = card.ability.extra.repetitions + 1
+        if context.ante_change then
+            card.ability.extra.repetitions = card.ability.extra.repetitions + math.min(card.ability.immutable.morerepeatmax, card.ability.extra.morerepeat)
             return {
                 message = localize('k_upgrade_ex'),
                 colour = G.C.FILTER,
                 card = card
             }
         end
-        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-            if context.other_card == G.jokers.cards[#G.jokers.cards] then
+        if context.retrigger_joker_check and context.other_card ~= card and not context.blueprint then
+      local other_joker = nil
+      for i = 1, #G.jokers.cards do
+        if G.jokers.cards[i] == card then
+          other_joker = G.jokers.cards[i + 1]
+          break
+        end
+      end
+      if other_joker == context.other_card then
                 return {
                     message = localize("k_again_ex"),
                     repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.repetitions)),
@@ -1309,7 +1318,7 @@ SMODS.Joker{
     config = {
         extra = {
             -- effect 1
-            randomitems = 5,
+            randomitems = 2,
             -- effect 4
 --            doublemoney = 2,
             -- effect 2
@@ -1322,7 +1331,7 @@ SMODS.Joker{
             echipsemult = 2,
         },
         immutable = {
-            rnpjokers = 7,
+            rnpjokers = 3,
             totalitems = 10,
             moneymultceiling = 1e100,
             echipemultincreaseprevention = 100,
@@ -1514,17 +1523,12 @@ calculate = function(self, card, context)
 				colour = G.C.GREEN,
 				no_juice = true,
 			})
-                local _, key = pseudorandom_element(SMODS.Rarities, "spytf2") if key == "cry_cursed" then key = "cry_exotic" end if key == "crp_abysmal" then key = "crp_mythic" end if key == "unik_detrimental" then key = "unik_ancient" end
+                local _, key = pseudorandom_element(SMODS.Rarities, "spytf2") if key == "cry_cursed" then key = "cry_exotic" end if key == "crp_abysmal" then key = "crp_mythic" end if key == "unik_detrimental" then key = "unik_ancient" end if key == "valk_supercursed" then key = "valk_exquisite" end
                 SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative' }
 			return nil, true
 		    end
         end
-    end,
-    remove_from_deck = function(self, card)
-  if not G.CONTROLLER.locks.selling_card  then
-    SMODS.add_card{ key = "j_busterb_spy", edition = 'e_negative', force_stickers = true, stickers = {"eternal"} }
-  end
-end
+    end
 }
 
 

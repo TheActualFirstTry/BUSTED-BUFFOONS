@@ -1,6 +1,6 @@
 SMODS.Atlas {
     key = "atlas_Dream",
-    path = "DreamSpectral.png",
+    path = "Dream.png",
     px = 71,
     py = 95
 }

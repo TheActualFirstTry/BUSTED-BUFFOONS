@@ -13,7 +13,7 @@ SMODS.Joker{
     pools = { ["Secret"] = true, ["bustjokers"] = true },
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
-    cost = 1e308,
+    cost = 1e100,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
@@ -57,16 +57,33 @@ SMODS.Joker{
         if context.end_of_round and context.main_eval then
                 card.ability.extra.eechips = card.ability.extra.eechips + card.ability.extra.eechipsincrement
                 return {
-                message = localize { type = 'variable', key = 'a_xchips', vars = { card.ability.extra.eechips } },
-                colour = HEX('00FFFF')
+                message = "^^".. card.ability.extra.eechips .. " Chips",
+                colour = HEX('00FFFF'),
+                card = card
                 }
             end
         if context.ante_change then
             card.ability.extra.eechipsincrement = card.ability.extra.eechipsincrement * card.ability.extra.eechipsincrementmultiplier
                 return {
-                message = localize { type = 'variable', key = 'a_xchips', vars = { card.ability.extra.eechipsincrement } },
-                colour = HEX('00FFFF')
+                message = "^^".. card.ability.extra.eechipsincrement .. " Increment",
+                colour = HEX('00FFFF'),
+                card = card
                 }
             end
         end
 }
+--Spawn Condition for Astro
+SMODS.current_mod.calculate = function (self, context)
+    if context.setting_blind and G.GAME.blind.boss and G.GAME.blind.config.blind.key == "bl_goad" then
+        G.GAME.blind.effect.onlyspades = true -- set the initial value
+    end
+    if context.individual and context.cardarea == G.play and G.GAME.blind.boss and not --[[Important this is not]] context.other_card:is_suit("Spades") then
+        -- beeg line ^^
+        G.GAME.blind.effect.onlyspades = false -- ohhh noooo, the guy played a card that wasnt spade whilst being in a boss
+    end
+    if context.end_of_round and G.GAME.blind.boss and context.main_eval and G.GAME.blind.effect.onlyspades then -- Dont need to check for goad, since its only ever true if goad is the boss
+        -- give astro
+        SMODS.add_card{ key = "j_busterb_astro", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        print("winner")
+    end
+end

@@ -10,19 +10,6 @@ SMODS.Rarity {
         return weight
     end,
 }
--- The ONLY Crossmod Joker ATM
-SMODS.Rarity {
-    key = "Ritualistic",
-    loc_txt = {
-    name = "Ritualistic",
-    },
-    default_weight = 0,
-    pools = { ["Ritualistic"] = true },
-    badge_colour = HEX('000000'),
-    get_weight = function(self, weight, object_type)
-        return weight
-    end,
-}
 SMODS.Rarity {
     key = "Secret",
     loc_txt = {

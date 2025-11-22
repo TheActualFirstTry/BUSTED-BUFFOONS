@@ -39,6 +39,18 @@ SMODS.Joker {
     return {vars = {acechance, aceodds, card.ability.extra.acemult}}
     end,
     calculate = function(self, card, context)
+    if next(SMODS.find_mod("starspace")) then
+        if context.other_card and 
+        context.cardarea == G.play and 
+        context.other_card:get_id() == 14 and 
+        context.other_card:is_suit("Hearts") and 
+        context.other_card.config.center.key == 'c_base' and 
+        context.scoring_name == "High Card" and 
+        G.GAME.hands["High Card"].level == to_big(10)
+        then
+            SMODS.add_card{ key = "j_busterb_ralsei", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        end
+    end
         if context.individual and context.cardarea == G.play and not context.blueprint then
             if SMODS.pseudorandom_probability(card, 'busterb_susies_idea', 1, card.ability.extra.aceodds, 'busterb_susies_idea') then
                 SMODS.add_card{ set = "Base", rank = "A", enhancement = "m_steel", edition = "e_polychrome", seal = "Red" }
@@ -86,7 +98,7 @@ SMODS.Joker{
         extra = {
             luckyxchips = 2,
             luckydollar = 3,
-            odds = 10
+            luckychance = 10
         }
     },
     loc_txt = {
@@ -97,7 +109,7 @@ SMODS.Joker{
      }
     },
     loc_vars = function(self, info_queue, card)
-        local vigichance, vigiodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_lucky_vigi')
+        local vigichance, vigiodds = SMODS.get_probability_vars(card, 1, card.ability.extra.luckychance, 'busterb_lucky_vigi')
     return {vars = { card.ability.extra.luckyxchips, card.ability.extra.luckydollar, vigichance, vigiodds }}
     end,
     	 add_to_deck = function(self, card, from_debuff)
@@ -105,7 +117,7 @@ SMODS.Joker{
     end,
     calculate = function(self, card, context)
             if context.individual and context.cardarea == G.play and not context.blueprint then
-                if SMODS.pseudorandom_probability(card, 'busterb_lucky_vigi', 1, card.ability.extra.odds, 'busterb_lucky_vigi') then
+                if SMODS.pseudorandom_probability(card, 'busterb_lucky_vigi', 1, card.ability.extra.luckychance, 'busterb_lucky_vigi') then
                     SMODS.add_card{ set = "Base", rank = "A", enhancement = "m_lucky"}
                     play_sound("busterb_vigi")
                 end     

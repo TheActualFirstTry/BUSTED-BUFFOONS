@@ -22,7 +22,7 @@ SMODS.Back {
     loc_txt = {
         name = "True Kinda Deck",
         text = {"Start with {C:hearts,E:1}Spinel{} and {X:hearts,C:clubs,E:1}Gar{X:clubs,C:hearts,E:1}net{}",
-        "and a deck of 52 Aces consisting of only",
+        "and a deck of 52 cards consisting of only",
         "the {C:hearts}Hearts{} and {C:clubs}Clubs{} suits."}
 
     },
@@ -51,7 +51,6 @@ SMODS.Back {
 				card2:set_edition({ negative = true })
             if not G.playing_cards then return false end
             for k, v in pairs(G.playing_cards) do
-                SMODS.change_base(v, nil, "Ace")
                 if v.base.suit == 'Spades' then
                     v:change_suit('Clubs')
                 end
@@ -88,16 +87,19 @@ SMODS.Back {
     },
     loc_txt = {
         name = "The Deck of Absolute Hate",
-        text = {"Start with a random {X:spectral,C:gold}Busted_Buffoons{} Joker",
+        text = {"Start with a random",
+        "{V:2,C:white}Busted#3#Buffoons{} Joker",
         "{C:green}#1# in #2#{} chance to spawn a",
-        "{V:1,E:1}Fantastic{} Joker at the end of the round",
-        "Otherwise spawns in a random Non-Fantastic Joker."}
+        "{V:1,E:1}Fantastic{} Joker",
+        "at the end of the round",
+        "Otherwise spawns in a random",
+        "Non-Fantastic Joker."}
 
     },
         loc_vars = function(self, info_queue, back)
     local fchance, fodds = SMODS.get_probability_vars(self, 1, self.config.fantasticodds, 'busterb_fantasticjokerchance')
-    return {vars = {fchance, fodds, 
-    colours = {HEX('b00b69')}}}
+    return {vars = {fchance, fodds, " ", 
+    colours = {HEX('b00b69'), SMODS.Gradients["busterb_epileptic"]}}}
     end,
     calculate = function (self, back, context)
         if context.end_of_round and context.main_eval then
