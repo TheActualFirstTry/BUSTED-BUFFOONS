@@ -54,3 +54,14 @@ SMODS.Gradient{
     cycle = 1,
     interpolation = 'trig',
 }
+SMODS.Gradient{
+    key = "balatro",
+    colours = {
+        G.C.MULT,
+        G.C.GOLD,
+        G.C.CHIPS,
+        G.C.GREEN
+    },
+    cycle = 1,
+    interpolation = 'linear',
+}

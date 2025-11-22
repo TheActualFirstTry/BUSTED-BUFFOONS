@@ -146,10 +146,91 @@ SMODS.Joker{
         local hopesanddreams = pseudorandom_element(G.P_CENTER_POOLS.Spectral, pseudoseed('asrielspawnsaspectral')).key
         local spectral_card = SMODS.add_card({key = hopesanddreams, area = G.consumeables, edition = "e_negative", key_append = "asrielspawnsaspectral"})
     end
-end,
-remove_from_deck = function(self, card)
-  if not G.CONTROLLER.locks.selling_card  then
-    SMODS.add_card{ key = "j_busterb_astro", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
-  end
 end
 }
+SMODS.Atlas{
+    key = "jimbussy",
+    path = "Jimbo.png",
+    px = 71,
+    py = 95
+}
+SMODS.Joker{
+    key = "joker",
+    atlas = "jimbussy",
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    rarity = "busterb_Grandiose",
+    cost = 500,
+    blueprint_compat = true,
+    eternal_compat = true,
+    unlocked = true,
+    discovered = true,
+    config = {
+        extra = {
+          valuemodification = 4
+        },
+        immutable = { valuecap = 1e100 }
+    },
+    loc_txt = {
+        name = "{V:1,s:2}JIMBO{}",
+        text = {
+            "{C:legendary}Legendary Jokers{} can spawn in the shop and are free,",
+            "all jokers gain {B:2,V:1,s:2}X#1#{} joker values during ante change"
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.valuemodification, " ", colours = {SMODS.Gradients["busterb_balatro"], SMODS.Gradients["busterb_epileptic"]}} }
+    end,
+calculate = function(self, card, context)
+  if context.ante_change then
+    for i, joker in ipairs(G.jokers.cards) do
+        if joker.config.center.key ~= "j_busterb_joker" then
+        Cryptid.manipulate(joker, { value = card.ability.extra.valuemodification })
+      end
+    end
+  end
+end,
+    add_to_deck = function(self, card, from_debuff)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                for k, v in pairs(G.I.CARD) do
+                    if v.set_cost then v:set_cost() end
+                end
+                return true
+            end
+        }))
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                for k, v in pairs(G.I.CARD) do
+                    if v.set_cost then v:set_cost() end
+                end
+                return true
+            end
+        }))
+    end
+}
+-- gray image of thinking baby meme
+local oldgetcurrentpool = get_current_pool
+function get_current_pool(_type, _rarity, _legendary, _append)
+  if next(SMODS.find_card('j_busterb_joker')) then
+    if _type == 'Joker' and _append == 'sho' then
+        local poll = pseudorandom('rarity'..G.GAME.round_resets.ante.._append)
+        if poll < (1/20) then
+            _legendary = true
+        end
+    end
+  end
+    return oldgetcurrentpool(_type, _rarity, _legendary, _append)
+end
+
+local oldcardsetcost = Card.set_cost
+function Card:set_cost()
+    local g = oldcardsetcost(self)
+    if next(SMODS.find_card('j_busterb_joker')) then
+      if self:is_rarity('Legendary') then self.cost = 0 end
+    return g
+  end
+end
