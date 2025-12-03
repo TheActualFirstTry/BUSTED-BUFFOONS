@@ -46,7 +46,7 @@ SMODS.Joker {
         context.other_card:is_suit("Hearts") and 
         context.other_card.config.center.key == 'c_base' and 
         context.scoring_name == "High Card" and 
-        G.GAME.hands["High Card"].level == to_big(10)
+        G.GAME.hands["High Card"].level <= to_big(10)
         then
             SMODS.add_card{ key = "j_busterb_ralsei", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
         end
@@ -286,7 +286,7 @@ SMODS.Joker{
                 return {vars = { card.ability.extra.xmultmod, card.ability.extra.xmult, ninechance, nineodds }}
             end,
         calculate = function(self, card, context)
-            if context.individual and context.cardarea == G.play and not context.blueprint then
+            if context.individual and context.cardarea == G.play then
                 if context.other_card:get_id() == 9 then
                     if SMODS.pseudorandom_probability(card, 'busterb_dukenines', 1, card.ability.extra.nineodds, 'busterb_dukenines') then
                         card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmultmod
