@@ -55,7 +55,7 @@ loc_vars = function(self, info_queue, card)
 }
 
 SMODS.DrawStep {
-   key = 'busterb_Fantasy',
+   key = 'busterb_Dream',
    order = 50,
    func = function(card)
        if card.config.center.key == "c_busterb_dream" and (card.config.center.discovered or card.bypass_discovery_center) then
@@ -75,7 +75,7 @@ SMODS.Atlas {
     py = 95
 }
 SMODS.Consumable {
-    key = 'fantasy',
+    key = 'Fantasy',
     set = 'Spectral',
     atlas = "atlas_Fantasy",
     pos = { x = 0, y = 0 },
@@ -91,6 +91,7 @@ loc_vars = function(self, info_queue, card)
 		return { vars = { colours = {SMODS.Gradients["busterb_grand"]} } }
 	end,
     use = function(self, card, area, copier)
+        if not next(SMODS.find_card('j_busterb_saitama')) then
         local deletable_jokers = {}
 		for k, v in pairs(G.jokers.cards) do
 			if not SMODS.is_eternal(v) then
@@ -121,8 +122,21 @@ loc_vars = function(self, info_queue, card)
             end
         }))
         delay(0.6)
-    end,
-    can_use = function(self, card)
+    else
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                play_sound('timpani')
+                SMODS.add_card({ set = 'Joker', rarity = "busterb_Grandiose" })
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+        delay(0.6)
+    end
+end,
+can_use = function(self, card)
         return G.jokers
     end,
     draw = function(self, card, layer)
@@ -133,10 +147,10 @@ loc_vars = function(self, info_queue, card)
 }
 
 SMODS.DrawStep {
-   key = 'busterb_fantasy',
+   key = 'busterb_Fantasy',
    order = 50,
    func = function(card)
-       if card.config.center.key == "c_busterb_fantasy" and (card.config.center.discovered or card.bypass_discovery_center) then
+       if card.config.center.key == "c_busterb_Fantasy" and (card.config.center.discovered or card.bypass_discovery_center) then
            local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
                0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
                (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
@@ -145,6 +159,50 @@ SMODS.DrawStep {
        end
    end,
    conditions = { vortex = false, facing = 'front' },
+}
+
+SMODS.Atlas {
+    key = "atlas_Slumber",
+    path = "Slumber.png",
+    px = 71,
+    py = 95
+}
+SMODS.Consumable {
+    key = 'slumber',
+    set = 'Spectral',
+    atlas = "atlas_Slumber",
+    pos = { x = 0, y = 0 },
+    soul_rate = 0.1,
+    can_repeat_soul = true,
+    soul_set = 'Spectral',
+    loc_txt = {
+        name = "Slumber",
+        text = {"Creates a random {V:1,E:2}Dreamy{} joker", "{s:0.8,C:red}No drawback at the moment.{}"}
+    },
+loc_vars = function(self, info_queue, card)
+		return { vars = { colours = {HEX('2735cf')} } }
+	end,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                play_sound('timpani')
+                SMODS.add_card({ set = 'Joker', rarity = "busterb_Dreamy" })
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+        delay(0.6)
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.cards < G.jokers.config.card_limit
+    end,
+    draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
+    end
 }
 
 --SMODS.Atlas {

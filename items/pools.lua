@@ -44,6 +44,15 @@ SMODS.ObjectType{
     end,
 --    shop_rate = 0.000000000000000000001
 }
+SMODS.ObjectType{
+    key = "Dreamy",
+    default = "j_busterb_saitama",
+    cards = {},
+    inject = function(self)
+        SMODS.ObjectType.inject(self)
+    end,
+--    shop_rate = 0.1
+}
 --SMODS.ObjectType{
 --    key = "Anti",
 --    default = "j_busterb_thrash",
