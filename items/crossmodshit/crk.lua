@@ -53,8 +53,6 @@ SMODS.Joker{
     end,
     calculate = function(self,card,context)
         if context.pre_joker then
-            local prevemult = card.ability.extra.emult
-            card.ability.extra.emult = card.ability.extra.emult + (card.ability.extra.gain*#context.full_hand)
             for k, v in pairs(context.full_hand) do
                 G.E_MANAGER:add_event(Event({
                     trigger = "before",
@@ -66,6 +64,7 @@ SMODS.Joker{
                             v:set_edition(nil)
                             v:set_seal(nil)
                             play_sound('generic1', math.random()*0.2 + 0.9,0.5)
+                            card.ability.extra.emult = card.ability.extra.emult + card.ability.extra.gain
                             SMODS.calculate_effect({ message = "+^"..card.ability.extra.gain.." Mult", colour = G.C.FILTER, instant = true}, card)
                         end
                         return true

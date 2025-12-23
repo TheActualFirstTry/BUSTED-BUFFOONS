@@ -65,3 +65,26 @@ SMODS.Gradient{
     cycle = 1,
     interpolation = 'linear',
 }
+SMODS.Gradient{
+    key = "Thomasgradient",
+    colours = {
+        G.C.SUITS.Spades,
+        G.C.SECONDARY_SET.Spectral,
+        G.C.GOLD,
+        G.C.SUITS.Hearts
+    },
+    cycle = 1,
+    interpolation = 'trig',
+}
+SMODS.Gradient{
+    key = "GoldenFreddyGradient",
+    colours = {
+        G.C.SUITS.Diamonds,
+        G.C.GOLD,
+        G.C.WHITE,
+        G.C.MONEY,
+        G.C.FILTER,
+    },
+    cycle = 1,
+    interpolation = 'trig',
+}

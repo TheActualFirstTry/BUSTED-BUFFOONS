@@ -1,15 +1,13 @@
- -- Spinel
-
 SMODS.Atlas {
-    key = "j_spinel",
-    path = "Spinel.png",
+    key = "Atlas_Fantastic",
+    path = "Atlas_Fantastic.png",
     px = 71,
     py = 95,
 }
-
+-- Spinel
 SMODS.Joker {
     key = "spinel",
-    atlas = "j_spinel",
+    atlas = "Atlas_Fantastic",
     rarity = "busterb_Fantastic",
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     cost = 100,
@@ -25,8 +23,7 @@ SMODS.Joker {
             xmult_mod = 6,       
             stockpile = 1,         
             stockpile_return = 1,
-            stockpile_add = 1,
-            high_card = 6
+            stockpile_add = 1
         }
     },
     loc_txt = {
@@ -46,8 +43,7 @@ SMODS.Joker {
             card.ability.extra.xmult_mod, 
             card.ability.extra.stockpile, 
             card.ability.extra.stockpile_return, 
-            card.ability.extra.stockpile_add,
-            card.ability.extra.high_card },
+            card.ability.extra.stockpile_add },
         }
     end,
     calculate = function(self, card, context)
@@ -118,15 +114,6 @@ SMODS.Joker {
                 card = card
             }
         end
-        -- if played hand is a high card, level up hand to 6 levels.
-        if context.before and context.scoring_name == "High Card" and not context.blueprint then
-            return {
-                level_up = card.ability.extra.high_card,
-                message = localize('k_level_up_ex'),
-                color = G.C.HEARTS,
-                card = card
-            }
-        end
     end
 }
  -- Minos Prime
@@ -143,16 +130,9 @@ SMODS.Sound{
     path = "die.ogg",
 }
 
-SMODS.Atlas {
-    key = "minos",
-    path = "Minos.png",
-    px = 71,
-    py = 95
-}
-
 SMODS.Joker {
     key = "minosprime",
-    atlas = "minos",
+    atlas = "Atlas_Fantastic",
     rarity = "busterb_Fantastic",
     cost = 100,
     discovered = true,
@@ -160,8 +140,8 @@ SMODS.Joker {
     eternal_compat = true,
     blueprint_compat = true,
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 1 },
+    pos = { x = 1, y = 0 },
+    soul_pos = { x = 1, y = 1 },
     config = {
         extra = {
             xmult = 1,
@@ -172,7 +152,7 @@ SMODS.Joker {
     loc_txt = {
         name = "{C:dark_edition}MINOS PRIME // ULTRAKILL{}",
         text = {
-            "This Joker creates {C:attention}#3#{} Random {C:dark_edition}Negative{} {C:spectral}Spectral{} cards",
+            "Create {C:attention}#3#{} Random {C:dark_edition}Negative{} {C:spectral}Spectral{} cards",
             "per {C:attention}discard{}, gaining {X:mult,C:white}X#2#{} Mult",
             "for each {C:spectral}Spectral{} card created",
             "{C:inactive}(Currently {X:mult,C:white}X#1#{} {C:inactive}Mult){}"
@@ -231,16 +211,9 @@ end
 
 -- Papyrus
 
-SMODS.Atlas {
-  key = "great_papyrus",
-  path = "Papyrus.png",
-  px = 71,
-  py = 95,
-}
-
 SMODS.Joker {
   key = "papyrus",
-  atlas = "great_papyrus",
+  atlas = "Atlas_Fantastic",
   rarity = "busterb_Fantastic",
   cost = 100,
   discovered = true,
@@ -248,8 +221,8 @@ SMODS.Joker {
   blueprint_compat = true,
   eternal_compat = true,
   pools = { ["Fantastic"] = true, ["bustjokers"] = true },
-  pos = { x = 0, y = 0 },
-  soul_pos = { x = 0, y = 1 },
+  pos = { x = 2, y = 0 },
+  soul_pos = { x = 2, y = 1 },
   loc_txt = {
     name = "{C:clubs}The Great Papyrus{}",
     text = {
@@ -296,15 +269,10 @@ SMODS.Joker {
   end
 }
 -- Rainbow Dash
-SMODS.Atlas {
-  key = "r_dash",
-  path = "RainbowDash.png",
-  px = 71,
-  py = 95,
-}
+
 SMODS.Joker {
     key = "rainbow",
-	atlas = "r_dash",
+	atlas = "Atlas_Fantastic",
     loc_txt = {
         name = "{C:edition}Rainbow Dash, The Element of Loyalty{}",
         text = {
@@ -319,8 +287,8 @@ SMODS.Joker {
     rarity = "busterb_Fantastic",
     cost = 100,
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-	soul_pos = { x = 0, y = 1 },
+    pos = { x = 3, y = 0 },
+	soul_pos = { x = 3, y = 1 },
     config = { extra = { edition = 'e_polychrome'} },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'e_polychrome', set = 'Edition', config = { extra = 1.5 } }
@@ -355,23 +323,17 @@ SMODS.Joker {
 
 -- Noisette
 
-SMODS.Atlas {
-    key = "noisette",
-    path = "Noisette.png",
-    px = 71,
-    py = 95,
-}
 
 SMODS.Joker {
     key = "ptnoisette",
-    atlas = "noisette",
+    atlas = "Atlas_Fantastic",
     discovered = true,
     blueprint_compat = true,
     rarity = "busterb_Fantastic",
     cost = 100,
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 1 },
+    pos = { x = 4, y = 0 },
+    soul_pos = { x = 4, y = 1 },
     loc_txt = {
         name = "{C:diamonds}Ooh la belle Noisette{}",
         text = {
@@ -423,18 +385,12 @@ SMODS.Joker {
 
 --Sans
 
-SMODS.Atlas {
-    key = "sans",
-    path = "sans.png",
-    px = 71,
-    py = 95,
-}
 
 SMODS.Joker {
     key = "sans",
-    atlas = "sans",
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 1 },
+    atlas = "Atlas_Fantastic",
+    pos = { x = 0, y = 2 },
+    soul_pos = { x = 0, y = 3 },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     rarity = "busterb_Fantastic",
     cost = 100,
@@ -458,16 +414,12 @@ SMODS.Joker {
     loc_txt = {
         name = "sans.",
         text = {
-            "* human, i remember i gain {X:chips,C:white}X#3#{} chips and {X:mult,C:white}X#4#{} mult per scored {C:clubs}club{} card.",
-			"{C:inactive,s:0.75}(jk, here lemme explain:{}",
-            "{C:inactive,s:0.75}if you score a {}{C:clubs,s:0.75}club{} {C:inactive,s:0.75}card,{}",
-            "{C:inactive,s:0.75}i gain {}{X:chips,C:white,s:0.75}X#3#{} {C:inactive,s:0.75}chips and {}{X:mult,C:white,s:0.75}X#4#{}{C:inactive,s:0.75} mult.{}",
-            "{C:inactive,s:0.75}if you defeat a {}{C:attention,s:0.75}Boss Blind{}{C:inactive,s:0.75},{}",
-            "{C:inactive,s:0.75}i gain {}{X:dark_edition,C:white,s:0.75}+#6#{} {C:dark_edition,s:0.75}prestige{}{C:inactive,s:0.75},{}",
-            "{C:inactive,s:0.75}and {C:dark_edition,s:0.75}prestige{}{C:inactive,s:0.75} is permanent {}{}{X:chips,C:white,s:0.75}xchips{}{C:inactive} and {}{X:mult,C:white,s:0.75}xmult{}{C:inactive,s:0.75}.{}",
-            "{C:inactive,s:0.75}and the ceiling only goes as far as {}{X:dark_edition,C:white,s:0.75}#7#{}{C:inactive,s:0.75}.{}",
+            "{B:1,C:white}*#9#human,#9#i#9#remember#9#i#9#gain#9#{B:1,C:chips}X#3#{}{B:1,C:white}#9#chips#9#and#9#{B:1,C:mult}X#4#{}{B:1,C:white}#9#mult#9#per#9#scored#9#{B:1,C:clubs}club{}{B:1,C:white}#9#card{}",
+			"{C:inactive,s:0.75}(jk, here lemme explain:{} {C:inactive,s:0.75}if you score a {}{C:clubs,s:0.75}club{} {C:inactive,s:0.75}card,{} {C:inactive,s:0.75}i gain {}{X:chips,C:white,s:0.75}X#3#{} {C:inactive,s:0.75}chips and {}{X:mult,C:white,s:0.75}X#4#{}{C:inactive,s:0.75} mult.{}",
+            "{C:inactive,s:0.75}if you defeat a {}{C:attention,s:0.75}Boss Blind{}{C:inactive,s:0.75},{} {C:inactive,s:0.75}i gain {}{X:dark_edition,C:white,s:0.75}+#6#{} {C:dark_edition,s:0.75}prestige{}{C:inactive,s:0.75},{}",
+            "{C:inactive,s:0.75}and {C:dark_edition,s:0.75}prestige{}{C:inactive,s:0.75} is permanent {}{}{X:chips,C:white,s:0.75}xchips{}{C:inactive} and {}{X:mult,C:white,s:0.75}xmult{}{C:inactive,s:0.75},{} {C:inactive,s:0.75}and the ceiling only goes as far as {}{X:dark_edition,C:white,s:0.75}#7#{}{C:inactive,s:0.75}.{}",
             "{C:inactive,s:0.75}so that's how the prestige system works, capisce?){}",
-            "{C:gold}you also get flat $#8# for each club too btw{}",
+            "{C:gold}you also get flat $#8# for each club too btw but it's instant for some reason{}",
             "{C:inactive}(currently {}{X:chips,C:white}X#1#{} {C:inactive}and{} {X:mult,C:white}X#2#{}{C:inactive}){}",
             "{C:inactive}(current {C:dark_edition}prestige{}{C:inactive}: {}{X:dark_edition,C:white}#5#{}{C:inactive}){}"
         }
@@ -482,7 +434,9 @@ SMODS.Joker {
                 card.ability.extra.prestige, 
                 card.ability.extra.prestige_add, 
                 card.ability.immutable.max_prestige,
-                card.ability.extra.dolar
+                card.ability.extra.dolar,
+                " ",
+                colours = {HEX('000000')}
             }
         }
     end,
@@ -533,24 +487,19 @@ SMODS.Sound {
     key = "yesthatsit",
     path = "yesthatsit.ogg",
 }
-SMODS.Atlas {
-    key = "j_sisyphus_prime",
-    path = "Sisyphus.png",
-    px = 71,
-    py = 95,
-}
+
 
 SMODS.Joker {
     key = "sisyphus",
-    atlas = "j_sisyphus_prime",
+    atlas = "Atlas_Fantastic",
     rarity = "busterb_Fantastic",
     cost = 100,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 1 },
+    pos = { x = 1, y = 2 },
+    soul_pos = { x = 1, y = 3 },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     config = {
         extra = {
@@ -564,7 +513,7 @@ SMODS.Joker {
         name = "{C:gold,E:1,s:2}SISYPHUS PRIME // ULTRAKILL{}",
         text = {
             "After selecting a {C:attention}Boss Blind{},",
-            "This Joker gains {X:attention,C:white}X#3#{} {X:chips,C:white}XChips{} and {C:gold}+#4#${}{}.",
+            "Gains {X:attention,C:white}X#3#{} {X:chips,C:white}XChips{} and {C:gold}+#4#${}",
             "{C:inactive}(Current: {}{X:chips,C:white}X#1#{}{C:inactive}, {}{C:money}$#2#{C:inactive} per blind)"
         }
     },
@@ -601,16 +550,6 @@ SMODS.Joker {
                 colour = G.C.GOLD
             }
         end
-        remove_from_deck = function(self, card, from_debuff)
-        if not from_debuff then
-        return nil
-        else
-        G.GAME.chips = G.GAME.blind.chips
-        G.STATE = G.STATES.HAND_PLAYED
-        G.STATE_COMPLETE = true
-        end_round()
-    end
-end
 end
 }
 
@@ -638,24 +577,18 @@ SMODS.Sound{
     path = "intro.ogg",
 }
 
-SMODS.Atlas {
-    key = "dark_donald",
-    path = "DD1.png",
-    px = 71,
-    py = 95
-}
 
 SMODS.Joker {
     key = "dd1",
-    atlas = "dark_donald",
+    atlas = "Atlas_Fantastic",
     rarity = "busterb_Fantastic",
     cost = 100,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
     blueprint_compat = true,
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 1 },
+    pos = { x = 2, y = 2 },
+    soul_pos = { x = 2, y = 3 },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     config = {
         extra = {
@@ -766,17 +699,10 @@ end
 
 -- Garnet
 
-SMODS.Atlas {
-    key = "garnet",
-    path = "Garnet.png",
-    px = 71,
-    py = 95,
-}
-
 SMODS.Joker {
     name = "Garnet",
     key = "garnet",
-    atlas = "garnet",
+    atlas = "Atlas_Fantastic",
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     config = {
         extra = {
@@ -798,12 +724,12 @@ SMODS.Joker {
         }
     },
     pos = {
-        x = 0,
-        y = 0
+        x = 3,
+        y = 2
     },
     soul_pos = {
-        x = 0,
-        y = 1
+        x = 3,
+        y = 3
     },
     cost = 100,
     rarity = "busterb_Fantastic",
@@ -859,18 +785,11 @@ end
 
 -- Peacock
 
-SMODS.Atlas {
-    key = "PeacockS",
-    path = "Peacock.png",
-    px = 71,
-    py = 95
-}
-
 SMODS.Joker {
     key = "peacock",
-    atlas = "PeacockS",
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 1 },
+    atlas = "Atlas_Fantastic",
+    pos = { x = 4, y = 2 },
+    soul_pos = { x = 4, y = 3 },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     cost = 100,
     rarity = "busterb_Fantastic",
@@ -945,15 +864,10 @@ SMODS.Joker {
     end
 }
 
-SMODS.Atlas {
-    key = "THSonic",
-    path = "THSonic.png",
-    px = 71,
-    py = 95,
-}
+
 SMODS.Joker {
     key = "true_hyper_sonic",
-    atlas = "THSonic",
+    atlas = "Atlas_Fantastic",
     rarity = "busterb_Fantastic",
     cost = 20,
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
@@ -964,11 +878,11 @@ SMODS.Joker {
     eternal_compat = true,
     pos = {
         x = 0,
-        y = 0
+        y = 4
     },
     soul_pos = {
         x = 0,
-        y = 1
+        y = 5
     },
     config = {
         extra = {
@@ -1192,18 +1106,12 @@ SMODS.Atlas {
 
 -- ENA
 
-SMODS.Atlas {
-    key = "bbqena",
-    path = "ENABBQ.png",
-    px = 71,
-    py = 95
-}
 
 SMODS.Joker {
     key = "dreamena",
-    atlas = "bbqena",
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 1 },
+    atlas = "Atlas_Fantastic",
+    pos = { x = 1, y = 4 },
+    soul_pos = { x = 1, y = 5 },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     rarity = "busterb_Fantastic",
     cost = 100,
@@ -1259,17 +1167,12 @@ SMODS.Joker {
     end
 }
 -- Maxwell
-SMODS.Atlas {
-    key = "a_maxwell",
-    path = "Maxwell.png",
-    px = 71,
-    py = 95
-}
+
 SMODS.Joker {
     key = "maxwell",
-    atlas = "a_maxwell",
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 1 },
+    atlas = "Atlas_Fantastic",
+    pos = { x = 3, y = 4 },
+    soul_pos = { x = 3, y = 5 },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     rarity = "busterb_Fantastic",
     cost = 100,
@@ -1300,18 +1203,11 @@ SMODS.Joker {
     end
 }
 
-SMODS.Atlas{
-    key = "Neo",
-    path = "Neo.png",
-    px = 71,
-    py = 95,
-
-}
 SMODS.Joker{
    key = "neometalsonic",
-    atlas = "Neo",
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 1},
+    atlas = "Atlas_Fantastic",
+    pos = { x = 2, y = 4 },
+    soul_pos = { x = 2, y = 5},
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     rarity = "busterb_Fantastic",
     cost = 100,
@@ -1451,8 +1347,8 @@ SMODS.Joker{
             if randomeffect == 8 then
                 print("Effect 8")
                 for i = 1, card.ability.immutable.rnpjokers do
-                    local neojokers = pseudorandom_element(G.P_CENTER_POOLS.Joker, pseudoseed('neo2')).key
-                    SMODS.add_card({ key = neojokers, edition = 'e_negative', force_stickers = true, stickers = {"perishable"} })
+                    local _, key = pseudorandom_element(SMODS.Rarities, "neo") if key == "cry_cursed" then key = "cry_exotic" end if key == "crp_abysmal" then key = "crp_mythic" end if key == "unik_detrimental" then key = "unik_ancient" end if key == "valk_supercursed" then key = "valk_exquisite" end
+                SMODS.add_card({ set = "Joker", rarity = key, edition = 'e_negative', force_stickers = true, stickers = {"perishable"} })
                     print("Success")
                 end
             end
@@ -1462,12 +1358,7 @@ SMODS.Joker{
 
 -- 15th Fantastic Joker: "" - Destroys the joker to the right to create a random negative joker of any rarity.
 
- SMODS.Atlas {
-    key = "tf2spy",
-    path = "Spy.png",
-    px = 71,
-    py = 95
- }
+
  SMODS.Sound {
     key = "crit",
     path = "crit.ogg",
@@ -1475,9 +1366,9 @@ SMODS.Joker{
 
  SMODS.Joker {
  key = "spy",
-    atlas = "tf2spy",
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 1 },
+    atlas = "Atlas_Fantastic",
+    pos = { x = 4, y = 4 },
+    soul_pos = { x = 4, y = 5 },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     rarity = "busterb_Fantastic",
     cost = 100,
