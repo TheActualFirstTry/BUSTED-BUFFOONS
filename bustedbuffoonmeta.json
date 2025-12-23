@@ -11,6 +11,7 @@
     "version": "1.2a",
 	"badge_colour": "B21F5C",
 	"badge_text_colour": "FBBAE4",
+	"priority":"99999",
 	"dependencies": [
 		"Talisman (>=2.2.0a)",
 		"Steamodded (>=1.0.0~BETA-0614a)",

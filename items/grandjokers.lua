@@ -307,6 +307,19 @@ SMODS.Joker{
             end
         end
 }
+SMODS.Sound{
+    key = "pepparry",
+    path = "sfx_parry.ogg"
+}
+SMODS.Sound{
+    key = "pepyell",
+    path = "peppinoangryscream.ogg"
+}
+SMODS.Sound{
+    key = "pepangry",
+    path = "peppinoangryscream2.ogg"
+}
+
 SMODS.Atlas{
     key = "a_peddito",
     path = "peddito.png",
@@ -351,11 +364,21 @@ SMODS.Joker{
             } }
     end,
     calculate = function(self, card, context)
-if context.joker_main then return({ee_mult = card.ability.extra.eemult, colour = HEX('d868a0'), card = card}) end
+if context.joker_main then 
+    if to_big(card.ability.extra.eemult) > to_big(1) then
+    SMODS.calculate_effect{
+    message = "YEEEEOOOW!!!",
+    ee_mult = card.ability.extra.eemult,
+    colour = HEX('d868a0'),
+    sound = "busterb_pepangry",
+    card = card
+}
+end
+    end
 if context.end_of_round then
         if context.main_eval and context.beat_boss or context.forcetrigger then
     card.ability.extra.dp = card.ability.extra.dp + card.ability.extra.gain
-    SMODS.calculate_effect({message = "+" ..card.ability.extra.gain.. " Revive", colour = HEX('d868a0'), card = card})
+    SMODS.calculate_effect({message = "+" ..card.ability.extra.gain.. " Revive", sound = "busterb_pepyell", colour = HEX('d868a0'), card = card})
 end
 
 if context.game_over and card.ability.extra.dp > 0 then
@@ -386,7 +409,7 @@ if context.game_over and card.ability.extra.dp > 0 then
                     end
                 }))
                 SMODS.calculate_effect ({
-                    message = "!!!",
+                    message = "!!!", sound = "busterb_pepparry",
 --                    message = "-" ..card.ability.immutable.deduction.. " Revive / ^^" ..card.ability.extra.eemult.. " Mult",
                     saved = "You're lucky.",
                     colour = HEX('d868a0'),
