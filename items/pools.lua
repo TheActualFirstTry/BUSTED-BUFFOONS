@@ -9,7 +9,7 @@ SMODS.ObjectType{
 }
 -- Secret Jokers
 SMODS.ObjectType{
-    key = "bustjokers",
+    key = "Secret",
     default = "j_busterb_astro",
     cards = {},
     inject = function(self)

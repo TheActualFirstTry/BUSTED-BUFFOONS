@@ -28,7 +28,7 @@ SMODS.Rarity {
     name = "Grandiose",
     },
     default_weight = 0,
-    pools = { ["Secret"] = true },
+    pools = { ["Grandiose"] = true },
     badge_colour = SMODS.Gradients["busterb_grand"],
     get_weight = function(self, weight, object_type)
         return weight
