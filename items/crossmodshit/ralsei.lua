@@ -46,18 +46,21 @@ calculate = function(self, card, context)
   card.ability.immutable.tp = card.ability.immutable.tp + tpincrease
   SMODS.calculate_effect({ message = "+" ..tpincrease.. "TP", colour = SMODS.Gradients["busterb_universalgradient"], instant = true}, card)
   if to_big(card.ability.immutable.tp) >= to_big(100) then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i] == card then
-					if i > 1 then
-						Cryptid.manipulate(G.jokers.cards[i+1], { value = card.ability.immutable.valueincrease })
-            SMODS.calculate_effect({ message = "X" ..card.ability.immutable.valueincrease, colour = SMODS.Gradients["busterb_universalgradient"], instant = true}, card)
-					end
-					if i < #G.jokers.cards then
-						Cryptid.manipulate(G.jokers.cards[i-1], { value = card.ability.immutable.valueincrease })
-            SMODS.calculate_effect({ message = "X".. card.ability.immutable.valueincrease, colour = SMODS.Gradients["busterb_universalgradient"], instant = true}, card)
-					end
+			local mypos = nil
+		        for i = 1, #G.jokers.cards do
+			        if G.jokers.cards[i] == card then
+				        mypos = i
+			    	    break
+		    	    end
+		        end
+                if G.jokers.cards[mypos + 1] then
+					Cryptid.manipulate(G.jokers.cards[mypos+1], { value = card.ability.extra.vm })
+                SMODS.calculate_effect({ message = "X" ..card.ability.extra.vm, colour = G.C.FILTER, instant = true}, card)
 				end
-			end
+				if G.jokers.cards[mypos - 1] then
+					Cryptid.manipulate(G.jokers.cards[mypos-1], { value = card.ability.extra.vm })
+                SMODS.calculate_effect({ message = "X".. card.ability.extra.vm, colour = G.C.FILTER, instant = true}, card)
+				end
       card.ability.immutable.tp = card.ability.immutable.reset 
     SMODS.calculate_effect({ message = "TP Reset!", colour = SMODS.Gradients["busterb_universalgradient"], instant = true}, card)
 		end
