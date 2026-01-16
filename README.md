@@ -5,6 +5,5 @@ Install [Talisman](https://github.com/SpectralPack/Talisman) and [Cryptlib](http
 
 ## There's also Crossmod content for...
 [900n1Gamblepack](https://github.com/900n1/900n1Gamblepack),
-[paradox-stupid-ideas](https://github.com/unusedparadox/paradox-stupid-ideas),
 [Starspace](https://github.com/MetaNite64/Starspace),
 [UNIK's Mod](https://github.com/70UNIK/UNIKs-mod)
