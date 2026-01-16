@@ -32,9 +32,6 @@ end
 -- 900n1 Gambapack
 if next(SMODS.find_mod("900N1GAMBLE")) then assert(SMODS.load_file("items/crossmodshit/silencedenhancement.lua"))() assert(SMODS.load_file("items/crossmodshit/crk.lua"))() end
 
--- Paradox's Stupid Ideas
-if next(SMODS.find_mod("paradox_ideas")) then assert(SMODS.load_file("items/crossmodshit/ritualistic.lua"))() assert(SMODS.load_file("items/crossmodshit/thrash.lua"))() end
-
 -- Starspace
 if next(SMODS.find_mod("starspace")) then assert(SMODS.load_file("items/crossmodshit/universal.lua"))() assert(SMODS.load_file("items/crossmodshit/ralsei.lua"))() end
 
@@ -45,4 +42,5 @@ if next(SMODS.find_mod("unik")) then assert(SMODS.load_file("items/crossmodshit/
 if next(SMODS.find_mod("Cryptid")) then assert(SMODS.load_file("items/crossmodshit/ace.lua"))() end
 
 -- Entropy
+
 -- if next(SMODS.find_mod("entr")) then assert(SMODS.load_file("items/crossmodshit/entropydefinitions.lua"))() assert(SMODS.load_file("items/crossmodshit/invert.lua"))()assert(SMODS.load_file("items/crossmodshit/alternateentropy.lua"))() end
