@@ -22,10 +22,10 @@ SMODS.Edition {
         name = "Atomic",
         label = "Atomic",
         text = {
-            "{B:1,C:white}^^^^#1#{} Mult",
+            "{B:1,C:white}^^#1#{} Mult",
         }
     },
-    config = { hyper = 4, mult = 1.1 },
+    config = {mult = 1.1 },
     in_shop = true,
     weight = 0.03,
     extra_cost = 0,
@@ -39,8 +39,8 @@ SMODS.Edition {
     calculate = function(self, card, context)
         if context.post_joker or (context.main_scoring and context.cardarea == G.play) then
             return {
-                hypermult = {self.config.hyper, self.config.mult},
-                message = "^^^^ "..self.config.mult, colour = SMODS.Gradients["busterb_Thomasgradient"], sound = "busterb_Thunder1"
+                ee_mult = self.config.mult,
+                message = "^^ "..self.config.mult, colour = SMODS.Gradients["busterb_Thomasgradient"], sound = "busterb_Thunder1"
             }
         end
     end

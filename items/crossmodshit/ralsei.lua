@@ -17,7 +17,7 @@ SMODS.Joker{
     unlocked = true,
     discovered = true,
     config = {
-        extra = {
+        extra = { vm = 2
         },
         immutable = { tpincreasecap = 10, tp = 1, tpcap = 100, valueincrease = 2, reset = 0 }
     },
@@ -33,7 +33,7 @@ SMODS.Joker{
     },
     loc_vars = function(self, info_queue, card)
         return { vars = { 
-          card.ability.immutable.valueincrease, 
+          card.ability.extra.vm, 
           card.ability.immutable.reset, 
           card.ability.immutable.tp, 
           card.ability.immutable.tpincreasecap, 
@@ -44,7 +44,7 @@ calculate = function(self, card, context)
   if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == "Spectral" then
     local tpincrease = pseudorandom(pseudoseed("busterb_ralsei"), 1, 20)
   card.ability.immutable.tp = card.ability.immutable.tp + tpincrease
-  SMODS.calculate_effect({ message = "+" ..tpincrease.. "TP", colour = SMODS.Gradients["busterb_universalgradient"], instant = true}, card)
+  SMODS.calculate_effect({ message = "+" ..tpincrease.. "TP", colour = SMODS.Gradients["busterb_universalgradient"]}, card)
   if to_big(card.ability.immutable.tp) >= to_big(100) then
 			local mypos = nil
 		        for i = 1, #G.jokers.cards do
@@ -55,14 +55,14 @@ calculate = function(self, card, context)
 		        end
                 if G.jokers.cards[mypos + 1] then
 					Cryptid.manipulate(G.jokers.cards[mypos+1], { value = card.ability.extra.vm })
-                SMODS.calculate_effect({ message = "X" ..card.ability.extra.vm, colour = G.C.FILTER, instant = true}, card)
+                SMODS.calculate_effect({ message = "< X" ..card.ability.extra.vm, colour = SMODS.Gradients["busterb_universalgradient"]}, card)
 				end
 				if G.jokers.cards[mypos - 1] then
 					Cryptid.manipulate(G.jokers.cards[mypos-1], { value = card.ability.extra.vm })
-                SMODS.calculate_effect({ message = "X".. card.ability.extra.vm, colour = G.C.FILTER, instant = true}, card)
+                SMODS.calculate_effect({ message = "X".. card.ability.extra.vm.. " >", colour = SMODS.Gradients["busterb_universalgradient"]}, card)
 				end
       card.ability.immutable.tp = card.ability.immutable.reset 
-    SMODS.calculate_effect({ message = "TP Reset!", colour = SMODS.Gradients["busterb_universalgradient"], instant = true}, card)
+    SMODS.calculate_effect({ message = "TP Reset!", colour = SMODS.Gradients["busterb_universalgradient"]}, card)
 		end
   end
 end

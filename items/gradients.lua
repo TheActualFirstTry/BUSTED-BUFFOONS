@@ -42,6 +42,19 @@ SMODS.Gradient{
     interpolation = 'trig',
 }
 SMODS.Gradient{
+    key = "eemultgradient",
+    colours = {
+        G.C.RED,
+        G.C.SUITS.Hearts,
+        G.C.FILTER,
+        G.C.SUITS.Diamonds,
+        G.C.GOLD,
+        G.C.RARITY[3]
+    },
+    cycle = 1,
+    interpolation = 'trig',
+}
+SMODS.Gradient{
     key = "eechipsgradient",
     colours = {
         G.C.SECONDARY_SET.Spectral,

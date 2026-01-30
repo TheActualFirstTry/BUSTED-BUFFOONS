@@ -345,7 +345,7 @@ SMODS.Joker {
     },
     config = {
         extra = { repetitions = 1, morerepeat = 1 },
-        immutable = { max_retriggers = 25, morerepeatmax = 100 }
+        immutable = { max_retriggers = 100, morerepeatmax = 25 }
     },
     loc_vars = function(self, info_queue, card)
         return { vars = { 
@@ -1106,7 +1106,10 @@ SMODS.Atlas {
 
 -- ENA
 
-
+SMODS.Sound{
+    key = "cashregister",
+    path = "cashregister.ogg"
+}
 SMODS.Joker {
     key = "dreamena",
     atlas = "Atlas_Fantastic",
@@ -1155,11 +1158,11 @@ SMODS.Joker {
         end
         -- Buying a voucher increases moneys and joker slots
         if context.buying_card and context.card.ability.set == "Voucher" then
-            G.jokers.config.card_limit = lenient_bignum(
-			G.jokers.config.card_limit + math.min(100, to_big(card.ability.extra.joker_slots))
-		)
+            G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + math.min(100, to_big(card.ability.extra.joker_slots)))
             card.ability.extra.dollars = lenient_bignum(card.ability.extra.dollars * card.ability.extra.money_multiplier)
             card.ability.extra.triggered = false
+            play_sound("busterb_cashregister")
+            SMODS.calculate_effect({message = "$"..card.ability.extra.dollars, colour = G.C.GOLD}, card)
         end
     end,
        calc_dollar_bonus = function(self, card)
@@ -1347,8 +1350,16 @@ SMODS.Joker{
             if randomeffect == 8 then
                 print("Effect 8")
                 for i = 1, card.ability.immutable.rnpjokers do
-                    local _, key = pseudorandom_element(SMODS.Rarities, "neo") if key == "cry_cursed" then key = "cry_exotic" end if key == "crp_abysmal" then key = "crp_mythic" end if key == "unik_detrimental" then key = "unik_ancient" end if key == "valk_supercursed" then key = "valk_exquisite" end
-                SMODS.add_card({ set = "Joker", rarity = key, edition = 'e_negative', force_stickers = true, stickers = {"perishable"} })
+                    local _, key = pseudorandom_element(SMODS.Rarities, "neo") 
+                    if key == "busterb_Grandiose" then key = "busterb_Dreamy" end 
+                    if key == "busterb_Secret" then key = "busterb_Fantastic" end 
+                    if key == "Common" then key = "Rare" end 
+                    if key == "Uncommon" then key = "Rare" end 
+                    if key == "cry_cursed" then key = "cry_exotic" end 
+                    if key == "crp_abysmal" then key = "crp_mythic" end 
+                    if key == "unik_detrimental" then key = "unik_ancient" end 
+                    if key == "valk_supercursed" then key = "valk_exquisite" end
+                    SMODS.add_card({ set = "Joker", rarity = key, edition = 'e_negative', force_stickers = true, stickers = {"perishable"} })
                     print("Success")
                 end
             end
@@ -1414,7 +1425,15 @@ calculate = function(self, card, context)
 				colour = G.C.GREEN,
 				no_juice = true,
 			})
-                local _, key = pseudorandom_element(SMODS.Rarities, "spytf2") if key == "cry_cursed" then key = "cry_exotic" end if key == "crp_abysmal" then key = "crp_mythic" end if key == "unik_detrimental" then key = "unik_ancient" end if key == "valk_supercursed" then key = "valk_exquisite" end
+                local _, key = pseudorandom_element(SMODS.Rarities, "spytf2") 
+                if key == "busterb_Grandiose" then key = "busterb_Dreamy" end 
+                if key == "busterb_Secret" then key = "busterb_Fantastic" end 
+                if key == "Common" then key = "Rare" end 
+                if key == "Uncommon" then key = "Rare" end 
+                if key == "cry_cursed" then key = "cry_exotic" end 
+                if key == "crp_abysmal" then key = "crp_mythic" end 
+                if key == "unik_detrimental" then key = "unik_ancient" end 
+                if key == "valk_supercursed" then key = "valk_exquisite" end
                 SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative' }
 			return nil, true
 		    end

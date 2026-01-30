@@ -10,6 +10,15 @@ SMODS.Atlas{
     px = 71,
     py = 95
 }
+local IGORTalk = {
+    'Stay the fuck away from me...',
+    'I need to get her out the picture.',
+    "I don't know what's harder, letting go or just being okay with it.",
+    "I don't love you anymore...",
+    "Don't leave, it's my fault!",
+    "He's coming!",
+    "Are we still friends?"
+}
 SMODS.Joker{
     key = "igor",
     atlas = "a_igor",
@@ -31,8 +40,8 @@ SMODS.Joker{
     loc_txt = {
         name = "{V:1,s:2}IGOR{}",
         text = {
-            "Destroys played {C:attention}Queens{},",
-            "Gains {X:spectral,C:white}^^#1#{} Mult whenever a {C:attention}Queen{} is scored",
+            "All scored {C:attention}Face Cards{} become Glass",
+            "Gains {X:spectral,C:white}^^#1#{} Mult whenever a {C:attention}Face Card{} is scored",
             "{C:inactive}(Currently {X:spectral,C:white}^^#2#{C:inactive} Mult){}"
         }
     },
@@ -40,17 +49,40 @@ SMODS.Joker{
         return { vars = { card.ability.extra.EEM, card.ability.extra.EEMTOTAL, colours = {HEX('f7b4c6')}} }
     end,
     calculate = function(self, card, context)
-        if context.destroy_card and context.destroy_card:get_id() == 12 and context.cardarea == G.play then
+        if context.before then
+            local faces = 0
+            for _, scored_card in ipairs(context.scoring_hand) do
+                if scored_card:is_face() then
+                faces = faces + 1
+                scored_card:set_ability('m_glass', nil, true)
+                G.E_MANAGER:add_event(Event({
+                        func = function()
+                            scored_card:juice_up()
+                            return true
+                        end
+                    }))                    
                 card.ability.extra.EEMTOTAL = (card.ability.extra.EEMTOTAL) + card.ability.extra.EEM
-                card_eval_status_text(card,"extra",nil,nil,nil,
-                { message = localize("k_upgrade_ex"), colour = G.C.FILTER }
-            )
-                return {remove = true}
+                SMODS.calculate_effect ({
+                    message = "^^" ..card.ability.extra.EEMTOTAL.. " Mult",
+                    colour = HEX('f7b4c6'),
+                    card = card
+                })
+            end
+        end
+if faces > 0 then
+                return {
+                    message = IGORTalk[math.random(#IGORTalk)],
+                    colour = HEX('f7b4c6')
+                }
+            end
         end
         if context.joker_main then
-                return {
-                    ee_mult = card.ability.extra.EEMTOTAL
-                }
+                SMODS.calculate_effect ({
+                    eemult = card.ability.extra.EEMTOTAL,
+                    message = "^^" ..card.ability.extra.EEMTOTAL.. " Mult",
+                    colour = HEX('f7b4c6'),
+                    card = card
+                })
     end
 end
 }
@@ -364,17 +396,17 @@ SMODS.Joker{
             } }
     end,
     calculate = function(self, card, context)
-if context.joker_main then 
-    if to_big(card.ability.extra.eemult) > to_big(1) then
+if to_big(card.ability.extra.eemult) > to_big(1) then
+    if context.joker_main then 
     SMODS.calculate_effect{
     message = "YEEEEOOOW!!!",
     ee_mult = card.ability.extra.eemult,
     colour = HEX('d868a0'),
     sound = "busterb_pepangry",
     card = card
-}
+    }
+end    
 end
-    end
 if context.end_of_round then
         if context.main_eval and context.beat_boss or context.forcetrigger then
     card.ability.extra.dp = card.ability.extra.dp + card.ability.extra.gain
@@ -418,4 +450,88 @@ if context.game_over and card.ability.extra.dp > 0 then
 end
 end
 end
+}
+SMODS.Atlas{
+    key = "QD",
+    path = "QueenDeltarune.png",
+    px = 71,
+    py = 95
+} 
+SMODS.Sound{
+    key = "deltabomb",
+    path = "deltarune-explosion.ogg"
+}
+SMODS.Joker{
+    key = "queen",
+    atlas = "QD",
+    rarity = "busterb_Grandiose",
+    pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    cost = 500,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    eternal_compat = true,
+    config = {
+        extra = {
+            xmult = 10,
+            emult = 1,
+            xmultmod = 10,
+            emultmod = 1
+        },
+        immutable = {
+        }
+    },
+    loc_txt = {
+        name = "{C:planet,s:2}QUEEN{}",
+        text = {
+            "Upon {C:attention}selecting a blind{}",
+            "spawn {C:rare}Cavendish",
+            "When {C:rare}Cavendish{} is sold, gain {C:white,X:mult}X#4#{} Mult",
+            "When {C:rare}Cavendish{} is destroyed instead, gain {C:white,B:1}^#5#{} Mult",
+            "{C:inactive}(Currently {C:white,X:mult}X#2#{} and {C:white,B:1}^#3#{C:inactive})"
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+		return { vars = { 
+            " ",
+            card.ability.extra.xmult,
+            card.ability.extra.emult,
+            card.ability.extra.xmultmod,
+            card.ability.extra.emultmod,
+            colours = { SMODS.Gradients["busterb_eemultgradient"] }
+        } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            return{
+                message = "X "..card.ability.extra.xmult.." Mult/ ^ "..card.ability.extra.emult.. " Mult",
+                xmult = card.ability.extra.xmult,
+                emult = card.ability.extra.emult,
+                sound = "busterb_explode",
+                colour = SMODS.Gradients["busterb_eemultgradient"]
+            }
+        end
+        if context.setting_blind or context.forcetrigger then
+            SMODS.add_card{key = "j_cavendish", edition = "e_negative"}
+        end
+            if context.joker_type_destroyed and context.card.config.center.key == "j_cavendish" then 
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "emult",
+                scalar_value = "emultmod",
+                colour = SMODS.Gradients["busterb_eemultgradient"]
+            })
+            end
+            if context.selling_card and context.card.config.center.key == "j_cavendish" then
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "xmult",
+                scalar_value = "xmultmod",
+                colour = G.C.RED
+            })
+            end
+    end
 }

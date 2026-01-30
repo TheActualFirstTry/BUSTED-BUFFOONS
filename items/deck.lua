@@ -106,7 +106,15 @@ SMODS.Back {
             if SMODS.pseudorandom_probability(self, 'busterb_fantasticjokerchance', 1, self.config.fantasticodds, 'busterb_fantasticjokerchance') then
                 SMODS.add_card({ set = 'Fantastic', area = G.jokers })
             else
-            local _, key = pseudorandom_element(SMODS.Rarities, "cogito") if key == "busterb_Fantastic" then key = "legendary" end if key == "common" then key = "rare" end if key == "uncommon" then key = "rare" end if key == "cry_cursed" then key = "cry_exotic" end if key == "crp_abysmal" then key = "crp_mythic" end if key == "unik_detrimental" then key = "unik_ancient" end if key == "valk_supercursed" then key = "valk_exquisite" end
+            local _, key = pseudorandom_element(SMODS.Rarities, "cogito").key
+            if key == "busterb_Grandiose" then key = "busterb_Dreamy" end 
+            if key == "busterb_Secret" then key = "busterb_Fantastic" end 
+            if key == "Common" then key = "Rare" end 
+            if key == "Uncommon" then key = "Rare" end 
+            if key == "cry_cursed" then key = "cry_exotic" end 
+            if key == "crp_abysmal" then key = "crp_mythic" end 
+            if key == "unik_detrimental" then key = "unik_ancient" end 
+            if key == "valk_supercursed" then key = "valk_exquisite" end
                 SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative' }
             end
     end

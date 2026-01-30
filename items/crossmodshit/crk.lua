@@ -65,7 +65,7 @@ SMODS.Joker{
                             v:set_seal(nil)
                             play_sound('generic1', math.random()*0.2 + 0.9,0.5)
                             card.ability.extra.emult = card.ability.extra.emult + card.ability.extra.gain
-                            SMODS.calculate_effect({ message = "+^"..card.ability.extra.gain.." Mult", colour = G.C.FILTER, instant = true}, card)
+                            SMODS.calculate_effect({ message = "+^"..card.ability.extra.gain.." Mult", colour = G.C.FILTER}, card)
                         end
                         return true
                     end

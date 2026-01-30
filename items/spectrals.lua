@@ -75,7 +75,7 @@ SMODS.Atlas {
     py = 95
 }
 SMODS.Consumable {
-    key = 'Fantasy',
+    key = 'fantasy',
     set = 'Spectral',
     atlas = "atlas_Fantasy",
     pos = { x = 0, y = 0 },
@@ -114,7 +114,7 @@ loc_vars = function(self, info_queue, card)
             delay = 0.4,
             func = function()
 				play_sound("timpani")
-				local card = create_card("Joker", G.jokers, nil, "busterb_Grandiose", nil, nil, nil, "busterb_Fantasy")
+				local card = create_card("Joker", G.jokers, nil, "busterb_Grandiose", nil, nil, nil, "busterb_fantasy")
 				card:add_to_deck()
 				G.jokers:emplace(card)
 				card:juice_up(0.3, 0.5)
@@ -147,10 +147,10 @@ can_use = function(self, card)
 }
 
 SMODS.DrawStep {
-   key = 'busterb_Fantasy',
+   key = 'busterb_fantasy',
    order = 50,
    func = function(card)
-       if card.config.center.key == "c_busterb_Fantasy" and (card.config.center.discovered or card.bypass_discovery_center) then
+       if card.config.center.key == "c_busterb_fantasy" and (card.config.center.discovered or card.bypass_discovery_center) then
            local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
                0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
                (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
