@@ -487,15 +487,17 @@ SMODS.Joker{
     loc_txt = {
         name = "{C:planet,s:2}QUEEN{}",
         text = {
-            "Upon {C:attention}selecting a blind{}",
-            "spawn {C:rare}Cavendish",
-            "When {C:rare}Cavendish{} is sold, gain {C:white,X:mult}X#4#{} Mult",
-            "When {C:rare}Cavendish{} is destroyed instead, gain {C:white,B:1}^#5#{} Mult",
-            "{C:inactive}(Currently {C:white,X:mult}X#2#{} and {C:white,B:1}^#3#{C:inactive})"
+            "* Upon {C:attention}Selecting A Blind{}, Spawn {C:rare}Cavendish",
+            "When {C:rare}Cavendish{} Is {C:gold}Sold{}, Gain {C:white,X:mult}X#4#{} Mult",
+            "When {C:rare}Cavendish{} Is{C:red} Destroyed{} Instead, Gain {C:white,B:1}^#5#{} Mult",
+            "{C:inactive}(Currently {C:white,X:mult}X#2#{C:inactive} And {C:white,B:1}^#3#{C:inactive})"
         }
     },
     loc_vars = function(self, info_queue, card)
-		return { vars = { 
+		return { 
+            background_colour = G.C.BLACK,
+            text_colour = G.C.WHITE,
+            vars = { 
             " ",
             card.ability.extra.xmult,
             card.ability.extra.emult,

@@ -115,6 +115,8 @@ SMODS.Back {
             if key == "crp_abysmal" then key = "crp_mythic" end 
             if key == "unik_detrimental" then key = "unik_ancient" end 
             if key == "valk_supercursed" then key = "valk_exquisite" end
+            if key == "jen_junk" then key = "jen_transcendent" end
+            if key == "jen_miscellaneous" then key = "jen_wondrous" end
                 SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative' }
             end
     end

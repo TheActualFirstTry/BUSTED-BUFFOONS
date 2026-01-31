@@ -414,18 +414,25 @@ SMODS.Joker {
     loc_txt = {
         name = "sans.",
         text = {
-            "{B:1,C:white}*#9#human,#9#i#9#remember#9#i#9#gain#9#{B:1,C:chips}X#3#{}{B:1,C:white}#9#chips#9#and#9#{B:1,C:mult}X#4#{}{B:1,C:white}#9#mult#9#per#9#scored#9#{B:1,C:clubs}club{}{B:1,C:white}#9#card{}",
-			"{C:inactive,s:0.75}(jk, here lemme explain:{} {C:inactive,s:0.75}if you score a {}{C:clubs,s:0.75}club{} {C:inactive,s:0.75}card,{} {C:inactive,s:0.75}i gain {}{X:chips,C:white,s:0.75}X#3#{} {C:inactive,s:0.75}chips and {}{X:mult,C:white,s:0.75}X#4#{}{C:inactive,s:0.75} mult.{}",
-            "{C:inactive,s:0.75}if you defeat a {}{C:attention,s:0.75}Boss Blind{}{C:inactive,s:0.75},{} {C:inactive,s:0.75}i gain {}{X:dark_edition,C:white,s:0.75}+#6#{} {C:dark_edition,s:0.75}prestige{}{C:inactive,s:0.75},{}",
-            "{C:inactive,s:0.75}and {C:dark_edition,s:0.75}prestige{}{C:inactive,s:0.75} is permanent {}{}{X:chips,C:white,s:0.75}xchips{}{C:inactive} and {}{X:mult,C:white,s:0.75}xmult{}{C:inactive,s:0.75},{} {C:inactive,s:0.75}and the ceiling only goes as far as {}{X:dark_edition,C:white,s:0.75}#7#{}{C:inactive,s:0.75}.{}",
-            "{C:inactive,s:0.75}so that's how the prestige system works, capisce?){}",
-            "{C:gold}you also get flat $#8# for each club too btw but it's instant for some reason{}",
-            "{C:inactive}(currently {}{X:chips,C:white}X#1#{} {C:inactive}and{} {X:mult,C:white}X#2#{}{C:inactive}){}",
-            "{C:inactive}(current {C:dark_edition}prestige{}{C:inactive}: {}{X:dark_edition,C:white}#5#{}{C:inactive}){}"
+            "* human, i remember youre {C:dark_edition}numbers{}", 
+            "if you score {s:2,C:white,X:clubs}CLUBS{}",
+            "{C:gold}money #8#",
+            "{C:blue}xchip #1#",
+            "{C:red}xmult #2#",
+--            "{B:1,C:white}*#9#human,#9#i#9#remember#9#i#9#gain#9#{B:1,C:chips}X#3#{}{B:1,C:white}#9#chips#9#and#9#{B:1,C:mult}X#4#{}{B:1,C:white}#9#mult#9#per#9#scored#9#{B:1,C:clubs}club{}{B:1,C:white}#9#card{}",
+--			"{C:inactive,s:0.75}(jk, here lemme explain:{} {C:inactive,s:0.75}if you score a {}{C:clubs,s:0.75}club{} {C:inactive,s:0.75}card,{} {C:inactive,s:0.75}i gain {}{X:chips,C:white,s:0.75}X#3#{} {C:inactive,s:0.75}chips and {}{X:mult,C:white,s:0.75}X#4#{}{C:inactive,s:0.75} mult.{}",
+  --          "{C:inactive,s:0.75}if you defeat a {}{C:attention,s:0.75}Boss Blind{}{C:inactive,s:0.75},{} {C:inactive,s:0.75}i gain {}{X:dark_edition,C:white,s:0.75}+#6#{} {C:dark_edition,s:0.75}prestige{}{C:inactive,s:0.75},{}",
+    --        "{C:inactive,s:0.75}and {C:dark_edition,s:0.75}prestige{}{C:inactive,s:0.75} is permanent {}{}{X:chips,C:white,s:0.75}xchips{}{C:inactive} and {}{X:mult,C:white,s:0.75}xmult{}{C:inactive,s:0.75},{} {C:inactive,s:0.75}and the ceiling only goes as far as {}{X:dark_edition,C:white,s:0.75}#7#{}{C:inactive,s:0.75}.{}",
+      --      "{C:inactive,s:0.75}so that's how the prestige system works, capisce?){}",
+        --    "{C:gold}you also get flat $#8# for each club too btw but it's instant for some reason{}",
+          --  "{C:inactive}(currently {}{X:chips,C:white}X#1#{} {C:inactive}and{} {X:mult,C:white}X#2#{}{C:inactive}){}",
+            --"{C:inactive}(current {C:dark_edition}prestige{}{C:inactive}: {}{X:dark_edition,C:white}#5#{}{C:inactive}){}"
         }
     },
     loc_vars = function(self, info_queue, card)
         return {
+            background_colour = G.C.BLACK,
+            text_colour = G.C.WHITE,
             vars = { 
                 card.ability.extra.xchips, 
                 card.ability.extra.xmult, 
@@ -1359,6 +1366,8 @@ SMODS.Joker{
                     if key == "crp_abysmal" then key = "crp_mythic" end 
                     if key == "unik_detrimental" then key = "unik_ancient" end 
                     if key == "valk_supercursed" then key = "valk_exquisite" end
+                    if key == "jen_junk" then key = "jen_transcendent" end
+                    if key == "jen_miscellaneous" then key = "jen_wondrous" end
                     SMODS.add_card({ set = "Joker", rarity = key, edition = 'e_negative', force_stickers = true, stickers = {"perishable"} })
                     print("Success")
                 end
@@ -1434,6 +1443,8 @@ calculate = function(self, card, context)
                 if key == "crp_abysmal" then key = "crp_mythic" end 
                 if key == "unik_detrimental" then key = "unik_ancient" end 
                 if key == "valk_supercursed" then key = "valk_exquisite" end
+                if key == "jen_junk" then key = "jen_transcendent" end
+                if key == "jen_miscellaneous" then key = "jen_wondrous" end
                 SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative' }
 			return nil, true
 		    end
