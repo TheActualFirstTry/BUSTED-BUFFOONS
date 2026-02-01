@@ -1261,7 +1261,7 @@ SMODS.Joker{
             "5. Removes the stickers of all your jokers.",
             "6. Squares all of your current {C:chips}chips{} and {C:mult}mult{} by {X:spectral,C:white}^#4#{}.",
             "7. Creates a {C:attention}Double Tag{}.",
-            "8. Creates {c:attention}#5#{} random {C:dark_edition}Negative{} perishable jokers.",
+            "8. Creates {c:attention}#5#{} random {C:dark_edition}Negative{} perishable jokers from this mod.",
             "{C:diamonds}(WARNING: VERY UNSTABLE){}"
         }
     },
@@ -1357,18 +1357,7 @@ SMODS.Joker{
             if randomeffect == 8 then
                 print("Effect 8")
                 for i = 1, card.ability.immutable.rnpjokers do
-                    local _, key = pseudorandom_element(SMODS.Rarities, "neo") 
-                    if key == "busterb_Grandiose" then key = "busterb_Dreamy" end 
-                    if key == "busterb_Secret" then key = "busterb_Fantastic" end 
-                    if key == "Common" then key = "Rare" end 
-                    if key == "Uncommon" then key = "Rare" end 
-                    if key == "cry_cursed" then key = "cry_exotic" end 
-                    if key == "crp_abysmal" then key = "crp_mythic" end 
-                    if key == "unik_detrimental" then key = "unik_ancient" end 
-                    if key == "valk_supercursed" then key = "valk_exquisite" end
-                    if key == "jen_junk" then key = "jen_transcendent" end
-                    if key == "jen_miscellaneous" then key = "jen_wondrous" end
-                    SMODS.add_card({ set = "Joker", rarity = key, edition = 'e_negative', force_stickers = true, stickers = {"perishable"} })
+                    SMODS.add_card({ set = "bustjokers", edition = 'e_negative', force_stickers = true, stickers = {"perishable"} })
                     print("Success")
                 end
             end
@@ -1434,18 +1423,7 @@ calculate = function(self, card, context)
 				colour = G.C.GREEN,
 				no_juice = true,
 			})
-                local _, key = pseudorandom_element(SMODS.Rarities, "spytf2") 
-                if key == "busterb_Grandiose" then key = "busterb_Dreamy" end 
-                if key == "busterb_Secret" then key = "busterb_Fantastic" end 
-                if key == "Common" then key = "Rare" end 
-                if key == "Uncommon" then key = "Rare" end 
-                if key == "cry_cursed" then key = "cry_exotic" end 
-                if key == "crp_abysmal" then key = "crp_mythic" end 
-                if key == "unik_detrimental" then key = "unik_ancient" end 
-                if key == "valk_supercursed" then key = "valk_exquisite" end
-                if key == "jen_junk" then key = "jen_transcendent" end
-                if key == "jen_miscellaneous" then key = "jen_wondrous" end
-                SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative' }
+                SMODS.add_card { set = "bustjokers", edition = 'e_negative' }
 			return nil, true
 		    end
         end

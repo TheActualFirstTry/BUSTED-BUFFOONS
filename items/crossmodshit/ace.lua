@@ -21,8 +21,10 @@ SMODS.Consumable{
 	pos = { x = 0, y = 0 },
 	cost = 4,
     loc_txt = {
-        name = "ADMINISTRATOR",
-        text = {"???"}
+        name = "ADMINISTRATOR://",
+        text = {
+			"{C:spectral}Take a chance."
+		}
     },
 	atlas = "atlas_Admin",
 	can_use = function(self, card)
@@ -38,7 +40,12 @@ SMODS.Consumable{
 --	card.children.floating_sprite:set_sprite_pos({ x = busterb_admin_dt, y = 0 })
 --end,
 	use = function(self, card, area, copier)
-
+		local aceorkill = pseudorandom(pseudoseed("busterb_aceorkill"), 1, 2)
+		if aceorkill == 2 then
+		G.STATE = G.STATES.GAME_OVER
+        G.STATE_COMPLETE = false
+		else
+	if aceorkill == 1 then
 		function create_UIBox_admin(card)
 			G.E_MANAGER:add_event(Event({
 				blockable = false,
@@ -98,6 +105,8 @@ SMODS.Consumable{
 				instance_type = "POPUP",
 			},
 		})
+	end
+end
 	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)

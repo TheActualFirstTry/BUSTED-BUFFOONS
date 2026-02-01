@@ -220,7 +220,7 @@ SMODS.Consumable {
     soul_set = 'Infinity',
     loc_txt = {
         name = "MUGEN",
-        text = {"Create a joker of","{s:2,B:1,C:white}YOUR#1#CHOICE{}","{s:0.5,C:inactive}(Must have room.)"}
+        text = {"Create a {B:2,C:white}Busted#1#Buffoons{} {C:attention}Joker{} of","{B:1,C:white}YOUR#1#CHOICE{}","{s:0.5,C:inactive}(Must have room.)"}
     },
     config = {
     extra = {
@@ -228,7 +228,7 @@ SMODS.Consumable {
     }
   },
 loc_vars = function(self, info_queue, card)
-		return { vars = { " ", colours = { SMODS.Gradients["busterb_Secret"] } } }
+		return { vars = { " ", colours = { SMODS.Gradients["busterb_Secret"], SMODS.Gradients["busterb_epileptic"] } } }
 	end,
 can_use = function(self, card)
     return #G.jokers.cards < G.jokers.config.card_limit
@@ -239,10 +239,21 @@ can_use = function(self, card)
       if #G.jokers.cards < G.jokers.config.card_limit then
         G.SETTINGS.paused = true
 
+        local selectable_jokers = {}
+
+        for _, v in ipairs(G.P_CENTER_POOLS.bustjokers) do
+            selectable_jokers[#selectable_jokers + 1] = v
+        end
+
+        -- If the list of jokers is empty, we want at least one option so the user can leave the menu
+        if #selectable_jokers <= 0 then
+          selectable_jokers[#selectable_jokers + 1] = G.P_CENTERS.j_joker
+        end
+
         G.FUNCS.overlay_menu {
           config = { no_esc = true },
           definition = mugen_apostle_of_wands_collection_UIBox(
-            G.P_CENTER_POOLS.Joker,
+            G.P_CENTER_POOLS.bustjokers,
             { 5, 5, 5 },
             {
               no_materialize = true,

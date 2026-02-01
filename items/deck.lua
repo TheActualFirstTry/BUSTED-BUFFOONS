@@ -88,12 +88,9 @@ SMODS.Back {
     loc_txt = {
         name = "The Deck of Absolute Hate",
         text = {"Start with a random",
-        "{V:2,C:white}Busted#3#Buffoons{} Joker",
-        "{C:green}#1# in #2#{} chance to spawn a",
-        "{V:1,E:1}Fantastic{} Joker",
-        "at the end of the round",
-        "Otherwise spawns in a random",
-        "Non-Fantastic Joker."}
+        "{B:2,C:white}Busted#3#Buffoons{} Joker",
+        "Spawn an extra {C:dark_edition}negative {B:2,C:white}Busted#3#Buffoons{} Joker",
+        "At the {C:attention}end of round{}"}
 
     },
         loc_vars = function(self, info_queue, back)
@@ -103,22 +100,7 @@ SMODS.Back {
     end,
     calculate = function (self, back, context)
         if context.end_of_round and context.main_eval then
-            if SMODS.pseudorandom_probability(self, 'busterb_fantasticjokerchance', 1, self.config.fantasticodds, 'busterb_fantasticjokerchance') then
-                SMODS.add_card({ set = 'Fantastic', area = G.jokers })
-            else
-            local _, key = pseudorandom_element(SMODS.Rarities, "cogito").key
-            if key == "busterb_Grandiose" then key = "busterb_Dreamy" end 
-            if key == "busterb_Secret" then key = "busterb_Fantastic" end 
-            if key == "Common" then key = "Rare" end 
-            if key == "Uncommon" then key = "Rare" end 
-            if key == "cry_cursed" then key = "cry_exotic" end 
-            if key == "crp_abysmal" then key = "crp_mythic" end 
-            if key == "unik_detrimental" then key = "unik_ancient" end 
-            if key == "valk_supercursed" then key = "valk_exquisite" end
-            if key == "jen_junk" then key = "jen_transcendent" end
-            if key == "jen_miscellaneous" then key = "jen_wondrous" end
-                SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative' }
-            end
+                SMODS.add_card { set = "bustjokers", edition = 'e_negative' }
     end
     end,
 
