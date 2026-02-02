@@ -33,20 +33,20 @@ SMODS.Joker{
     discovered = true,
     config = {
         extra ={
-            EEM = 0.1,
-            EEMTOTAL = 1
+            em = 0.1,
+            emtotal = 1
         }
     },
     loc_txt = {
         name = "{V:1,s:2}IGOR{}",
         text = {
             "All scored {C:attention}Face Cards{} become Glass",
-            "Gains {X:spectral,C:white}^^#1#{} Mult whenever a {C:attention}Face Card{} is scored",
-            "{C:inactive}(Currently {X:spectral,C:white}^^#2#{C:inactive} Mult){}"
+            "Gains {V:1,C:white}^#1#{} Mult whenever a {C:attention}Face Card{} is scored",
+            "{C:inactive}(Currently {V:1,C:white}^#2#{C:inactive} Mult){}"
         }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.EEM, card.ability.extra.EEMTOTAL, colours = {HEX('f7b4c6')}} }
+        return { vars = { card.ability.extra.em, card.ability.extra.emtotal, colours = {HEX('f7b4c6')}} }
     end,
     calculate = function(self, card, context)
         if context.before then
@@ -61,9 +61,14 @@ SMODS.Joker{
                             return true
                         end
                     }))                    
-                card.ability.extra.EEMTOTAL = (card.ability.extra.EEMTOTAL) + card.ability.extra.EEM
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "em",
+                scalar_value = "emtotal",
+                colour = HEX('f7b4c6')
+            })
                 SMODS.calculate_effect ({
-                    message = "^^" ..card.ability.extra.EEMTOTAL.. " Mult",
+                    message = "^" ..card.ability.extra.emtotal.. " Mult",
                     colour = HEX('f7b4c6'),
                     card = card
                 })
@@ -78,8 +83,8 @@ if faces > 0 then
         end
         if context.joker_main then
                 SMODS.calculate_effect ({
-                    eemult = card.ability.extra.EEMTOTAL,
-                    message = "^^" ..card.ability.extra.EEMTOTAL.. " Mult",
+                    emult = card.ability.extra.emtotal,
+                    message = "^" ..card.ability.extra.emtotal.. " Mult",
                     colour = HEX('f7b4c6'),
                     card = card
                 })
@@ -176,7 +181,7 @@ SMODS.Joker{
     end
       if context.skipping_booster then
         local hopesanddreams = pseudorandom_element(G.P_CENTER_POOLS.Spectral, pseudoseed('asrielspawnsaspectral')).key
-        local spectral_card = SMODS.add_card({key = hopesanddreams, area = G.consumeables, edition = "e_negative", key_append = "asrielspawnsaspectral"})
+        SMODS.add_card({key = hopesanddreams, area = G.consumeables, edition = "e_negative", key_append = "asrielspawnsaspectral"})
     end
 end
 }
@@ -371,23 +376,23 @@ SMODS.Joker{
     demicoloncompat = true,
     unlocked = true,
     discovered = true,
-    config = {extra = {eemult = 1, dp = 1, gain = 1},
-    immutable = {tallyup = 1, tally = 0, deduction = 1}},
+    config = {extra = {emult = 1},
+    immutable = { gain = .25, dp = 1, tallyup = 1, tally = 0, deduction = 1}},
     loc_txt = {
         name = "{V:1,s:2}PEDDITO{}",
         text = {
             "Using up {B:1,C:white}#5#{} {V:1}Revive{}",
-            "increases {V:1}Growth{} by {B:1,C:white}#6#{} and {B:1,C:white}^^Mult{} by {V:1}Growth{}",
+            "increases {V:1}Growth{} by {B:1,C:white}#6#{} and {B:1,C:white}^Mult{} by {V:1}Growth{}",
             "Gains {B:1,C:white}#2#{} {V:1}Revive{} when",
             "{C:attention}Boss Blind{} is {C:red}defeated",
-            "{V:1}Growth: {B:1,C:white}#4#{} {V:1}Mult: {B:1,C:white}^^#3#{} {V:1}Revives: {B:1,C:white}#1#{}"
+            "{V:1}Growth: {B:1,C:white}#4#{} {V:1}Mult: {B:1,C:white}^#3#{} {V:1}Revives: {B:1,C:white}#1#{}"
         }
     },
     loc_vars = function(self, info_queue, card)
         return { vars = {
-             card.ability.extra.dp,
-             card.ability.extra.gain,
-             card.ability.extra.eemult,
+             card.ability.immutable.dp,
+             card.ability.immutable.gain,
+             card.ability.extra.emult,
              card.ability.immutable.tally,
              card.ability.immutable.deduction,
              card.ability.immutable.tallyup,
@@ -396,11 +401,11 @@ SMODS.Joker{
             } }
     end,
     calculate = function(self, card, context)
-if to_big(card.ability.extra.eemult) > to_big(1) then
+if to_big(card.ability.extra.emult) > to_big(1) then
     if context.joker_main then 
-    SMODS.calculate_effect{
+    return{
     message = "YEEEEOOOW!!!",
-    ee_mult = card.ability.extra.eemult,
+    emult = card.ability.extra.emult,
     colour = HEX('d868a0'),
     sound = "busterb_pepangry",
     card = card
@@ -409,12 +414,12 @@ end
 end
 if context.end_of_round then
         if context.main_eval and context.beat_boss or context.forcetrigger then
-    card.ability.extra.dp = card.ability.extra.dp + card.ability.extra.gain
-    SMODS.calculate_effect({message = "+" ..card.ability.extra.gain.. " Revive", sound = "busterb_pepyell", colour = HEX('d868a0'), card = card})
+    card.ability.immutable.dp = card.ability.immutable.dp + card.ability.immutable.gain
+    SMODS.calculate_effect({message = "+" ..card.ability.immutable.gain.. " Revive", sound = "busterb_pepyell", colour = HEX('d868a0'), card = card})
 end
 
-if context.game_over and card.ability.extra.dp > 0 then
-    card.ability.extra.dp = card.ability.extra.dp - card.ability.immutable.deduction
+if context.game_over and card.ability.immutable.dp > 0.99 then
+    card.ability.immutable.dp = card.ability.immutable.dp - card.ability.immutable.deduction
     SMODS.calculate_effect ({
                     message = "-" ..card.ability.immutable.deduction.. " Revive",
                     colour = HEX('d868a0'),
@@ -426,9 +431,9 @@ if context.game_over and card.ability.extra.dp > 0 then
                     colour = HEX('d868a0'),
                     card = card
                 })
-    card.ability.extra.eemult = card.ability.extra.eemult + card.ability.immutable.tally
+    card.ability.extra.emult = card.ability.extra.emult + card.ability.immutable.tally
     SMODS.calculate_effect ({
-                    message = "^^" ..card.ability.extra.eemult.. " Mult",
+                    message = "^" ..card.ability.extra.emult.. " Mult",
                     colour = HEX('d868a0'),
                     card = card
                 })
@@ -442,7 +447,7 @@ if context.game_over and card.ability.extra.dp > 0 then
                 }))
                 SMODS.calculate_effect ({
                     message = "!!!", sound = "busterb_pepparry",
---                    message = "-" ..card.ability.immutable.deduction.. " Revive / ^^" ..card.ability.extra.eemult.. " Mult",
+--                    message = "-" ..card.ability.immutable.deduction.. " Revive / ^^" ..card.ability.extra.emult.. " Mult",
                     saved = "You're lucky.",
                     colour = HEX('d868a0'),
                     card = card
@@ -487,9 +492,10 @@ SMODS.Joker{
     loc_txt = {
         name = "{C:planet,s:2}QUEEN{}",
         text = {
-            "* Upon {C:attention}Selecting A Blind{}, Spawn {C:rare}Cavendish",
-            "When {C:rare}Cavendish{} Is {C:gold}Sold{}, Gain {C:white,X:mult}X#4#{} Mult",
-            "When {C:rare}Cavendish{} Is{C:red} Destroyed{} Instead, Gain {C:white,B:1}^#5#{} Mult",
+            "* Upon {C:attention}Selecting A Blind{}, Spawn {C:common}Gros Michel",
+            "When {C:common}Gros Michel{} Is {C:gold}Sold{}, Gain {C:white,X:mult}X#4#{} Mult",
+            "When {C:common}Gros Michel{} Is{C:red} Destroyed{} Instead, Gain {C:white,B:1}^#5#{} Mult",
+--            "Gros Michel also gives X3 Mult",
             "{C:inactive}(Currently {C:white,X:mult}X#2#{C:inactive} And {C:white,B:1}^#3#{C:inactive})"
         }
     },
@@ -513,21 +519,21 @@ SMODS.Joker{
                 xmult = card.ability.extra.xmult,
                 emult = card.ability.extra.emult,
                 sound = "busterb_explode",
-                colour = SMODS.Gradients["busterb_eemultgradient"]
+                colour = SMODS.Gradients["busterb_emultgradient"]
             }
         end
         if context.setting_blind or context.forcetrigger then
-            SMODS.add_card{key = "j_cavendish", edition = "e_negative"}
+            SMODS.add_card{key = "j_gros_michel", edition = "e_negative"}
         end
-            if context.joker_type_destroyed and context.card.config.center.key == "j_cavendish" then 
+            if context.joker_type_destroyed and context.card.config.center.key == "j_gros_michel" then 
                 SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "emult",
                 scalar_value = "emultmod",
-                colour = SMODS.Gradients["busterb_eemultgradient"]
+                colour = SMODS.Gradients["busterb_emultgradient"]
             })
             end
-            if context.selling_card and context.card.config.center.key == "j_cavendish" then
+            if context.selling_card and context.card.config.center.key == "j_gros_michel" then
                 SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "xmult",

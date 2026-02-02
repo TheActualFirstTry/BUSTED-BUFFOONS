@@ -5,7 +5,7 @@
     "author": [
         "FirstTry"
     ],
-    "description": "A small content mod containing jokers i made in my free time, feel free to throw tomatoes. I highly suggest you play this mod with cryptid, even though it can work without it. Main reason being that some consumable-based jokers can spawn in pointer.",
+    "description": "A small content mod containing jokers i made in my free time, feel free to throw tomatoes. I highly suggest you play this mod with cryptid, even though it can work without it.",
     "prefix": "busterb",
     "main_file": "bustedbuffoons.lua",
     "version": "1.2.1a",
@@ -18,5 +18,8 @@
 		"Lovely (>=0.7)",
         "Balatro (>=1.0.1o)",
 		"Cryptlib"
+	],
+	"conflicts": [
+		"POLTERWORX (>=0.0.9-INDEV-i04)"
 	],
 }

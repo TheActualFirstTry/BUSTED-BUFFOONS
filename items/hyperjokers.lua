@@ -1390,11 +1390,11 @@ SMODS.Joker{
         text = {
             "When {C:attention}selecting blind{},",
             "Destroy the {C:attention}joker{} to the right",
-            "to create a joker of {V:1}any rarity{}."
+            "to create a joker from {C:white,B:1}Busted#1#Buffoons{}."
         }
     },
     loc_vars = function(self, info_queue, card)
-		return { vars = { colours = { SMODS.Gradients["busterb_epileptic"] } } }
+		return { vars = { " ", colours = { SMODS.Gradients["busterb_epileptic"] } } }
     end,
 calculate = function(self, card, context)
     if context.setting_blind and not context.blueprint then
