@@ -1203,8 +1203,9 @@ SMODS.Joker {
     calculate = function(self, card, context)
         -- For every card held in hand, create a random negative consumable
         if context.individual and context.cardarea == G.hand then
-            local maxwell_notebook = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('maxwell')).key
-            SMODS.add_card({ key = maxwell_notebook, edition = 'e_negative' })
+            local c = SMODS.create_card({set = "Consumeables", edition = "e_negative"})
+                    c:add_to_deck()
+                    G.consumeables:emplace(c)
         end
         -- sell this joker to create a negative dream card.
         if context.selling_self then
@@ -1282,8 +1283,9 @@ SMODS.Joker{
             if randomeffect == 1 then
                 print("Effect 1")
                 for i = 1, card.ability.extra.randomitems do
-                    local neoitems = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('neo1')).key
-                    SMODS.add_card({ key = neoitems, edition = 'e_negative' })
+                    local c = SMODS.create_card({set = "Consumeables", edition = "e_negative"})
+                    c:add_to_deck()
+                    G.consumeables:emplace(c)
                     print("Success")
                 end
             end
