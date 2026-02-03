@@ -1,7 +1,7 @@
 --busterb_admin_dt = 0
 SMODS.Atlas({
 	key = 'atlas_Admin',
-	path = 'admin.png', -- contained in assets folders
+	path = 'sudo.png', -- contained in assets folders
 	px = 71, py = 95,
 	atlas_table = 'ANIMATION_ATLAS', -- this line tells SMODS that this is an animated atlas
 	frames = 2, -- the number of frames in your animation
@@ -21,9 +21,10 @@ SMODS.Consumable{
 	pos = { x = 0, y = 0 },
 	cost = 4,
     loc_txt = {
-        name = "ADMINISTRATOR://",
+        name = "ROOT ACCESS://",
         text = {
-			"{C:spectral}Take a chance."
+			"{C:spectral}Your balance will be inversed,",
+			"{C:spectral}and in exchange, you are given a choice."
 		}
     },
 	atlas = "atlas_Admin",
@@ -40,12 +41,19 @@ SMODS.Consumable{
 --	card.children.floating_sprite:set_sprite_pos({ x = busterb_admin_dt, y = 0 })
 --end,
 	use = function(self, card, area, copier)
-		local aceorkill = pseudorandom(pseudoseed("busterb_aceorkill"), 1, 2)
-		if aceorkill == 2 then
-		G.STATE = G.STATES.GAME_OVER
-        G.STATE_COMPLETE = false
-		else
-	if aceorkill == 1 then
+--		local aceorkill = pseudorandom(pseudoseed("busterb_aceorkill"), 1, 2)
+--		if aceorkill == 2 then
+--		G.STATE = G.STATES.GAME_OVER
+--        G.STATE_COMPLETE = false
+--		else
+--	if aceorkill == 1 then
+		G.E_MANAGER:add_event(Event({
+            func = function()
+--				G.GAME.dollars = math.abs(G.GAME.dollars) * -1
+				G.GAME.dollars = G.GAME.dollars * -1
+                return true
+            end
+        }))
 		function create_UIBox_admin(card)
 			G.E_MANAGER:add_event(Event({
 				blockable = false,
@@ -106,8 +114,7 @@ SMODS.Consumable{
 			},
 		})
 	end
-end
-	end,
+,
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
