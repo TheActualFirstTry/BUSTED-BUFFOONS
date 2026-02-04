@@ -12,7 +12,7 @@ SMODS.Voucher {
         text = {
           "Creates a {C:attention}custom{} shop slot where", 
           "It always has a random {C:dark_edition}Negative{}",
-          "{B:1,C:white}Busted#3#Buffoons{} {C:attention}Joker{}",
+          "{C:attention}Joker{} that is not {C:common}Common or {C:uncommon}Uncommon",
         }
     },
     atlas = "ic",
@@ -21,20 +21,57 @@ SMODS.Voucher {
     loc_vars = function(self, info_queue, card)
         return { vars = { " ", lenient_bignum(card.ability.extra.shop_slots), colours = {SMODS.Gradients["busterb_epileptic"]} } }
     end,
+    
     redeem = function(self, card)
-        local card = SMODS.create_card { set = "bustjokers", edition = 'e_negative' }
+
+        local rarity_map = {
+  busterb_Grandiose = 'busterb_Dreamy',
+  busterb_Secret = 'busterb_Fantastic',
+  Common = 'Rare',
+  Uncommon = 'Rare',
+  cry_cursed = 'cry_exotic',
+  crp_abysmal = 'crp_mythic',
+  unik_detrimental = 'unik_ancient',
+  valk_supercursed = 'valk_exquisite',
+  jen_junk = 'Rare',
+  jen_omegatranscendent = 'cry_exotic',
+  jen_omnipotent = 'cry_exotic',
+  jen_transcendent = 'cry_exotic',
+  jen_wondrous = 'cry_exotic',
+  jen_ritualistic = 'cry_exotic',
+  jen_miscellaneous = 'Rare'
+}
+
+local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
+           key = rarity_map[key] or key
+        local card = SMODS.create_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.shop_jokers }
         create_shop_card_ui(card, "Joker", G.shop_jokers)
         card:set_cost()
-        card:start_materialize()
-        G.shop_jokers:emplace(card)
     end,
     calculate = function(self, card, context)
         if (context.reroll_shop or context.starting_shop) then
-            local card = SMODS.create_card { set = "bustjokers", edition = 'e_negative' }
-		    create_shop_card_ui(card, "Joker", G.shop_jokers)
-		    card:set_cost()
-		    card:start_materialize()
-            G.shop_jokers:emplace(card)
+            local rarity_map = {
+  busterb_Grandiose = 'busterb_Dreamy',
+  busterb_Secret = 'busterb_Fantastic',
+  Common = 'Rare',
+  Uncommon = 'Rare',
+  cry_cursed = 'cry_exotic',
+  crp_abysmal = 'crp_mythic',
+  unik_detrimental = 'unik_ancient',
+  valk_supercursed = 'valk_exquisite',
+  jen_junk = 'Rare',
+  jen_omegatranscendent = 'cry_exotic',
+  jen_omnipotent = 'cry_exotic',
+  jen_transcendent = 'cry_exotic',
+  jen_wondrous = 'cry_exotic',
+  jen_ritualistic = 'cry_exotic',
+  jen_miscellaneous = 'Rare'
+}
+local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
+           key = rarity_map[key] or key
+        local card = SMODS.create_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.shop_jokers }
+        create_shop_card_ui(card, "Joker", G.shop_jokers)
+        card:set_cost()
         end
     end,
 }

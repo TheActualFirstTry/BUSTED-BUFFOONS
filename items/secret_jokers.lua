@@ -175,7 +175,7 @@ SMODS.Atlas({
 
 
 SMODS.Joker{
-    key = "secrectsamson",
+    key = "samson",
     atlas = "secretsamson",
     rarity = "busterb_Secret",
     pools = { ["Secret"] = true, ["bustjokers"] = true },

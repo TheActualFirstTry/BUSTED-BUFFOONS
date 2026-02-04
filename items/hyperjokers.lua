@@ -1236,6 +1236,7 @@ SMODS.Joker{
             --lvl = 5,
             -- effect 7
             echipsemult = 2,
+            cslots = 1
         },
         immutable = {
             rnpjokers = 3,
@@ -1243,7 +1244,8 @@ SMODS.Joker{
             moneymultceiling = 1e100,
             echipemultincreaseprevention = 100,
             hndlimit = 100,
-            slotlimit = 100
+            slotlimit = 100,
+            levelup = 10
         }
     },
     blueprint_compat = true,
@@ -1256,11 +1258,12 @@ SMODS.Joker{
             "Does {C:green}1 of 8{} effects at random when scoring or using discards:",
             "1. Creates {C:attention}#1#{} random {C:dark_edition}Negative{} consumables.",
             "2. Adds {C:attention}#2#{} hand(s) and discard(s).",
-            "3. Adds {C:dark_edition}#3#{} joker slot(s).",
+            "3. Adds {C:dark_edition}+#3#{} joker slot(s).",
 --            "4. Multiplies your Money by X#2#, no limits.",
             "4. Doubles your Money, no limits.",
             "5. Removes the stickers of all your jokers.",
-            "6. Squares all of your current {C:chips}chips{} and {C:mult}mult{} by {X:spectral,C:white}^#4#{}.",
+--            "6. Squares all of your current {C:chips}chips{} and {C:mult}mult{} by {X:spectral,C:white}^#4#{}.",
+            "6. Adds {C:attention}+#4#{} consumable slot(s).",
             "7. Creates a {C:attention}Double Tag{}.",
             "8. Creates {c:attention}#5#{} random {C:dark_edition}Negative{} perishable jokers from this mod.",
             "{C:diamonds}(WARNING: VERY UNSTABLE){}"
@@ -1272,7 +1275,7 @@ SMODS.Joker{
 --        card.ability.extra.doublemoney, 
         card.ability.extra.handndiscard,         
         math.min(card.ability.extra.jokerslot, card.ability.immutable.slotlimit),               
-        math.min(card.ability.extra.echipsemult, card.ability.immutable.echipemultincreaseprevention),
+        card.ability.extra.cslots,
         card.ability.immutable.rnpjokers,
         colours = {HEX('B00B69')}
         } }
@@ -1282,7 +1285,7 @@ SMODS.Joker{
             local randomeffect = pseudorandom(pseudoseed("busterb_neo"), 1, 8)
             if randomeffect == 1 then
                 print("Effect 1")
-                for i = 1, card.ability.extra.randomitems do
+                for i = 1, math.min(card.ability.immutable.totalitems, card.ability.extra.randomitems) do
                     local c = SMODS.create_card({set = "Consumeables", edition = "e_negative"})
                     c:add_to_deck()
                     G.consumeables:emplace(c)
@@ -1336,12 +1339,19 @@ SMODS.Joker{
             end
             if randomeffect == 6 then
                 print("Effect 6")
-                return {
-                    echips = math.min(card.ability.extra.echipsemult, card.ability.immutable.echipemultincreaseprevention),
-                    emult = math.min(card.ability.extra.echipsemult, card.ability.immutable.echipemultincreaseprevention),
-                    print("Success")
-                }
+--                return {
+--                    echips = math.min(card.ability.extra.echipsemult, card.ability.immutable.echipemultincreaseprevention),
+--                    emult = math.min(card.ability.extra.echipsemult, card.ability.immutable.echipemultincreaseprevention),
+                    G.E_MANAGER:add_event(Event({
+                    func = function()
+                    G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.cslots
+                return true
             end
+        }))
+                                    print("Success")
+--                }
+end 
+
             if randomeffect == 7 then
                 print("Effect 7")
                      G.E_MANAGER:add_event(Event({

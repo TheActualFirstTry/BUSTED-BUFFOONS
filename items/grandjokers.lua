@@ -41,8 +41,8 @@ SMODS.Joker{
         name = "{V:1,s:2}IGOR{}",
         text = {
             "All scored {C:attention}Face Cards{} become Glass",
-            "Gains {V:1,C:white}^#1#{} Mult whenever a {C:attention}Face Card{} is scored",
-            "{C:inactive}(Currently {V:1,C:white}^#2#{C:inactive} Mult){}"
+            "Gains {B:1,C:white}^#1#{} Mult whenever a {C:attention}Face Card{} is scored",
+            "{C:inactive}(Currently {B:1,C:white}^#2#{C:inactive} Mult){}"
         }
     },
     loc_vars = function(self, info_queue, card)
@@ -126,7 +126,7 @@ SMODS.Joker{
     loc_txt = {
         name = "{V:1,s:2}ASRIEL DREEMURR{}",
         text = {
-            "This joker adds a free {C:spectral}Mega Arcana Booster{} in the shop.",
+            "Adds a free {C:spectral}Mega Spectral Booster Pack{} in the shop.",
             "If a {C:attention}Dream{} is consumed, gain {X:attention,C:white}^#3#{} Mult",
             "If a {C:attention}Soul{} is consumed, gain {X:enhanced,C:white}^#4#{} Chips",
             "When skipping a {C:attention}Booster Pack{}, spawns a random {C:spectral}Spectral{} card.",
@@ -206,9 +206,8 @@ SMODS.Joker{
     discovered = true,
     config = {
         extra = {
-          valuemodification = 4
         },
-        immutable = { valuecap = 1e100 }
+        immutable = { valuemodification = 4, valuecap = 1e100 }
     },
     loc_txt = {
         name = "{V:1,s:2}JIMBO{}",
@@ -218,16 +217,16 @@ SMODS.Joker{
         }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.valuemodification, " ", colours = {SMODS.Gradients["busterb_balatro"], SMODS.Gradients["busterb_epileptic"]}} }
+        return { vars = { card.ability.immutable.valuemodification, " ", colours = {SMODS.Gradients["busterb_balatro"], SMODS.Gradients["busterb_epileptic"]}} }
     end,
 calculate = function(self, card, context)
   if context.ante_change or context.forcetrigger then
     for i, joker in ipairs(G.jokers.cards) do
         if joker.config.center.key ~= "j_busterb_joker" then
-        Cryptid.manipulate(joker, { value = card.ability.extra.valuemodification })
+        Cryptid.manipulate(joker, { value = card.ability.immutable.valuemodification })
       end
     end
-    SMODS.calculate_effect({message = "X" ..card.ability.extra.valuemodification, colour = SMODS.Gradients["busterb_balatro"], card = card})
+    SMODS.calculate_effect({message = "X" ..card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_balatro"], card = card})
   end
 end,
     add_to_deck = function(self, card, from_debuff)
@@ -314,7 +313,7 @@ SMODS.Joker{
     loc_txt = {
         name = "{V:1,s:2}GOLDEN FREDDY{}",
         text = {
-            "Spawn a","{V:1,s:2}Random{} {C:white,B:1,s:2}RARE{} {V:1,s:2}Consumable{}","When a {C:attention}boss blind{} is {C:attention}defeated{}",
+            "Spawn either a ","{C:white,B:1,s:1.5}Dream{} or a {C:white,B:1,s:1.5}Slumber","When a {C:attention}boss blind{} is {C:attention}defeated{}",
             "{C:inactive}(Must have room)",
         }
     },
@@ -329,18 +328,28 @@ SMODS.Joker{
     end,
     calculate = function(self, card, context)
         if context.end_of_round and context.main_eval and context.beat_boss or context.forcetrigger then
-                local pool = {}
-                    for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
-                      if v.hidden then pool[#pool+1] = v.key end
-                    end
-                local random_key = pseudorandom_element(pool, "random_rare_consumeable")
-                    if random_key then SMODS.add_card{key = random_key} end
-                return {
-                    message = "Har Har Har!",
-                    sound = "busterb_gfreddygiggle",
-                    colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
-                    card = card
-                }
+            local souldream = pseudorandom(pseudoseed("busterb_gfreddysoul"), 1, 2)
+            if souldream == 1 then 
+                local c = SMODS.create_card({key = "c_busterb_dream", edition = "e_negative"})
+                    c:add_to_deck()
+                    G.consumeables:emplace(c)
+            end
+            if souldream == 2 then 
+                local c = SMODS.create_card({key = "c_busterb_slumber", edition = "e_negative"})
+                    c:add_to_deck()
+                    G.consumeables:emplace(c)
+            end
+--                local pool = {}
+--                    for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
+--                      if v.hidden  and (not v.set == "jen_omegaconsumable") then pool[#pool+1] = v.key end
+--                end
+--                local random_key = pseudorandom_element(pool, "random_rare_consumeable")
+--                    if random_key then SMODS.add_card{key = random_key} end
+--                return {
+--                    message = "Har Har Har!",
+--                    sound = "busterb_gfreddygiggle",
+--                    colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
+--                   card = card
             end
         end
 }
