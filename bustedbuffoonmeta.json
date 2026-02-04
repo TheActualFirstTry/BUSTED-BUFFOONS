@@ -20,6 +20,6 @@
 		"Cryptlib"
 	],
 	"conflicts": [
-		"POLTERWORX (>=0.0.9-INDEV-i04)"
 	],
+
 }
