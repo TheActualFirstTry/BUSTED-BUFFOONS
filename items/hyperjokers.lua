@@ -1402,7 +1402,7 @@ end
         text = {
             "When {C:attention}selecting blind{},",
             "Destroy the {C:attention}joker{} to the right",
-            "to create a joker from {C:white,B:1}Busted#1#Buffoons{}."
+            "to create a joker of {C:white,B:1}Any#1#Rarity{}."
         }
     },
     loc_vars = function(self, info_queue, card)
@@ -1435,7 +1435,28 @@ calculate = function(self, card, context)
 				colour = G.C.GREEN,
 				no_juice = true,
 			})
-                SMODS.add_card { set = "bustjokers", edition = 'e_negative' }
+                    local rarity_map = {
+  busterb_Grandiose = 'busterb_Dreamy',
+  busterb_Secret = 'busterb_Fantastic',
+  Common = 'Rare',
+  Uncommon = 'Rare',
+  cry_cursed = 'cry_exotic',
+  crp_abysmal = 'crp_mythic',
+  unik_detrimental = 'unik_ancient',
+  valk_supercursed = 'valk_exquisite',
+  jen_junk = 'Rare',
+  jen_omegatranscendent = 'cry_exotic',
+  jen_omnipotent = 'cry_exotic',
+  jen_transcendent = 'cry_exotic',
+  jen_wondrous = 'cry_exotic',
+  jen_ritualistic = 'cry_exotic',
+  jen_miscellaneous = 'Rare',
+  gj_detri = "gj_uniq"
+}
+
+local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
+           key = rarity_map[key] or key
+        local card = SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.jokers }
 			return nil, true
 		    end
         end
