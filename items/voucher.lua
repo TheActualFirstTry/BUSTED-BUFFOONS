@@ -44,7 +44,7 @@ SMODS.Voucher {
 
 local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
            key = rarity_map[key] or key
-        local card = SMODS.create_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.shop_jokers }
+        local card = SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.shop_jokers }
         create_shop_card_ui(card, "Joker", G.shop_jokers)
         card:set_cost()
     end,
@@ -69,9 +69,10 @@ local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
 }
 local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
            key = rarity_map[key] or key
-        local card = SMODS.create_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.shop_jokers }
+        local card = SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.shop_jokers }
         create_shop_card_ui(card, "Joker", G.shop_jokers)
         card:set_cost()
         end
     end,
+
 }
