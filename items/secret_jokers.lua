@@ -21,7 +21,7 @@ SMODS.Joker{
     config = {
         extra = {
             eechips = 1,
-            eechipsincrement = 1,
+            eechipsincrement = 0.1,
             eechipsincrementmultiplier = 2,
             jokerslot = 1,
         },
@@ -30,9 +30,12 @@ SMODS.Joker{
         }
     },
     loc_txt = {
-        name = "{V:1,s:2}Stultus Astronomicus{}",
+        name = {"{V:1,s:2}Astro{}",
+        "The Star of Everything in Space"
+    },
+
         text = {
-            "Gains {B:2,C:white}^^#2#{} chips at the end of the round.",
+            "Gains {B:2,C:white}^^#2#{} Chips at the end of the round.",
             "Multiply gained {B:2,C:white}^^Chips{} by {B:1,C:white}#3#{} when ante changes.",
             "{C:inactive}(Currently {B:2,C:white}^^#1#{C:inactive} Chips){}"
         }
@@ -101,7 +104,8 @@ local ThomasYap = {
     "Go Wild!",
     ":)",
     "Circus (Chicken Mix) - Five Nights at Freddy's",
-    "X1e308 Mult"
+    "{1e308}1e308 Mult",
+    "Infinity Mult"
 }
 SMODS.Atlas{
     key = "a_thomas",
@@ -125,21 +129,33 @@ SMODS.Joker{
     config = {
         extra = {
             jokerslot = 1,
+            eemult = 1,
+            eemult_gain = 0.1,
+            gain_gain = 0.1
         },
         immutable = {
         }
     },
     loc_txt = {
-        name = "{V:1,s:2}EGO SUM{}",
+        name = {
+            "{V:1,s:2}Thomas{}",
+            '"All that makes me who I am"'
+        },
         text = {
-            "Spawn a {C:white,B:1,s:2}MUGEN{} at the end of the round.",
-            "{C:inactive}(Must have room.)",
+            "Spawn a {C:white,B:1,s:2}MUGEN{} at the end of the round",
+            "Gain {C:white,B:2}^^#2#{} Mult with {C:attention}each use",
+            "{C:attention}incremental value{} also {V:1}increases{} by {B:1,C:white}+#3#{} with {C:attention}each use",
+            "{C:inactive}({V:1}MUGEN {C:inactive}May overflow.)",
+            "{C:inactive}(Currently {B:2,C:white}^^#1#{C:inactive} Mult){}",
             "{s:0.5,C:inactive}There's a special interaction with a certain character.{}"
         }
     },
     loc_vars = function(self, info_queue, card)
 		return { vars = { 
-            colours = { SMODS.Gradients["busterb_Thomasgradient"] }
+            card.ability.extra.eemult,
+            card.ability.extra.eemult_gain,
+            card.ability.extra.gain_gain,
+            colours = { SMODS.Gradients["busterb_Thomasgradient"], SMODS.Gradients["busterb_eemultgradient"] }
         } }
     end,
     calculate = function(self, card, context)
@@ -158,7 +174,37 @@ SMODS.Joker{
                     card = card
                 })
             end
+            if context.using_consumeable then
+        if context.consumeable.config.center.key == "c_busterb_mugen" then
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "eemult",
+                scalar_value = "eemult_gain",
+                scaling_message = {
+                message = "^^" ..card.ability.extra.eemult.. " Mult",
+                colour = SMODS.Gradients["busterb_eemultgradient"]
+            }
+            })
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "eemult_gain",
+                scalar_value = "gain_gain",
+                scaling_message = {
+                message = ThomasYap[math.random(#ThomasYap)],
+                colour = SMODS.Gradients["busterb_Thomasgradient"]
+            }
+            })
+            end
         end
+        if context.joker_main then 
+        return{
+            message = "^^" ..card.ability.extra.eemult.. " Mult",
+            eemult = card.ability.extra.eemult,
+            colour = SMODS.Gradients["busterb_eemultgradient"],
+            card = card
+            }
+        end
+    end
 }
 
 --Art and Code by Camostar34, teehee! Special thanks to FirstTry for letting me be a guest joker in his mod and guiding me with the art direction. 
