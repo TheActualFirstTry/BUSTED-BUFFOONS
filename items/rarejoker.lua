@@ -98,14 +98,14 @@ SMODS.Joker{
         extra = {
             luckyxchips = 2,
             luckydollar = 3,
-            luckychance = 10
+            luckychance = 10,
         }
     },
     loc_txt = {
         name = "Wanted Poster",
         text = { 
             "Scored {C:attention}lucky cards{} give {X:chips,C:white}X#1#{} Chips and {C:money}$#2#{}.",
-            "{C:green}#3# in #4#{} chance to add a {C:attention}lucky{} Ace card to deck."
+            "{C:green}#3# in #4#{} chance to apply {C:attention}Lucky{} and {C:gold}Gold Seal{} to cards."
      }
     },
     loc_vars = function(self, info_queue, card)
@@ -116,17 +116,28 @@ SMODS.Joker{
         play_sound("busterb_locknload")
     end,
     calculate = function(self, card, context)
-            if context.individual and context.cardarea == G.play and not context.blueprint then
-                if SMODS.pseudorandom_probability(card, 'busterb_lucky_vigi', 1, card.ability.extra.luckychance, 'busterb_lucky_vigi') then
-                    SMODS.add_card{ set = "Base", rank = "A", enhancement = "m_lucky"}
-                    play_sound("busterb_vigi")
-                end     
+        if context.individual and context.cardarea == G.play and not context.blueprint then            
                 if SMODS.has_enhancement(context.other_card, 'm_lucky') then
                 return {
                     x_chips = card.ability.extra.luckyxchips,
                     dollars = card.ability.extra.luckydollar,
                     sound = "busterb_gunshot"
                 }
+
+            else
+                if SMODS.pseudorandom_probability(card, 'busterb_lucky_vigi', 1, card.ability.extra.luckychance, 'busterb_lucky_vigi') then
+            for _, scored_card in ipairs(context.scoring_hand) do
+                scored_card:set_seal("Gold", nil, true)
+                scored_card:set_ability("m_lucky", nil, true)
+                G.E_MANAGER:add_event(Event({
+                        func = function()
+                            scored_card:juice_up()
+                            return true
+                        end
+                    }))                    
+                    play_sound("busterb_vigi")
+                    end
+                end
             end
         end
     end
