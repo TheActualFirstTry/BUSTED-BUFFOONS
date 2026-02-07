@@ -245,7 +245,8 @@ can_use = function(self, card)
           if not (   v.rarity == "jen_ritualistic" or
                  v.rarity == "jen_transcendent" or
                  v.rarity == "jen_omegatranscendent" or
-                 v.rarity == "jen_omnipotent"
+                 v.rarity == "jen_omnipotent" or
+				 v.rarity == "jen_miscellaneous"
             ) then
             selectable_jokers[#selectable_jokers + 1] = v
           end
@@ -526,3 +527,4 @@ loc_vars = function(self, info_queue, card)
     end
 
 }
+
