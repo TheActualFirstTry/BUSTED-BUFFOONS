@@ -242,37 +242,10 @@ can_use = function(self, card)
         local selectable_jokers = {}
 
         for _, v in ipairs(G.P_CENTER_POOLS.Joker) do
-          if (  v.rarity == 1 or
-                v.rarity == 2 or 
-                v.rarity == 3 or 
-                v.rarity == 4 or
-                v.rarity == "busterb_Dreamy" or 
-                v.rarity == "cry_exotic" or
-                v.rarity == "busterb_Fantastic" or
-                v.rarity == "busterb_Grandiose" or
-                v.rarity == "entr_entropic" or
-                v.rarity == "busterb_Secret" or
-                v.rarity == "cry_cursed" or
-                v.rarity == "cry_candy" or
-                v.rarity == "cry_epic" or
-                v.rarity == "unik_detrimental" or 
-                v.rarity == 'unik_ancient' or
-                v.rarity == "valk_supercursed" or
-                v.rarity == 'valk_renowned' or
-                v.rarity == 'valk_exquisite' or 
-                v.rarity == "jen_junk" or
-                v.rarity == "crp_mythic" or
-                v.rarity == "crp_outlandish" or
-                v.rarity == "crp_cipe" or
-                v.rarity == "crp_refined" or
-                v.rarity == "crp_plentiful" or
-                v.rarity == "crp_divine" or
-                v.rarity == "crp_self-insert" or
-                v.rarity == "crp_abysmal" or
-                v.rarity == "crp_trash" or
-                v.rarity == "crp_well-done" or
-                v.rarity == "tau_tauic"                
---                v.rarity == 1 or
+          if not (   v.rarity == "jen_ritualistic" or
+                 v.rarity == "jen_transcendent" or
+                 v.rarity == "jen_omegatranscendent" or
+                 v.rarity == "jen_omnipotent"
             ) then
             selectable_jokers[#selectable_jokers + 1] = v
           end
@@ -551,4 +524,5 @@ loc_vars = function(self, info_queue, card)
             card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
         end
     end
+
 }
