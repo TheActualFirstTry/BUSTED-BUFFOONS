@@ -315,7 +315,7 @@ SMODS.Joker{
     loc_txt = {
         name = "{V:1,s:2}GOLDEN FREDDY{}",
         text = {
-            "Spawn either a ","{C:white,B:1,s:1.5}Dream{} or a {C:white,B:1,s:1.5}Slumber","When a {C:attention}boss blind{} is {C:attention}defeated{}",
+            "Spawn a ","{C:white,B:1,s:1.5}Random#1#Rare#1#Consumable","When a {C:attention}boss blind{} is {C:attention}defeated{}",
             "{C:inactive}(May overflow)",
         }
     },
@@ -330,28 +330,29 @@ SMODS.Joker{
     end,
     calculate = function(self, card, context)
         if context.end_of_round and context.main_eval and context.beat_boss or context.forcetrigger then
-            local souldream = pseudorandom(pseudoseed("busterb_gfreddysoul"), 1, 2)
-            if souldream == 1 then 
-                local c = SMODS.create_card({key = "c_busterb_dream", edition = "e_negative"})
-                    c:add_to_deck()
-                    G.consumeables:emplace(c)
-            end
-            if souldream == 2 then 
-                local c = SMODS.create_card({key = "c_busterb_slumber", edition = "e_negative"})
-                    c:add_to_deck()
-                    G.consumeables:emplace(c)
-            end
---                local pool = {}
---                    for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
---                      if v.hidden  and (not v.set == "jen_omegaconsumable") then pool[#pool+1] = v.key end
---                end
---                local random_key = pseudorandom_element(pool, "random_rare_consumeable")
---                    if random_key then SMODS.add_card{key = random_key} end
---                return {
---                    message = "Har Har Har!",
---                    sound = "busterb_gfreddygiggle",
---                    colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
---                   card = card
+--            local souldream = pseudorandom(pseudoseed("busterb_gfreddysoul"), 1, 2)
+--            if souldream == 1 then 
+--                local c = SMODS.create_card({key = "c_busterb_dream", edition = "e_negative"})
+--                    c:add_to_deck()
+--                    G.consumeables:emplace(c)
+--            end
+--            if souldream == 2 then 
+--                local c = SMODS.create_card({key = "c_busterb_slumber", edition = "e_negative"})
+--                    c:add_to_deck()
+--                    G.consumeables:emplace(c)
+--            end
+                local pool = {}
+                    for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
+                      if v.hidden  and not ( v.set == "jen_omegaconsumable" or v.set == "jen_ability" ) then pool[#pool+1] = v.key end
+                end
+                local random_key = pseudorandom_element(pool, "random_rare_consumeable")
+                    if random_key then SMODS.add_card{key = random_key} end
+                return {
+                    message = "Har Har Har!",
+                    sound = "busterb_gfreddygiggle",
+                    colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
+                   card = card
+                }            
             end
         end
 }
@@ -553,4 +554,86 @@ SMODS.Joker{
             })
             end
     end
+}
+SMODS.Atlas{
+    key = "thedoise",
+    path = "Doise.png",
+    px = 71,
+    py = 95
+} 
+SMODS.Sound{
+    key = "doag",
+    path = "Doag.ogg"
+}
+SMODS.Sound{
+    key = "doawaw",
+    path = "Doawaw.ogg"
+}
+SMODS.Sound{
+    key = "doiseded",
+    path = "DoiseScream.Wav"
+}
+SMODS.Joker{
+key = "doise",
+    atlas = "thedoise",
+    rarity = "busterb_Grandiose",
+    pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    cost = 500,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    eternal_compat = true,
+    config = {
+        extra = {
+            odds = 2
+        },
+        immutable = {
+            minchips = 100,
+            maxchips = 1e100
+        }
+    },
+        loc_txt = {
+        name = "{V:1,s:2}DOISE{}",
+        text = {
+            "Gives a random {X:chips,C:white}XChips{}",
+            "Between {X:chips,C:white}#1#-#2#",
+            "{C:green}#4# in #5#{} chance to",
+            "Give {B:2,C:white}^Chips{}"
+            }
+    },
+    loc_vars = function(self, info_queue, card)
+        local doisechance, doiseodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_doisechange')
+        return { vars = {
+             card.ability.immutable.maxchips,
+             card.ability.immutable.minchips,
+             " ",
+             doisechance,
+             doiseodds,
+             colours = {HEX('48A0F8'),SMODS.Gradients["busterb_eechipsgradient"]}
+            } }
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        play_sound("busterb_doiseded")
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            if SMODS.pseudorandom_probability(card, 'busterb_doisechange', 1, card.ability.extra.odds, 'busterb_doisechange') then
+            return {
+                xchips = pseudorandom('busterb_doisexchips', card.ability.immutable.maxchips, card.ability.immutable.minchips),
+                message = "Woag",
+                sound = "busterb_doag"
+            }
+        else
+            return {
+                echips = pseudorandom('busterb_doiseechips', card.ability.immutable.maxchips, card.ability.immutable.minchips),
+                message = "DOAG",
+                sound = "busterb_doawaw",
+                colour = SMODS.Gradients["busterb_eechipsgradient"]
+            }
+        end
+    end
+end
 }
