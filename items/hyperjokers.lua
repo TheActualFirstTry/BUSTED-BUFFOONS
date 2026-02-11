@@ -276,9 +276,12 @@ SMODS.Joker {
     loc_txt = {
         name = "{C:edition}Rainbow Dash, The Element of Loyalty{}",
         text = {
-            "This Joker applies {C:edition}Polychrome{} to all cards",
-            "in the {C:attention}first played hand{} of each round,",
-            "retriggers all played {C:edition}Polychrome{} cards."
+            "Applies {C:dark_edition}Polychrome{} to cards in",
+            "{C:attention}first played hand{} each round,",
+            "retriggers all played",
+            "{C:dark_edition}Polychrome{} cards by total",
+            "number of joker slots",
+            "{C:inactive}(Currently: {C:dark_edition}#1#{}{C:inactive})"
         }
     },
     unlocked = true,
@@ -292,7 +295,7 @@ SMODS.Joker {
     config = { extra = { edition = 'e_polychrome'} },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'e_polychrome', set = 'Edition', config = { extra = 1.5 } }
-        return { vars = {} }
+        return { vars = { G.jokers.config.card_limit} }
     end,
     calculate = function(self, card, context)
         if context.before and context.main_eval and G.GAME.current_round.hands_played == 0 then
@@ -306,7 +309,7 @@ SMODS.Joker {
             if polychrome_cards > 0 then
                 return {
                     message = "Applied!",
-                    colour = G.C.EDITION
+                    colour = G.C.DARK_EDITION
                 }
             end
         end
@@ -314,7 +317,7 @@ SMODS.Joker {
         if context.repetition and context.cardarea == G.play and G.GAME.current_round.hands_played == 0 then
             if context.other_card.edition and context.other_card.edition.polychrome then
                 return {
-                    repetitions = 1
+                    repetitions = G.jokers.config.card_limit
                 }
             end
         end
@@ -323,9 +326,8 @@ SMODS.Joker {
 
 -- Noisette
 
-
 SMODS.Joker {
-    key = "ptnoisette",
+    key = "noisette",
     atlas = "Atlas_Fantastic",
     discovered = true,
     blueprint_compat = true,
@@ -335,51 +337,80 @@ SMODS.Joker {
     pos = { x = 4, y = 0 },
     soul_pos = { x = 4, y = 1 },
     loc_txt = {
-        name = "{C:diamonds}Ooh la belle Noisette{}",
+        name = "{C:diamonds}Ooh la belle Noisette {}",
         text = {
-            "This Joker gains {C:attention}#2# Retrigger{}",
+            "Gains extra {C:attention}+#2#{} copying time(s)",
             "whenever ante changes,",
-            "re-triggers the {C:attention}Joker to the right{}",
-            "{C:inactive}(Currently:{} {C:attention} #1# {}{C:inactive} Retriggers){}"
+            "Copies the ability of the",
+            "{C:attention}Joker{} to the right{}",
+            "{C:inactive}(Currently:{} {C:attention}#1#{}{C:inactive} time(s)){}"
         }
     },
     config = {
         extra = { repetitions = 1, morerepeat = 1 },
-        immutable = { max_retriggers = 100, morerepeatmax = 25 }
+        immutable = { max_retriggers = 25, morerepeatmax = 5 }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { 
-            math.min(card.ability.immutable.max_retriggers, card.ability.extra.repetitions),
-            math.min(card.ability.immutable.morerepeatmax, card.ability.extra.morerepeat)
-         } }
-    end,
-    calculate = function(self, card, context)
-        if context.ante_change then
-            card.ability.extra.repetitions = card.ability.extra.repetitions + math.min(card.ability.immutable.morerepeatmax, card.ability.extra.morerepeat)
-            return {
-                message = localize('k_upgrade_ex'),
-                colour = G.C.FILTER,
-                card = card
-            }
-        end
-        if context.retrigger_joker_check and context.other_card ~= card and not context.blueprint then
-      local other_joker = nil
+        if card.area and card.area == G.jokers then
+      local right_joker = nil
       for i = 1, #G.jokers.cards do
         if G.jokers.cards[i] == card then
-          other_joker = G.jokers.cards[i + 1]
-          break
+          right_joker = G.jokers.cards[i + 1]
         end
       end
-      if other_joker == context.other_card then
-                return {
-                    message = localize("k_again_ex"),
-                    repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.repetitions)),
-                    card = card
-                }
-            else
-                return nil, true
-            end
+      local right_compatible = right_joker and right_joker ~= card and right_joker.config.center.blueprint_compat
+
+      local main_end = { {
+        n = G.UIT.C,
+        config = { align = "bm", minh = 0.4 },
+        nodes = { {
+          n = G.UIT.C,
+          config = {
+            ref_table = card,
+            align = "m",
+            colour = right_compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8),
+            r = 0.05,
+            padding = 0.06
+          },
+          nodes = { {
+            n = G.UIT.T,
+            config = {
+              text = ' ' .. localize('k_' .. (right_compatible and 'compatible' or 'incompatible')) .. ' ',
+              colour = G.C.UI.TEXT_LIGHT,
+              scale = 0.32 * 0.8
+            }
+          } }
+        } }
+      } }
+      return { vars = { 
+            math.min(card.ability.immutable.max_retriggers, card.ability.extra.repetitions),
+            math.min(card.ability.immutable.morerepeatmax, card.ability.extra.morerepeat)
+         },
+      main_end = main_end }
+    end
+end,
+    calculate = function(self, card, context)
+        if context.ante_change then
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "repetitions",
+                scalar_value = "morerepeat",
+                colour = G.C.RED
+            })
         end
+        local other_joker
+for k, v in pairs(G.jokers.cards) do
+    if v == card then other_joker = G.jokers.cards[k+1] end
+end
+local effects = {}
+for _ = 1, math.min(card.ability.immutable.max_retriggers, card.ability.extra.repetitions) do
+    local effect = SMODS.blueprint_effect(card, other_joker, context)
+    if effect then
+        effect.colour = G.C.RED
+        table.insert(effects, effect)
+    end
+end
+return SMODS.merge_effects(effects)
     end,
 }
 
