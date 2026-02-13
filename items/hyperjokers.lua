@@ -279,7 +279,7 @@ SMODS.Joker {
             "Applies {C:dark_edition}Polychrome{} to cards in",
             "{C:attention}first played hand{} each round,",
             "retriggers all played {C:dark_edition}Polychrome{}",
-            "cards by number of joker slots",
+            "cards by number of jokers",
             "{C:inactive}(Currently: {C:dark_edition}#1#{}{C:inactive})"
         }
     },
@@ -294,7 +294,7 @@ SMODS.Joker {
     config = { extra = { edition = 'e_polychrome'} },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'e_polychrome', set = 'Edition', config = { extra = 1.5 } }
-        return { vars = { G.jokers and G.jokers.config.card_limit or 5 } }
+        return { vars = { G.jokers and #G.jokers.cards or 1 } }
     end,
     calculate = function(self, card, context)
         if context.before and context.main_eval and G.GAME.current_round.hands_played == 0 then
@@ -316,7 +316,7 @@ SMODS.Joker {
         if context.repetition and context.cardarea == G.play and G.GAME.current_round.hands_played == 0 then
             if context.other_card.edition and context.other_card.edition.polychrome then
                 return {
-                    repetitions = G.jokers.config.card_limit
+                    repetitions = #G.jokers.cards
                 }
             end
         end
