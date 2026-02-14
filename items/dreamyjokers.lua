@@ -398,34 +398,33 @@ SMODS.Joker{
     loc_txt = {
         name = "Harley Quinn",
         text = {
-            "{C:attention}Retrigger{} all {C:attention}Jokers{} to the Left",
-            "once for {C:attention}every{} {C:attention}Joker{} to the Left",
-            "of this Joker"
+            "{C:attention}Retrigger{} all {C:attention}Jokers{}",
+            "and {C:attention}playing cards{} once"
         }
     },
 calculate = function(self, card, context)
-		if context.retrigger_joker_check and not context.retrigger_joker then
-			local num_retriggers = 0
-			for i = 1, #G.jokers.cards do
-				if
-				(card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2)
-			    then
-					num_retriggers = num_retriggers + 1
-                end
-            end
-                if
-				card.T
-				and context.other_card.T
-				and (card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2)
-			    then
+		if
+			context.retrigger_joker_check
+			and not context.retrigger_joker
+			and not (context.other_card.ability and context.other_card.ability.key == "harley")
+		then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = num_retriggers,
+					repetitions = 1,
 					card = card,
 				}
-            end
 		end
-    end
+		if
+			context.repetition
+			and context.cardarea == G.play
+		then
+			return {
+				message = localize("k_again_ex"),
+				repetitions = 1,
+				card = card,
+			}
+		end
+	end,
 }
 SMODS.Sound{
     key = "pizzafacelaugh",
