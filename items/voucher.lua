@@ -39,7 +39,8 @@ SMODS.Voucher {
   jen_transcendent = 'cry_exotic',
   jen_wondrous = 'cry_exotic',
   jen_ritualistic = 'cry_exotic',
-  jen_miscellaneous = 'Rare'
+  jen_miscellaneous = 'Rare',
+  gj_detri = "gj_uniq"
 }
 
 local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
@@ -74,5 +75,4 @@ local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
         card:set_cost()
         end
     end,
-
 }
