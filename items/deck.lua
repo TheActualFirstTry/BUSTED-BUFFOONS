@@ -89,7 +89,8 @@ SMODS.Back {
         name = "The Deck of Absolute Hate",
         text = {"Start with a random",
         "{B:2,C:white}Busted#3#Buffoons{} Joker",
-        "Spawn an extra {C:dark_edition}negative {B:2,C:white}Busted#3#Buffoons{} Joker",
+        "Spawn an extra {C:dark_edition}negative Joker of",
+        "{B:2,C:white}Any#3#Rarity{}",
         "At the {C:attention}end of round{}"}
 
     },
@@ -99,8 +100,31 @@ SMODS.Back {
     colours = {HEX('b00b69'), SMODS.Gradients["busterb_epileptic"]}}}
     end,
     calculate = function (self, back, context)
+        local rarity_map = {
+  busterb_Grandiose = 'busterb_Dreamy',
+  busterb_Secret = 'busterb_Fantastic',
+  Common = 'Rare',
+  Uncommon = 'Rare',
+  cry_cursed = 'cry_exotic',
+  crp_abysmal = 'crp_mythic',
+  unik_detrimental = 'unik_ancient',
+  valk_supercursed = 'valk_exquisite',
+  jen_junk = 'Rare',
+  jen_omegatranscendent = 'cry_exotic',
+  jen_omnipotent = 'cry_exotic',
+  jen_transcendent = 'cry_exotic',
+  jen_wondrous = 'cry_exotic',
+  jen_ritualistic = 'cry_exotic',
+  jen_miscellaneous = 'Rare',
+  gj_detri = "gj_uniq",
+  ocstobal_challengeexclusive = "ocstobal_omega",
+  ocstobal_absolute_curse = "ocstobal_beyondexotic",
+  ocstobal_cursed = "ocstobal_unique"
+}
         if context.end_of_round and context.main_eval then
-                SMODS.add_card { set = "bustjokers", edition = 'e_negative' }
+                local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
+           key = rarity_map[key] or key
+        SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.jokers }
     end
     end,
 
