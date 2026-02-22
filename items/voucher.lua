@@ -40,7 +40,10 @@ SMODS.Voucher {
   jen_wondrous = 'cry_exotic',
   jen_ritualistic = 'cry_exotic',
   jen_miscellaneous = 'Rare',
-  gj_detri = "gj_uniq"
+  gj_detri = "gj_uniq",
+  ocstobal_challengeexclusive = "ocstobal_omega",
+  ocstobal_absolute_curse = "ocstobal_beyondexotic",
+  ocstobal_cursed = "ocstobal_unique"
 }
 
 local _, key = pseudorandom_element(SMODS.Rarities, "cogito")

@@ -4,6 +4,7 @@ SMODS.Atlas{
 	px = 34,
 	py = 34
 }
+
 assert(SMODS.load_file("items/thanks900n1.lua"))()
 assert(SMODS.load_file("items/gradients.lua"))()
 assert(SMODS.load_file("items/rarities.lua"))()
@@ -29,6 +30,10 @@ SMODS.current_mod.optional_features = function()
 	},
 }
 end
+
+to_big = to_big or function(x) return x end
+to_number = to_number or function(x) return x end
+
 -- 900n1 Gambapack
 if next(SMODS.find_mod("900N1GAMBLE")) then assert(SMODS.load_file("items/crossmodshit/silencedenhancement.lua"))() assert(SMODS.load_file("items/crossmodshit/crk.lua"))() end
 

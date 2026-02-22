@@ -23,15 +23,16 @@ SMODS.Consumable{
     loc_txt = {
         name = "ROOT ACCESS://",
         text = {
-			"{C:spectral}Your balance will be inversed,",
-			"{C:spectral}and in exchange, you are given a choice."
+			"{C:spectral}Your balance will be inversed",
+			"{C:spectral}and you are taken to the next ante",
+			"{C:spectral}but in exchange, you are given a choice."
 		}
     },
 	atlas = "atlas_Admin",
 	can_use = function(self, card)
 		return true
 	end,
-	config = { immutable = { state = 1, ctr = 0} },
+	config = { immutable = { state = 1, ctr = 0, ante = 1} },
 --        update = function(self, card, dt)
 --    busterb_admin_dt = busterb_admin_dt + dt;
 --    if busterb_admin_dt > 0.5 then
@@ -51,6 +52,13 @@ SMODS.Consumable{
             func = function()
 --				G.GAME.dollars = math.abs(G.GAME.dollars) * -1
 				G.GAME.dollars = G.GAME.dollars * -1
+                return true
+            end
+        }))
+		G.E_MANAGER:add_event(Event({
+            func = function()
+--				ease_ante{1}
+				ease_ante(math.min(card.ability.immutable.ante))
                 return true
             end
         }))
