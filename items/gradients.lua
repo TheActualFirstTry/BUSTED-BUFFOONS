@@ -110,3 +110,7 @@ G.ARGS.LOC_COLOURS.busterb_eemult = SMODS.Gradients["busterb_eemultgradient"]
 G.ARGS.LOC_COLOURS.busterb_eechips = SMODS.Gradients["busterb_eechipsgradient"]
 G.ARGS.LOC_COLOURS.busterb_dreamy = HEX('2735cf')
 G.ARGS.LOC_COLOURS.busterb_fantastic = HEX('b00b69')
+G.ARGS.LOC_COLOURS.busterb_Thomas = SMODS.Gradients["busterb_Thomasgradient"]
+G.ARGS.LOC_COLOURS.busterb_gfreddy = SMODS.Gradients["busterb_GoldenFreddyGradient"]
+G.ARGS.LOC_COLOURS.busterb_balatro = SMODS.Gradients["busterb_balatro"]
+G.ARGS.LOC_COLOURS.busterb_infinity = HEX('00FFFF')
