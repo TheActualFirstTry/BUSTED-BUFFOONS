@@ -29,17 +29,7 @@ SMODS.Joker{
             slotlimit = 100
         }
     },
-    loc_txt = {
-        name = {"{V:1,s:2}Astro{}",
-        "The Star of Everything in Space"
-    },
 
-        text = {
-            "Gains {B:2,C:white}^^#2#{} Chips at the end of the round.",
-            "Multiply gained {B:2,C:white}^^Chips{} by {B:1,C:white}#3#{} when ante changes.",
-            "{C:inactive}(Currently {B:2,C:white}^^#1#{C:inactive} Chips){}"
-        }
-    },
     loc_vars = function(self, info_queue, card)
 		return { vars = { 
             card.ability.extra.eechips, 
@@ -136,20 +126,6 @@ SMODS.Joker{
         immutable = {
         }
     },
-    loc_txt = {
-        name = {
-            "{V:1,s:2}Thomas{}",
-            '"All that makes me who I am"'
-        },
-        text = {
-            "Spawn a {C:white,B:1,s:2}MUGEN{} at the end of the round",
-            "Gain {C:white,B:2}^^#2#{} Mult with {C:attention}each use",
-            "{C:attention}incremental value{} also {V:1}increases{} by {B:1,C:white}+#3#{} with {C:attention}each use",
-            "{C:inactive}({V:1}MUGEN {C:inactive}May overflow.)",
-            "{C:inactive}(Currently {B:2,C:white}^^#1#{C:inactive} Mult){}",
-            "{s:0.5,C:inactive}There's a special interaction with a certain character.{}"
-        }
-    },
     loc_vars = function(self, info_queue, card)
 		return { vars = { 
             card.ability.extra.eemult,
@@ -167,7 +143,7 @@ SMODS.Joker{
                 })
         end
         if context.end_of_round and context.main_eval or context.forcetrigger then
-                SMODS.add_card({ key = "c_busterb_mugen" })
+                SMODS.add_card({ key = "c_busterb_mugen", area = G.consumeables })
                 SMODS.calculate_effect({
                     message = ThomasYap[math.random(#ThomasYap)],
                     colour = SMODS.Gradients["busterb_Thomasgradient"],
@@ -244,17 +220,7 @@ SMODS.Joker{
         }
     },
 
-    loc_txt = {
-        name = {
-            "{V:1,s:2}Samson{}",
-            "The Blissful Bugbear",
-        },
-        text = {
-            "Scored and held {C:attention}Gold Cards{} and {C:attention}Gold Seals{}",
-            "give {X:money,C:white}^#1#{} dollars and Mult",
-           
-        }
-    },
+
 
     loc_vars = function(self, info_queue, card)
         return {

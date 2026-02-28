@@ -19,13 +19,6 @@ SMODS.Joker {
         extra = {  
         }
     },
-    loc_txt = {
-        name = "Saitama",
-        text = {
-            "Prevents {s:1.5,C:spectral}Fantasy{} from {C:red}destroying jokers{},",
-            "Also prevents jokers from being {C:red}debuffed{}."
-        }
-    },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.xchips, card.ability.extra.money, card.ability.extra.xchips_mod, card.ability.extra.dollar_mod } }
     end,
@@ -67,13 +60,6 @@ SMODS.Joker {
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     config = {
         extra = {  
-        }
-    },
-    loc_txt = {
-        name = "Alien X",
-        text = {
-            "Prevents death, {C:red}self destructs{}",
-            "and sets ante to 0."
         }
     },
     loc_vars = function(self, info_queue, card)
@@ -134,20 +120,6 @@ SMODS.Joker{
     config = {
         extra = { mult = 4, chips = 10, xmult = 2, xchips = 2.5, money = 3, valueincrease = 2 },
         immutable = { powincreasecap = 10, pow = 1, powcap = 100, valueincreasecap = 100, reset = 0 }
-    },
-    loc_txt = {
-        name = "K.O.",
-        text = {
-            "{X:dark_edition,C:white}POW#5#Meter{} increases by a random amount", 
-            "when playing hands, this joker",
-            "gains {X:dark_edition,C:white}X#1#{}{C:attention} values{}",
-            "when the {X:dark_edition,C:white}POW#5#Meter{}",
-            "fills up completely and resets to #2#.",
-            "{X:dark_edition,C:white}POW:#5##3#/100{}",
-            "{C:mult}[Mult = #7#, {X:mult,C:white}X#9#{}{C:mult} ]",
-            "{C:chips}[Chips = #8#, {X:chips,C:white}X#10#{}{C:chips} ]",
-            "{C:gold}[Money = #11# ]"
-        }
     },
     loc_vars = function(self, info_queue, card)
         return { vars = { 
@@ -212,13 +184,6 @@ SMODS.Joker {
         extra = {  vm = 1.1
         }
     },
-    loc_txt = {
-        name = "Peridot",
-        text = {
-            "If played hand contains only {C:attention}Aces, 2s, 3s, 4s, {}or{C:attention} 5s{},",
-            "adjacent joker values are multiplied by {C:attention}x#1#{}"
-        }
-    },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.vm } }
     end,
@@ -280,17 +245,6 @@ SMODS.Joker {
     pos = { x = 0, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     config = { immutable = { roll_rounds = 0, total_rounds = 3, round_add = 1 } },
-    loc_txt = {
-        name = "Isaac",
-        text = {
-            "After {C:attention}#2#{} rounds, this joker will",
-            "{C:attention}spawn a random {C:dark_edition}negative {C:attention}joker",
-            "based on what number lands",
-            "{C:inactive}(Rounds: #1#/#2#)",            
-            "{s:0.5,C:common}1 = Common {s:0.5,C:uncommon}2 = Uncommon {s:0.5,C:rare}3 = Rare",
-            "{s:0.5,V:2}4 = Dreamy {s:0.5,C:legendary}5 = Legendary {s:0.5,V:1}6 = Fantastic",
-        }
-    },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.immutable.roll_rounds, card.ability.immutable.total_rounds, colours = { HEX('b00b69'), HEX('2735cf') } } }
     end,
@@ -395,13 +349,6 @@ SMODS.Joker{
     eternal_compat = true,
     pos = { x = 0, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
-    loc_txt = {
-        name = "Harley Quinn",
-        text = {
-            "{C:attention}Retrigger{} all {C:attention}Jokers{}",
-            "and {C:attention}playing cards{} once"
-        }
-    },
 calculate = function(self, card, context)
 		if
 			context.retrigger_joker_check
@@ -451,14 +398,6 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.immutable.boss_size } }
 	end,
-    loc_txt = {
-        name = "Pizzaface",
-        text = {
-            "{X:red,C:white}^#1#{} {C:attention}Boss Blind{} size",
-            "When {C:attention}Boss Blind{} is beaten, create a ",
-            "{C:dark_edition}negative {C:spectral}Fantasy{} card and {C:red}self-destruct"
-        }
-    },
     calculate = function(self, card, context)
     if context.setting_blind and not context.blueprint and context.blind.boss and not card.getting_sliced and not context.retrigger_joker and not context.repetition then
 			local eval = function(card)
@@ -559,14 +498,6 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.mult, card.ability.extra.xmult, card.ability.extra.powerup } }
 	end,
-    loc_txt = {
-        name = "Vegeta",
-        text = {
-            "Gain {X:gold,C:white}X#3#{C:mult} Mult{} and {X:mult,C:white}XMult",
-            "When playing your {C:attention}Final hand.{}",
-            "{C:inactive}(Currently {C:mult}+#1#{C:inactive} and {X:mult,C:white}X#2#{C:inactive})"
-        }
-    },
     calculate = function(self, card, context)
         if context.before and G.GAME.current_round.hands_left == 0 then
             card.ability.extra.mult = card.ability.extra.mult * card.ability.extra.powerup
@@ -602,13 +533,6 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.mult, card.ability.extra.xmult, card.ability.extra.powerup, colours = {HEX('FFB570')} } }
 	end,
-    loc_txt = {
-        name = "Thanos",
-        text = {
-            "If {C:attention}blind{} is {C:attention}beaten{} in {C:attention}one hand",
-            "create 2 {V:1}Infinity{} cards"
-        }
-    },
     calculate = function(self, card, context)
         if context.after and SMODS.last_hand_oneshot then
         SMODS.add_card{set="Infinity"}
@@ -641,13 +565,6 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.xchips } }
 	end,
-    loc_txt = {
-        name = "Lapis Lazuli",
-        text = {
-            "{C:blue}Blue Seal{}, {C:blue}Bonus{}, {C:blue}Foil{}, and{} {C:blue}Club{} Cards",
-            "{C:attention}always score{} and give {C:white,X:chips}X#1#{} Chips"
-        }
-    },
     calculate = function(self, card, context)
         if context.modify_scoring_hand and not context.blueprint then
                     if context.other_card:is_suit("Clubs") or

@@ -32,21 +32,37 @@ SMODS.UndiscoveredSprite {
 }
 SMODS.ConsumableType{
     key = "Infinity",
-    loc_txt = {
-        collection = 'Infinity Cards', 
-        name = 'Infinity',
-        undiscovered = {
-            name = '???',
-            text = {
-                'Just find it idk',
-            } 
-        }
-    },
     default = "c_busterb_marshall",
     cards = {},
     collection_rows = { 4, 4 },
     primary_colour = HEX('E36956'),
     secondary_colour = HEX('FFB570'),
+    shop_rate = 0.05,
+    select_card = 'consumeables'
+}
+SMODS.Atlas({
+    key = "atlas_undiscovered_boot",
+    path = "UndiscoveredBootleg.png",
+	px = 71, py = 95,
+	atlas_table = 'ANIMATION_ATLAS',
+	frames = 2,
+	fps = 2
+})
+SMODS.UndiscoveredSprite {
+    key = "Bootleg",
+    atlas = "atlas_undiscovered_boot",
+    pos = {
+        x = 0,
+        y = 0
+    },
+}
+SMODS.ConsumableType{
+    key = "Bootleg",
+    default = "c_busterb_admin",
+    cards = {},
+    collection_rows = { 4, 4 },
+    primary_colour = HEX('70FF76'),
+    secondary_colour = HEX('397F3B'),
     shop_rate = 0.05,
     select_card = 'consumeables'
 }

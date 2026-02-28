@@ -11,7 +11,7 @@ SMODS.Atlas {
     py = 95
 }
 SMODS.Joker {
-        key = "susie",
+    key = "susie",
     atlas = "idea",
     rarity = 3,
     pools = { ["bustjokers"] = true },
@@ -25,13 +25,6 @@ SMODS.Joker {
         extra = {
             acemult = 2,
             aceodds = 10
-        }
-    },
-    loc_txt = {
-        name = "Susie's Idea",
-        text = { "Deals {X:mult,C:white}X#3#{} Mult whenever an {C:attention}Ace{} is scored.",
-                 "{s:0.8,C:inactive}({}{s:0.8,C:green}#1# in #2# chance{}{s:0.8,C:inactive} when scoring cards to spawn a {}{s:0.8,C:red}Red Seal{} {s:0.8}Steel{} {C:dark_edition,s:0.8}Polychrome{}{C:attention,s:0.8} Ace{}{C:inactive,s:0.8}.){}"
-            
         }
     },
     loc_vars = function(self, info_queue, card)
@@ -101,13 +94,6 @@ SMODS.Joker{
             luckychance = 10,
         }
     },
-    loc_txt = {
-        name = "Wanted Poster",
-        text = { 
-            "Scored {C:attention}lucky cards{} give {X:chips,C:white}X#1#{} Chips and {C:money}$#2#{}.",
-            "{C:green}#3# in #4#{} chance to apply {C:attention}Lucky{} and {C:gold}Gold Seal{} to cards."
-     }
-    },
     loc_vars = function(self, info_queue, card)
         local vigichance, vigiodds = SMODS.get_probability_vars(card, 1, card.ability.extra.luckychance, 'busterb_lucky_vigi')
     return {vars = { card.ability.extra.luckyxchips, card.ability.extra.luckydollar, vigichance, vigiodds }}
@@ -169,13 +155,6 @@ SMODS.Joker {
             xmult = 1
         }
     },
-    loc_txt = {
-        name = "Bombardier",
-        text = { 
-            "Gains {X:mult,C:white}X#1#{} Mult if {C:spade}Spades{} or {C:hearts}Hearts{} are scored",
-            "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
-             }
-    },
     loc_vars = function(self, info_queue, card)
     return {vars = {card.ability.extra.xmultmod, card.ability.extra.xmult}}
     end,
@@ -222,15 +201,6 @@ SMODS.Joker{
             xmultmod = 0.1,
             xmult = 1
         }
-    },
-    loc_txt = {
-        name = "Duke of Faces",
-        text = { 
-            "Retriggers {C:attention}scored face cards{} based on",
-            "{C:attention}how many cards{} are in {C:attention}played hand{}",
-            "Gain {X:mult,C:white}X#1#{} Mult anytime a {C:attention}King{} is scored",
-            "{C:inactive}(Currently: {X:mult,C:white}X#2# {C:inactive} Mult)"
-             }
     },
     loc_vars = function(self, info_queue, card)
     return {vars = {card.ability.extra.xmultmod, card.ability.extra.xmult}}
@@ -284,13 +254,6 @@ SMODS.Joker{
             xmult = 1,
             nineodds = 9
         }
-    },
-    loc_txt = {
-        name = "Duke of Nines",
-        text = { 
-            "{C:green}#3# in #4#{} chance to gain {X:mult,C:white}X#1#{} Mult from scored {C:attention}9s",
-            "{C:inactive}(Currently: {X:mult,C:white}X#2#{C:inactive} Mult)"
-             }
     },
         loc_vars = function(self, info_queue, card)
             local ninechance, nineodds = SMODS.get_probability_vars(card, 1, card.ability.extra.nineodds, 'busterb_dukenines')

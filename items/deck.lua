@@ -19,13 +19,6 @@ SMODS.Back {
     atlas = "atlas_truekinda",
     pos = { x = 0, y = 0 },
     config =  {},
-    loc_txt = {
-        name = "True Kinda Deck",
-        text = {"Start with {C:hearts,E:1}Spinel{} and {X:hearts,C:clubs,E:1}Gar{X:clubs,C:hearts,E:1}net{}",
-        "and a deck of 52 cards consisting of only",
-        "the {C:hearts}Hearts{} and {C:clubs}Clubs{} suits."}
-
-    },
     apply = function(self, back)
         G.E_MANAGER:add_event(Event({
         func = function()
@@ -84,15 +77,6 @@ SMODS.Back {
     pos = { x = 0, y = 0 },
     config =  {
             fantasticodds = 10
-    },
-    loc_txt = {
-        name = "The Deck of Absolute Hate",
-        text = {"Start with a random",
-        "{B:2,C:white}Busted#3#Buffoons{} Joker",
-        "Spawn an extra {C:dark_edition}negative Joker of",
-        "{B:2,C:white}Any#3#Rarity{}",
-        "At the {C:attention}end of round{}"}
-
     },
         loc_vars = function(self, info_queue, back)
     local fchance, fodds = SMODS.get_probability_vars(self, 1, self.config.fantasticodds, 'busterb_fantasticjokerchance')

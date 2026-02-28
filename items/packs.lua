@@ -10,12 +10,6 @@ SMODS.Booster {
     pos = { x = 0, y = 0 },
     pools = {["inf_packs"] = true, ["booster"] = true},
     discovered = true,
-    loc_txt= {
-        name = 'Infinity Pack',
-        text = { "Pick {C:attention}#1#{} of",
-                "{C:attention}#2#{} {B:1,C:white}Infinity{} cards", },
-        group_name = "Infinity Pack",
-    },
     particles = function(self)
         G.booster_pack_sparkles = Particles(1, 1, 0, 0, {
             timer = 0.015,

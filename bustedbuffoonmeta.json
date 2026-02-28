@@ -1,14 +1,14 @@
 {
-    "id": "busterb",
+    "id": "BustedBuffoons",
     "name": "Busted Buffoons",
     "display_name": "Busted Buffoons",
     "author": [
         "FirstTry"
     ],
-    "description": "A small content mod containing jokers i made in my free time, feel free to throw tomatoes. I highly suggest you play this mod with cryptid, even though it can work without it.",
+    "description":	"A small content mod containing jokers i made in my free time, feel free to throw tomatoes. I highly suggest you play this mod with cryptid, even though it can work without it. Music Credits: NI4NI - Vylet Pony",
     "prefix": "busterb",
     "main_file": "bustedbuffoons.lua",
-    "version": "1.2.1a",
+    "version": "1.2.2a",
 	"badge_colour": "B21F5C",
 	"badge_text_colour": "FBBAE4",
 	"priority":"99999",
@@ -17,7 +17,7 @@
 		"Steamodded (>=1.0.0~BETA-0614a)",
 		"Lovely (>=0.7)",
         "Balatro (>=1.0.1o)",
-		"Cryptlib"
+		"Spectrallib"
 	],
 	"conflicts": [
 	],

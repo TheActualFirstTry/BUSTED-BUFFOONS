@@ -7,14 +7,6 @@ SMODS.Atlas{
 
 SMODS.Voucher {
     key = "industryconnections",
-    loc_txt = {
-        name = 'Industry Connections',
-        text = {
-          "Creates a {C:attention}custom{} shop slot where", 
-          "It always has a random {C:dark_edition}Negative{}",
-          "{C:attention}Joker{} that is not {C:common}Common or {C:uncommon}Uncommon",
-        }
-    },
     atlas = "ic",
     pos = { x = 0, y = 0 },
     config = { extra = { shop_slots = 1 } },

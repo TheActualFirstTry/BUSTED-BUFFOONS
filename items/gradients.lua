@@ -101,3 +101,12 @@ SMODS.Gradient{
     cycle = 1,
     interpolation = 'trig',
 }
+----------------Other Colours------------------
+loc_colour("inactive")
+G.ARGS.LOC_COLOURS.busterb_epileptic = SMODS.Gradients["busterb_epileptic"]
+G.ARGS.LOC_COLOURS.busterb_grand = SMODS.Gradients["busterb_grand"]
+G.ARGS.LOC_COLOURS.busterb_secret = SMODS.Gradients["busterb_secret"]
+G.ARGS.LOC_COLOURS.busterb_eemult = SMODS.Gradients["busterb_eemultgradient"]
+G.ARGS.LOC_COLOURS.busterb_eechips = SMODS.Gradients["busterb_eechipsgradient"]
+G.ARGS.LOC_COLOURS.busterb_dreamy = HEX('2735cf')
+G.ARGS.LOC_COLOURS.busterb_fantastic = HEX('b00b69')

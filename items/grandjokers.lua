@@ -1,3 +1,5 @@
+
+--ease_background_colour { new_colour = G.C.WHITE, special_colour = HEX('b00b69'), tertiary_colour = G.C.BLACK, contrast = 2 }
 SMODS.Atlas{
     key = "Grandholder",
     path = "Grandholder.png",
@@ -37,14 +39,6 @@ SMODS.Joker{
         extra ={
             em = 0.01,
             emtotal = 1
-        }
-    },
-    loc_txt = {
-        name = "{V:1,s:2}IGOR{}",
-        text = {
-            "All scored {C:attention}Face Cards{} become Glass",
-            "Gains {B:2,C:white}^^#1#{} Mult whenever a {C:attention}Face Card{} is scored",
-            "{C:inactive}(Currently {B:2,C:white}^^#2#{C:inactive} Mult){}"
         }
     },
     loc_vars = function(self, info_queue, card)
@@ -123,16 +117,6 @@ SMODS.Joker{
             card.children.center:draw_shader('polychrome', nil, card.ARGS.send_to_shader)
         end
     end,
-    loc_txt = {
-        name = "{V:1,s:2}ASRIEL DREEMURR{}",
-        text = {
-            "Adds a free {C:spectral}Mega Spectral Booster Pack{} in the shop.",
-            "If a {C:attention}Dream{} is consumed, gain {B:3,C:white}^#3#{} Mult",
-            "If a {C:attention}Soul{} is consumed, gain {B:2,C:white}^#4#{} Chips",
-            "When skipping a {C:attention}Booster Pack{}, spawns a random {C:spectral}Spectral{} card.",
-            "{C:inactive}(Currently {B:3,C:white}^#1#{C:inactive} Mult and {B:2,C:white}^#2#{C:inactive} Chips){}"
-        }
-    },
     loc_vars = function(self, info_queue, card)
         return { vars = {
             card.ability.extra.emult,
@@ -210,13 +194,6 @@ SMODS.Joker{
         extra = {
         },
         immutable = { valuemodification = 4, valuecap = 1e100 }
-    },
-    loc_txt = {
-        name = "{V:1,s:2}JIMBO{}",
-        text = {
-            "{C:legendary}Legendary Jokers{} can spawn in the shop and are free,",
-            "all jokers gain {B:2,V:1,s:2}X#1#{} joker values during ante change"
-        }
     },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.immutable.valuemodification, " ", colours = {SMODS.Gradients["busterb_balatro"], SMODS.Gradients["busterb_epileptic"]}} }
@@ -312,13 +289,6 @@ SMODS.Joker{
         immutable = {
         }
     },
-    loc_txt = {
-        name = "{V:1,s:2}GOLDEN FREDDY{}",
-        text = {
-            "Spawn a ","{C:white,B:1,s:1.5}Random#1#Rare#1#Consumable","When a {C:attention}boss blind{} is {C:attention}defeated{}",
-            "{C:inactive}(May overflow)",
-        }
-    },
     loc_vars = function(self, info_queue, card)
 		return { vars = { 
             " ",
@@ -390,16 +360,6 @@ SMODS.Joker{
     discovered = true,
     config = {extra = {emult = 1},
     immutable = { gain = .25, dp = 1, tallyup = 1, tally = 0, deduction = 1}},
-    loc_txt = {
-        name = "{V:1,s:2}PEDDITO{}",
-        text = {
-            "Using up {B:1,C:white}#5#{} {V:1}Revive{}",
-            "increases {V:1}Growth{} by {B:1,C:white}#6#{} and {B:2,C:white}^^Mult{} by half of {V:1}Growth{}",
-            "Gains {B:1,C:white}#2#{} {V:1}Revive{} when",
-            "{C:attention}Boss Blind{} is {C:red}defeated",
-            "{V:1}Growth: {B:1,C:white}#4#{} {V:2}Mult: {B:2,C:white}^^#3#{} {V:1}Revives: {B:1,C:white}#1#{}"
-        }
-    },
     loc_vars = function(self, info_queue, card)
         return { vars = {
              card.ability.immutable.dp,
@@ -501,16 +461,6 @@ SMODS.Joker{
         immutable = {
         }
     },
-    loc_txt = {
-        name = "{C:planet,s:2}QUEEN{}",
-        text = {
-            "* Upon {C:attention}Selecting A Blind{}, Spawn {C:common}Gros Michel",
-            "When {C:common}Gros Michel{} Is {C:gold}Sold{}, Gain {C:white,X:mult}X#4#{} Mult",
-            "When {C:common}Gros Michel{} Is{C:red} Destroyed{} Instead, Gain {C:white,B:1}^#5#{} Mult",
---            "Gros Michel also gives X3 Mult",
-            "{C:inactive}(Currently {C:white,X:mult}X#2#{C:inactive} And {C:white,B:1}^#3#{C:inactive})"
-        }
-    },
     loc_vars = function(self, info_queue, card)
 		return { 
             background_colour = G.C.BLACK,
@@ -594,15 +544,6 @@ key = "doise",
             minchips = 100,
             maxchips = 1e100
         }
-    },
-        loc_txt = {
-        name = "{V:1,s:2}DOISE{}",
-        text = {
-            "Gives a random {X:chips,C:white}XChips{}",
-            "Between {X:chips,C:white}#1#-#2#",
-            "{C:green}#4# in #5#{} chance to",
-            "Give {B:2,C:white}^Chips{}"
-            }
     },
     loc_vars = function(self, info_queue, card)
         local doisechance, doiseodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_doisechange')

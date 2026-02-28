@@ -26,17 +26,6 @@ SMODS.Joker {
             stockpile_add = 1
         }
     },
-    loc_txt = {
-        name = "{C:hearts,E:1,s:2}Your New Best Friend, Spinel{}",
-        text = {
-            "{X:mult,C:white}X#2#{} Mult every 4 Aces or 4 Face cards scored.",
-            "Stockpiles {X:mult,C:white}XMult{} per card played,",
-            "applies on the last card and resets after.",
-            "{X:dark_edition,C:white}+#5#{} Stockpile Power when selecting boss blind.",
-            "{C:inactive}(Current Mult from 4 Aces/Face: {}{X:mult,C:white}X#1#{}{C:inactive}){}",
-            "{C:inactive}(Stockpiling Power: {}{X:dark_edition,C:white}X#4#{}{C:inactive}){}"
-        }
-    },
     loc_vars = function(self, info_queue, card)
         return { 
             vars = { card.ability.extra.xmult, 
@@ -149,15 +138,6 @@ SMODS.Joker {
             cards_per_discard = 2
         },
     },
-    loc_txt = {
-        name = "{C:dark_edition}MINOS PRIME // ULTRAKILL{}",
-        text = {
-            "Create {C:attention}#3#{} Random {C:dark_edition}Negative{} {C:spectral}Spectral{} cards",
-            "per {C:attention}discard{}, gaining {X:mult,C:white}X#2#{} Mult",
-            "for each {C:spectral}Spectral{} card created",
-            "{C:inactive}(Currently {X:mult,C:white}X#1#{} {C:inactive}Mult){}"
-        }
-    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = { to_big(card.ability.extra.xmult), card.ability.extra.xmult_mod, card.ability.extra.cards_per_discard }
@@ -223,14 +203,6 @@ SMODS.Joker {
   pools = { ["Fantastic"] = true, ["bustjokers"] = true },
   pos = { x = 2, y = 0 },
   soul_pos = { x = 2, y = 1 },
-  loc_txt = {
-    name = "{C:clubs}The Great Papyrus{}",
-    text = {
-      "This Joker adds a free {C:tarot}Mega Arcana Pack{} to the {C:attention}shop{}",
-      "{X:dark_edition,C:edition}Doubles{} {X:mult,C:white}XMult{} each time you skip a {C:attention}Booster Pack{}",
-      "{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}"
-    }
-  },
   config = {
     extra = {
       triggered = false,
@@ -273,16 +245,6 @@ SMODS.Joker {
 SMODS.Joker {
     key = "rainbow_dash",
 	atlas = "Atlas_Fantastic",
-    loc_txt = {
-        name = "{C:edition}Rainbow Dash, The Element of Loyalty{}",
-        text = {
-            "Applies {C:dark_edition}Polychrome{} to cards in",
-            "{C:attention}first played hand{} each round,",
-            "retriggers all played {C:dark_edition}Polychrome{}",
-            "cards by number of jokers",
-            "{C:inactive}(Currently: {C:dark_edition}#1#{}{C:inactive})"
-        }
-    },
     unlocked = true,
 	discovered = true,
     blueprint_compat = true,
@@ -335,16 +297,6 @@ SMODS.Joker {
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     pos = { x = 4, y = 0 },
     soul_pos = { x = 4, y = 1 },
-    loc_txt = {
-        name = "{C:diamonds}Ooh la belle Noisette {}",
-        text = {
-            "Gains extra {C:attention}+#2#{} copying time(s)",
-            "whenever ante changes,",
-            "Copies the ability of the",
-            "{C:attention}Joker{} to the right{}",
-            "{C:inactive}(Currently:{} {C:attention}#1#{}{C:inactive} time(s)){}"
-        }
-    },
     config = {
         extra = { repetitions = 1, morerepeat = 1 },
         immutable = { max_retriggers = 25, morerepeatmax = 5 }
@@ -441,14 +393,7 @@ SMODS.Joker {
             max_prestige = 1000
         }
     },
-    loc_txt = {
-        name = "sans.",
-        text = {
-            "* human, i remember youre {C:dark_edition}numbers{}", 
-            "if you score {s:2,C:white,X:clubs}CLUBS{}",
-            "{C:gold}money #8#",
-            "{C:blue}xchip #1#",
-            "{C:red}xmult #2#",
+    -- old loc_txt :)
 --            "{B:1,C:white}*#9#human,#9#i#9#remember#9#i#9#gain#9#{B:1,C:chips}X#3#{}{B:1,C:white}#9#chips#9#and#9#{B:1,C:mult}X#4#{}{B:1,C:white}#9#mult#9#per#9#scored#9#{B:1,C:clubs}club{}{B:1,C:white}#9#card{}",
 --			"{C:inactive,s:0.75}(jk, here lemme explain:{} {C:inactive,s:0.75}if you score a {}{C:clubs,s:0.75}club{} {C:inactive,s:0.75}card,{} {C:inactive,s:0.75}i gain {}{X:chips,C:white,s:0.75}X#3#{} {C:inactive,s:0.75}chips and {}{X:mult,C:white,s:0.75}X#4#{}{C:inactive,s:0.75} mult.{}",
   --          "{C:inactive,s:0.75}if you defeat a {}{C:attention,s:0.75}Boss Blind{}{C:inactive,s:0.75},{} {C:inactive,s:0.75}i gain {}{X:dark_edition,C:white,s:0.75}+#6#{} {C:dark_edition,s:0.75}prestige{}{C:inactive,s:0.75},{}",
@@ -457,8 +402,6 @@ SMODS.Joker {
         --    "{C:gold}you also get flat $#8# for each club too btw but it's instant for some reason{}",
           --  "{C:inactive}(currently {}{X:chips,C:white}X#1#{} {C:inactive}and{} {X:mult,C:white}X#2#{}{C:inactive}){}",
             --"{C:inactive}(current {C:dark_edition}prestige{}{C:inactive}: {}{X:dark_edition,C:white}#5#{}{C:inactive}){}"
-        }
-    },
     loc_vars = function(self, info_queue, card)
         return {
             background_colour = G.C.BLACK,
@@ -540,31 +483,23 @@ SMODS.Joker {
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     config = {
         extra = {
-            xchips = 6,         
+            xasc = 6,         
             money = 6,       
-            xchips_mod = 6,    
+            xasc_mod = 6,    
             dollar_mod = 6     
         }
     },
-    loc_txt = {
-        name = "{C:gold,E:1,s:2}SISYPHUS PRIME // ULTRAKILL{}",
-        text = {
-            "After selecting a {C:attention}Boss Blind{},",
-            "Gains {X:attention,C:white}X#3#{} {X:chips,C:white}XChips{} and {C:gold}+#4#${}",
-            "{C:inactive}(Current: {}{X:chips,C:white}X#1#{}{C:inactive}, {}{C:money}$#2#{C:inactive} per blind)"
-        }
-    },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.xchips, card.ability.extra.money, card.ability.extra.xchips_mod, card.ability.extra.dollar_mod } }
+        return { vars = { card.ability.extra.xasc, card.ability.extra.money, card.ability.extra.xasc_mod, card.ability.extra.dollar_mod, " " } }
     end,
 
     calculate = function(self, card, context)
         if context.joker_main then
             return {
-                x_chips = card.ability.extra.xchips,
+                x_asc = card.ability.extra.xchips,
                 message = "Destroy!",
                 sound = "busterb_destroy",
-                colour = G.C.CHIPS
+                colour = G.C.GOLD
             }
         end
 
@@ -579,7 +514,7 @@ SMODS.Joker {
         end
 
         if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then
-            card.ability.extra.xchips = card.ability.extra.xchips * card.ability.extra.xchips_mod
+            card.ability.extra.xasc = card.ability.extra.xasc * card.ability.extra.xasc_mod
             card.ability.extra.money = card.ability.extra.money + card.ability.extra.dollar_mod
             return {
                 message = "Yes, that's it!",
@@ -631,18 +566,6 @@ SMODS.Joker {
         extra = {
             multiplier = 2,
             conduit = 1
-        }
-    },
-    loc_txt = {
-        name = "{C:tarot,E:1,s:2}DARK DONALD{}",
-        text = {
-            "If played hand contains a {C:attention}Flush{},",
-            "all {C:attention}poker hands{} are",
-            "leveled up by  ( {X:gold,C:white}#2#{C:green} x {X:spectral,C:white}#1#{} ),",
-            "Disables {C:attention}Boss Blinds{}.",
-            "Increase {C:gold}Base{} by {C:spectral}Multiplier{}",
-            "after defeating the {C:attention}boss blind{}.",
-            "{s:0.5,C:gold}Base{} {s:0.5}={} {s:0.5,X:gold,C:white}#2#{}{s:0.5},{} {s:0.5,C:spectral}Multiplier{} {s:0.5}={} {s:0.5,X:spectral,C:white}#1#{}"
         }
     },
     loc_vars = function(self, info_queue, card)
@@ -750,16 +673,6 @@ SMODS.Joker {
             BaseRuby = 1.5
         }
     },
-    loc_txt = {
-        name = "{X:clubs,C:hearts}GAR{}{X:hearts,C:clubs}NET{}",
-        text = {
-            "Gives {X:chips,C:white}X#4#{} Chips and {X:mult,C:white}X#5#{} Mult each hand.",
-            "Played {C:clubs}Clubs{} cards increase {X:chips,C:white}XChips{} by {C:attention}#1#{}.",
-            "Played {C:hearts}Hearts{} cards increase {X:mult,C:white}XMult{} by {C:attention}#2#{}.",
-            "If a hand contains both {C:clubs}Clubs{} and {C:hearts}Hearts{},",
-            "{X:chips,C:white}XChips{} and {X:mult,C:white}XMult{} are multiplied by {C:attention}#3#{}."
-        }
-    },
     pos = {
         x = 3,
         y = 2
@@ -842,16 +755,6 @@ SMODS.Joker {
             odds = 4
         }
     },
-    loc_txt = {
-        name = "{C:gold}[DREAM CATCHER] PEACOCK{}",
-        text = {
-            "{C:green}#4# in #5# chance{} to",
-            "apply {C:edition}Polychrome{} to a scored card in hand.",
-            "Gains {C:attention}#3#{} more {X:chips,C:white}XChips{} and {X:mult,C:white}XMult{}",
-            "per scored {C:edition}Polychrome{} card.",
-            "{C:inactive}(Currently{} {X:chips,C:white}X#1#{} {C:inactive}Chips and {}{X:mult,C:white}X#2#{}{C:inactive} Mult.){}"
-        }
-    },
 
     in_pool = function(self, args)
         return true
@@ -926,16 +829,6 @@ SMODS.Joker {
             xmult = 1.1,
             xmult_add = 0.01,
             xmult_add_mod = 2
-        }
-    },
-    loc_txt = {
-        name = "{C:enhanced}TRUE HYPER SONIC{}",
-        text = {
-            "Discarded cards, cards played, cards scored,",
-            "cards held in hands, used discards, and played hands",
-            "contribute to this joker's {X:mult,C:white}XMult{} by {X:dark_edition,C:white}+#2#{}.",
-            "Selecting a blind multiplies added {X:mult,C:white}XMult{} by {X:dark_edition,C:white}X#3#{}.",
-            "{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}",
         }
     },
     
@@ -1167,15 +1060,6 @@ SMODS.Joker {
             dollars = 4,
         },
 },
-    loc_txt = {
-        name = "{C:white,E:1,s:2}DREAM{} {C:hearts,E:1,s:2}ENA{}",
-        text = {
-            "Spawns a random free voucher in the shop.",
-            "Gains {X:gold,C:white}X$#1#{} and {C:attention}+#2#{} {C:attention}Joker Slots{}",
-            "per redeemed voucher.",
-            "{C:inactive}(Raked in dough from bought vouchers: {}{C:money}$#3#{C:inactive}.){}"
-        }
-    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -1220,13 +1104,6 @@ SMODS.Joker {
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    loc_txt = {
-        name = "{C:blue,E:1,s:2}MAXWELL{}",
-        text = {
-            "For {C:attention}every card held in hand{}, create a {C:attention}random{} {C:dark_edition}negative{} {C:attention}consumable{}.",
-            "Sell this joker to spawn a {C:dark_edition}negative{} {V:1,E:1,s:1.5}Dream{} {C:attention}card{}."
-        }
-    },
     loc_vars = function(self, info_queue, card)
 		return { vars = { colours = {HEX('b00b69')} } }
     end,
@@ -1282,23 +1159,6 @@ SMODS.Joker{
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    loc_txt = {
-        name = "{C:spectral,s:2}NEO METAL SONIC{}",
-        text = {
-            "Does {C:green}1 of 8{} effects at random when scoring or using discards:",
-            "1. Creates {C:attention}#1#{} random {C:dark_edition}Negative{} consumables.",
-            "2. Adds {C:attention}#2#{} hand(s) and discard(s).",
-            "3. Adds {C:dark_edition}+#3#{} joker slot(s).",
---            "4. Multiplies your Money by X#2#, no limits.",
-            "4. Doubles your Money, no limits.",
-            "5. Removes the stickers of all your jokers.",
---            "6. Squares all of your current {C:chips}chips{} and {C:mult}mult{} by {X:spectral,C:white}^#4#{}.",
-            "6. Adds {C:attention}+#4#{} consumable slot(s).",
-            "7. Creates a {C:attention}Double Tag{}.",
-            "8. Creates {c:attention}#5#{} random {C:dark_edition}Negative{} perishable jokers from this mod.",
-            "{C:diamonds}(WARNING: VERY UNSTABLE){}"
-        }
-    },
     loc_vars = function(self, info_queue, card)
         return { vars = { 
         math.min(card.ability.extra.randomitems,card.ability.immutable.totalitems),
@@ -1427,14 +1287,6 @@ end
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    loc_txt = {
-        name = "{s:2,C:legendary}SPY{}",
-        text = {
-            "When {C:attention}selecting blind{},",
-            "Destroy the {C:attention}joker{} to the right",
-            "to create a joker of {C:white,B:1}Any#1#Rarity{}."
-        }
-    },
     loc_vars = function(self, info_queue, card)
 		return { vars = { " ", colours = { SMODS.Gradients["busterb_epileptic"] } } }
     end,
