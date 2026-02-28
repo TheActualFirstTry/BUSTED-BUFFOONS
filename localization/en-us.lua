@@ -392,7 +392,7 @@ return {
 				["name"] = "Thanos",
 				["text"] = {
 					"If {C:attention}blind{} is {C:attention}beaten{} in {C:attention}one hand",
-					"create 2 {V:1}Infinity{} cards",
+					"create 1 {V:1}Infinity{} card",
 				},
 			},
 			["j_busterb_lapis"] = {
