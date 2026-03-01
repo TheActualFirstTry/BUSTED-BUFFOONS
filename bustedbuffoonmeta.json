@@ -8,7 +8,7 @@
     "description":	"A small content mod containing jokers i made in my free time, feel free to throw tomatoes. I highly suggest you play this mod with cryptid, even though it can work without it. Music Credits: NI4NI - Vylet Pony",
     "prefix": "busterb",
     "main_file": "bustedbuffoons.lua",
-    "version": "1.2.2a",
+    "version": "1.3a",
 	"badge_colour": "B21F5C",
 	"badge_text_colour": "FBBAE4",
 	"priority":"99999",
@@ -21,4 +21,5 @@
 	],
 	"conflicts": [
 	],
+
 }
