@@ -476,6 +476,8 @@ return {
 					"{C:green}Your balance will be inversed",
 					"{C:green}and you are taken to the next ante",
 					"{C:green}but in exchange, you are given a choice.",
+					"{C:inactive,s:0.8}good luck figuring out how to use it",
+					"{C:inactive,s:0.6}yes it works, i tested this myself a number of times"
 				},
 			},
 		},
