@@ -744,7 +744,7 @@ return {
 			["c_busterb_demiurgos"] = {
 				["name"] = "Demiurgos",
 				["text"] = {
-					"Deestroy {C:attention}#1#{} selected Joker#<s>1#",
+					"Destroy {C:attention}#1#{} selected Joker#<s>1#",
 					"{C:inactive}(Bypasses Eternal){}",
 				},
 			},
