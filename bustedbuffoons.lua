@@ -4,6 +4,9 @@ SMODS.Atlas{
 	px = 34,
 	py = 34
 }
+
+
+--assert(SMODS.load_file("items/otherfunctionalities.lua"))()
 assert(SMODS.load_file("items/thanks900n1.lua"))()
 assert(SMODS.load_file("items/gradients.lua"))()
 assert(SMODS.load_file("items/rarities.lua"))()
@@ -11,9 +14,13 @@ assert(SMODS.load_file("items/pools.lua"))()
 assert(SMODS.load_file("items/thanksrattlingsnow.lua"))()
 assert(SMODS.load_file("items/spectrals.lua"))()
 assert(SMODS.load_file("items/infinity.lua"))()
+assert(SMODS.load_file("items/enhancement.lua"))()
+assert(SMODS.load_file("items/tarots.lua"))()
 assert(SMODS.load_file("items/packs.lua"))()
 assert(SMODS.load_file("items/rarejoker.lua"))()
 assert(SMODS.load_file("items/dreamyjokers.lua"))()
+assert(SMODS.load_file("items/legendary.lua"))()
+assert(SMODS.load_file("items/evilbuttons.lua"))()
 assert(SMODS.load_file("items/hyperjokers.lua"))()
 assert(SMODS.load_file("items/deck.lua"))()
 assert(SMODS.load_file("items/grandjokers.lua"))()
@@ -34,7 +41,10 @@ SMODS.current_mod.optional_features = function()
 	},
 }
 end
-
+SMODS.Sound{
+    key = "cashregister",
+    path = "cashregister.ogg"
+}
 to_big = to_big or function(x) return x end
 to_number = to_number or function(x) return x end
 
