@@ -185,7 +185,7 @@ SMODS.Joker {
         return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod } }
     end,
     calculate = function(self, card, context)
-        if context.selling_card and context.card.config.center.pools['Food'] then
+        if context.selling_card and context.card:is_food() then
             local totalmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
