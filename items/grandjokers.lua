@@ -589,7 +589,7 @@ SMODS.Joker{
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
-    cost = 1e100,
+    cost = 500,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
