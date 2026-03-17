@@ -382,7 +382,7 @@ return {
 			["j_busterb_susie"] = {
 				["name"] = "Susie (and Kris)",
 				["text"] = {
-					"Deals {X:mult,C:white}X#3#{} Mult whenever an {C:attention}Ace{} is scored.",
+					"{X:mult,C:white}X#3#{} Mult whenever an {C:attention}Ace{} is scored.",
 					"{s:0.8,C:inactive}({}{s:0.8,C:green}#1# in #2# chance{}{s:0.8,C:inactive} when scoring cards to spawn a {}{s:0.8,C:red}Red Seal{} {s:0.8}Steel{} {C:dark_edition,s:0.8}Polychrome{}{C:attention,s:0.8} Ace{}{C:inactive,s:0.8}.){}",
 				},
 			},
