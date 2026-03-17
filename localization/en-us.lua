@@ -289,8 +289,8 @@ return {
 				["name"] = "{C:gold,E:1,s:2}SISYPHUS PRIME{}",
 				["text"] = {
 					"After selecting a {C:attention}Boss Blind{},",
-					"Gains {C:attention}X#3#{} {X:chips,C:white}XChips{} and {C:gold}+#4#${}",
-					"{C:inactive}(Current: {}{X:chips,C:white}X#1#{}{C:inactive}, {}{C:money}$#2#{C:inactive} per blind)",
+					"Gains {C:attention}X#3#{} {X:mult,C:white}XMult{} and {C:gold}+#4#${}",
+					"{C:inactive}(Current: {}{X:mult,C:white}X#1#{}{C:inactive}, {}{C:money}$#2#{C:inactive} per blind)",
 				},
 			},
 			["j_busterb_vigilante"] = {
@@ -407,9 +407,9 @@ return {
 				["name"] = "{C:dark_edition}MINOS PRIME{}",
 				["text"] = {
 					"Create {C:attention}#3#{} Random {C:dark_edition}Negative{} {C:spectral}Spectral{} cards",
-					"per {C:attention}discard{}, gaining {X:mult,C:white}X#2#{} Mult",
+					"per {C:attention}discard{}, gaining {X:chips,C:white}X#2#{} Chips",
 					"for each {C:spectral}Spectral{} card created",
-					"{C:inactive}(Currently {X:mult,C:white}X#1#{} {C:inactive}Mult){}",
+					"{C:inactive}(Currently {X:chips,C:white}X#1#{} {C:inactive}){}",
 				},
 			},
 			["j_busterb_isaac"] = {
