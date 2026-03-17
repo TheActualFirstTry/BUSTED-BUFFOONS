@@ -94,6 +94,14 @@ SMODS.ObjectType{
 --    shop_rate = 0.1
 }
 SMODS.ObjectType{
+    key = "Other",
+    default = "j_busterb_hilgard",
+    cards = {},
+    inject = function(self)
+        SMODS.ObjectType.inject(self)
+    end,
+}
+SMODS.ObjectType{
     key = "inf_packs",
     default = "inf_pack_1",
     cards = {},

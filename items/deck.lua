@@ -122,3 +122,26 @@ SMODS.Back {
 }))
 end
 }
+SMODS.Atlas {
+    key = "atlas_sttgl",
+    path = "STTGL.png",
+    px = 71,
+    py = 95
+}
+SMODS.Back {
+    key = "sttgl",
+    atlas = "atlas_sttgl",
+    pos = { x = 0, y = 0 },
+    config = { operator = 1, ante = 24 },
+    loc_vars = function(self, info_queue, back)
+    return {vars = { self.config.ante, self.config.operator }}
+    end,
+    apply = function(self, back)
+        G.GAME.win_ante = G.GAME.win_ante + self.config.ante
+end,
+calculate = function(self, card, context)
+    if context.ante_change then
+        change_operator(self.config.operator)
+    end
+	end,
+}

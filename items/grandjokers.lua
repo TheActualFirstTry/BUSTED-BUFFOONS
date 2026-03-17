@@ -1,5 +1,3 @@
-
---ease_background_colour { new_colour = G.C.WHITE, special_colour = HEX('b00b69'), tertiary_colour = G.C.BLACK, contrast = 2 }
 SMODS.Atlas{
     key = "Grandholder",
     path = "Grandholder.png",
@@ -50,7 +48,7 @@ SMODS.Joker{
             for _, scored_card in ipairs(context.scoring_hand) do
                 if scored_card:is_face() then
                 faces = faces + 1
-                scored_card:set_ability('m_glass', nil, true)
+                scored_card:set_ability('m_busterb_crystallized', nil, true)
                 G.E_MANAGER:add_event(Event({
                         func = function()
                             scored_card:juice_up()
@@ -577,4 +575,66 @@ key = "doise",
         end
     end
 end
+}
+SMODS.Atlas{
+    key = "orange",
+    path = "TSC.png",
+    px = 71,
+    py = 95
+}
+SMODS.Joker{
+    key = "tsc",
+    atlas = "orange",
+    rarity = "busterb_Grandiose",
+    pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    cost = 1e100,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    config = {
+        extra = {
+            eechips = 1,
+            eechipsincrement = 0.01,
+        },
+        immutable = {
+            eecap = 700,
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+		return { vars = { 
+            card.ability.extra.eechips, 
+            card.ability.extra.eechipsincrement, 
+            " "} }
+    end,
+    calculate = function(self, card, context)
+
+        if context.joker_main then
+            return {
+                eechips = card.ability.extra.eechips
+            }
+        end
+        if context.end_of_round and context.main_eval and not context.blueprint then
+                for k, v in pairs(G.hand.cards) do
+                G.E_MANAGER:add_event(Event({
+                    trigger = "before",
+                    delay = 0.6,
+                    func = function()
+                        v:juice_up()
+                        if v.config.center_key == "c_base" then
+                            v:set_ability(G.P_CENTERS.m_busterb_nanotech)
+                            v:set_edition(nil)
+                            v:set_seal(nil)
+                            play_sound('generic1', math.random()*0.2 + 0.9,0.5)
+                            card.ability.extra.eechips = card.ability.extra.eechips + card.ability.extra.eechipsincrement
+                            SMODS.calculate_effect({ message = "^^"..(card.ability.extra.eechips + card.ability.extra.eechipsincrement).." Chips", colour = SMODS.Gradients["busterb_eechipsgradient"], instant = true}, card)
+                        end
+                        return true
+                    end
+                })) 
+            end
+        end
+    end
 }

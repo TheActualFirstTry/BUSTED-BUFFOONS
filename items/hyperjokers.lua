@@ -74,12 +74,14 @@ SMODS.Joker {
                 end
             end
             if ace_count >= 4 or face_count >= 4 then
-                card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-                return {
-                    message = "Boost!",
-                    colour = G.C.MULT,
-                    card = card
-                }
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "xmult",
+                scalar_value = "xmult_mod",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.xmult + card.ability.extra.xmult_mod).. " Mult",
+                colour = G.C.MULT
+            }})
             end
         end
 
@@ -95,13 +97,15 @@ SMODS.Joker {
 
         -- Adds stockpile power at the start of the round
         if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then
-            card.ability.extra.stockpile_return = card.ability.extra.stockpile_return + card.ability.extra.stockpile_add
-            card.ability.extra.stockpile = card.ability.extra.stockpile_return
-            return {
-                message = "+" .. card.ability.extra.stockpile_return .. " Power!",
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "stockpile_return",
+                scalar_value = "stockpile_add",
+                scaling_message = {
+                message = "+" .. card.ability.extra.stockpile_add .. " Power!",
                 colour = G.C.DARK_EDITION,
-                card = card
-            }
+            }})
+            card.ability.extra.stockpile = card.ability.extra.stockpile_return
         end
     end
 }
@@ -133,14 +137,14 @@ SMODS.Joker {
     soul_pos = { x = 1, y = 1 },
     config = {
         extra = {
-            xmult = 1,
-            xmult_mod = 2,
+            xchips = 1,
+            xchips_mod = 2,
             cards_per_discard = 2
         },
     },
     loc_vars = function(self, info_queue, card)
         return {
-            vars = { to_big(card.ability.extra.xmult), card.ability.extra.xmult_mod, card.ability.extra.cards_per_discard }
+            vars = { to_big(card.ability.extra.xchips), card.ability.extra.xchips, card.ability.extra.cards_per_discard }
         }
     end,
 calculate = function(self, card, context)
@@ -155,33 +159,26 @@ calculate = function(self, card, context)
             end
         end
         G.GAME.consumeable_buffer = G.GAME.consumeable_buffer - total_created
-        if total_created > 0 then
-            card.ability.extra.xmult = card.ability.extra.xmult + total_created * card.ability.extra.xmult_mod
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    card:juice_up(0.3, 0.5)
-                    return true
-                end
-            }))
-            return {
-                message = localize("k_upgrade_ex"),
-                colour = G.C.MULT,
-                sound = "busterb_die",
-                card = card
-            }
+        SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "xchips",
+                scalar_value = "xchips_mod",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.xchips + card.ability.extra.xchips_mod).. " Chips",
+                colour = G.C.CHIPS
+            }})
         end
-    end
     if context.joker_main then
-        if to_big(card.ability.extra.xmult) > to_big(1) then
+        if to_big(card.ability.extra.xchips) > to_big(1) then
             return {
                 message = localize({
                     type = "variable",
-                    key = "a_xmult",
-                    vars = { number_format(card.ability.extra.xmult) }
+                    key = "a_xchips",
+                    vars = { number_format(card.ability.extra.xchips) }
                 }),
-                Xmult_mod = to_big(card.ability.extra.xmult),
+                xchips = to_big(card.ability.extra.xchips),
                 sound = "busterb_judgement",
-                colour = G.C.MULT,
+                colour = G.C.CHIPS,
                 card = card
             }
         end
@@ -265,6 +262,12 @@ SMODS.Joker {
                 if not playing_card.edition or not playing_card.edition.polychrome then
                     playing_card:set_edition('e_polychrome', true)
                     polychrome_cards = polychrome_cards + 1
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            playing_card:juice_up()
+                            return true
+                        end
+                    }))
                 end
             end
             if polychrome_cards > 0 then
@@ -496,10 +499,11 @@ SMODS.Joker {
     calculate = function(self, card, context)
         if context.joker_main then
             return {
-                x_asc = card.ability.extra.xchips,
+                
+                xmult = card.ability.extra.xasc,
                 message = "Destroy!",
                 sound = "busterb_destroy",
-                colour = G.C.GOLD
+                colour = G.C.MULT
             }
         end
 
@@ -1036,10 +1040,7 @@ SMODS.Atlas {
 
 -- ENA
 
-SMODS.Sound{
-    key = "cashregister",
-    path = "cashregister.ogg"
-}
+
 SMODS.Joker {
     key = "dreamena",
     atlas = "Atlas_Fantastic",
@@ -1064,7 +1065,7 @@ SMODS.Joker {
         return {
             vars = {
                 card.ability.extra.money_multiplier,
-                card.ability.extra.joker_slots,
+                math.min(100, card.ability.extra.joker_slots),
 				card.ability.extra.dollars
             }
         }
@@ -1079,7 +1080,7 @@ SMODS.Joker {
         end
         -- Buying a voucher increases moneys and joker slots
         if context.buying_card and context.card.ability.set == "Voucher" then
-            G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + math.min(100, to_big(card.ability.extra.joker_slots)))
+            G.jokers:change_size(math.min(100, card.ability.extra.joker_slots))
             card.ability.extra.dollars = lenient_bignum(card.ability.extra.dollars * card.ability.extra.money_multiplier)
             card.ability.extra.triggered = false
             play_sound("busterb_cashregister")

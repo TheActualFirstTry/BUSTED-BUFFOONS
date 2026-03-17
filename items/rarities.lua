@@ -34,3 +34,12 @@ SMODS.Rarity {
         return weight
     end,
 }
+SMODS.Rarity {
+    key = "Other",
+    default_weight = 0,
+    pools = { ["Other"] = true },
+    badge_colour = HEX('000000'),
+    get_weight = function(self, weight, object_type)
+        return weight
+    end,
+}

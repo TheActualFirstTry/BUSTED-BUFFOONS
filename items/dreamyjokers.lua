@@ -393,7 +393,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 0 },
-    config = { immutable = { boss_size = 2 } },
+    config = { immutable = { boss_size = 1.25 } },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.immutable.boss_size } }
@@ -534,7 +534,7 @@ SMODS.Joker{
 		return { vars = { card.ability.extra.mult, card.ability.extra.xmult, card.ability.extra.powerup, colours = {HEX('FFB570')} } }
 	end,
     calculate = function(self, card, context)
-        if context.after and SMODS.last_hand_oneshot then
+        if SMODS.last_hand_oneshot and context.after and context.main_eval and not context.blueprint then
         SMODS.add_card{set="Infinity"}
         SMODS.calculate_effect({message = "+1 Infinity Card", colour = HEX('FFB570')}, card)
         end

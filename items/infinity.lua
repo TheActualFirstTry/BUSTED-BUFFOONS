@@ -181,7 +181,7 @@ SMODS.Consumable {
     config = {
     extra = {
         min = 10,
-        max = 100
+        max = 1000
     }
   },
 can_use = function(self, card)
@@ -224,7 +224,7 @@ SMODS.Consumable {
     config = {
     extra = {
         min = 10,
-        max = 100
+        max = 1000
     }
   },
 can_use = function(self, card)
@@ -290,6 +290,273 @@ loc_vars = function(self, info_queue, card)
         end
         delay(0.6)
     end,
+   draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
+    end
+}
+
+SMODS.Atlas {
+    key = "atlas_Manny",
+    path = "Manny.png",
+    px = 71,
+    py = 95
+}
+SMODS.Consumable {
+    key = 'manny',
+    set = 'Infinity',
+    atlas = "atlas_Manny",
+    pos = { x = 0, y = 0 },
+    config = {
+    extra = {
+        min = 10,
+        max = 1000
+    }
+  },
+can_use = function(self, card)
+    return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    end,
+loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra, colours = {HEX('E36956')} } }
+	end,
+  use = function(self, card, area, copier)
+    for i, v in ipairs(G.hand.cards) do
+        local randommoney = (pseudorandom(pseudoseed("busterb_randommoney"), self.config.extra.min, self.config.extra.max) / 100)
+				if v ~= card then
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        func = function()
+                            v.ability.perma_p_dollars = v.ability.perma_p_dollars + randommoney
+                            v:juice_up(0.3, 0.3)
+                            play_sound("tarot1")
+                            return true
+                        end
+                    }))
+                end
+            end
+        end,
+   draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
+    end
+}
+
+SMODS.Atlas {
+    key = "atlas_Jackal",
+    path = "Jackal.png",
+    px = 71,
+    py = 95
+}
+SMODS.Consumable {
+    key = 'jackal',
+    set = 'Infinity',
+    atlas = "atlas_Jackal",
+    pos = { x = 0, y = 0 },
+    config = {
+    extra = {
+        min = 1,
+        max = 5
+    }
+  },
+can_use = function(self, card)
+    return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    end,
+loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra, colours = {HEX('E36956')} } }
+	end,
+  use = function(self, card, area, copier)
+    for i, v in ipairs(G.hand.cards) do
+        local randomrepeat = (pseudorandom(pseudoseed("busterb_randomrepeat"), self.config.extra.min, self.config.extra.max))
+				if v ~= card then
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        func = function()
+                            v.ability.perma_repetitions = v.ability.perma_repetitions + randomrepeat
+                            v:juice_up(0.3, 0.3)
+                            play_sound("tarot1")
+                            return true
+                        end
+                    }))
+                end
+            end
+        end,
+   draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
+    end
+}
+SMODS.Atlas {
+    key = "atlas_BlackBerserker",
+    path = "BlackBerserk.png",
+    px = 71,
+    py = 95
+}
+--literally adversary
+SMODS.Consumable {
+    key = 'blackberserker',
+    set = 'Infinity',
+    atlas = "atlas_BlackBerserker",
+    pos = { x = 0, y = 0 },
+    config = {
+    extra = {
+        min = 1,
+        max = 5
+    }
+  },
+	can_use = function(self, card)
+		return #G.jokers.cards > 0
+	end,
+	use = function(self, card, area, copier)
+		local used_consumable = copier or card
+		local target = #G.jokers.cards == 1 and G.jokers.cards[1] or G.jokers.cards[math.random(#G.jokers.cards)]
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.4,
+			func = function()
+				play_sound("tarot1")
+				used_consumable:juice_up(0.3, 0.5)
+				return true
+			end,
+		}))
+		for i = 1, #G.jokers.cards do
+			local percent = 1.15 - (i - 0.999) / (#G.jokers.cards - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					G.jokers.cards[i]:flip()
+					play_sound("card1", percent)
+					G.jokers.cards[i]:juice_up(0.3, 0.3)
+					return true
+				end,
+			}))
+		end
+		delay(0.2)
+		for i = 1, #G.jokers.cards do
+			local CARD = G.jokers.cards[i]
+			local percent = 0.85 + (i - 0.999) / (#G.jokers.cards - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					CARD:flip()
+					if not CARD.edition then
+						CARD:set_edition({ negative = true })
+					end
+					play_sound("card1", percent)
+					CARD:juice_up(0.3, 0.3)
+					return true
+				end,
+			}))
+		end
+		delay(0.2)
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.4,
+			func = function()
+				play_sound("tarot2")
+				used_consumable:juice_up(0.3, 0.5)
+				return true
+			end,
+		}))
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				ease_ante(1)
+				return true
+			end,
+		}))
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
+   draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
+    end
+}
+
+SMODS.Atlas {
+    key = "atlas_Metamon",
+    path = "Ditto.png",
+    px = 71,
+    py = 95
+}
+SMODS.Consumable {
+    key = 'metamon',
+    set = 'Infinity',
+    atlas = "atlas_Metamon",
+    pos = { x = 0, y = 0 },
+        config = { extra = { jokers = 1 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.jokers } }
+    end,
+
+    can_use = function(self, card)
+        local highlighted = Cryptid.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)
+        return #highlighted <= card.ability.extra.jokers and #highlighted > 0
+    end,
+
+    use = function(self, card, area, copier)
+        for i, c in ipairs(Cryptid.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
+            local copy = copy_card(c)
+            copy:set_edition("e_negative", true)
+            G.jokers:emplace(copy)
+        end
+    end,
+
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end,
+
+   draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
+    end
+}
+
+SMODS.Atlas {
+    key = "atlas_Demiurgos",
+    path = "Demi.png",
+    px = 71,
+    py = 95
+}
+SMODS.Consumable {
+    key = 'demiurgos',
+    set = 'Infinity',
+    atlas = "atlas_Demiurgos",
+    pos = { x = 0, y = 0 },
+        config = { extra = { jokers = 1 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.jokers } }
+    end,
+
+    can_use = function(self, card)
+        local highlighted = Cryptid.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)
+        return #highlighted <= card.ability.extra.jokers and #highlighted > 0
+    end,
+
+    use = function(self, card, area, copier)
+        for i, v in pairs(Cryptid.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
+            if not v.entr_aleph then
+                v:start_dissolve()
+            end
+        end
+    end,
+
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end,
+
    draw = function(self, card, layer)
         if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
             card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
