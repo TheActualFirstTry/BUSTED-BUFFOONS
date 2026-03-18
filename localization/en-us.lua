@@ -32,6 +32,7 @@ return {
 					"i made in my free time, feel free to throw tomatoes.",
 					"I highly suggest you play this mod with {C:white,X:spectral}Cryptid{}",
 					"even though it can work without it.",
+					"{s:0.1}poop",
 					"{s:0.5,C:inactive}--------------------------------------------------------------------------------------------------------------------------------------",
 					"{s:2,C:attention}Music Credits:",
 					"",
