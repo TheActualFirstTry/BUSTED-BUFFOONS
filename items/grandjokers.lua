@@ -25,7 +25,7 @@ SMODS.Joker{
     key = "igor",
     atlas = "a_igor",
     pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     rarity = "busterb_Grandiose",
     cost = 500,
@@ -93,7 +93,7 @@ SMODS.Joker{
     key = "asriel",
     atlas = "Flowey",
     pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     rarity = "busterb_Grandiose",
     cost = 500,
@@ -179,7 +179,7 @@ SMODS.Joker{
     key = "joker",
     atlas = "jimbussy",
     pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     rarity = "busterb_Grandiose",
     cost = 500,
@@ -200,7 +200,7 @@ calculate = function(self, card, context)
   if context.ante_change or context.forcetrigger then
     for i, joker in ipairs(G.jokers.cards) do
         if joker.config.center.key ~= "j_busterb_joker" then
-        Cryptid.manipulate(joker, { value = card.ability.immutable.valuemodification })
+        Spectrallib.manipulate(joker, { value = card.ability.immutable.valuemodification })
       end
     end
     SMODS.calculate_effect({message = "X" ..card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_balatro"], card = card})
@@ -273,7 +273,7 @@ SMODS.Joker{
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     cost = 500,
     discovered = true,
     unlocked = true,
@@ -347,7 +347,7 @@ SMODS.Joker{
     key = "peddito",
     atlas = "a_peddito",
     pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     rarity = "busterb_Grandiose",
     cost = 500,
@@ -442,7 +442,7 @@ SMODS.Joker{
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     cost = 500,
     discovered = true,
     unlocked = true,
@@ -456,26 +456,21 @@ SMODS.Joker{
             xmultmod = 10,
             emultmod = 1
         },
-        immutable = {
-        }
     },
     loc_vars = function(self, info_queue, card)
 		return { 
             background_colour = G.C.BLACK,
             text_colour = G.C.WHITE,
             vars = { 
-            " ",
             card.ability.extra.xmult,
             card.ability.extra.emult,
             card.ability.extra.xmultmod,
-            card.ability.extra.emultmod,
-            colours = { SMODS.Gradients["busterb_eemultgradient"] }
+            card.ability.extra.emultmod
         } }
     end,
     calculate = function(self, card, context)
         if context.joker_main then
             return{
-                message = "X "..card.ability.extra.xmult.." Mult/ ^ "..card.ability.extra.emult.. " Mult",
                 xmult = card.ability.extra.xmult,
                 emult = card.ability.extra.emult,
                 sound = "busterb_explode",
@@ -527,7 +522,7 @@ key = "doise",
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     cost = 500,
     discovered = true,
     unlocked = true,
@@ -588,7 +583,7 @@ SMODS.Joker{
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     cost = 500,
     discovered = true,
     unlocked = true,
@@ -623,13 +618,17 @@ SMODS.Joker{
                     delay = 0.6,
                     func = function()
                         v:juice_up()
-                        if v.config.center_key == "c_base" then
+                        if v.config.center_key ~= "m_busterb_nanotech" then
                             v:set_ability(G.P_CENTERS.m_busterb_nanotech)
                             v:set_edition(nil)
                             v:set_seal(nil)
                             play_sound('generic1', math.random()*0.2 + 0.9,0.5)
-                            card.ability.extra.eechips = card.ability.extra.eechips + card.ability.extra.eechipsincrement
-                            SMODS.calculate_effect({ message = "^^"..(card.ability.extra.eechips + card.ability.extra.eechipsincrement).." Chips", colour = SMODS.Gradients["busterb_eechipsgradient"], instant = true}, card)
+                            SMODS.scale_card(card, {
+                                ref_table = card.ability.extra,
+                                ref_value = "eechips",
+                                scalar_value = "eechipsincrement",
+                                colour = SMODS.Gradients["busterb_eechipsgradient"]
+                            })
                         end
                         return true
                     end
@@ -637,4 +636,301 @@ SMODS.Joker{
             end
         end
     end
+}
+
+SMODS.Atlas{
+    key = "hellsing",
+    path = "Alucard.png",
+    px = 71,
+    py = 95
+}
+--
+SMODS.Joker{
+    key = "alucard",
+    rarity = "busterb_Grandiose",
+    pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    atlas = "hellsing",
+    blueprint_compat = true,
+    demicoloncompat = true,
+    discovered = true,
+    unlocked = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    cost = 500,
+    config = {
+        extra = {
+            eemult = 1,
+            eemult_gain = 0.1,
+        },
+    },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.extra.eemult,
+                card.ability.extra.eemult_gain,
+                colours = { HEX("BC1006") }
+            },
+        }
+    end,
+
+    calculate = function(self, card, context)
+                if (context.before and not context.blueprint) or context.forcetrigger then
+            local scalar = 0
+
+            for _, card in ipairs(context.scoring_hand) do
+                if next(SMODS.get_enhancements(card)) and not card.debuff and not card.vampired then
+                    scalar = scalar + 1
+                    card.vampired = true
+                    card:set_ability("c_base", nil, true)
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            card:juice_up()
+                            card.vampired = nil
+                            return true
+                        end,
+                    }))
+                end
+            end
+            SMODS.scale_card(card, {
+                    ref_table = card.ability.extra,
+                    ref_value = "eemult",
+                    scalar_value = "gain",
+                    scalar_table = { gain = scalar * card.ability.extra.eemult_gain },
+                })
+        end
+        if context.discard then
+            context.other_card:set_ability('m_busterb_bloodmarked', nil, true)
+        end
+        if context.joker_main or context.forcetrigger then
+            return { eemult = card.ability.extra.eemult }
+        end
+    end,
+}
+
+SMODS.Atlas{
+    key = "vajra",
+    path = "Vajram.png",
+    px = 71,
+    py = 95
+}
+--
+SMODS.Joker{
+    key = "vajram",
+    rarity = "busterb_Grandiose",
+    pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    atlas = "vajra",
+    blueprint_compat = true,
+    demicoloncompat = true,
+    discovered = true,
+    unlocked = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    cost = 500,
+    config = {
+        extra = {
+            eemult = 1,
+            gauge = 1,
+            gauge_gain = 1
+        },
+        immutable = {
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.extra.eemult,
+                card.ability.extra.gauge,
+                card.ability.extra.gauge_gain,
+                 " ",
+                colours = { HEX("BC1006") }
+            },
+        }
+    end,
+
+    calculate = function(self, card, context)
+            if context.individual and context.cardarea == G.play then
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "gauge",
+                scalar_value = "gauge_gain",
+                scaling_message = {
+                        message = ( card.ability.extra.gauge + card.ability.extra.gauge_gain ) .. " Gauge",
+                        colour = HEX("BC1006"),
+                    },
+            })
+        end
+    if context.end_of_round and context.main_eval and not context.blueprint then
+        card.ability.extra.gauge = card.ability.extra.gauge * 0.25
+        SMODS.calculate_effect ({
+                    message = card.ability.extra.gauge .. " Gauge",
+                    colour = HEX("BC1006"),
+                    card = card
+                })
+        SMODS.scale_card(card, {
+                    ref_table = card.ability.extra,
+                    ref_value = "eemult",
+                    scalar_value = "gain",
+                    scalar_table = { gain = card.ability.extra.gauge * card.ability.extra.eemult },
+                    scaling_message = {
+                        message = "^^" .. ( card.ability.extra.gauge * card.ability.extra.eemult ) .. " Mult",
+                        colour = SMODS.Gradients["busterb_eemultgradient"]
+                    },
+                })
+    end
+        if context.joker_main then
+            return{
+                emult = card.ability.extra.gauge,
+                eemult = card.ability.extra.eemult,
+                colour = HEX("BC1006")
+            }
+        end
+end
+}
+SMODS.Atlas{
+    key = "a_caine",
+    path = "Caine.png",
+    px = 71,
+    py = 95
+}
+--
+SMODS.Joker{
+    key = "caine",
+    rarity = "busterb_Grandiose",
+    pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    atlas = "a_caine",
+    caine = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    discovered = true,
+    unlocked = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    cost = 500,
+    config = {
+        extra = {
+            more = 1,
+            redeem = 1
+        },
+        immutable = {
+            more = 1,
+            redeem = 1
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.extra.redeem,
+                card.ability.extra.more,
+                 " ",
+            },
+        }
+    end,
+
+    calculate = function(self, card, context)
+        if context.end_of_round and context.main_eval and not context.blueprint then
+            if context.beat_boss then
+                SMODS.scale_card(card, {
+                    ref_table = card.ability.extra,
+                    ref_value = "redeem",
+                    scalar_value = "more",
+                    scaling_message = {
+                        message = "+" .. card.ability.extra.more .. " Redeem",
+                        colour = HEX("48A0F8"),
+                    },
+                })
+            end
+        end
+        if context.cainebutton and card.ability.extra.redeem > 0 then
+            card.ability.extra.redeem = card.ability.extra.redeem - card.ability.immutable.more
+            SMODS.calculate_effect ({
+                    message = "-" .. card.ability.extra.more .. " Redeem",
+                    colour = HEX("48A0F8"),
+                    card = card
+                })
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                func = function()
+            
+                    local area
+                    if G.STATE == G.STATES.HAND_PLAYED then
+                        if not G.redeemed_vouchers_during_hand then
+                            G.redeemed_vouchers_during_hand =
+                                CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+                        end
+                        area = G.redeemed_vouchers_during_hand
+                    else
+                        area = G.play
+                    end
+                    local card = create_card("RedeemableBacks", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
+                    if card.config.center.key == "j_joker" then
+                        card:set_ability(G.P_CENTERS.b_red)
+                    end
+                    card:add_to_deck()
+                    area:emplace(card)
+                    card.cost = 0
+                    card:redeem_deck()
+                    return true
+                end
+            })
+            return nil, true
+        end
+    end
+}
+SMODS.Atlas{
+    key = "bigbang",
+    path = "BBD.png",
+    px = 71,
+    py = 95
+}
+SMODS.Joker{
+    key = "bbd",
+    rarity = "busterb_Grandiose",
+    pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    atlas = "bigbang",
+    blueprint_compat = true,
+    demicoloncompat = true,
+    discovered = true,
+    unlocked = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    cost = 500,
+    config = {
+        extra = {
+            pokerhand = 2,
+            asc = 5
+        },
+    },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.extra.pokerhand,
+                card.ability.extra.asc,
+                 " ",
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.before and G.GAME.current_round.hands_left == 0 then
+        return{
+                message = localize("k_upgrade_ex"),
+                colour = G.C.DARK_EDITION,
+                func = function()
+                    SMODS.upgrade_poker_hands{
+                        from = card,
+                        parameters = { "chips", "mult"},
+                        level_up = false,
+                        hands = context.scoring_name,
+                        StatusText = "^"..card.ability.extra.pokerhand,
+                        func = function (base, hand, param)
+                            return to_big(base):pow(card.ability.extra.pokerhand)
+                        end
+                    }
+                end,
+            }
+    end
+end
 }

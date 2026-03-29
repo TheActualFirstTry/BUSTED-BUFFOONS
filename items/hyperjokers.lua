@@ -878,12 +878,6 @@ SMODS.Joker {
         end
     end
 }
-SMODS.Atlas {
-    key = "placeholder",
-    path = "placeholder.png",
-    px = 71,
-    py = 95,
-}
 
 -- The Unholy Joker that is Sisyphus Prime v2, it's not finished yet, and i don't plan to finish it anytime soon, so i will leave it here to rot as if it was a dead god.
 

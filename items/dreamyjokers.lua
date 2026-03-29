@@ -20,6 +20,7 @@ SMODS.Joker {
         }
     },
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = {key = "c_busterb_Fantasy", set = "Spectral"}
         return { vars = { card.ability.extra.xchips, card.ability.extra.money, card.ability.extra.xchips_mod, card.ability.extra.dollar_mod } }
     end,
 
@@ -216,11 +217,11 @@ SMODS.Joker {
 		    	    end
 		        end
                 if G.jokers.cards[mypos - 1] then
-					Cryptid.manipulate(G.jokers.cards[mypos-1], { value = card.ability.extra.vm })
+					Spectrallib.manipulate(G.jokers.cards[mypos-1], { value = card.ability.extra.vm })
                 SMODS.calculate_effect({ message = "< X" ..card.ability.extra.vm, colour = G.C.FILTER}, card)
 				end 
                 if G.jokers.cards[mypos + 1] then
-					Cryptid.manipulate(G.jokers.cards[mypos+1], { value = card.ability.extra.vm })
+					Spectrallib.manipulate(G.jokers.cards[mypos+1], { value = card.ability.extra.vm })
                 SMODS.calculate_effect({ message = "X".. card.ability.extra.vm.. " >", colour = G.C.FILTER}, card)
 				end
 			end
@@ -246,7 +247,7 @@ SMODS.Joker {
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     config = { immutable = { roll_rounds = 0, total_rounds = 3, round_add = 1 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.immutable.roll_rounds, card.ability.immutable.total_rounds, colours = { HEX('b00b69'), HEX('2735cf') } } }
+        return { vars = { card.ability.immutable.roll_rounds, card.ability.immutable.total_rounds, colours = { HEX('b00b69'), HEX('5e7297') } } }
     end,
     calculate = function(self, card, context)
         if context.end_of_round and context.main_eval then
@@ -298,7 +299,7 @@ SMODS.Joker {
                     trigger = 'after',
                         delay = 0.4,
                         func = function()
-                            SMODS.calculate_effect({ message = "4", colour = HEX('2735cf')}, card)
+                            SMODS.calculate_effect({ message = "4", colour = HEX('5e7297')}, card)
                             SMODS.add_card({ set = "Dreamy", area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
                             return true
                         end
@@ -396,6 +397,7 @@ SMODS.Joker{
     config = { immutable = { boss_size = 1.25 } },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = "c_busterb_Fantasy", set = "Spectral"}
 		return { vars = { center.ability.immutable.boss_size } }
 	end,
     calculate = function(self, card, context)
@@ -587,4 +589,105 @@ SMODS.Joker{
                 end
             end
         
+}
+
+SMODS.Atlas{
+    key = "pep",
+    path = "pino.png",
+    px = 71,
+    py = 95
+}
+
+local PinoTalk = {
+    'Okay paisano, here is-a your order.',
+    'Enjoy-a your pizza.',
+    "Here, now move along! I have other things to do.",
+    "Hope this pays-a my debts.",
+    "Don't-a forget to leave a tip!",
+}
+local RarePino = {
+    "You're a pretty lucky one, aren't you?",
+    "Ooh, how do you know about-a this?",
+    "You've won the lottery, paisano!",
+    "This-a one is on the house!"
+}
+SMODS.Joker {
+    key = "peppino",
+    unlocked = false, 
+    atlas = "pep",
+    blueprint_compat = true,
+    pools = { ["Dreamy"] = true, ["bustjokers"] = true },
+    pino = true,
+    rarity = "busterb_Dreamy",
+    cost = 16,
+    pos = { x = 0, y = 0 },
+    config = { extra = { xmult = 1, xmult_mod = .5 }, immutable = { odds = 25 } },
+    loc_vars = function(self, info_queue, card)
+        local pinorare, pinoodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_pinorare')
+        return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod, pinorare, pinoodds } }
+    end,
+    calculate = function(self, card, context)
+        if context.pinobuy and (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) and G.GAME.dollars >= 5 then
+            if SMODS.pseudorandom_probability(card, 'busterb_pinorare', 1, card.ability.immutable.odds, 'busterb_pinorare', true) then
+                SMODS.add_card({ key = "c_busterb_special" })
+                play_sound('busterb_jackpot')
+                SMODS.calculate_effect{
+                        message = RarePino[math.random(#RarePino)],
+                        card = card
+                    }
+            else
+            ease_dollars(-5)
+            SMODS.add_card({ set = "Pizza", area = G.consumeables})
+            play_sound('busterb_cashregister')
+            SMODS.calculate_effect{
+                    message = PinoTalk[math.random(#PinoTalk)],
+                    card = card
+                }
+            end
+        end
+        if context.using_consumeable and context.consumeable.ability.set == "Pizza" then
+        SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "xmult",
+                scalar_value = "xmult_mod",
+                scaling_message = {
+                message = "X" .. (card.ability.extra.xmult + card.ability.extra.xmult_mod) .. " Mult",
+                colour = G.C.MULT
+            }})
+        end
+        if context.joker_main then
+            return { xmult = card.ability.extra.xmult }
+        end
+    end
+}
+SMODS.Atlas{
+    key = "n",
+    path = "Oise.png",
+    px = 71,
+    py = 95
+}
+SMODS.Joker{
+    key = "noise",
+    atlas = "n",
+    rarity = "busterb_Dreamy",
+    cost = 16,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 0 },
+    config = { 
+        extra = { 
+            hand = 1
+        } 
+    },
+    pools = { ["Dreamy"] = true, ["bustjokers"] = true },
+    loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.mult, card.ability.extra.xmult, card.ability.extra.powerup } }
+	end,
+    calculate = function(self, card, context)
+        if context.before and G.GAME.current_round.hands_left == 0 then
+            ease_hands_played(card.ability.extra.hand)
+        end
+    end
 }

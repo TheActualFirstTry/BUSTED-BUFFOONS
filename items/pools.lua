@@ -17,6 +17,31 @@ SMODS.ObjectType{
     end,
 }
 SMODS.Atlas {
+    key = "atlas_undiscovered_pizza",
+    path = "UndiscoveredPizza.png",
+    px = 71,
+    py = 95
+}
+SMODS.UndiscoveredSprite {
+    key = "Pizza",
+    atlas = "atlas_undiscovered_pizza",
+    pos = {
+        x = 0,
+        y = 0
+    }
+}
+SMODS.ConsumableType{
+    key = "Pizza",
+    default = "c_busterb_plain",
+    cards = {},
+    collection_rows = { 5, 5 },
+    primary_colour = HEX('bc1006'),
+    secondary_colour = HEX('7d0000'),
+    shop_rate = 0.5,
+    select_card = 'consumeables'
+}
+
+SMODS.Atlas {
     key = "atlas_undiscovered_inf",
     path = "UndiscoveredInf.png",
     px = 71,
@@ -104,6 +129,14 @@ SMODS.ObjectType{
 SMODS.ObjectType{
     key = "inf_packs",
     default = "inf_pack_1",
+    cards = {},
+    inject = function(self)
+        SMODS.ObjectType.inject(self)
+    end,
+}
+SMODS.ObjectType{
+    key = "pizzaboxes",
+    default = "pizzabox1",
     cards = {},
     inject = function(self)
         SMODS.ObjectType.inject(self)

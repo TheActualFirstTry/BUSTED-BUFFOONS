@@ -99,7 +99,7 @@ can_use = function(self, card)
 			for i, v in pairs(G.jokers.cards) do
 				if v ~= card then
 					if not Card.no(v, "immutable", true) then
-						Cryptid.manipulate(v, { value = self.config.extra })
+						Spectrallib.manipulate(v, { value = self.config.extra })
 						check = true
 					end
 				end
@@ -315,7 +315,7 @@ SMODS.Consumable {
     }
   },
 can_use = function(self, card)
-    return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    return #G.hand.cards > 0
     end,
 loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra, colours = {HEX('E36956')} } }
@@ -361,7 +361,7 @@ SMODS.Consumable {
     }
   },
 can_use = function(self, card)
-    return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    return #G.hand.cards > 0
     end,
 loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra, colours = {HEX('E36956')} } }
@@ -498,12 +498,12 @@ SMODS.Consumable {
     end,
 
     can_use = function(self, card)
-        local highlighted = Cryptid.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)
+        local highlighted = Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)
         return #highlighted <= card.ability.extra.jokers and #highlighted > 0
     end,
 
     use = function(self, card, area, copier)
-        for i, c in ipairs(Cryptid.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
+        for i, c in ipairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
             local copy = copy_card(c)
             copy:set_edition("e_negative", true)
             G.jokers:emplace(copy)
@@ -540,12 +540,12 @@ SMODS.Consumable {
     end,
 
     can_use = function(self, card)
-        local highlighted = Cryptid.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)
+        local highlighted = Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)
         return #highlighted <= card.ability.extra.jokers and #highlighted > 0
     end,
 
     use = function(self, card, area, copier)
-        for i, v in pairs(Cryptid.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
+        for i, v in pairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
             if not v.entr_aleph then
                 v:start_dissolve()
             end

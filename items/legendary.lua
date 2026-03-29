@@ -45,9 +45,9 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.discard then
-            context.other_card:set_ability('m_busterb_nanotech', nil, true)
-                elseif context.individual and context.cardarea == 'unscored' then
             context.other_card:set_ability('m_steel', nil, true)
+                elseif context.individual and context.cardarea == 'unscored' then
+            context.other_card:set_ability('m_busterb_nanotech', nil, true)
         end
     end
 }
@@ -268,7 +268,7 @@ SMODS.Joker {
     calculate = function(self, card, context)
     if G.GAME.current_round.hands_played == 0 and G.GAME.current_round.discards_used == 0 then
         for i = 1, #G.hand.cards do
-                if G.hand.cards[i].config.center.key == 'c_base' then
+                if G.hand.cards[i].config.center.key ~= 'm_busterb_electric' then
                     G.hand.cards[i]:set_ability('m_busterb_electric', nil, true)
                     G.hand.cards[i]:juice_up(0.3, 0.3)
                     play_sound("tarot1")
@@ -300,7 +300,7 @@ SMODS.Joker {
     soul_pos = { x = 3, y = 3 },
     config = { extra = { }, immutable = { characters = 3 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.immutable.characters, colours = {SMODS.Gradients["busterb_epileptic"]} } }
+        return { vars = { card.ability.immutable.characters, colours = {SMODS.Gradients["busterb_grand"]} } }
     end,
     calculate = function(self, card, context)
         if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then 
@@ -336,35 +336,35 @@ SMODS.Joker {
         if context.ending_shop then
             if card.ability.immutable.spent >= 5 then
                 SMODS.add_card{ set = "Tarot", edition = "e_negative" }
-                play_sound('busterb_cashregister')
+
             end
             if card.ability.immutable.spent >= 8 then
                 SMODS.add_card{ set = "Planet", edition = "e_negative" }
-                play_sound('busterb_cashregister')
+
             end
             if card.ability.immutable.spent >= 10 then
                 SMODS.add_card{ set = "Spectral", edition = "e_negative" }
-                play_sound('busterb_cashregister')
+
             end
             if card.ability.immutable.spent >= 12 then
                 SMODS.add_card{ set = "Joker", rarity = "Common", edition = "e_negative" }
-                play_sound('busterb_cashregister')
+
             end
             if card.ability.immutable.spent >= 15 then
                 SMODS.add_card{ set = "Joker", rarity = "Uncommon", edition = "e_negative" }
-                play_sound('busterb_cashregister')
+
             end
             if card.ability.immutable.spent >= 20 then
                 SMODS.add_card{ set = "Joker", rarity = "Rare", edition = "e_negative" }
-                play_sound('busterb_cashregister')
+
             end
             if card.ability.immutable.spent >= 50 then
                 SMODS.add_card{ set = "Dreamy", area = G.jokers, edition = "e_negative" }
-                play_sound('busterb_cashregister')
+
             end
             if card.ability.immutable.spent >= 100 then
                 SMODS.add_card{ set = "Joker", rarity = "Legendary", edition = "e_negative" }
-                play_sound('busterb_cashregister')
+
             end
                 if card.ability.immutable.spent >= 500 then
                 SMODS.add_card{ set = "Fantastic", area = G.jokers, edition = "e_negative" }
@@ -390,6 +390,7 @@ SMODS.Joker {
                 }
                 end
             card.ability.immutable.spent = 0
+            play_sound('busterb_cashregister')
             SMODS.calculate_effect({message = "Reset!", colour = G.C.DARK_EDITION}, card)
         end
     end
@@ -523,13 +524,13 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 3, y = 4 },
     soul_pos = { x = 3, y = 5 },
-    config = { extra = { xmult = 1, xmult_mod = .5 } },
+    config = { extra = { xmult = 1, xmult_mod = 1.5 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod } }
     end,
     calculate = function(self, card, context)
-        if context.greedbutton and G.GAME.dollars >= 5 then
-            ease_dollars(-5)
+        if context.greedbutton and G.GAME.dollars >= 10 then
+            ease_dollars(-10)
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "xmult",

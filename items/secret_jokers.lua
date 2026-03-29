@@ -127,6 +127,7 @@ SMODS.Joker{
         }
     },
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = {key = "c_busterb_mugen", set = "Spectral"}
 		return { vars = { 
             card.ability.extra.eemult,
             card.ability.extra.eemult_gain,
@@ -297,4 +298,144 @@ if context.individual
         end
 
     end,
+}
+
+SMODS.Atlas{
+    key = "a_hedera",
+    path = "Hedera.png",
+    px = 71,
+    py = 95
+}
+
+local function count_mod()
+    seen = {}
+    for _, c in ipairs(G.playing_cards or {}) do
+        local ed = c.edition and c.edition.key
+        local seal = c:get_seal()
+        local enh = (SMODS.get_enhancements(c))
+        if ed then seen[ed] = true end
+        if seal then seen[seal] = true end
+        for key in pairs(enh) do seen[key] = true end
+    end
+    local mods = 0
+for _, mod in pairs(seen) do
+  if mod then mods = mods + 1 end
+end
+return mods
+end
+
+SMODS.Joker{
+    key = "hedera",
+    atlas = "a_hedera",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true, ["bustjokers"] = true },
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    cost = 1e100,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    config = {
+        extra = {
+            cm = 0.33,
+        },
+        immutable = {
+
+        }
+    },
+
+    loc_vars = function(self, info_queue, card)
+        local cnt = count_mod()
+		return {
+            vars = {
+                (((card.ability.extra.cm * cnt) + 1)),
+                card.ability.extra.cm,
+            },
+        }
+    end,
+        calculate = function (self, card, context)
+        if context.before and not context.blueprint then
+            local cnt = count_mod()
+            local _handname, _played = 'High Card', -1
+            for hand_key, hand in pairs(G.GAME.hands) do
+                if hand.played > _played then
+                    _played = hand.played
+                    _handname = hand_key
+                end
+            end
+            local most_played = _handname
+            local cm = ((card.ability.extra.cm * cnt) + 1)
+            return {
+                message = localize("k_upgrade_ex"),
+                colour = G.C.DARK_EDITION,
+                func = function()
+                    SMODS.upgrade_poker_hands{
+                        from = card,
+                        parameters = { "chips", "mult"},
+                        level_up = false,
+                        hands = most_played,
+                        StatusText = "^^"..cm,
+                        func = function (base, hand, param)
+                            return to_big(base):arrow(2, cm)
+                        end
+                    }
+                end
+            }
+        end
+        if context.end_of_round and context.main_eval or context.forcetrigger then
+            local itemtray = {
+                "c_familiar",
+                "c_grim",
+                "c_incantation"
+            }
+                local g = pseudorandom_element(itemtray, "busterb_hedera")
+            SMODS.add_card({key = g, area = G.consumeables, edition = "e_negative", key_append = "busterb_hedera"})
+            end
+    end,
+}
+SMODS.Atlas{
+    key = "v",
+    path = "Vessel.png",
+    px = 71,
+    py = 95
+}
+SMODS.Joker{
+    key = "vessel",
+    atlas = "v",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true, ["bustjokers"] = true },
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    cost = 1e100,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = false,
+    eternal_compat = true,
+    config = { extra = {}, immutable = { score = 0, odds = 2 } },
+    loc_vars = function(self, info_queue, card)
+        local pinorare, pinoodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_unstable')
+        return { vars = { card.ability.immutable.score, pinorare, pinoodds } }
+    end,
+    calculate = function (self, card, context)
+        if context.final_scoring_step then
+            if SMODS.pseudorandom_probability(card, 'busterb_unstable', 1, card.ability.immutable.odds, 'busterb_unstable', true) then
+            G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.GAME.blind.chips = card.ability.immutable.score
+                        G.hand_text_area.blind_chips:juice_up()
+                        play_sound('tarot1')
+                        return true
+                    end
+                }))
+            else
+                return {
+                    xmult = card.ability.immutable.score,
+                    xchips = card.ability.immutable.score,
+                    colour = G.C.DARK_EDITION,
+                    score = card.ability.immutable.score
+                }
+        end
+    end
+end
 }

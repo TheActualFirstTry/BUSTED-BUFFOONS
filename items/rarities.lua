@@ -29,7 +29,7 @@ SMODS.Rarity {
     key = "Dreamy",
     default_weight = 0.01,
     pools = { ["Dreamy"] = true },
-    badge_colour = HEX('2735cf'),
+    badge_colour = HEX('5e7297'),
     get_weight = function(self, weight, object_type)
         return weight
     end,

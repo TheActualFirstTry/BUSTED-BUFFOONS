@@ -203,7 +203,7 @@ SMODS.Joker{
         }
     },
     loc_vars = function(self, info_queue, card)
-    return {vars = {card.ability.extra.xmultmod, card.ability.extra.xmult}}
+            return { key = (card.edition and card.edition.negative) and "j_busterb_roffle_heavy" or nil , vars = {card.ability.extra.xmultmod, card.ability.extra.xmult}}
     end,
     calculate = function(self, card, context)
     if context.cardarea == G.play then
@@ -250,32 +250,21 @@ SMODS.Joker{
     pos = { x = 0, y = 0 },
     config = {
         extra = {
-            xmultmod = 9,
-            xmult = 1,
-            nineodds = 9
+            perma = 9
         }
     },
         loc_vars = function(self, info_queue, card)
-            local ninechance, nineodds = SMODS.get_probability_vars(card, 1, card.ability.extra.nineodds, 'busterb_dukenines')
-                return {vars = { card.ability.extra.xmultmod, card.ability.extra.xmult, ninechance, nineodds }}
+                return {vars = { card.ability.extra.perma }}
             end,
         calculate = function(self, card, context)
             if context.individual and context.cardarea == G.play then
                 if context.other_card:get_id() == 9 then
-                    if SMODS.pseudorandom_probability(card, 'busterb_dukenines', 1, card.ability.extra.nineodds, 'busterb_dukenines') then
-                        card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmultmod
-                        return {
-                        message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } },
-                        colour = G.C.MULT,
-                        message_card = card
-                        }
-                    end
+                    context.other_card.ability.perma_mult = (context.other_card.ability.perma_mult or 0) + card.ability.extra.perma
+                    return {
+                message = localize('k_upgrade_ex'),
+                colour = G.C.MULT
+            }
                 end
-            end
-            if context.joker_main then
-                return {
-                    xmult = card.ability.extra.xmult
-                }
             end
         end
 }
