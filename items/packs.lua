@@ -1,6 +1,6 @@
 SMODS.Atlas {
     key = "inf_pack1",
-    path = "infpack1.png",
+    path = "InfPack1.png",
     px = 71,
     py = 95
 }
