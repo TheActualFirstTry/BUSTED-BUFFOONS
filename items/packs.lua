@@ -55,7 +55,7 @@ SMODS.Booster {
 
 SMODS.Atlas {
     key = "boxes",
-    path = "pizzabox.png",
+    path = "Pizzabox.png",
     px = 71,
     py = 95
 }
