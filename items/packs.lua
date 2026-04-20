@@ -65,6 +65,7 @@ SMODS.Booster {
     pos = { x = 0, y = 0 },
     pools = {["pizzaboxes"] = true, ["booster"] = true},
     discovered = true,
+    disable_shine = true,
     particles = function(self)
         G.booster_pack_sparkles = Particles(1, 1, 0, 0, {
             timer = 0.015,
@@ -114,6 +115,7 @@ SMODS.Booster {
     pos = { x = 1, y = 0 },
     pools = {["pizzaboxes"] = true, ["booster"] = true},
     discovered = true,
+    disable_shine = true,
     particles = function(self)
         G.booster_pack_sparkles = Particles(1, 1, 0, 0, {
             timer = 0.015,
@@ -162,6 +164,7 @@ SMODS.Booster {
     pos = { x = 2, y = 0 },
     pools = {["pizzaboxes"] = true, ["booster"] = true},
     discovered = true,
+    disable_shine = true,
     particles = function(self)
         G.booster_pack_sparkles = Particles(1, 1, 0, 0, {
             timer = 0.015,
@@ -210,6 +213,7 @@ SMODS.Booster {
     pos = { x = 3, y = 0 },
     pools = {["pizzaboxes"] = true, ["booster"] = true},
     discovered = true,
+    disable_shine = true,
     particles = function(self)
         G.booster_pack_sparkles = Particles(1, 1, 0, 0, {
             timer = 0.015,

@@ -11,7 +11,7 @@ SMODS.Rarity {
     key = "Secret",
     default_weight = 0,
     pools = { ["Secret"] = true },
-    badge_colour = SMODS.Gradients["busterb_epileptic"],
+    badge_colour = SMODS.Gradients["busterb_SecretG"],
     get_weight = function(self, weight, object_type)
         return weight
     end,

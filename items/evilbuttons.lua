@@ -65,7 +65,7 @@ function Card:highlight(is_highlighted)
             config = {
                 parent = self,
                 align = 'cm',
-                offset = { x = 0 , y = 1.5 },
+                offset = { x = 1.5 , y = 1 },
                 colour = G.C.CLEAR
             }
         })
@@ -79,7 +79,7 @@ function Card:highlight(is_highlighted)
             config = {
                 parent = self,
                 align = 'cm',
-                offset = { x = 0 , y = 1.5 },
+                offset = { x = 1.5 , y = 1 },
                 colour = G.C.CLEAR
             }
         })
@@ -93,7 +93,7 @@ function Card:highlight(is_highlighted)
             config = {
                 parent = self,
                 align = 'cm',
-                offset = { x = 0 , y = 1.75 },
+                offset = { x = 1.5 , y = 1 },
                 colour = G.C.CLEAR
             }
         })

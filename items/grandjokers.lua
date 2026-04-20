@@ -458,6 +458,7 @@ SMODS.Joker{
         },
     },
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.j_gros_michel
 		return { 
             background_colour = G.C.BLACK,
             text_colour = G.C.WHITE,

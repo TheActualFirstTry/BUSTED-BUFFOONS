@@ -36,7 +36,8 @@ can_use = function(self, card)
                  v.rarity == "jen_transcendent" or
                  v.rarity == "jen_omegatranscendent" or
                  v.rarity == "jen_omnipotent" or 
-                 v.rarity == "jen_miscellaneous"
+                 v.rarity == "jen_miscellaneous" or
+                 v.rarity == "busterb_Secret"
             ) then
             selectable_jokers[#selectable_jokers + 1] = v
           end

@@ -65,21 +65,25 @@ SMODS.Joker{
             end
         end
 }
---Spawn Condition for Astro
-SMODS.current_mod.calculate = function (self, context)
-    if context.setting_blind and G.GAME.blind.boss and G.GAME.blind.config.blind.key == "bl_goad" then
-        G.GAME.blind.effect.onlyspades = true -- set the initial value
+SMODS.Blind:take_ownership('bl_goad', {
+    set_blind = function (self)
+        G.GAME.blind.effect.onlyspades = true
+        print("goaded")
+    end,
+    calculate = function (self, blind, context)
+    if context.individual and context.cardarea == G.play and not context.other_card:is_suit("Spades", true) then
+    print("loser")
+        G.GAME.blind.effect.onlyspades = false
     end
-    if context.individual and context.cardarea == G.play and G.GAME.blind.boss and not --[[Important this is not]] context.other_card:is_suit("Spades") then
-        -- beeg line ^^
-        G.GAME.blind.effect.onlyspades = false -- ohhh noooo, the guy played a card that wasnt spade whilst being in a boss
-    end
-    if context.end_of_round and G.GAME.blind.boss and context.main_eval and G.GAME.blind.effect.onlyspades then -- Dont need to check for goad, since its only ever true if goad is the boss
-        -- give astro
+end,
+    defeat = function (self)
+    if G.GAME.blind.effect.onlyspades and not next(SMODS.find_card('j_busterb_astro')) then
         SMODS.add_card{ key = "j_busterb_astro", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        G.GAME.blind.effect.onlyspades = false
         print("winner")
     end
 end
+})
 local ThomasYap = {
     "I'm at Arby's, have fun!",
     "Screw you, take this!",
@@ -184,6 +188,68 @@ SMODS.Joker{
     end
 }
 
+--Spawn Condition for Thomas
+print("thing")
+SMODS.Blind:take_ownership('bl_club', {
+    set_blind = function (self)
+        if G.GAME.round_resets.ante == -8 and not next(SMODS.find_card('j_busterb_thomas')) then
+        G.GAME.blind.effect.antething = true
+        print("club")
+        else
+        G.GAME.blind.effect.antething = false
+        print("noclub")
+        end
+    end,
+    calculate = function (self, blind, context)
+        if not next(SMODS.find_card('j_busterb_thomas')) then
+    if context.selling_card and context.card.config.center.key == "c_busterb_mugen" then
+--        G.E_MANAGER:add_event(Event({
+--                    func = function()
+--                        play_sound('tarot1')
+--        				SMODS.juice_up_blind()
+--		        		blind:wiggle()
+--		        		blind.triggered = true
+--        				G.GAME.blind.chips = to_big(G.GAME.blind.chips ^ 100)
+--        				G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+--                        return true
+--                    end
+--                }))
+        G.GAME.blind.effect.soldcryptid = true
+        print("ready")
+        return{
+            xblindsize = G.GAME.blind.chips ^ 100
+        }
+    end
+end
+    if context.end_of_round and context.game_over and context.main_eval then
+            G.GAME.blind.effect.antething = false
+            G.GAME.blind.effect.soldcryptid = false
+            ease_ante(-G.GAME.round_resets.ante)
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.hand_text_area.blind_chips:juice_up()
+                        G.hand_text_area.game_chips:juice_up()
+                        play_sound('tarot1')
+                        return true
+                    end
+                }))
+                return {
+                    message = "!!!",
+                    saved = 'Oops!',
+                    colour = G.C.UI.TEXT_DARK
+                }
+            end
+end,
+    defeat = function (self)
+    if G.GAME.blind.effect.antething and G.GAME.blind.effect.soldcryptid and not next(SMODS.find_card('j_busterb_thomas')) then
+        SMODS.add_card{ key = "j_busterb_thomas", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        G.GAME.blind.effect.antething = false
+        G.GAME.blind.effect.soldcryptid = false
+        print("superwinner")
+    end
+end
+})
+
 --Art and Code by Camostar34, teehee! Special thanks to FirstTry for letting me be a guest joker in his mod and guiding me with the art direction. 
 
 to_big = to_big or function(x) return x end
@@ -217,7 +283,9 @@ SMODS.Joker{
             -- jokerslot = ?  -- if you actually use this, define it here
         },
         immutable = {
-            slotlimit = 100
+            slotlimit = 100,
+            bonus = 1.2,
+            bank = 0
         }
     },
 
@@ -226,7 +294,7 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.bonus,
+                card.ability.immutable.bonus,
                 colours = { HEX("fd913e"), SMODS.Gradients["busterb_eechipsgradient"] }
             }
         }
@@ -243,8 +311,8 @@ SMODS.Joker{
             return { dollars = to_big(G.GAME.dollars)}
         end
 
-        local bonus = card.ability.extra.bonus or 1
-        local bank  = card.ability.extra.bank
+        local bonus = card.ability.immutable.bonus or 1
+        local bank  = card.ability.immutable.bank
 
         if (not to_big(bank) or to_big(bank) <= to_big(0)) and G.GAME and to_big(G.GAME.dollars) then
             bank = to_big(G.GAME.dollars)
@@ -268,7 +336,7 @@ SMODS.Joker{
                 return
             end
 
-            card.ability.extra.bank = new_bank
+            card.ability.immutable.bank = new_bank
 
             return {
                 dollars = delta,
@@ -289,7 +357,7 @@ if context.individual
                 return
             end
 
-            card.ability.extra.bank = new_bank
+            card.ability.immutable.bank = new_bank
 
             return {
                 dollars = delta,
@@ -299,6 +367,64 @@ if context.individual
 
     end,
 }
+-- Spawn Condition for Samson
+print("thing")
+SMODS.Blind:take_ownership('bl_ox', {
+    set_blind = function (self)
+        if G.GAME.dollars >= 1e50 and not next(SMODS.find_card('j_busterb_samson')) then
+        G.GAME.blind.effect.dollarthing = true
+        print("ox")
+        end
+    end,
+    calculate = function (self, blind, context)
+        if not next(SMODS.find_card('j_busterb_samson')) then
+            local temper = context.using_consumeable and context.consumeable.config.center.key == "c_temperance"
+    if temper then
+--        G.E_MANAGER:add_event(Event({
+--                    func = function()
+--                        play_sound('tarot1')
+--        				SMODS.juice_up_blind()
+--		        		blind:wiggle()
+--		        		blind.triggered = true
+--        				G.GAME.blind.chips = to_big(G.GAME.blind.chips ^ 100)
+--        				G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+--                        return true
+--                    end
+--                }))
+        G.GAME.blind.effect.soldtemp = true
+        ease_dollars((-G.GAME.dollars)*2)
+        print("ready")
+    end
+end
+    if context.end_of_round and context.game_over and context.main_eval then
+            G.GAME.blind.effect.dollarthing = false
+            G.GAME.blind.effect.soldtemp = false
+            ease_ante(-G.GAME.round_resets.ante)
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.hand_text_area.blind_chips:juice_up()
+                        G.hand_text_area.game_chips:juice_up()
+                        play_sound('tarot1')
+                        return true
+                    end
+                }))
+                return {
+                    message = "!!!",
+                    saved = 'Oops!',
+                    colour = G.C.UI.TEXT_DARK
+                }
+            end
+end,
+    defeat = function (self)
+    if G.GAME.blind.effect.dollarthing and G.GAME.blind.effect.soldtemp and not next(SMODS.find_card('j_busterb_samson')) then
+        SMODS.add_card{ key = "j_busterb_samson", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        ease_dollars(((-G.GAME.dollars)))
+        G.GAME.blind.effect.dollarthing = false
+        G.GAME.blind.effect.soldtemp = false
+        print("superwinner")
+    end
+end
+})
 
 SMODS.Atlas{
     key = "a_hedera",
@@ -394,6 +520,53 @@ SMODS.Joker{
             end
     end,
 }
+SMODS.Blind:take_ownership('bl_final_heart', {
+    set_blind = function (self)
+        if G.GAME.round_resets.ante % 8 == 0 and not next(SMODS.find_card('j_busterb_hedera')) then
+        G.GAME.blind.effect.hedera = true
+        print("hedera")
+    end
+    end,
+    calculate = function (self, blind, context)
+        if context.using_consumeable and context.consumeable.config.center.key == "c_judgement" and not next(SMODS.find_card('j_busterb_hedera')) then
+            for k, v in ipairs(G.deck.cards) do
+                local card_id = v:get_id()
+                if card_id ~= 14 or not v:is_face() then
+                    SMODS.destroy_cards(v)
+                end
+            end
+            G.GAME.blind.effect.finale = true
+            print("finale")
+        end
+        if context.selling_card and not next(SMODS.find_card('j_busterb_hedera')) then
+            if context.card.config.center.key == "c_soul" and not next(SMODS.find_card('j_busterb_hedera')) then
+            G.GAME.blind.effect.over = true
+            print("over")
+            return {
+                xblindsize = G.GAME.blind.chips ^ 1.5,
+            }
+        end
+        if context.selling_card and context.card.config.center.key == "c_busterb_dream" and not next(SMODS.find_card('j_busterb_hedera')) then
+            ease_dollars(0)
+            G.GAME.dollars = -1e100
+            G.GAME.blind.effect.hell = true
+            print("hell")
+        end
+    end
+    end,
+    defeat = function (self)
+    if G.GAME.blind.effect.hedera and G.GAME.blind.effect.finale and G.GAME.blind.effect.over and G.GAME.blind.effect.hell and not next(SMODS.find_card('j_busterb_hedera')) then
+        SMODS.add_card{ key = "j_busterb_hedera", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        G.GAME.blind.effect.hedera = false
+        G.GAME.blind.effect.finale = false
+        G.GAME.blind.effect.over = false
+        G.GAME.blind.effect.hell = false
+        ease_dollars(0)
+        G.GAME.dollars = 0
+        print("hederawinner")
+    end
+end
+})
 SMODS.Atlas{
     key = "v",
     path = "Vessel.png",
@@ -439,3 +612,44 @@ SMODS.Joker{
     end
 end
 }
+
+--Spawn Condition for Vessel
+SMODS.Blind:take_ownership('bl_wall', {
+    set_blind = function (self)
+        if G.GAME.round_resets.ante == 0 and not next(SMODS.find_card('j_busterb_vessel')) then
+        G.GAME.blind.effect.vesselspawn = true
+        print("vesselspawn")
+    end
+    end,
+    calculate = function (self, blind, context)
+        if context.end_of_round and context.game_over and context.main_eval then
+            G.GAME.blind.effect.vesselspawn = false
+            ease_ante(-G.GAME.round_resets.ante)
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.hand_text_area.blind_chips:juice_up()
+                        G.hand_text_area.game_chips:juice_up()
+                        play_sound('tarot1')
+                        return true
+                    end
+                }))
+                return {
+                    message = "!!!",
+                    saved = 'Oops!',
+                    colour = G.C.UI.TEXT_DARK
+                }
+            end
+    if context.individual and context.cardarea == G.play then        
+        return {
+            xblindsize = (G.GAME.blind.chips/16),
+        }
+    end
+end,
+    defeat = function (self)
+    if G.GAME.blind.effect.vesselspawn and not next(SMODS.find_card('j_busterb_vessel')) then
+        SMODS.add_card{ key = "j_busterb_vessel", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        G.GAME.blind.effect.vesselspawn = false
+        print("vesselwinner")
+    end
+end
+})

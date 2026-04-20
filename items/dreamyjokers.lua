@@ -61,15 +61,16 @@ SMODS.Joker {
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     config = {
         extra = {  
-        }
+        },
+        immutable = { ante = -8 }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.xchips, card.ability.extra.money, card.ability.extra.xchips_mod, card.ability.extra.dollar_mod } }
+        return { vars = { card.ability.immutable.ante } }
     end,
 
     calculate = function(self, card, context)
         if context.end_of_round and context.game_over and context.main_eval then
-            ease_ante(-G.GAME.round_resets.ante)
+            ease_ante(card.ability.immutable.ante)
                 G.E_MANAGER:add_event(Event({
                     func = function()
                         G.hand_text_area.blind_chips:juice_up()

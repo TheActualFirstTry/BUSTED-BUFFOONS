@@ -428,7 +428,7 @@ SMODS.Joker {
             if context.other_card:is_suit("Clubs") then
                 card.ability.extra.xchips = math.min(1e300 , card.ability.extra.xchips * card.ability.extra.xchips_mod)
                 card.ability.extra.xmult = math.min(1e300, card.ability.extra.xmult * card.ability.extra.xmult_mod)
-                G.GAME.dollars = G.GAME.dollars + card.ability.extra.dolar
+                ease_dollars(card.ability.extra.dolar)
                 card_eval_status_text(card, "extra", nil, nil, nil, {
                     message = localize("k_upgrade_ex"),
                     colour = G.C.CHIPS
@@ -490,43 +490,26 @@ SMODS.Joker {
             money = 6,       
             xasc_mod = 6,    
             dollar_mod = 6     
-        }
+        },
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.xasc, card.ability.extra.money, card.ability.extra.xasc_mod, card.ability.extra.dollar_mod, " " } }
+        return { vars = { G.GAME.dollars, " " } }
     end,
 
     calculate = function(self, card, context)
-        if context.joker_main then
+        if context.joker_main and G.GAME.dollars > 1 then
             return {
-                
-                xmult = card.ability.extra.xasc,
+                xmult = (G.GAME.dollars / 2),
                 message = "Destroy!",
                 sound = "busterb_destroy",
                 colour = G.C.MULT
             }
         end
-
-        if context.end_of_round and context.cardarea == G.jokers and not context.blueprint then
-            G.GAME.dollars = G.GAME.dollars + card.ability.extra.money
-            return {
-                dollars = card.ability.extra.money,
-                message = "Keep em' coming!",
-                sound = "busterb_keepemcoming",
-                colour = G.C.MONEY
-            }
-        end
-
         if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then
-            card.ability.extra.xasc = card.ability.extra.xasc * card.ability.extra.xasc_mod
-            card.ability.extra.money = card.ability.extra.money + card.ability.extra.dollar_mod
-            return {
-                message = "Yes, that's it!",
-                sound = "busterb_yesthatsit",
-                colour = G.C.GOLD
-            }
+            ease_dollars(G.GAME.dollars)
+            play_sound("busterb_keepemcoming")
         end
-end
+    end
 }
 
 -- Dark Donald
@@ -569,12 +552,14 @@ SMODS.Joker {
     config = {
         extra = {
             multiplier = 2,
-            conduit = 1
+            add = 1,
+            active = false
         }
     },
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.c_black_hole
         return {
-            vars = { to_big(card.ability.extra.multiplier), to_big(card.ability.extra.conduit) }
+            vars = { to_big(card.ability.extra.multiplier), to_big(card.ability.extra.add) }
         }
     end,
 	 add_to_deck = function(self, card, from_debuff)
@@ -586,59 +571,8 @@ SMODS.Joker {
         end
     end,
     calculate = function(self, card, context)
-if context.end_of_round and context.main_eval and not context.blueprint and G.GAME.blind.boss then
-    card.ability.extra.conduit = card.ability.extra.conduit * card.ability.extra.multiplier
-    card_eval_status_text(card, 'extra', nil, nil, nil,
-    { message = localize("k_upgrade_ex"), colour = G.C.PURPLE, sound = "busterb_lovin" })
-    end
-if context.before and next(context.poker_hands["Flush"]) and not context.blueprint then
-    return {func = function()
-         update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
-            { handname = localize('k_all_hands'), chips = '...', mult = '...', level = '' })
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.2,
-            func = function()
-                play_sound('tarot1')
-                card:juice_up(0.8, 0.5)
-                G.TAROT_INTERRUPT_PULSE = true
-                return true
-            end
-        }))
-        update_hand_text({ delay = 0 }, { mult = '+', StatusText = true })
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.9,
-            func = function()
-                play_sound('tarot1')
-                card:juice_up(0.8, 0.5)
-                return true
-            end
-        }))
-        update_hand_text({ delay = 0 }, { chips = '+', StatusText = true })
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.9,
-            func = function()
-                play_sound('tarot1')
-                card:juice_up(0.8, 0.5)
-                G.TAROT_INTERRUPT_PULSE = nil
-                return true
-            end
-        }))
-        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.9, delay = 0 }, { level = '+' .. card.ability.extra.conduit*card.ability.extra.multiplier })
-        delay(1.3)
-        for poker_hand_key, _ in pairs(G.GAME.hands) do
-            level_up_hand(card, poker_hand_key, true, (card.ability.extra.conduit*card.ability.extra.multiplier))
-        end
-        update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
-            { mult = 0, chips = 0, handname = '', level = '' })
-    end},
-    play_sound('busterb_makudonarudo')
-end
-
-        if context.setting_blind and not context.blueprint and G.GAME.blind.boss then
-            G.E_MANAGER:add_event(Event({
+if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then
+    G.E_MANAGER:add_event(Event({
                 trigger = 'after',
                 delay = 0.2,
                 func = function()
@@ -648,12 +582,40 @@ end
                     return true
                 end
             }))
-            return {
+            SMODS.calculate_effect{
                 message = localize('k_disabled_ex'),
                 colour = G.C.RED,
                 sound = "busterb_laugh",
                 card = card
             }
+    return {
+                message = localize("k_upgrade_ex"),
+                colour = G.C.DARK_EDITION,
+                func = function()
+                    SMODS.upgrade_poker_hands{
+                        from = card,
+                        parameters = { "chips", "mult"},
+                        level_up = false,
+                        instant = true,
+                        StatusText = "x"..card.ability.extra.multiplier,
+                        func = function (base, hand, param)
+                            return base * card.ability.extra.multiplier
+                        end
+                    }
+                end
+            },
+    play_sound('busterb_makudonarudo')
+        end
+        if context.using_consumeable and context.consumeable.config.center.key == "c_black_hole" then
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "multiplier",
+                scalar_value = "add",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.multiplier + card.ability.extra.add),
+                colour = G.C.DARK_EDITION,
+                sound = "busterb_lovin"
+            }})
         end
     end,
     can_use = function(self, card)
@@ -830,9 +792,8 @@ SMODS.Joker {
     },
     config = {
         extra = {
-            xmult = 1.1,
-            xmult_add = 0.01,
-            xmult_add_mod = 2
+            xmult = 1,
+            xmult_add = 1,
         }
     },
     
@@ -841,40 +802,27 @@ SMODS.Joker {
             vars = { 
                 card.ability.extra.xmult, 
                 card.ability.extra.xmult_add, 
-                card.ability.extra.xmult_add_mod 
             }
         }
     end,
     
     -- Check for discards, played cards, scored cards, held cards, used discards, and played hands to add to hypermult
     calculate = function(self, card, context)
-        if not context.blueprint and (
-            (context.individual and (context.cardarea == G.play or (context.cardarea == G.hand and not context.end_of_round))) or
-            context.pre_discard or
-            context.discard or
-            (context.after and context.cardarea == G.jokers) or
-            context.hand_drawn or
-            context.remove_playing_cards
-        ) then
-            card.ability.extra.xmult = math.min(1e300, card.ability.extra.xmult + card.ability.extra.xmult_add)
-            card_eval_status_text(card, 'extra', nil, nil, nil, {
-                message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } },
-                colour = G.C.DARK_EDITION
-            })
-        end
-
         if context.joker_main then
             return {
-                x_mult = card.ability.extra.xmult,
+                emult = card.ability.extra.xmult,
                 card = card
             }
         end
         if context.setting_blind and not context.blueprint then
-            card.ability.extra.xmult_add = card.ability.extra.xmult_add * card.ability.extra.xmult_add_mod
-            return {
-                message = localize("k_upgrade_ex"),
-                card = card
-            }
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "xmult",
+                scalar_value = "xmult_add",
+                scaling_message = {
+                message = "^" .. (card.ability.extra.xmult * card.ability.extra.xmult_add) .. " Mult",
+                colour = SMODS.Gradients["busterb_eemultgradient"]
+            }})
         end
     end
 }
@@ -1126,28 +1074,8 @@ SMODS.Joker{
     cost = 100,
     config = {
         extra = {
-            -- effect 1
-            randomitems = 2,
-            -- effect 4
---            doublemoney = 2,
-            -- effect 2
-            handndiscard = 1,
-            -- effect 3
-            jokerslot = 1,
-            -- effect 6
-            --lvl = 5,
-            -- effect 7
-            echipsemult = 2,
-            cslots = 1
         },
         immutable = {
-            rnpjokers = 3,
-            totalitems = 10,
-            moneymultceiling = 1e100,
-            echipemultincreaseprevention = 100,
-            hndlimit = 100,
-            slotlimit = 100,
-            levelup = 10
         }
     },
     blueprint_compat = true,
@@ -1156,109 +1084,32 @@ SMODS.Joker{
     discovered = true,
     loc_vars = function(self, info_queue, card)
         return { vars = { 
-        math.min(card.ability.extra.randomitems,card.ability.immutable.totalitems),
---        card.ability.extra.doublemoney, 
-        card.ability.extra.handndiscard,         
-        math.min(card.ability.extra.jokerslot, card.ability.immutable.slotlimit),               
-        card.ability.extra.cslots,
-        card.ability.immutable.rnpjokers,
-        colours = {HEX('B00B69')}
         } }
     end,
     calculate = function(self, card, context) 
-        if context.joker_main or context.pre_discard then
-            local randomeffect = pseudorandom(pseudoseed("busterb_neo"), 1, 8)
-            if randomeffect == 1 then
-                print("Effect 1")
-                for i = 1, math.min(card.ability.immutable.totalitems, card.ability.extra.randomitems) do
-                    local c = SMODS.create_card({set = "Consumeables", edition = "e_negative"})
-                    c:add_to_deck()
-                    G.consumeables:emplace(c)
-                    print("Success")
-                end
-            end
-            if randomeffect == 2 then
-                print("Effect 2")
-                G.E_MANAGER:add_event(Event({
-                func = function()
-                    ease_discard(card.ability.extra.handndiscard)
-                    ease_hands_played(card.ability.extra.handndiscard)
-                    SMODS.calculate_effect(
-                        { message = localize { type = 'variable', key = 'a_hands', vars = { card.ability.extra.hands } } },
-                        context.blueprint_card or card)
-                    return true,
-                    print("Success")
-                end
-            }))
-            end
-            if randomeffect == 3 then
-                print("Effect 3")
-                G.jokers.config.card_limit = lenient_bignum(
-			    G.jokers.config.card_limit + math.min(card.ability.extra.jokerslot, card.ability.immutable.slotlimit))
-                print("Success")
-                
-            end
-            if randomeffect == 4 then
-                print("Effect 4")
-                    return {
-                        --ease_dollars(math.min(card.ability.extra.doublemoney, card.ability.immutable.moneymultceiling) * G.GAME.dollars))
-                        ease_dollars(G.GAME.dollars),
-                        --ease_dollars(math.min(card.ability.immutable.moneymultceiling, G.GAME.dollars))
-                        --ease_dollars(math.min(card.ability.immutable.moneymultceiling, G.GAME.dollars * (card.extra.ability.doublemoney - 1)))
-                        print("Success")
-                    }                
-            end
-            if randomeffect == 5 then
-                print("Effect 5")
-                local total = 0
-                for i, v in pairs(SMODS.Sticker.obj_table) do
-                    for i2, v2 in pairs(G.jokers.cards) do
-                        if v2.ability and v2.ability[i] then
-                            v2:remove_sticker(i)
-                            total = total + 1
-                            print("Success")
-                        end
-                    end
-                end
-                return total
-            end
-            if randomeffect == 6 then
-                print("Effect 6")
---                return {
---                    echips = math.min(card.ability.extra.echipsemult, card.ability.immutable.echipemultincreaseprevention),
---                    emult = math.min(card.ability.extra.echipsemult, card.ability.immutable.echipemultincreaseprevention),
-                    G.E_MANAGER:add_event(Event({
-                    func = function()
-                    G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.cslots
-                return true
-            end
-        }))
-                                    print("Success")
---                }
-end 
-
-            if randomeffect == 7 then
-                print("Effect 7")
-                     G.E_MANAGER:add_event(Event({
-                        func = (function()
-                                add_tag(Tag('tag_double'))
-                                play_sound('generic1', 0.9 + math.random() * 0.1, 0.8)
-                                play_sound('holo1', 1.2 + math.random() * 0.1, 0.4)
-                            return true,
-                            print("Success")
-                        end)
-                    }))
-                return nil, true
-            end
-            
-            if randomeffect == 8 then
-                print("Effect 8")
-                for i = 1, card.ability.immutable.rnpjokers do
-                    SMODS.add_card({ set = "bustjokers", edition = 'e_negative', force_stickers = true, stickers = {"perishable"} })
-                    print("Success")
-                end
-            end
-        end
+        if context.retrigger_joker_check and not context.retrigger_joker then
+			local num_retriggers = 0
+			for i = 1, #G.jokers.cards do
+				if
+					card.T
+				and context.other_card.T
+				and (card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2)
+				then
+					num_retriggers = num_retriggers + 1
+				end
+			end
+			if
+				card.T
+				and context.other_card.T
+				and (card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2)
+			then
+				return {
+					message = localize("k_again_ex"),
+					repetitions = Card.get_gameset(card) ~= "modest" and num_retriggers or math.min(2, num_retriggers),
+					card = card,
+				}
+			end
+		end
     end
 }
 
