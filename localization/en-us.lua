@@ -364,8 +364,8 @@ return {
 					"{C:inactive}({V:1}MUGEN {C:inactive}May overflow.)",
 					"{C:inactive}(Currently {B:2,C:white}^^#1#{C:inactive} Mult){}",
 					"{s:0.5,C:inactive}There's a special interaction with a certain character.{}"},
-					{"Spawn Condition: Go to {C:attention}Ante -8{}",
-					"pray you find {C:clubs}The Club{} and sell {C:white,B:1}MUGEN{}",}
+					{"Spawn Condition: Reach {C:attention}Ante 8{}",
+					"Go to {C:clubs}Cerulean Bell{} and sell {C:white,B:1}MUGEN{}",}
 				},
 			},
 			["j_busterb_tsc"] = {
@@ -495,8 +495,9 @@ return {
 					{"{C:green}Fixed coinflip chance{} to either",
 					"Set total {C:chips}Chips{} and {C:mult}Mult{} to 0",
 					"or {C:busterb_unstable}Instantly Win Blind."},
-					{"Spawn Condition: Reach {C:attention}Ante 0{}",
-					"Beat {C:attention}The Vessel{}",
+					{"Spawn Condition: Reach {C:attention}Ante 8{}",
+					"Sell your {C:spectral}Soul{} to {C:purple} The Vessel",
+					"Beat {C:purple}Violent Vessel{}",
 					"Good Luck",}
 				}
 			},
@@ -513,9 +514,8 @@ return {
 				"{C:spectral}Incantation{}, {C:spectral}Grim{} or {C:spectral}Familiar{}",
 				"at the end of round",
 				"{C:inactive}(Currently: {C:white,X:busterb_gfreddy}^^#1#{C:inactive})"},
-				{"Spawn Condition: Find the {C:attention}Crimson Heart{} in",
-				"any {C:attention}8th Ante{}",
-				"Sell your Soul and Dream and Let Judgement Commence",
+				{"Spawn Condition: Find the {C:attention}Crimson Heart{} in {C:attention}Ante 8{}",
+				"Sell your {C:spectral}Soul{} and {C:spectral}Dream{} and Let {C:tarot}Judgement{} Commence",
 				"Beat the {C:attention}Crimson Heart{}",
 				},
 			},

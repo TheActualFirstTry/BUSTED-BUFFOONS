@@ -190,14 +190,14 @@ SMODS.Joker{
 
 --Spawn Condition for Thomas
 print("thing")
-SMODS.Blind:take_ownership('bl_club', {
+SMODS.Blind:take_ownership('bl_final_bell', {
     set_blind = function (self)
-        if G.GAME.round_resets.ante == -8 and not next(SMODS.find_card('j_busterb_thomas')) then
+        if G.GAME.round_resets.ante == 8 and not next(SMODS.find_card('j_busterb_thomas')) then
         G.GAME.blind.effect.antething = true
-        print("club")
+        print("final_bell")
         else
         G.GAME.blind.effect.antething = false
-        print("noclub")
+        print("no_final_bell")
         end
     end,
     calculate = function (self, blind, context)
@@ -522,7 +522,7 @@ SMODS.Joker{
 }
 SMODS.Blind:take_ownership('bl_final_heart', {
     set_blind = function (self)
-        if G.GAME.round_resets.ante % 8 == 0 and not next(SMODS.find_card('j_busterb_hedera')) then
+        if G.GAME.round_resets.ante == 8 and not next(SMODS.find_card('j_busterb_hedera')) then
         G.GAME.blind.effect.hedera = true
         print("hedera")
     end
@@ -614,9 +614,9 @@ end
 }
 
 --Spawn Condition for Vessel
-SMODS.Blind:take_ownership('bl_wall', {
+SMODS.Blind:take_ownership('bl_final_vessel', {
     set_blind = function (self)
-        if G.GAME.round_resets.ante == 0 and not next(SMODS.find_card('j_busterb_vessel')) then
+        if G.GAME.round_resets.ante == 8 and not next(SMODS.find_card('j_busterb_vessel')) then
         G.GAME.blind.effect.vesselspawn = true
         print("vesselspawn")
     end
@@ -639,16 +639,25 @@ SMODS.Blind:take_ownership('bl_wall', {
                     colour = G.C.UI.TEXT_DARK
                 }
             end
+            if context.selling_card and not next(SMODS.find_card('j_busterb_vessel')) then
+                if context.card.config.center.key == "c_soul" and not next(SMODS.find_card('j_busterb_vessel')) then
+                G.GAME.blind.effect.trial = true
+                print("trial")
+            end
+            end
+            if G.GAME.blind.effect.trial and not next(SMODS.find_card('j_busterb_vessel')) then
     if context.individual and context.cardarea == G.play then        
         return {
             xblindsize = (G.GAME.blind.chips/16),
         }
     end
+end
 end,
     defeat = function (self)
-    if G.GAME.blind.effect.vesselspawn and not next(SMODS.find_card('j_busterb_vessel')) then
+    if G.GAME.blind.effect.vesselspawn and G.GAME.blind.effect.trial and not next(SMODS.find_card('j_busterb_vessel')) then
         SMODS.add_card{ key = "j_busterb_vessel", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
         G.GAME.blind.effect.vesselspawn = false
+        G.GAME.blind.effect.trial = false
         print("vesselwinner")
     end
 end
