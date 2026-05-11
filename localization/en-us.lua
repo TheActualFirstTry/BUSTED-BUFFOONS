@@ -166,6 +166,66 @@ return {
 					"{C:gold}$1000{} = {C:dark_edition}Rare Consumable",
 				}
             },
+			["grahkon_list"] = {
+                ["name"] = "{C:green}Grahkon's Flames",
+                ["text"] = {
+					"1. {C:attention}Increase adjacent joker values{}","by {C:attention}x2",
+					"2. Gain random {C:white,X:busterb_eechips}^Chips{} and {C:white,X:busterb_eemult}^Mult{}",
+					"3. Random Tag",
+					"4. Remove Leftmost Joker's Stickers",
+					"5. Random {C:dark_edition}Negative{} Consumable",
+					"6. Random {C:dark_edition}Negative{} Joker",
+					"7. + Joker Slots",
+					"8. + Consumable Slots",
+				}
+            },
+			["hawaii_chicot"] = {
+                ["name"] = "{C:red}Chicot's Will{}",
+                ["text"] = {
+					"Reduce the boss {C:attention}blind size by {C:attention}50%",
+				}
+            },
+			["hawaii_triboulet"] = {
+                ["name"] = "{C:blue}Triboulet's Wits{}",
+                ["text"] = {
+					"{C:attention}Scored face cards{} give {C:white,X:mult}XMult{} equal to all face cards in deck",
+				}
+            },
+			["hawaii_perkeo"] = {
+				["name"] = "{C:green}Perkeo's Spirit{}",
+				["text"] = {
+					"Creates a {C:dark_edition}Negative{} {C:green}Perkeo{} at the end of shop",
+				}
+			},
+			["hawaii_canio"] = {
+				["name"] = "Canio's Madness",
+				["text"] = {
+					"Gain {C:gold}$10{} when a {C:attention}face card{} is scored",
+				}
+			},
+			["hawaii_yorick"] = {
+				["name"] = "{C:gold}Yorick's Truth{}",
+				["text"] = {
+					"Gain permanent {C:attention}+1{} card selection limit",
+					"after {C:attention}23{} cards have been discarded",
+				}
+			},
+			["hawaii_powers"] = {
+				["name"] = "{C:busterb_secrets}Hawaii's Powers{}",
+				["text"] = {
+					"{C:red,s:1.25}Chicot's Will{}",
+					"Reduce the boss {C:attention}blind size by {C:attention}50%","",
+					"{C:blue,s:1.25}Triboulet's Wits{}",
+					"{C:attention}Scored face cards{} give {C:white,X:mult}XMult{} equal to all face cards in deck","",
+					"{C:green,s:1.25}Perkeo's Spirit{}",
+					"Creates a {C:dark_edition}Negative{} {C:green}Perkeo{} at the end of shop","",
+					"{s:1.25}Canio's Madness",
+					"Gain {C:gold}$10{} when a {C:attention}face card{} is scored","",
+					"{C:gold,s:1.25}Yorick's Truth{}",
+					"Gain permanent {C:attention}+1{} card selection limit","",
+					"after {C:attention}23{} cards have been discarded",
+				}
+			},
 			["undiscovered_bootleg"] = {
 				["name"] = "???",
 				["text"] = {
@@ -244,8 +304,9 @@ return {
 				["text"] = {
 					"When a {C:attention}boss blind{} is {C:attention}beaten{},",
 					"Gain {X:busterb_grand,C:white}+#2#{} Redeem",
-					"This joker lets you {C:busterb_grand}receive the effect",
-					"{C:busterb_grand}of a random deck",
+					"After using a {C:busterb_grand}Redeem{}",
+					"This joker spawns {C:busterb_grand}a random deck",
+					"in your {C:attention}consumables tray",
 					"{C:inactive}(Current Redeems: {X:busterb_grand,C:white}#1#{C:inactive}){}",
 				},
 			},
@@ -366,6 +427,66 @@ return {
 					"{s:0.5,C:inactive}There's a special interaction with a certain character.{}"},
 					{"Spawn Condition: Reach {C:attention}Ante 8{}",
 					"Go to {C:clubs}Cerulean Bell{} and sell {C:white,B:1}MUGEN{}",}
+				},
+			},
+			["j_busterb_grahkon"] = {
+				["name"] = {
+					"{C:green,s:2}Grahkon{}",
+					"The Immortal Green Flame",
+				},
+				["text"] = {
+					{"{C:green} 1 of 8{} things can happen",
+					"when {C:attention}the score table catches on fire{}",
+					"{C:inactive}(Currently:{} {C:white,X:busterb_secrets}^#1#{} {C:inactive}Chips and Mult)"},
+					{
+					"1. {C:attention}Increase adjacent joker values{}","by {C:attention}x#2#",
+					"2. Gain random {C:white,X:busterb_eechips}^Chips{} and {C:white,X:busterb_eemult}^Mult{}",
+					"3. Random Tag",
+					"4. Remove Leftmost Joker's Stickers",
+					"5. Random {C:dark_edition}Negative{} Consumable",
+					"6. Random {C:dark_edition}Negative{} Joker",
+					"7. {C:dark_edition}+#3#{} Joker Slots",
+					"8. {C:dark_edition}+#3#{} Consumable Slots",
+				},
+					{"Spawn Condition: ???",}
+				},
+			},
+			["j_busterb_ruby"] = {
+				["name"] = {
+					"{C:busterb_eemult,s:2}Lord Ruby{}",
+					"Entropy Incarnate",
+				},
+				["text"] = {
+					{"Using a consumable",
+					"creates {C:attention}#1# {C:dark_edition}Negative{} consumables"},
+					{"Spawn Condition: ???",}
+				},
+			},
+			["j_busterb_hawaii"] = {
+				["name"] = {
+					"{C:busterb_grand,s:2}Hawaii Pt. II{}",
+					"By Miracle Musical",
+				},
+				["text"] = {
+					{"This joker has all the abilites of",
+					"{C:red}Chicot{}, {C:green}Perkeo{}, {C:gold}Yorick{}",
+					"{C:inactive}Canio{}, and {C:blue}Triboulet{}",
+					"{C:busterb_secrets}But far more powerful",
+					"{C:inactive}(Currently: {C:attention}#2#{C:inactive}[#3#]){}"},
+				{
+					"{C:red,s:1.25}Chicot's Will{}",
+					"Reduce the boss {C:attention}blind size by {C:attention}50%","",
+					"{C:blue,s:1.25}Triboulet's Wits{}",
+					"{C:attention}Scored face cards{} give {C:white,X:mult}XMult{} equal to all face cards in deck","",
+					"{C:green,s:1.25}Perkeo's Spirit{}",
+					"Creates a {C:dark_edition}Negative{} {C:green}Perkeo{} at the end of shop","",
+					"{C:inactive,s:1.25}Canio's Madness",
+					"Gain {C:gold}$#6#{} when a {C:attention}face card{} is scored","",
+					"{C:gold,s:1.25}Yorick's Truth{}",
+					"Gain permanent {C:attention}+#5#{} card selection limit","",
+					"after {C:attention}23{} cards have been discarded",
+				},
+					{"Spawn Condition: ???",}
 				},
 			},
 			["j_busterb_tsc"] = {
@@ -762,8 +883,8 @@ return {
 				["name"] = "Moony",
 				["text"] = {
 					"Used Non-{C:dark_edition}Negative",
-					"consumables have a",
-					"{C:green}#1# in #2#{} chance to",
+					"{C:attention}consumables{} are copied and",
+					"have a {C:green}#1# in #2#{} chance to",
 					"become {C:dark_edition}Negative"
 				},
 			},
