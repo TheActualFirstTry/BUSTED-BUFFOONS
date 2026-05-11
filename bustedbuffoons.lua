@@ -1,5 +1,3 @@
-
-
 SMODS.Atlas{
 	key = "modicon",
 	path = "modicon.png",
@@ -46,40 +44,30 @@ SMODS.Gradient{
     interpolation = 'trig',
 }
 SMODS.Gradient{
-    key = "Secret",
+    key = "SecretG",
     colours = {
         G.C.SUITS.Spades,
-        G.C.PURPLE,
-        G.C.RARITY.Legendary,
-        G.C.TAROT
+        G.C.SECONDARY_SET.Enhanced
     },
-    cycle = 1,
+    cycle = 4,
     interpolation = 'trig',
 }
 SMODS.Gradient{
     key = "eemultgradient",
     colours = {
         G.C.RED,
-        G.C.SUITS.Hearts,
-        G.C.FILTER,
-        G.C.SUITS.Diamonds,
-        G.C.GOLD,
-        G.C.RARITY[3]
+        HEX('f7b4c6'),
     },
-    cycle = 1,
+    cycle = 4,
     interpolation = 'trig',
 }
 SMODS.Gradient{
     key = "eechipsgradient",
     colours = {
         G.C.SECONDARY_SET.Spectral,
-        G.C.SECONDARY_SET.Planet,
-        G.C.CHIPS,
-        G.C.RARITY[1],
         HEX('00FFFF'),
-        HEX('0000FF')
     },
-    cycle = 1,
+    cycle = 4,
     interpolation = 'trig',
 }
 SMODS.Gradient{
@@ -180,6 +168,7 @@ G.ARGS.LOC_COLOURS.busterb_pizza = HEX('bc1006')
 G.ARGS.LOC_COLOURS.busterb_hedra = SMODS.Gradients["busterb_hedera"]
 G.ARGS.LOC_COLOURS.busterb_bigbang = SMODS.Gradients["busterb_bigbang"]
 G.ARGS.LOC_COLOURS.busterb_unstable = SMODS.Gradients["busterb_unstable"]
+G.ARGS.LOC_COLOURS.busterb_secrets = SMODS.Gradients["busterb_SecretG"]
 
 
 --assert(SMODS.load_file("items/otherfunctionalities.lua"))()
@@ -247,6 +236,24 @@ function Card:open()
             return true
         end}))
     end
+end
+--
+function deckset()
+    for i = 1, #G.deck.cards do
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.1,
+                func = function()
+                    local pool = {}
+                    for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
+                      if v.hidden  and not ( v.set == "jen_omegaconsumable" or v.set == "jen_ability" ) then pool[#pool+1] = v.key end
+                end
+                local random_key = pseudorandom_element(pool, "random_rare_consumeable")
+            G.deck.cards[i]:set_ability(random_key, true, nil, pool)
+                    return true
+                end
+            }))
+        end
 end
 --purely for testing tags
 function rosespawn()
