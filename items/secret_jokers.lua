@@ -662,3 +662,339 @@ end,
     end
 end
 })
+
+SMODS.Atlas{
+    key = "r",
+    path = "Ruby.png",
+    px = 71,
+    py = 95
+}
+SMODS.Joker{
+    key = "ruby",
+    atlas = "r",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true, ["bustjokers"] = true },
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    cost = 1e100,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = false,
+    eternal_compat = true,
+    config = { extra = {}, immutable = { number = 2 } },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
+        return { vars = { card.ability.immutable.number } }
+    end,
+    calculate = function (self, card, context)
+                if context.using_consumeable and not context.blueprint then
+                    for i = 1, card.ability.immutable.number do
+                    local pool = {}
+                    for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
+                      if not ( v.set == "jen_omegaconsumable" or v.set == "jen_ability" ) then pool[#pool+1] = v.key end
+                end
+            local random_key = pseudorandom_element(pool, "ruby")
+                    if random_key then SMODS.add_card{key = random_key, edition = "e_negative"} end
+        end
+    end
+end
+}
+
+SMODS.Atlas{
+    key = "gk",
+    path = "Grahkon.png",
+    px = 71,
+    py = 95
+}
+SMODS.Joker{
+    key = "grahkon",
+    atlas = "gk",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true, ["bustjokers"] = true },
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    cost = 1e100,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = false,
+    eternal_compat = true,
+    config = { extra = { slots = 2, chipmult = 2, }, immutable = { vmin = 10, vmax = 1000, cmmin = 10, cmmax = 1000, vm = 2 } },
+    loc_vars = function(self, info_queue, card)
+--        info_queue[#info_queue+1] = {key = "grahkon_list", set = "Other"}
+        return { vars = { card.ability.extra.chipmult, card.ability.immutable.vm, card.ability.extra.slots } }
+    end,
+    calculate = function (self, card, context)
+        if context.joker_main then
+            return{
+                echips = card.ability.extra.chipmult,
+                emult = card.ability.extra.chipmult,
+            }
+        end
+        if SMODS.last_hand_oneshot and context.after and context.main_eval and not context.blueprint then
+            local grahkon = pseudorandom(pseudoseed("busterb_grahkon"), 1, 8)
+            if grahkon == 1 then
+                SMODS.calculate_effect({
+                message = "1",
+                colour = G.C.GREEN,
+                card = card
+            })
+            local grahkonvm = (pseudorandom(pseudoseed("busterb_grahkonvm"), card.ability.immutable.vmin, card.ability.immutable.vmax) / 100)
+                local mypos = nil
+		        for i = 1, #G.jokers.cards do
+			        if G.jokers.cards[i] == card then
+				        mypos = i
+			    	    break
+		    	    end
+		        end
+                if G.jokers.cards[mypos - 1] then
+					Spectrallib.manipulate(G.jokers.cards[mypos-1], { value = card.ability.immutable.vm })
+                SMODS.calculate_effect({ message = "< X" ..card.ability.immutable.vm, colour = G.C.GREEN}, card)
+				end 
+                if G.jokers.cards[mypos + 1] then
+					Spectrallib.manipulate(G.jokers.cards[mypos+1], { value = card.ability.immutable.vm })
+                SMODS.calculate_effect({ message = "X".. card.ability.immutable.vm.. " >", colour = G.C.GREEN}, card)
+				end
+        end
+        if grahkon == 2 then
+                SMODS.calculate_effect({
+                message = "2",
+                colour = G.C.GREEN,
+                card = card
+            })
+            local grahkoncm = (pseudorandom(pseudoseed("busterb_grahkonvm"), card.ability.immutable.cmmin, card.ability.immutable.cmmax) / 100)
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "chipmult",
+                scalar_value = "gain",
+                scalar_table = { gain = grahkoncm + card.ability.extra.chipmult },
+                scaling_message = {
+                    message = "^" .. card.ability.extra.chipmult .. " Mult",
+                    colour = G.C.GREEN
+                }
+            })
+    end
+    if grahkon == 3 then
+                SMODS.calculate_effect({
+                message = "3",
+                colour = G.C.GREEN,
+                card = card
+            })
+        local tag_key
+			repeat
+				tag_key = get_next_tag_key("cry_pity_prize")
+			until tag_key ~= "tag_boss" and tag_key ~= "tag_cry_gambler" and tag_key ~= "tag_busterb_crine"
+
+			local tag = Cryptid.get_next_tag()
+			if tag then
+				tag_key = tag
+			end
+			local tag = Tag(tag_key)
+			tag.ability.shiny = Cryptid.is_shiny()
+			if tag.name == "Orbital Tag" then
+				local _poker_hands = {}
+				for k, v in pairs(G.GAME.hands) do
+					if v.visible then
+						_poker_hands[#_poker_hands + 1] = k
+					end
+				end
+				tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pity_prize"))
+			end
+			add_tag(tag)
+			if
+				Card.get_gameset(card) == "modest"
+				and ((not context.blueprint and not context.retrigger_joker) or context.forcetrigger)
+			then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_extinct_ex"), colour = G.C.FILTER }
+				)
+			end
+			return nil, true
+    end
+    if grahkon == 4 then
+                SMODS.calculate_effect({
+                message = "4",
+                colour = G.C.GREEN,
+                card = card
+            })
+        for i, v in pairs(SMODS.Sticker.obj_table) do
+            if context.other_card ~= self and context.other_card == G.jokers.cards[1] then
+            local jkr = {}
+			    for i = 1, #G.jokers.cards do
+				    if G.jokers.cards[i] ~= card then
+					    jkr[#jokers + 1] = G.jokers.cards[i]
+    				end
+	    		end
+                            jkr:remove_sticker(i)
+                        end
+                    end
+                end
+                if grahkon == 5 then
+                SMODS.calculate_effect({
+                message = "5",
+                colour = G.C.GREEN,
+                card = card
+            })
+                    local pool = {}
+                    for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
+                      if not ( v.set == "jen_omegaconsumable" or v.set == "jen_ability" ) then pool[#pool+1] = v.key end
+                end
+            local random_key = pseudorandom_element(pool, "ruby")
+                    if random_key then SMODS.add_card{key = random_key} end
+            end
+            if grahkon == 6 then
+                SMODS.calculate_effect({
+                message = "6",
+                colour = G.C.GREEN,
+                card = card
+            })
+                                    local rarity_map = {
+  Common = 'Rare',
+  Uncommon = 'Rare',
+  cry_cursed = 'cry_exotic',
+  crp_abysmal = 'crp_mythic',
+  unik_detrimental = 'unik_ancient',
+  valk_supercursed = 'valk_exquisite',
+  jen_junk = 'Rare',
+  jen_omegatranscendent = 'cry_exotic',
+  jen_omnipotent = 'cry_exotic',
+  jen_transcendent = 'cry_exotic',
+  jen_wondrous = 'cry_exotic',
+  jen_ritualistic = 'cry_exotic',
+  jen_miscellaneous = 'Rare',
+  gj_detri = "gj_uniq"
+}
+local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
+           key = rarity_map[key] or key
+        local card = SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.jokers }
+            end
+            if grahkon == 7 then
+                SMODS.calculate_effect({
+                message = "7",
+                colour = G.C.GREEN,
+                card = card
+            })
+                G.jokers:change_size(math.min(100, card.ability.extra.slots))
+            end
+            if grahkon == 8 then
+                SMODS.calculate_effect({
+                message = "8",
+                colour = G.C.GREEN,
+                card = card
+            })
+                G.consumeables:change_size(math.min(100, card.ability.extra.slots))
+            end
+        end
+end
+}
+
+SMODS.Atlas{
+    key = "hpii",
+    path = "Hawaii.png",
+    px = 71,
+    py = 95
+}
+SMODS.Joker{
+    key = "hawaii",
+    atlas = "hpii",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true, ["bustjokers"] = true },
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    cost = 1e100,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = false,
+    eternal_compat = true,
+    config = { extra = { dollars = 10, select_mod = 1 }, immutable = { number = 2, reduce = 0.5, discards = 23, discards_remaining = 23 } },
+    loc_vars = function(self, info_queue, card)
+--        local tribvalue = 0
+--            for _, c in ipairs(G.deck.cards) do
+--                if c:is_face() then tribvalue = tribvalue + 1 end
+--            end
+--        info_queue[#info_queue+1] = {key = "hawaii_triboulet", set = "Other"}
+--        info_queue[#info_queue+1] = {key = "hawaii_perkeo", set = "Other"}
+ --       info_queue[#info_queue+1] = {key = "hawaii_canio", set = "Other"}
+ --       info_queue[#info_queue+1] = {key = "hawaii_yorick", set = "Other"}
+ --       info_queue[#info_queue+1] = {key = "hawaii_chicot", set = "Other"}
+--        info_queue[#info_queue+1] = {key = "hawaii_powers", set = "Other"}
+        return { vars = { card.ability.immutable.number, card.ability.immutable.discards, card.ability.immutable.discards_remaining, " ", card.ability.extra.select_mod, card.ability.extra.dollars } }
+    end,
+    calculate = function (self, card, context)
+        local tribvalue = 0
+            for _, c in ipairs(G.deck.cards) do
+                if c:is_face() then tribvalue = tribvalue + 1 end
+            end
+        -- Perkeo's Spirit
+        if context.ending_shop and not context.blueprint then
+            SMODS.add_card{key="j_perkeo",edition="e_negative"}
+        end
+        -- Triboulet's Wits
+        if context.individual and context.cardarea == G.play and context.other_card:is_face() then
+            return {
+                xmult = tribvalue
+            }
+        end
+        -- Canio's Madness
+        if context.individual and context.cardarea == 'unscored' then
+                    if context.other_card:is_face() then
+            return {
+                dollars = tribvalue
+            }
+        end
+    end
+        -- Yorick's Truth
+        if context.discard and not context.blueprint then
+            if card.ability.immutable.discards_remaining <= 1 then
+                card.ability.immutable.discards_remaining = card.ability.immutable.discards
+                -- See note about SMODS Scaling Manipulation on the wiki
+                SMODS.change_play_limit(card.ability.extra.select_mod)
+        		SMODS.change_discard_limit(card.ability.extra.select_mod)
+                return {
+                    message = "+" .. card.ability.extra.select_mod,
+                    colour = SMODS.Gradients["busterb_SecretG"],
+                    delay = 0.2
+                }
+            else
+                card.ability.immutable.discards_remaining = card.ability.immutable.discards_remaining - 1
+                return nil, true -- This is for Joker retrigger purposes
+            end
+        end
+        -- Chciot's Will
+        if context.setting_blind and context.main_eval and G.GAME.blind.boss and not context.blueprint then
+            G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.GAME.blind.chips = G.GAME.blind.chips * card.ability.immutable.reduce
+                        G.hand_text_area.blind_chips:juice_up()
+                        play_sound('tarot1')
+                        return true
+                    end
+                }))
+        end
+end
+}

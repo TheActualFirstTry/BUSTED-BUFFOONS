@@ -845,38 +845,12 @@ SMODS.Joker{
             end
         end
         if context.cainebutton and card.ability.extra.redeem > 0 then
-            card.ability.extra.redeem = card.ability.extra.redeem - card.ability.immutable.more
-            SMODS.calculate_effect ({
-                    message = "-" .. card.ability.extra.more .. " Redeem",
-                    colour = HEX("48A0F8"),
-                    card = card
-                })
-            G.E_MANAGER:add_event(Event{
-                trigger = "after",
-                func = function()
-            
-                    local area
-                    if G.STATE == G.STATES.HAND_PLAYED then
-                        if not G.redeemed_vouchers_during_hand then
-                            G.redeemed_vouchers_during_hand =
-                                CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
-                        end
-                        area = G.redeemed_vouchers_during_hand
-                    else
-                        area = G.play
-                    end
-                    local card = create_card("RedeemableBacks", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
-                    if card.config.center.key == "j_joker" then
-                        card:set_ability(G.P_CENTERS.b_red)
-                    end
-                    card:add_to_deck()
-                    area:emplace(card)
-                    card.cost = 0
-                    card:redeem_deck()
-                    return true
-                end
-            })
-            return nil, true
+            SMODS.add_card{set="Back",area=G.consumeables}
+            card.ability.extra.redeem = card.ability.extra.redeem - 1
+            return {
+                message = "-1",
+                colour = SMODS.Gradients["busterb_grand"]
+             }
         end
     end
 }

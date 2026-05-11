@@ -142,6 +142,8 @@ end,
 calculate = function(self, card, context)
     if context.ante_change then
         change_operator(self.config.operator)
+        play_sound("timpani")
+        G.HUD:get_UIE_by_ID('hand_operator_container'):juice_up()
     end
 	end,
 }

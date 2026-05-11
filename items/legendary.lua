@@ -485,6 +485,7 @@ SMODS.Joker {
     config = { extra = { moony = 1, moonyodds = 4 } },
     loc_vars = function(self, info_queue, card)
     local oddwin, oddnope = SMODS.get_probability_vars(card, 1, card.ability.extra.moonyodds, self.key)
+    info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
     return {vars = {oddwin, oddnope}}
     end,
     calculate = function(self, card, context)
