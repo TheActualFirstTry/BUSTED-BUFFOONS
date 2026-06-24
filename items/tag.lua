@@ -158,13 +158,13 @@ SMODS.Tag {
 	end,
 }
 SMODS.Atlas{
-    key =  "r",
+    key =  "rose",
     path = "Rose.png",
     px = 34,
     py = 34
 }
 SMODS.Tag {
-    atlas = "r",
+    atlas = "rose",
 	pos = { x = 0, y = 0 },
 	config = { type = "new_blind_choice" },
 	key = "rose",

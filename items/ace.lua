@@ -1,6 +1,6 @@
 SMODS.Atlas({
 	key = 'atlas_Admin',
-	path = 'Loadstring.png',
+	path = 'ls.png',
 	px = 71, py = 95,
 	atlas_table = 'ANIMATION_ATLAS',
 	frames = 2,
@@ -9,13 +9,15 @@ SMODS.Atlas({
 
 local admin = {
 SMODS.Consumable{
-    set = "Bootleg",
+    set = "Spectral",
 	name = "admin",
 	key = "admin",
 	pos = { x = 0, y = 0 },
-	soul_pos = { x = 0, y = 1 },
 	cost = 4,
 	atlas = "atlas_Admin",
+    hidden = true,
+    can_repeat_soul = true,
+    soul_set = 'Bootleg',
 	can_use = function(self, card)
 		return true
 	end,
@@ -51,15 +53,15 @@ SMODS.Consumable{
 			}))
 			local t = create_UIBox_generic_options({
 				no_back = true,
-				colour = darken(copy_table(HEX('163117')), 0.3),
-				outline_colour = HEX('397F3B'),
+				colour = HEX('0b0d11'),
+				outline_colour = G.C.SECONDARY_SET.Spectral,
 				contents = {
 					{
 						n = G.UIT.R,
 						nodes = {
 							create_text_input({
-								colour = HEX('397F3B'),
-								hooked_colour = darken(copy_table(HEX('397F3B')), 0.3),
+								colour = G.C.SECONDARY_SET.Spectral,
+								hooked_colour = darken(copy_table(G.C.SECONDARY_SET.Spectral), 0.3),
 								w = 4.5,
 								h = 1,
 								max_length = 2500,
@@ -76,7 +78,7 @@ SMODS.Consumable{
 						config = { align = "cm" },
 						nodes = {
 							UIBox_button({
-								colour = HEX('397F3B'),
+								colour = G.C.SECONDARY_SET.Spectral,
 								button = "ca",
 								label = { "EXECUTE" },
 								minw = 4.5,

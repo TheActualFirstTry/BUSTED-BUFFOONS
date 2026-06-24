@@ -21,7 +21,7 @@ SMODS.Joker {
     },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = {key = "c_busterb_Fantasy", set = "Spectral"}
-        return { vars = { card.ability.extra.xchips, card.ability.extra.money, card.ability.extra.xchips_mod, card.ability.extra.dollar_mod } }
+        return { vars = { } }
     end,
 
     calculate = function(self, card, context)
@@ -191,25 +191,7 @@ SMODS.Joker {
     end,
 
     calculate = function(self, card, context)
-           local check = true
-		if context.cardarea == G.jokers and context.before and not context.blueprint then
-			if context.scoring_hand then
-				for k, v in ipairs(context.full_hand) do
-					if
-						v:get_id() == 6
-						or v:get_id() == 7
-						or v:get_id() == 8
-						or v:get_id() == 9
-						or v:get_id() == 10
-						or v:get_id() == 11
-						or v:get_id() == 12
-						or v:get_id() == 13
-					then
-						check = false
-					end
-				end
-			end
-			if check then
+           if context.using_consumeable and context.consumeable.ability.set == 'Bootleg' then
                 local mypos = nil
 		        for i = 1, #G.jokers.cards do
 			        if G.jokers.cards[i] == card then
@@ -226,8 +208,7 @@ SMODS.Joker {
                 SMODS.calculate_effect({ message = "X".. card.ability.extra.vm.. " >", colour = G.C.FILTER}, card)
 				end
 			end
-		end
-    end
+        end
 }
 SMODS.Atlas {
     key = "Isaac",
@@ -618,7 +599,7 @@ SMODS.Joker {
     atlas = "pep",
     blueprint_compat = true,
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
-    pino = true,
+--    pino = true,
     rarity = "busterb_Dreamy",
     cost = 16,
     pos = { x = 0, y = 0 },
@@ -627,6 +608,27 @@ SMODS.Joker {
         local pinorare, pinoodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_pinorare')
         return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod, pinorare, pinoodds } }
     end,
+    use = function(self, card, area, copier)
+                    if SMODS.pseudorandom_probability(card, 'busterb_pinorare', 1, card.ability.immutable.odds, 'busterb_pinorare', true) then
+                SMODS.add_card({ key = "c_busterb_special" })
+                play_sound('busterb_jackpot')
+                SMODS.calculate_effect{
+                        message = RarePino[math.random(#RarePino)],
+                        card = card
+                    }
+            else
+            ease_dollars(-5)
+            SMODS.add_card({ set = "Pizza", area = G.consumeables})
+            play_sound('busterb_cashregister')
+            SMODS.calculate_effect{
+                    message = PinoTalk[math.random(#PinoTalk)],
+                    card = card
+                }
+            end
+    end,
+        can_use = function(self, card)
+        return (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) and G.GAME.dollars >= 5
+        end,
     calculate = function(self, card, context)
         if context.pinobuy and (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) and G.GAME.dollars >= 5 then
             if SMODS.pseudorandom_probability(card, 'busterb_pinorare', 1, card.ability.immutable.odds, 'busterb_pinorare', true) then
@@ -687,7 +689,7 @@ SMODS.Joker{
 		return { vars = { card.ability.extra.mult, card.ability.extra.xmult, card.ability.extra.powerup } }
 	end,
     calculate = function(self, card, context)
-        if context.before and G.GAME.current_round.hands_left == 0 then
+        if context.joker_main and G.GAME.current_round.hands_left == 0 then
             ease_hands_played(card.ability.extra.hand)
         end
     end

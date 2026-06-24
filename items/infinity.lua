@@ -1,4 +1,10 @@
 SMODS.Atlas {
+    key = "a_ic",
+    path = "inf.png",
+    px = 71,
+    py = 95
+}
+SMODS.Atlas {
     key = "atlas_Mugen",
     path = "Mugen.png",
     px = 71,
@@ -8,7 +14,7 @@ SMODS.Consumable {
     key = 'mugen',
     set = 'Spectral',
     atlas = "atlas_Mugen",
-    pos = { x = 0, y = 0 },
+    cost = 4, pos = { x = 0, y = 0 },
     hidden = true,
     can_repeat_soul = true,
     soul_set = 'Infinity',
@@ -68,28 +74,16 @@ can_use = function(self, card)
   end
 }
 
-SMODS.Atlas {
-    key = "atlas_Virtual",
-    path = "Virtuality.png",
-    px = 71,
-    py = 95
-}
-SMODS.Atlas {
-    key = "atlas_Marshall",
-    path = "Marshall.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'marshall',
     set = 'Infinity',
-    atlas = "atlas_Marshall",
-    pos = { x = 0, y = 0 },
+    atlas = "a_ic",
+    cost = 4, pos = { x = 0, y = 0 },
     config = {
-    extra = 1.5
+    extra = { val = 1.5 }
   },
 loc_vars = function(self, info_queue, card)
-		return { vars = { number_format(self.config.extra) } }
+		return { vars = { number_format(self.config.extra.val) } }
 	end,
 can_use = function(self, card)
     return #G.jokers.cards > 0
@@ -100,7 +94,7 @@ can_use = function(self, card)
 			for i, v in pairs(G.jokers.cards) do
 				if v ~= card then
 					if not Card.no(v, "immutable", true) then
-						Spectrallib.manipulate(v, { value = self.config.extra })
+						Spectrallib.manipulate(v, { value = self.config.extra.val })
 						check = true
 					end
 				end
@@ -125,8 +119,8 @@ can_use = function(self, card)
 SMODS.Consumable {
     key = 'virtuality',
     set = 'Infinity',
-    atlas = "atlas_Virtual",
-    pos = { x = 0, y = 0 },
+    atlas = "a_ic",
+    cost = 4, pos = { x = 1, y = 0 },
     config = {
   },
 can_use = function(self, card)
@@ -168,17 +162,11 @@ end,
         end
     end
 }
-SMODS.Atlas {
-    key = "atlas_PrisonFlame",
-    path = "PrisonFlame.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'prison_flame',
     set = 'Infinity',
-    atlas = "atlas_PrisonFlame",
-    pos = { x = 0, y = 0 },
+    atlas = "a_ic",
+    cost = 4, pos = { x = 2, y = 0 },
     config = {
     extra = {
         min = 10,
@@ -211,17 +199,11 @@ can_use = function(self, card)
         end
     end
 }
-SMODS.Atlas {
-    key = "atlas_BlueSky",
-    path = "BlueSky.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'blue_sky',
     set = 'Infinity',
-    atlas = "atlas_BlueSky",
-    pos = { x = 0, y = 0 },
+    atlas = "a_ic",
+    cost = 4, pos = { x = 3, y = 0 },
     config = {
     extra = {
         min = 10,
@@ -254,17 +236,11 @@ can_use = function(self, card)
         end
     end
 }
-SMODS.Atlas {
-    key = "atlas_WickedWitch",
-    path = "WickedWitch.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'wicked_witch',
     set = 'Infinity',
-    atlas = "atlas_WickedWitch",
-    pos = { x = 0, y = 0 },
+    atlas = "a_ic",
+    cost = 4, pos = { x = 0, y = 1 },
     config = {
     extra = 2
     },
@@ -298,17 +274,11 @@ loc_vars = function(self, info_queue, card)
     end
 }
 
-SMODS.Atlas {
-    key = "atlas_Manny",
-    path = "Manny.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'manny',
     set = 'Infinity',
-    atlas = "atlas_Manny",
-    pos = { x = 0, y = 0 },
+    atlas = "a_ic",
+    cost = 4, pos = { x = 1, y = 1 },
     config = {
     extra = {
         min = 10,
@@ -344,17 +314,11 @@ loc_vars = function(self, info_queue, card)
     end
 }
 
-SMODS.Atlas {
-    key = "atlas_Jackal",
-    path = "Jackal.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'jackal',
     set = 'Infinity',
-    atlas = "atlas_Jackal",
-    pos = { x = 0, y = 0 },
+    atlas = "a_ic",
+    cost = 4, pos = { x = 2, y = 1 },
     config = {
     extra = {
         min = 1,
@@ -389,18 +353,12 @@ loc_vars = function(self, info_queue, card)
         end
     end
 }
-SMODS.Atlas {
-    key = "atlas_BlackBerserker",
-    path = "BlackBerserk.png",
-    px = 71,
-    py = 95
-}
 --literally adversary
 SMODS.Consumable {
     key = 'blackberserker',
     set = 'Infinity',
-    atlas = "atlas_BlackBerserker",
-    pos = { x = 0, y = 0 },
+    atlas = "a_ic",
+    cost = 4, pos = { x = 0, y = 2 },
     config = {
     extra = {
         min = 1,
@@ -481,17 +439,11 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Atlas {
-    key = "atlas_Metamon",
-    path = "Ditto.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'metamon',
     set = 'Infinity',
-    atlas = "atlas_Metamon",
-    pos = { x = 0, y = 0 },
+    atlas = "a_ic",
+    cost = 4, pos = { x = 3, y = 1 },
         config = { extra = { jokers = 1 } },
 
     loc_vars = function(self, info_queue, card)
@@ -511,11 +463,7 @@ SMODS.Consumable {
         end
     end,
 
-    demicoloncompat = true,
-    force_use = function(self, card)
-        self:use(card)
-    end,
-
+ 
    draw = function(self, card, layer)
         if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
             card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
@@ -523,17 +471,11 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Atlas {
-    key = "atlas_Demiurgos",
-    path = "Demi.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'demiurgos',
     set = 'Infinity',
-    atlas = "atlas_Demiurgos",
-    pos = { x = 0, y = 0 },
+    atlas = "a_ic",
+    cost = 4, pos = { x = 1, y = 2 },
         config = { extra = { jokers = 1 } },
 
     loc_vars = function(self, info_queue, card)
@@ -547,16 +489,279 @@ SMODS.Consumable {
 
     use = function(self, card, area, copier)
         for i, v in pairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
-            if not v.entr_aleph then
+            if not v.entr_aleph or v.busterb_omega then
                 v:start_dissolve()
+                ease_dollars(G.GAME.dollars)
             end
         end
     end,
 
+
+   draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
+    end
+}
+
+
+SMODS.Consumable {
+    key = 'meija',
+    set = 'Infinity',
+    atlas = "a_ic",
+    cost = 4, pos = { x = 2, y = 2 },
+    config = { extra = { num_copies = 3 }, immutable = { selected = 1 } },
+	misprintize_caps = { extra = { num_copies = 100 } },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
+		return { vars = { card.ability.extra.num_copies } }
+	end,
+	cost = 4,
+	    can_use = function(self, card)
+        return #G.consumeables.cards > 0 and (G.consumeables.cards[1].config.center_key ~= "c_busterb_meija")
+    end,
+
+    use = function(self, card, area, copier)
+                for i = 1, card.ability.extra.num_copies do
+                     G.E_MANAGER:add_event(Event({
+                func = function()
+                    local copy = copy_card(G.consumeables.cards[1])
+                    if Incantation then
+						copy:setQty(1)
+					end
+                    copy:set_edition("e_negative", true)
+                    copy:add_to_deck()
+                    G.consumeables:emplace(copy)
+                    return true
+                end
+            }))
+            SMODS.calculate_effect{message = localize("k_duplicated_ex"), colour = G.C.DARK_EDITION, card = G.consumeables.cards[1]}
+                end
+	
+    end,
+
+ 
+   draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
+    end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
+}
+
+SMODS.Consumable {
+    key = 'crazycat',
+    set = 'Infinity',
+    atlas = "a_ic",
+    cost = 4, pos = { x = 3, y = 2 },
+    config = {
+    extra = { val = 1.5 }
+  },
+loc_vars = function(self, info_queue, card)
+		return { vars = { number_format(self.config.extra.val) } }
+	end,
+can_use = function(self, card)
+    return #G.consumeables.cards > 0
+  end,
+
+  use = function(self, card, area, copier)
+    local check = false
+			for i, v in pairs(G.consumeables.cards) do
+				if v ~= card then
+					if not Card.no(v, "immutable", true) then
+						Spectrallib.manipulate(v, { value = self.config.extra.val })
+						check = true
+					end
+				end
+			end
+			if check then
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = HEX('E36956') }
+				)
+			end
+  end,
+   draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
+    end
+}
+
+SMODS.Consumable {
+    key = 'otw',
+    set = 'Infinity',
+    atlas = "a_ic",
+    cost = 4, pos = { x = 0, y = 3 },
+    config = {
+    select = 1,
+    extra = { jokers = 1 }
+  },
+ use = function(self, card, area, copier)
+        for i, card in pairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.select)) do
+            card.ability.busterb_omega = true
+            card:set_edition("e_negative")
+            card:juice_up()
+
+        end
+    end,
+    can_use = function(self, card)
+        local highlighted = Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)
+        return #highlighted <= card.ability.extra.jokers and #highlighted > 0
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set="Other", key = "busterb_omega"}
+        q[#q+1] = G.P_CENTERS.e_negative
+        return {
+            vars = {
+                card.ability.select,
+            }
+        }
+    end,
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
+    end
+}
+SMODS.Consumable {
+    key = 'beatrix',
+    set = 'Infinity',
+    atlas = "a_ic",
+    cost = 4, pos = { x = 1, y = 3 },
+    config = {
+    extra = { max_highlighted = 1 }
+  },
+ use = function(self, card, area, copier)
+    for i = 1, #G.hand.highlighted do
+            if not G.hand.highlighted[i].entr_aleph or G.hand.highlighted[i].busterb_omega then
+                G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        func = function()
+                            G.hand.highlighted[i]:start_dissolve()
+                            play_sound("tarot1")
+                            return true
+                        end
+                    }))
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        func = function()
+                            local inf_pool = get_current_pool('Infinity')
+            local infget = pseudorandom_element(inf_pool, 'busterb_inffetch')
+            local it = 1
+            while infget == 'UNAVAILABLE' do
+                it = it + 1
+                infget = pseudorandom_element(inf_pool, 'busterb_inffetch_re'..it)
+            end
+            local c = SMODS.add_card{set = "Playing Card"}
+                    c:set_ability(infget, true, nil, inf_pool)
+                            c:juice_up(0.3, 0.3)
+                            play_sound("tarot1")
+                            return true
+                        end
+                    }))
+            end
+        end
     end,
+    can_use = function(self, card)
+        local selected = Spectrallib.get_highlighted_cards({ G.hand }, nil, 1, card.ability.extra.max_highlighted)
+        return #selected > 0 and #selected <= card.ability.extra.max_highlighted
+    	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.extra.max_highlighted, colours = {HEX('E36956')}
+            }
+        }
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+SMODS.Consumable {
+    key = 'blackc',
+    set = 'Infinity',
+    atlas = "a_ic",
+    cost = 4, pos = { x = 2, y = 3 },
+    config = {
+    extra = { val = 1.5}
+  },
+loc_vars = function(self, info_queue, card)
+		return { vars = { number_format(self.config.extra.val) } }
+	end,
+can_use = function(self, card)
+    return #G.hand.cards > 0
+  end,
+
+  use = function(self, card, area, copier)
+    local check = false
+			for i, v in pairs(G.hand.cards) do
+				if v ~= card then
+					if not Card.no(v, "immutable", true) then
+						Spectrallib.manipulate(v, { value = self.config.extra.val })
+						check = true
+					end
+				end
+			end
+			if check then
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = HEX('E36956') }
+				)
+			end
+  end,
+   draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
+    end
+}
+SMODS.Consumable {
+    key = 'soulabyss',
+    set = 'Infinity',
+    atlas = "a_ic",
+    hidden = true,
+    can_repeat_soul = true,
+    soul_set = 'Infinity',
+
+    cost = 4, pos = { x = 3, y = 3 },
+    config = { extra = { jokers = 1 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.jokers } }
+    end,
+
+    can_use = function(self, card)
+        local highlighted = Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)
+        return #highlighted <= card.ability.extra.jokers and #highlighted > 0
+    end,
+
+    use = function(self, card, area, copier)
+        for i, v in pairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
+            if not v.entr_aleph or v.busterb_omega then
+                v:start_dissolve()
+                G.GAME.banned_keys[v.config.center.key] = true
+                local pool = {}
+                    for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
+                      if v.hidden  and not ( v.set == "jen_omegaconsumable" or v.set == "jen_ability" ) then pool[#pool+1] = v.key end
+                end
+                local random_key = pseudorandom_element(pool, "random_rare_consumeable")
+                    if random_key then SMODS.add_card{key = random_key} end
+            end
+        end
+    end,
+
 
    draw = function(self, card, layer)
         if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then

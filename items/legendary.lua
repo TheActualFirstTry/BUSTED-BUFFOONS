@@ -33,23 +33,23 @@ SMODS.Joker {
     key = "tails",
     unlocked = false, 
     atlas = "bb_legendary",
-    blueprint_compat = true,
+    blueprint_compat = false,
     pools = { ["bustjokers"] = true },
     rarity = 4,
     cost = 20,
     pos = { x = 1, y = 0 },
     soul_pos = { x = 1, y = 1 },
-    config = { extra = { } },
+    config = { extra = { multiuse = 2 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { } }
+        return { vars = { card.ability.extra.multiuse } }
     end,
     calculate = function(self, card, context)
-        if context.discard then
-            context.other_card:set_ability('m_steel', nil, true)
-                elseif context.individual and context.cardarea == 'unscored' then
-            context.other_card:set_ability('m_busterb_nanotech', nil, true)
-        end
+        if context.setting_blind and context.main_eval and not context.blueprint and (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) then
+            local c = SMODS.add_card{set="Bootleg"}
+            local m = card.ability.extra.multiuse
+            c.ability.cry_multiuse = m
     end
+end
 }
 SMODS.Atlas{
     key = "hilg",
@@ -243,13 +243,24 @@ SMODS.Joker {
         return { vars = { } }
     end,
     calculate = function(self, card, context)
-            if context.individual and context.cardarea == G.play then
-                if context.other_card:is_suit("Diamonds") or context.other_card:is_suit("Hearts") then
-                    context.other_card:set_ability('m_busterb_crystallized', nil, true)
+            for k, v in ipairs(G.play.cards) do
+            if SMODS.has_enhancement(v, 'm_busterb_crystallized') then
+                G.E_MANAGER:add_event(Event({
+                func = function()
+                    if not v.ability.busterb_stevencard then
+                    v.ability.busterb_stevencard = true
+                    v:add_sticker('eternal',true)
+                    v:juice_up(0.3, 0.3)
+                    play_sound("tarot1")
+                    end
+                    return true
                 end
+            }))
             end
+        end
     end
 }
+
 
 SMODS.Joker {
     key = "stormbringer",
@@ -406,29 +417,27 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 0, y = 4 },
     soul_pos = { x = 0, y = 5 },
-    config = { extra = { start = 0, gain = 3 } },
+    config = { extra = { dollars = 0, gain = 3 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.start, card.ability.extra.gain } }
+        return { vars = { card.ability.extra.dollars, card.ability.extra.gain } }
     end,
     add_to_deck = function(self, card, from_debuff)
     G.jokers:change_size(1)
 end,
     calculate = function(self, card, context)
-        if context.selling_self then
-            SMODS.add_card{key = "j_busterb_eggman" }
-        end
-        if context.selling_card and context.card.ability.set == "Joker" then
-            card.ability.extra_value = card.ability.extra_value + card.ability.extra.gain
-            card.ability.extra.start = card.ability.extra.start + card.ability.extra.gain
-            card:set_cost()
-            return {
-                message = localize('k_val_up'),
-                colour = G.C.MONEY
-            }
+        if context.using_consumeable and context.consumeable.ability.set == 'Bootleg' then
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "dollars",
+                scalar_value = "gain",
+                scaling_message = {
+                message = "$" .. (card.ability.extra.dollars + card.ability.extra.gain),
+                colour = G.C.GOLD
+            }})
         end
     end,
-    remove_from_deck = function(self, card, from_debuff)
-        G.jokers:change_size(-1)
+    calc_dollar_bonus = function(self, card)
+		return lenient_bignum(card.ability.extra.dollars)
     end
 }
 
@@ -520,7 +529,7 @@ SMODS.Joker {
     atlas = "bb_legendary",
     blueprint_compat = true,
     pools = { ["bustjokers"] = true },
-    evilbutton = true,
+ --   evilbutton = true,
     rarity = 4,
     cost = 20,
     pos = { x = 3, y = 4 },
@@ -529,8 +538,7 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod } }
     end,
-    calculate = function(self, card, context)
-        if context.greedbutton and G.GAME.dollars >= 10 then
+        use = function(self, card, area, copier)
             ease_dollars(-10)
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
@@ -540,7 +548,11 @@ SMODS.Joker {
                 message = "X" .. (card.ability.extra.xmult + card.ability.extra.xmult_mod) .. " Mult",
                 colour = G.C.MULT
             }})
-        end
+    end,
+        can_use = function(self, card)
+        return G.GAME.dollars >= 10
+        end,
+        calculate = function(self, card, context)
         if context.joker_main then
             return { xmult = card.ability.extra.xmult }
         end

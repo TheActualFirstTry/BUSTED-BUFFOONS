@@ -1,5 +1,3 @@
-SMODS.Shader({ key = 'atomic', path = 'atomic.fs' })
-
 SMODS.Sound{
     key = "Atomic1",
     path = "Atomic1.ogg",

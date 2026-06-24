@@ -203,11 +203,13 @@ SMODS.Joker {
   config = {
     extra = {
       triggered = false,
-      xmult = 1
-    }
+      xmult = 1,
+      multiplier = 2
+    },
+    immutable = { multiplier = 2 }
   },
   loc_vars = function(self, info_queue, card)
-    return { vars = { card.ability.extra.xmult or 1 } }
+    return { vars = { card.ability.extra.xmult, card.ability.extra.multiplier} }
   end,
   calculate = function(self, card, context)
     if context.starting_shop and not card.ability.extra.triggered then
@@ -219,14 +221,15 @@ SMODS.Joker {
       card.ability.extra.triggered = false
     end
     if context.skipping_booster and not context.blueprint then
-      card.ability.extra.xmult = (card.ability.extra.xmult or 1) * 2
-      card_eval_status_text(card, 'extra', nil, nil, nil, {
-        message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } },
-        colour = G.C.RED
-      })
-      return {
-        card = card
-      }
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "xmult",
+                operation = "X",
+                scalar_value = "multiplier",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.xmult + card.ability.extra.multiplier).. " Mult",
+                colour = G.C.MULT
+            }})
     end
     if context.joker_main then
       return {
@@ -256,36 +259,37 @@ SMODS.Joker {
         return { vars = { G.jokers and #G.jokers.cards or 1 } }
     end,
     calculate = function(self, card, context)
-        if context.before and context.main_eval and G.GAME.current_round.hands_played == 0 then
-            local polychrome_cards = 0
-            for _, playing_card in ipairs(context.scoring_hand) do
-                if not playing_card.edition or not playing_card.edition.polychrome then
-                    playing_card:set_edition('e_polychrome', true)
-                    polychrome_cards = polychrome_cards + 1
-                    G.E_MANAGER:add_event(Event({
+    if context.before then
+        local poly = 0
+            for k, v in ipairs(context.scoring_hand) do
+                if v and not (v.edition and v.edition.polychrome) then
+                v:set_edition('e_polychrome', nil, true)
+                poly = poly + 1
+                G.E_MANAGER:add_event(Event({
                         func = function()
-                            playing_card:juice_up()
+                            play_sound('polychrome1')
+                            v:juice_up()
                             return true
                         end
                     }))
                 end
             end
-            if polychrome_cards > 0 then
+if poly > 0 then
                 return {
                     message = "Applied!",
                     colour = G.C.DARK_EDITION
                 }
             end
         end
-
-        if context.repetition and context.cardarea == G.play and G.GAME.current_round.hands_played == 0 then
+        
+        if context.repetition and context.cardarea == G.play then
             if context.other_card.edition and context.other_card.edition.polychrome then
                 return {
                     repetitions = #G.jokers.cards
                 }
             end
         end
-        end
+    end
 }
 
 -- Noisette
@@ -426,13 +430,23 @@ SMODS.Joker {
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
             if context.other_card:is_suit("Clubs") then
-                card.ability.extra.xchips = math.min(1e300 , card.ability.extra.xchips * card.ability.extra.xchips_mod)
-                card.ability.extra.xmult = math.min(1e300, card.ability.extra.xmult * card.ability.extra.xmult_mod)
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "xchips",
+                scalar_value = "xchips_mod",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.xchips + card.ability.extra.xchips_mod).. " Chips",
+                colour = G.C.CHIPS
+            }})
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "xmult",
+                scalar_value = "xmult_mod",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.xmult + card.ability.extra.xmult_mod).. " Mult",
+                colour = G.C.MULT
+            }})
                 ease_dollars(card.ability.extra.dolar)
-                card_eval_status_text(card, "extra", nil, nil, nil, {
-                    message = localize("k_upgrade_ex"),
-                    colour = G.C.CHIPS
-                })
             end
         end
         if context.joker_main then
@@ -662,14 +676,24 @@ SMODS.Joker {
     calculate = function(self, card, context)
     if context.individual and context.cardarea == G.play then
         if context.other_card:is_suit("Clubs") and not context.other_card.debuff then
-            card.ability.extra.BaseSapphire = card.ability.extra.Sapphire + card.ability.extra.BaseSapphire
-            card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex"), colour = G.C.CHIPS })
-            return { card = card }
+                            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "BaseSapphire",
+                scalar_value = "Sapphire",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.BaseSapphire + card.ability.extra.Sapphire).. " Chips",
+                colour = G.C.CHIPS
+            }})
         end
         if context.other_card:is_suit("Hearts") and not context.other_card.debuff then
-            card.ability.extra.BaseRuby = card.ability.extra.Ruby + card.ability.extra.BaseRuby
-            card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex"), colour = G.C.MULT })
-            return { card = card }
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "BaseRuby",
+                scalar_value = "Ruby",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.BaseRuby + card.ability.extra.Ruby).. " Mult",
+                colour = G.C.MULT
+            }})
         end
     end
     if context.joker_main and context.cardarea == G.jokers then
@@ -744,18 +768,42 @@ SMODS.Joker {
 
             local is_polychrome = context.other_card.edition and context.other_card.edition.polychrome
             if is_polychrome then
-                card.ability.extra.SA2XChips = card.ability.extra.SA2XChips + card.ability.extra.SA2Mod
-                card.ability.extra.SA2XMult = card.ability.extra.SA2XMult + card.ability.extra.SA2Mod
-                card_eval_status_text(card, 'extra', nil, nil, nil,
-                    { message = localize("k_upgrade_ex"), colour = G.C.PURPLE })
-                return { card = card }
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "SA2XChips",
+                scalar_value = "SA2Mod",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.SA2XChips + card.ability.extra.SA2Mod).. " Chips",
+                colour = G.C.CHIPS
+            }})
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "SA2XMult",
+                scalar_value = "SA2Mod",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.SA2XMult + card.ability.extra.SA2Mod).. " Mult",
+                colour = G.C.MULT
+            }})
             else
                 if SMODS.pseudorandom_probability(card, 'busterb_peacock_polychrome', 1, card.ability.extra.odds, 'busterb_peacock_polychrome') then
                     context.other_card:set_edition({ polychrome = true }, true)
-                    card.ability.extra.SA2XChips = card.ability.extra.SA2XChips + card.ability.extra.SA2Mod
-                    card.ability.extra.SA2XMult = card.ability.extra.SA2XMult + card.ability.extra.SA2Mod
-                    card_eval_status_text(card, 'extra', nil, nil, nil,
-                        { message = localize("k_upgrade_ex"), colour = G.C.PURPLE })
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "SA2XChips",
+                scalar_value = "SA2Mod",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.SA2XChips + card.ability.extra.SA2Mod).. " Chips",
+                colour = G.C.CHIPS
+            }})
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "SA2XMult",
+                scalar_value = "SA2Mod",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.SA2XMult + card.ability.extra.SA2Mod).. " Mult",
+                colour = G.C.MULT
+            }})
+
                 else
                 end
             end

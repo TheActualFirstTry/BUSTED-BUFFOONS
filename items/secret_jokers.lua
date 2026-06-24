@@ -12,7 +12,7 @@ SMODS.Joker{
     rarity = "busterb_Secret",
     pools = { ["Secret"] = true, ["bustjokers"] = true },
     pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     cost = 1e100,
     discovered = true,
     unlocked = true,
@@ -38,7 +38,6 @@ SMODS.Joker{
             colours = {HEX('00FFFF'), SMODS.Gradients["busterb_eechipsgradient"]}} }
     end,
     calculate = function(self, card, context)
-
             if context.card_added and context.card.config.center.key == "j_star_astro" then
                 G.jokers:change_size((-G.jokers.config.card_limit) + math.min(G.jokers.config.card_limit + card.ability.extra.jokerslot, card.ability.immutable.slotlimit))
                 end
@@ -48,22 +47,29 @@ SMODS.Joker{
             }
         end
         if context.end_of_round and context.main_eval then
-                card.ability.extra.eechips = card.ability.extra.eechips + card.ability.extra.eechipsincrement
-                return {
-                message = "^^".. card.ability.extra.eechips .. " Chips",
-                colour = HEX('00FFFF'),
-                card = card
-                }
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "eechips",
+                scalar_value = "eechipsincrement",
+                scaling_message = {
+                message = "^^" ..card.ability.extra.eechips.. " Chips",
+                colour = SMODS.Gradients["busterb_eechipsgradient"]
+            }
+            })
             end
         if context.ante_change then
-            card.ability.extra.eechipsincrement = card.ability.extra.eechipsincrement * card.ability.extra.eechipsincrementmultiplier
-                return {
-                message = "^^".. card.ability.extra.eechipsincrement .. " Increment",
-                colour = HEX('00FFFF'),
-                card = card
-                }
-            end
+                        SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "eechipsincrement",
+                operation = "X",
+                scalar_value = "eechipsincrementmultiplier",
+                scaling_message = {
+                message = "Hee hee hee!",
+                colour = SMODS.Gradients["busterb_eechipsgradient"]
+            }
+            })
         end
+    end
 }
 SMODS.Blind:take_ownership('bl_goad', {
     set_blind = function (self)
@@ -78,7 +84,7 @@ SMODS.Blind:take_ownership('bl_goad', {
 end,
     defeat = function (self)
     if G.GAME.blind.effect.onlyspades and not next(SMODS.find_card('j_busterb_astro')) then
-        SMODS.add_card{ key = "j_busterb_astro", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        SMODS.add_card{ key = "j_busterb_astro", edition = 'e_negative', stickers = {'busterb_omega'}, force_stickers = true }
         G.GAME.blind.effect.onlyspades = false
         print("winner")
     end
@@ -113,7 +119,7 @@ SMODS.Joker{
     rarity = "busterb_Secret",
     pools = { ["Secret"] = true, ["bustjokers"] = true },
     pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     cost = 1e100,
     discovered = true,
     unlocked = true,
@@ -242,7 +248,7 @@ end
 end,
     defeat = function (self)
     if G.GAME.blind.effect.antething and G.GAME.blind.effect.soldcryptid and not next(SMODS.find_card('j_busterb_thomas')) then
-        SMODS.add_card{ key = "j_busterb_thomas", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        SMODS.add_card{ key = "j_busterb_thomas", edition = 'e_negative', stickers = {'busterb_omega'}, force_stickers = true }
         G.GAME.blind.effect.antething = false
         G.GAME.blind.effect.soldcryptid = false
         print("superwinner")
@@ -417,7 +423,7 @@ end
 end,
     defeat = function (self)
     if G.GAME.blind.effect.dollarthing and G.GAME.blind.effect.soldtemp and not next(SMODS.find_card('j_busterb_samson')) then
-        SMODS.add_card{ key = "j_busterb_samson", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        SMODS.add_card{ key = "j_busterb_samson", edition = 'e_negative', stickers = {'busterb_omega'}, force_stickers = true }
         ease_dollars(((-G.GAME.dollars)))
         G.GAME.blind.effect.dollarthing = false
         G.GAME.blind.effect.soldtemp = false
@@ -556,7 +562,7 @@ SMODS.Blind:take_ownership('bl_final_heart', {
     end,
     defeat = function (self)
     if G.GAME.blind.effect.hedera and G.GAME.blind.effect.finale and G.GAME.blind.effect.over and G.GAME.blind.effect.hell and not next(SMODS.find_card('j_busterb_hedera')) then
-        SMODS.add_card{ key = "j_busterb_hedera", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        SMODS.add_card{ key = "j_busterb_hedera", edition = 'e_negative', stickers = {'busterb_omega'}, force_stickers = true }
         G.GAME.blind.effect.hedera = false
         G.GAME.blind.effect.finale = false
         G.GAME.blind.effect.over = false
@@ -655,7 +661,7 @@ end
 end,
     defeat = function (self)
     if G.GAME.blind.effect.vesselspawn and G.GAME.blind.effect.trial and not next(SMODS.find_card('j_busterb_vessel')) then
-        SMODS.add_card{ key = "j_busterb_vessel", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
+        SMODS.add_card{ key = "j_busterb_vessel", edition = 'e_negative', stickers = {'busterb_omega'}, force_stickers = true }
         G.GAME.blind.effect.vesselspawn = false
         G.GAME.blind.effect.trial = false
         print("vesselwinner")
@@ -779,62 +785,14 @@ SMODS.Joker{
                 colour = G.C.GREEN,
                 card = card
             })
-        local tag_key
-			repeat
-				tag_key = get_next_tag_key("cry_pity_prize")
-			until tag_key ~= "tag_boss" and tag_key ~= "tag_cry_gambler" and tag_key ~= "tag_busterb_crine"
-
-			local tag = Cryptid.get_next_tag()
-			if tag then
-				tag_key = tag
-			end
-			local tag = Tag(tag_key)
-			tag.ability.shiny = Cryptid.is_shiny()
-			if tag.name == "Orbital Tag" then
-				local _poker_hands = {}
-				for k, v in pairs(G.GAME.hands) do
-					if v.visible then
-						_poker_hands[#_poker_hands + 1] = k
-					end
-				end
-				tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pity_prize"))
-			end
-			add_tag(tag)
-			if
-				Card.get_gameset(card) == "modest"
-				and ((not context.blueprint and not context.retrigger_joker) or context.forcetrigger)
-			then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound("tarot1")
-						card.T.r = -0.2
-						card:juice_up(0.3, 0.4)
-						card.states.drag.is = true
-						card.children.center.pinch.x = true
-						G.E_MANAGER:add_event(Event({
-							trigger = "after",
-							delay = 0.3,
-							blockable = false,
-							func = function()
-								G.jokers:remove_card(card)
-								card:remove()
-								card = nil
-								return true
-							end,
-						}))
-						return true
-					end,
-				}))
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_extinct_ex"), colour = G.C.FILTER }
-				)
-			end
-			return nil, true
+        local tag_pool = get_current_pool('Tag')
+        local selected_tag = pseudorandom_element(tag_pool, 'busterb_grahkon')
+        local it = 1
+        while selected_tag == 'UNAVAILABLE' do
+            it = it + 1
+            selected_tag = pseudorandom_element(tag_pool, 'busterb_grahkon_resample'..it)
+        end
+        add_tag(Tag(selected_tag, false, 'Small'))
     end
     if grahkon == 4 then
                 SMODS.calculate_effect({

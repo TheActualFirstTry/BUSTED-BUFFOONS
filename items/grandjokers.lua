@@ -612,29 +612,15 @@ SMODS.Joker{
                 eechips = card.ability.extra.eechips
             }
         end
-        if context.end_of_round and context.main_eval and not context.blueprint then
-                for k, v in pairs(G.hand.cards) do
-                G.E_MANAGER:add_event(Event({
-                    trigger = "before",
-                    delay = 0.6,
-                    func = function()
-                        v:juice_up()
-                        if v.config.center_key ~= "m_busterb_nanotech" then
-                            v:set_ability(G.P_CENTERS.m_busterb_nanotech)
-                            v:set_edition(nil)
-                            v:set_seal(nil)
-                            play_sound('generic1', math.random()*0.2 + 0.9,0.5)
-                            SMODS.scale_card(card, {
-                                ref_table = card.ability.extra,
-                                ref_value = "eechips",
-                                scalar_value = "eechipsincrement",
-                                colour = SMODS.Gradients["busterb_eechipsgradient"]
-                            })
-                        end
-                        return true
-                    end
-                })) 
-            end
+        if context.using_consumeable and context.consumeable.ability.set == 'Bootleg' then
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "eechips",
+                scalar_value = "eechipsincrement",
+                scaling_message = {
+                message = "^^" .. (card.ability.extra.eechipsincrement + card.ability.extra.eechips).. " Chips",
+                colour = SMODS.Gradients["busterb_eechipsgradient"]
+                }})
         end
     end
 }
@@ -892,7 +878,7 @@ SMODS.Joker{
         if context.before and G.GAME.current_round.hands_left == 0 then
         return{
                 message = localize("k_upgrade_ex"),
-                colour = G.C.DARK_EDITION,
+                colour = SMODS.Gradients["busterb_bigbang"],
                 func = function()
                     SMODS.upgrade_poker_hands{
                         from = card,
@@ -908,4 +894,56 @@ SMODS.Joker{
             }
     end
 end
+}
+SMODS.Atlas{
+    key = "sman",
+    path = "Soup.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Joker{
+    key = "superman",
+    rarity = "busterb_Grandiose",
+    pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    atlas = "sman",
+    blueprint_compat = true,
+    demicoloncompat = true,
+    discovered = true,
+    unlocked = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    cost = 500,
+    config = {
+        extra = {
+            super = 5
+        },
+    },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                 " ", card.ability.extra.super, colours = { HEX('237efc') }
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        local super = card.ability.extra.super
+        if context.before and not context.blueprint and #context.full_hand == 1 then
+            for k, v in ipairs(context.scoring_hand) do
+                if v:get_id() == 14 then
+                    v.ability.slib_perma_plus_asc = v.ability.slib_perma_plus_asc + super
+                    v.ability.slib_perma_x_asc = v.ability.slib_perma_x_asc + super
+                    v.ability.slib_perma_exp_asc = v.ability.slib_perma_exp_asc + super
+                    end
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            v:juice_up()
+                            return true
+                        end
+                    }))
+            end
+        end
+    end
+
 }

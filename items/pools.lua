@@ -38,7 +38,6 @@ SMODS.ConsumableType{
     primary_colour = HEX('bc1006'),
     secondary_colour = HEX('7d0000'),
     shop_rate = 0.5,
-    select_card = 'consumeables'
 }
 
 SMODS.Atlas {
@@ -86,8 +85,8 @@ SMODS.ConsumableType{
     default = "c_busterb_admin",
     cards = {},
     collection_rows = { 4, 4 },
-    primary_colour = HEX('70FF76'),
-    secondary_colour = HEX('397F3B'),
+    primary_colour = HEX('138f60'),
+    secondary_colour = HEX('1ac282'),
     shop_rate = 0.05,
     select_card = 'consumeables'
 }
@@ -135,8 +134,24 @@ SMODS.ObjectType{
     end,
 }
 SMODS.ObjectType{
+    key = "s_packs",
+    default = "s_pack_1",
+    cards = {},
+    inject = function(self)
+        SMODS.ObjectType.inject(self)
+    end,
+}
+SMODS.ObjectType{
     key = "pizzaboxes",
     default = "pizzabox1",
+    cards = {},
+    inject = function(self)
+        SMODS.ObjectType.inject(self)
+    end,
+}
+SMODS.ObjectType{
+    key = "bustpacks",
+    default = "bbpack_1",
     cards = {},
     inject = function(self)
         SMODS.ObjectType.inject(self)
