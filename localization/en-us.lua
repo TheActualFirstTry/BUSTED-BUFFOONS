@@ -63,7 +63,7 @@ return {
 					"{s:1.25,C:busterb_balatro}The Balatro Modding Community",
 					"{s:0.5,C:inactive}--------------------------------------------------------------------------------------------------------------------------------------",
 					"{s:2,C:busterb_epileptic}Special Thanks:",
-					"{C:white,X:busterb_eechips}Astro{} , {C:white,X:red}lord.uby{} , {C:white,X:gold}Camostar{} , {C:white,X:green}Grahkon{} , {C:white,X:hearts}Isotypical{}",
+					"{C:white,X:busterb_eechips}Astro{} , {C:white,X:red}lord.ruby{} , {C:white,X:gold}Camostar{} , {C:white,X:green}Grahkon{} , {C:white,X:hearts}Isotypical{}",
 					"{C:white,X:legendary}FireIce{} , {C:white,X:attention}Candycane{} , {C:white,X:edition}Lily{} , {C:white,X:dark_edition}GhostSalt{} , {C:white,X:default}RattlingSnow{}",
 					"{C:white,X:inactive}Revo{} , {C:white,X:spades}Slipstream{} , {C:white,X:green}Cassknows{} , {C:white,X:busterb_grand}Somethingcom515{}",
 					"{s:2,C:busterb_balatro}And The Balatro Modding Community{}",
