@@ -591,7 +591,7 @@ SMODS.Joker {
                 }
             end
         end
-        if context.joker_main and not card.ability.extra.mult < 1 then
+        if context.joker_main then
             return {
                 xmult = card.ability.extra.mult
             }
