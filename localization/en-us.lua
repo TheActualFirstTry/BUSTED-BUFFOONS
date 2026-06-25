@@ -56,7 +56,7 @@ return {
 					"{s:1.25,C:white,X:dark_edition}Vylet Pony",
 					"{C:dark_edition}NI4NI",
 					"{s:1.25,C:white,X:busterb_bigbang}Heaven Pierce Her",
-					"{C:busterb_bigbang}Ultrakill 8-3 Theme #3 (Event Horizon) [COMBAT]",
+					"{C:busterb_bigbang}Ultrakill 8-3 Theme No.3 (Event Horizon) [COMBAT]",
 					"{s:0.5,C:inactive}--------------------------------------------------------------------------------------------------------------------------------------",
 					"{s:2,C:green}Code Credits:",
 					"{s:1.25,C:white,X:default}RattlingSnow{} {s:1.25,C:white,X:legendary}Paperback_Team{} {s:1.25,C:white,X:spectral}Cryptid{} {s:1.25,C:white,X:black}900n1{}",
@@ -1189,7 +1189,7 @@ return {
 			["j_busterb_tails"] = {
 				["name"] = "Tails",
 				["text"] = {
-					"When a {C:attention}Boss Blind{} is selected",
+					"When a {C:attention}Blind{} is selected",
 					"Create a {C:green}Bootleg Card{} with {C:green}#1#{} Multiuse",
 					"{C:inactive}(Must have room)"
 				},
