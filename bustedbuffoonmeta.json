@@ -14,7 +14,7 @@
 	"priority":"-99999",
 	"dependencies": [
 		"Amulet",
-		"Steamodded (>=1.0.0~BETA-0614a)",
+		"Steamodded (>=1.0.0~BETA-1814a)",
 		"Lovely (>=0.7)",
         "Balatro (>=1.0.1o)",
 		"Spectrallib"
