@@ -441,6 +441,78 @@ end,
     end
 }
 
+--thank u ruby
+
+
+SMODS.Joker {
+    key = "bill",
+    unlocked = false, 
+    atlas = "bb_legendary",
+    blueprint_compat = true,
+    pools = { ["bustjokers"] = true },
+    rarity = 4,
+    cost = 20,
+    pos = { x = 1, y = 4 },
+    soul_pos = { x = 1, y = 5 },
+    config = { extra = { level = 0 } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.level+1 } }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and
+        context.cardarea == G.play and 
+        context.other_card:get_id() == 14 and 
+        context.other_card:is_suit("Diamonds") and
+        #context.full_hand == 1
+            then
+        local amt = amt or 1
+        local used_consumable = copier or card
+        delay(0.4)
+        local max=0
+        update_hand_text(
+          { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+          { handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
+        )
+        for i, v in pairs(G.GAME.hands) do
+            G.GAME.hands[i].AscensionPower = to_big(G.GAME.hands[i].AscensionPower or 0) + to_big(G.GAME.hands[i].level) * to_big(amt) + to_big(card.ability.extra.level)
+        end
+        delay(1.0)
+        G.E_MANAGER:add_event(Event({
+          trigger = "after",
+          delay = 0.2,
+          func = function()
+            play_sound("tarot1")
+            ease_colour(G.C.UI_CHIPS, copy_table(Entropy.get_asc_colour(to_big(1) * to_big(amt) + to_big(card.ability.extra.level))), 0.1)
+            ease_colour(G.C.UI_MULT, copy_table(Entropy.get_asc_colour(to_big(1) * to_big(amt) + to_big(card.ability.extra.level))), 0.1)
+            Spectrallib.pulse_flame(0.01, sunlevel)
+            used_consumable:juice_up(0.8, 0.5)
+            G.E_MANAGER:add_event(Event({
+              trigger = "after",
+              blockable = false,
+              blocking = false,
+              delay = 1.2,
+              func = function()
+                ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+                ease_colour(G.C.UI_MULT, G.C.RED, 1)
+                return true
+              end,
+            }))
+            return true
+          end,
+        }))
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+ ..." })
+        delay(1.0)
+        delay(2.6)
+        update_hand_text(
+          { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+          { mult = 0, chips = 0, handname = "", level = "" }
+        )
+            end
+    end
+}
+
+--[[
+
 SMODS.Joker {
     key = "bill",
     unlocked = false, 
@@ -481,6 +553,7 @@ SMODS.Joker {
     end
 }
 
+]]
 SMODS.Joker {
     key = "moony",
     unlocked = false, 
@@ -569,7 +642,7 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 4, y = 4 },
     soul_pos = { x = 4, y = 5 },
-    config = { extra = { emult = 1.15, suit = 'Diamonds', destroyodds = 4 } },
+    config = { extra = { emult = 10, suit = 'Diamonds', destroyodds = 4 } },
     loc_vars = function(self, info_queue, card)
     local oddwin, oddnope = SMODS.get_probability_vars(card, 1, card.ability.extra.destroyodds, self.key)
     return {vars = {card.ability.extra.emult, card.ability.extra.suit, oddwin, oddnope}}
@@ -578,7 +651,7 @@ SMODS.Joker {
         if context.individual and context.cardarea == G.play and
             context.other_card:is_suit(card.ability.extra.suit) then
             return {
-                emult = card.ability.extra.emult,
+                asc = card.ability.extra.emult,
                 colour = SMODS.Gradients["busterb_eemultgradient"],
                 card = card
             }
@@ -589,3 +662,56 @@ SMODS.Joker {
         end
     end
 }
+
+--[[
+
+        local amt = amt or 1
+        local used_consumable = copier or card
+        delay(0.4)
+        local max=0
+        local ind="High Card"
+        for i, v in pairs(G.GAME.hands) do
+            if v.played > max then
+                max = v.played
+                ind = i
+            end
+        end
+        update_hand_text(
+          { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+          { handname = localize(ind,'poker_hands'), chips = "...", mult = "...", level = "" }
+        )
+        G.GAME.hands[ind].AscensionPower = to_big(G.GAME.hands[ind].AscensionPower or 0) + to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level)
+        delay(1.0)
+        G.E_MANAGER:add_event(Event({
+          trigger = "after",
+          delay = 0.2,
+          func = function()
+            play_sound("tarot1")
+            ease_colour(G.C.UI_CHIPS, copy_table(Spectrallib.get_asc_colour(to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level))), 0.1)
+            ease_colour(G.C.UI_MULT, copy_table(Spectrallib.get_asc_colour(to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level))), 0.1)
+            Spectrallib.pulse_flame(0.01, sunlevel)
+            used_consumable:juice_up(0.8, 0.5)
+            G.E_MANAGER:add_event(Event({
+              trigger = "after",
+              blockable = false,
+              blocking = false,
+              delay = 1.2,
+              func = function()
+                ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+                ease_colour(G.C.UI_MULT, G.C.RED, 1)
+                return true
+              end,
+            }))
+            return true
+          end,
+        }))
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..(to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level)) })
+        delay(1.0)
+        delay(2.6)
+        update_hand_text(
+          { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+          { mult = 0, chips = 0, handname = "", level = "" }
+        )
+    end,
+
+]]

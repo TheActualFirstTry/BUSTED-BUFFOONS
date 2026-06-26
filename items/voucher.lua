@@ -1,6 +1,6 @@
 SMODS.Atlas{
     key = "ic",
-    path = "IC.png",
+    path = "indus.png",
     px = 71,
     py = 95
 }
@@ -29,9 +29,10 @@ SMODS.Voucher {
   jen_omegatranscendent = 'cry_exotic',
   jen_omnipotent = 'cry_exotic',
   jen_transcendent = 'cry_exotic',
-  jen_wondrous = 'cry_exotic',
   jen_ritualistic = 'cry_exotic',
   jen_miscellaneous = 'Rare',
+  bos_transcendent = 'bos_exotic',
+  bos_miscellaneous = 'Rare',
   gj_detri = "gj_uniq",
   ocstobal_challengeexclusive = "ocstobal_omega",
   ocstobal_absolute_curse = "ocstobal_beyondexotic",

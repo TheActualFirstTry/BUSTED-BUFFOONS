@@ -1211,7 +1211,7 @@ calculate = function(self, card, context)
 				colour = G.C.GREEN,
 				no_juice = true,
 			})
-                    local rarity_map = {
+        local rarity_map = {
   busterb_Grandiose = 'busterb_Dreamy',
   busterb_Secret = 'busterb_Fantastic',
   Common = 'Rare',
@@ -1224,10 +1224,14 @@ calculate = function(self, card, context)
   jen_omegatranscendent = 'cry_exotic',
   jen_omnipotent = 'cry_exotic',
   jen_transcendent = 'cry_exotic',
-  jen_wondrous = 'cry_exotic',
   jen_ritualistic = 'cry_exotic',
   jen_miscellaneous = 'Rare',
-  gj_detri = "gj_uniq"
+  bos_transcendent = 'bos_exotic',
+  bos_miscellaneous = 'Rare',
+  gj_detri = "gj_uniq",
+  ocstobal_challengeexclusive = "ocstobal_omega",
+  ocstobal_absolute_curse = "ocstobal_beyondexotic",
+  ocstobal_cursed = "ocstobal_unique"
 }
 
 local _, key = pseudorandom_element(SMODS.Rarities, "cogito")

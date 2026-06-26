@@ -593,7 +593,7 @@ SMODS.Joker{
     config = {
         extra = {
             eechips = 1,
-            eechipsincrement = 0.01,
+            eechipsincrement = 0.1,
         },
         immutable = {
             eecap = 700,
@@ -929,9 +929,20 @@ SMODS.Joker{
     end,
     calculate = function(self, card, context)
         local super = card.ability.extra.super
-        if context.before and not context.blueprint and #context.full_hand == 1 then
+        if context.before and not context.blueprint --[[and #context.full_hand == 1]] then
             for k, v in ipairs(context.scoring_hand) do
-                if v:get_id() == 14 then
+                    v.ability.slib_perma_plus_asc = v.ability.slib_perma_plus_asc + super
+                    v.ability.slib_perma_x_asc = v.ability.slib_perma_x_asc + super
+                    v.ability.perma_mult = v.ability.perma_mult + super
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            v:juice_up()
+                            return true
+                        end
+                    }))
+
+
+--[[                if v:get_id() == 14 then
                     v.ability.slib_perma_plus_asc = v.ability.slib_perma_plus_asc + super
                     v.ability.slib_perma_x_asc = v.ability.slib_perma_x_asc + super
                     v.ability.slib_perma_exp_asc = v.ability.slib_perma_exp_asc + super
@@ -942,8 +953,32 @@ SMODS.Joker{
                             return true
                         end
                     }))
+]]            end
+        end
+    end,
+--[[        add_to_deck = function(self, card, from_debuff)
+            if next(SMODS.find_mod("Cryptid")) then
+                if not next(SMODS.find_card("v_cry_hyperspacetether")) then
+                Card.apply_to_run(nil, G.P_CENTERS.v_cry_hyperspacetether)
             end
         end
+    end,
+        remove_from_deck = function(self, card, from_debuff)
+           if next(SMODS.find_mod("Cryptid")) then
+                if next(SMODS.find_card("v_cry_hyperspacetether")) then
+                Card.unapply_to_run(nil, G.P_CENTERS.v_cry_hyperspacetether)
+            end
+        end 
     end
+]]}
 
-}
+
+--[[if not next(SMODS.find_mod("Cryptid")) then
+local soup_or_man = Spectrallib.has_tether
+function Spectrallib.has_tether()
+    if next(SMODS.find_card('j_busterb_superman')) then
+        return true
+    end
+    return soup_or_man()
+end
+end]]

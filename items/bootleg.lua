@@ -790,7 +790,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 4,
     kind = "Bootleg",
 
         ease_background_colour = function(self)
@@ -836,7 +836,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 4,
     kind = "Bootleg",
 
             ease_background_colour = function(self)
@@ -882,7 +882,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 6,
     kind = "Bootleg",
 
             ease_background_colour = function(self)
@@ -928,7 +928,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 8,
     kind = "Bootleg",
 
             ease_background_colour = function(self)

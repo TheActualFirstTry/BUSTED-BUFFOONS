@@ -451,7 +451,8 @@ return {
 			["j_busterb_bombardier"] = {
 				["name"] = "BittlesToon",
 				["text"] = {
-					"Gains {X:mult,C:white}X#1#{} Mult if {C:spade}Spades{} or {C:hearts}Hearts{} are scored",
+					"Gains {X:mult,C:white}X#1#{} Mult if",
+					"{C:spade}Spades{} or {C:hearts}Hearts{} are scored",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}",
 				},
 			},
@@ -640,7 +641,7 @@ return {
 			["j_busterb_peridot"] = {
 				["name"] = "Peridot",
 				["text"] = {
-					"If a {C:green}Bootleg Card is used",
+					"If a {C:green}Bootleg Card{} is used",
 					"adjacent joker values are",
 					"multiplied by {C:attention}x#1#{}",
 				},
@@ -743,11 +744,11 @@ return {
 			["j_busterb_superman"] = {
 				["name"] = "{V:1,s:2}SUPERMAN{}",
 				["text"] = {
-
-				"If played hand contains",
-				"Only a single scoring{C:attention} Ace",
-				"Add permanent {C:gold}+#2#{}, {C:white,X:gold}X#2#{}, and {C:white,X:busterb_gfreddy}^#2#{}",
-				"Ascension Power to played card"
+					"Scoring cards gain",
+					"{C:gold}+#2#{} and {C:white,X:gold}X#2#",
+					"Ascension Power",
+					"and {C:mult}+#2#{} Mult",
+					"before hand scores"
 				},
 			},
 			["j_busterb_alienx"] = {
@@ -978,7 +979,7 @@ return {
 			["j_busterb_jake"] = {
 				["name"] = "Jake The Dog",
 				["text"] = {
-                    "Gain {C:attention}+#3#{C:attention} hand size{}",
+                    "Gain {C:attention}+#3#{C:chips} hand size{}",
 					"every {C:attention}#4#{C:inactive} [#1#]{} cards scored",
 					"then doubles requirement",
 				},
@@ -1000,7 +1001,7 @@ return {
 			["j_busterb_tenna"] = {
 				["name"] = "Tenna",
 				["text"] = {
-					"+{C:attention}#1#{} extra choice from",
+					"{C:attention}+#1#{} extra choice from",
 					"all opened {C:attention}Booster Packs"
 				},
 			},
@@ -1107,8 +1108,10 @@ return {
 			["j_busterb_kid"] = {
 				["name"] = "The Kid",
 				["text"] = {
-					"Gain {C:mult}+#2#{} Mult",
-					"for each {C:attention}2{} scored",
+					"This joker gains",
+					"{C:mult}+#2#{} Mult when each",
+					"played {C:attention}2{} scores",
+					"{C:inactive,s:0.5}why am i common",
 					"{C:inactive}(Currently: {C:mult}+#1#{C:inactive})"
 				},
 			},
@@ -1276,10 +1279,9 @@ return {
 			["j_busterb_bill"] = {
 				["name"] = "Bill Cipher",
 				["text"] = {
-					"Gains {C:white,X:busterb_eemult}^#2#{} Mult when",
-					"a single {C:attention}Ace{} of",
+					"Ascend all hands by {C:gold}#1#",
+					"if a single {C:attention}Ace{} of",
 					"{C:diamonds}Diamonds{} is played",
-					"{C:inactive}(Currently: {C:white,X:busterb_eemult}^#1#{C:inactive})"
 				},
 			},
 			["j_busterb_moony"] = {
@@ -1303,7 +1305,7 @@ return {
 				["name"] = "Hastur",
 				["text"] = {
 					"Played {C:diamonds}#2#{} give",
-					"{C:white,X:busterb_eemult}^#1#{} Mult but have a",
+					"{C:gold}+#1#{} Asc Power but have a",
 					"{C:green}1 in 4{} chance of being",
 					"{C:red}destroyed{} after scoring",
 				},

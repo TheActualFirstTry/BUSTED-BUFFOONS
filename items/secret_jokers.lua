@@ -842,10 +842,14 @@ SMODS.Joker{
   jen_omegatranscendent = 'cry_exotic',
   jen_omnipotent = 'cry_exotic',
   jen_transcendent = 'cry_exotic',
-  jen_wondrous = 'cry_exotic',
   jen_ritualistic = 'cry_exotic',
   jen_miscellaneous = 'Rare',
-  gj_detri = "gj_uniq"
+  bos_transcendent = 'bos_exotic',
+  bos_miscellaneous = 'Rare',
+  gj_detri = "gj_uniq",
+  ocstobal_challengeexclusive = "ocstobal_omega",
+  ocstobal_absolute_curse = "ocstobal_beyondexotic",
+  ocstobal_cursed = "ocstobal_unique"
 }
 local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
            key = rarity_map[key] or key

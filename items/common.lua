@@ -523,7 +523,12 @@ SMODS.Joker {
 --                colour = G.C.RED
             })
         if ((card.ability.immutable.rounds) >= (card.ability.immutable.total_rounds)) then
-            Spectrallib.l_asc(most_played, card, card.ability.extra.asc)
+                        SMODS.upgrade_poker_hands{
+                        from = card,
+                        parameters = { },
+                        ascension_power = card.ability.extra.pow,
+                        hands = most_played,
+                    }
             card.ability.immutable.rounds = 0
             SMODS.calculate_effect({ message = "Reset!", colour = G.C.FILTER}, card)
         end

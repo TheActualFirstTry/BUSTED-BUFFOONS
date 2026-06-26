@@ -35,7 +35,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 4,
     kind = "Infinity",
     
 
@@ -84,7 +84,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 4,
     kind = "Infinity",
 
 
@@ -125,7 +125,7 @@ SMODS.Booster {
     end,
     draw_hand = false,
     config = {
-        extra = 3,
+        extra = 4,
         choose = 1, 
     },
     loc_vars = function(self, info_queue, card)
@@ -133,7 +133,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 6,
     kind = "Infinity",
 
 
@@ -174,7 +174,7 @@ SMODS.Booster {
     end,
     draw_hand = false,
     config = {
-        extra = 5,
+        extra = 4,
         choose = 2, 
     },
     loc_vars = function(self, info_queue, card)
@@ -182,7 +182,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 8,
     kind = "Infinity",
 
 
@@ -240,7 +240,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 4,
     kind = "Pizzabox",
     ease_background_colour = function(self)
 		ease_colour(HEX("748645"), HEX("bc1006"))
@@ -292,7 +292,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 4,
     kind = "Pizzabox",
 
     ease_background_colour = function(self)
@@ -344,7 +344,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 6,
     kind = "Pizzabox",
     ease_background_colour = function(self)
 		ease_colour(HEX("748645"), HEX("bc1006"))
@@ -395,7 +395,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 8,
     kind = "Pizzabox",
 
     ease_background_colour = function(self)
@@ -430,7 +430,7 @@ SMODS.Booster{
 	atlas = "Gem",
 	pos = { x = 0, y = 0 },
 	config = { extra = 2, choose = 1 },
-	cost = 0,
+	cost = -math.huge,
 	weight = 0,
 	draw_hand = false,
 	update_pack = SMODS.Booster.update_pack,
@@ -519,7 +519,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 10,
     kind = "Joker",
 
             ease_background_colour = function()
@@ -576,7 +576,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 5,
+    cost = 10,
     kind = "Joker",
 
                 ease_background_colour = function()
