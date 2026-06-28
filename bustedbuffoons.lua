@@ -205,7 +205,7 @@ assert(SMODS.load_file("items/ace.lua"))()
 assert(SMODS.load_file("items/summusic.lua"))()
 assert(SMODS.load_file("items/tag.lua"))()
 --assert(SMODS.load_file("unused for now/testingjokers.lua"))() -- for future jokers
-assert(SMODS.load_file("unused for now/buttonjoker.lua"))()
+--assert(SMODS.load_file("unused for now/buttonjoker.lua"))()
 SMODS.current_mod.optional_features = function()
     return { retrigger_joker = true,
     	cardareas = {
