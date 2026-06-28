@@ -1,6 +1,8 @@
+SMODS.Shader({ key = 'atomic', path = 'atomic.fs' })
+
 SMODS.Atlas{
 	key = "modicon",
-	path = "modicon.png",
+	path = "Logo.png",
 	px = 34,
 	py = 34
 }
@@ -171,7 +173,10 @@ G.ARGS.LOC_COLOURS.busterb_unstable = SMODS.Gradients["busterb_unstable"]
 G.ARGS.LOC_COLOURS.busterb_secrets = SMODS.Gradients["busterb_SecretG"]
 
 
---assert(SMODS.load_file("items/otherfunctionalities.lua"))()
+
+
+assert(SMODS.load_file("items/otherfunctionalities.lua"))()
+assert(SMODS.load_file("items/stickers.lua"))()
 assert(SMODS.load_file("items/thanks900n1.lua"))()
 assert(SMODS.load_file("items/rarities.lua"))()
 assert(SMODS.load_file("items/pools.lua"))()
@@ -182,6 +187,8 @@ assert(SMODS.load_file("items/bootleg.lua"))()
 assert(SMODS.load_file("items/enhancement.lua"))()
 assert(SMODS.load_file("items/tarots.lua"))()
 assert(SMODS.load_file("items/packs.lua"))()
+assert(SMODS.load_file("items/common.lua"))()
+assert(SMODS.load_file("items/uncommon.lua"))()
 assert(SMODS.load_file("items/rarejoker.lua"))()
 assert(SMODS.load_file("items/pizza.lua"))()
 assert(SMODS.load_file("items/dreamyjokers.lua"))()
@@ -198,7 +205,7 @@ assert(SMODS.load_file("items/ace.lua"))()
 assert(SMODS.load_file("items/summusic.lua"))()
 assert(SMODS.load_file("items/tag.lua"))()
 --assert(SMODS.load_file("unused for now/testingjokers.lua"))() -- for future jokers
-
+assert(SMODS.load_file("unused for now/buttonjoker.lua"))()
 SMODS.current_mod.optional_features = function()
     return { retrigger_joker = true,
     	cardareas = {
@@ -208,8 +215,8 @@ SMODS.current_mod.optional_features = function()
 	},
 }
 end
+SMODS.Mods["BustedBuffoons"].spectrallib_features = { "ascension_power" }
 
-SMODS.current_mod.spectrallib_features = { "ascension_power" }
 
 SMODS.Sound{
     key = "cashregister",
@@ -222,6 +229,10 @@ SMODS.Sound{
 SMODS.Sound{
     key = "vineboom",
     path = "vine-boom.ogg"
+}
+SMODS.Sound{
+    key = "pepsiman",
+    path = "pepsiman.ogg"
 }
 to_big = to_big or function(x) return x end
 to_number = to_number or function(x) return x end
@@ -270,6 +281,17 @@ local pool = {}
                 local random_key = pseudorandom_element(pool, "random_rare_consumeable")
                     if random_key then SMODS.add_card{key = random_key, edition = "e_negative"} end
             end
+
+SMODS.current_mod.calculate = function(self, context)
+    if context.fix_probability and Card.is(context.trigger_obj, Card) then
+        if context.trigger_obj.ability.busterb_nilcard then
+    return {denominator = 0}
+        end
+        if context.trigger_obj.ability.busterb_stevencard then
+    return {numerator = 0}
+        end
+    end
+end
 
 -- 900n1 Gambapack
 if next(SMODS.find_mod("900N1GAMBLE")) then assert(SMODS.load_file("items/crossmodshit/silencedenhancement.lua"))() assert(SMODS.load_file("items/crossmodshit/crk.lua"))() end

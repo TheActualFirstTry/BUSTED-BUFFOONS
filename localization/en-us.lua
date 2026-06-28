@@ -979,7 +979,7 @@ return {
 			["j_busterb_jake"] = {
 				["name"] = "Jake The Dog",
 				["text"] = {
-                    "Gain {C:attention}+#3#{C:chips} hand size{}",
+                    "Gain {C:chips}+#3#{} hand size{}",
 					"every {C:attention}#4#{C:inactive} [#1#]{} cards scored",
 					"then doubles requirement",
 				},
