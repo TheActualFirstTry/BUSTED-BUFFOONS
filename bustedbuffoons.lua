@@ -172,6 +172,7 @@ G.ARGS.LOC_COLOURS.busterb_secrets = SMODS.Gradients["busterb_SecretG"]
 
 
 --assert(SMODS.load_file("items/otherfunctionalities.lua"))()
+assert(SMODS.load_file("items/bootleg.lua"))()
 assert(SMODS.load_file("items/thanks900n1.lua"))()
 assert(SMODS.load_file("items/rarities.lua"))()
 assert(SMODS.load_file("items/pools.lua"))()
