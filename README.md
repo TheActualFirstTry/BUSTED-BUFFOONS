@@ -1,4 +1,4 @@
-# ![icon](assets/1x/logo.png) Thank you for installing my mod, Busted Buffoons!
+# ![icon](assets/1x/Logo.png) Thank you for installing my mod, Busted Buffoons!
 ![thumbnail](assets/thumbnail.jpg)
 ## But before you install this pack of powerful jokers...
 Install [Amulet](https://github.com/frostice482/amulet) and [Spectrallib](https://github.com/SpectralPack/Spectrallib/) first, they're needed to pull off external functions like ascension power, value manipulation and higher operator scoring.
