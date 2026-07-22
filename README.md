@@ -1,9 +1,10 @@
-# Thank you for installing my mod, Busted Buffoons!
-
+# ![icon](assets/1x/logo.png) Thank you for installing my mod, Busted Buffoons!
+![thumbnail](assets/thumbnail.jpg)
 ## But before you install this pack of powerful jokers...
-Install [Amulet](https://github.com/frostice482/amulet) and [Spectrallib](https://github.com/SpectralPack/Spectrallib/) first, they're needed to pull off external value manipulation and higher operator scoring.
+Install [Amulet](https://github.com/frostice482/amulet) and [Spectrallib](https://github.com/SpectralPack/Spectrallib/) first, they're needed to pull off external functions like ascension power, value manipulation and higher operator scoring.
 
 ## There's also Crossmod content for...
+
 [900n1Gamblepack](https://github.com/900n1/900n1Gamblepack),
-[Starspace](https://github.com/MetaNite64/Starspace),
+
 [UNIK's Mod](https://github.com/70UNIK/UNIKs-mod)
