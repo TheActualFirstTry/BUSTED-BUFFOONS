@@ -65,7 +65,7 @@ return {
 					"{s:2,C:green}Code Credits:",
 					"{s:1.25,C:white,X:default}RattlingSnow{} {s:1.25,C:white,X:legendary}Paperback_Team{} {s:1.25,C:white,X:spectral}Cryptid{} {s:1.25,C:white,X:black}900n1{}",
 					"{s:1.25,C:white,X:inactive}Revo{} {s:1.25,C:white,X:busterb_grand}Somethingcom515{} {s:1.25,C:white,X:dark_edition}GhostSalt{} {s:1.25,C:white,X:edition}Ivy{} {s:1.25,C:white,X:dark_edition}SagaJonh{}",
-					"{s:1.25,C:white,X:attention}Candycane{} {s:1.25,C:white,X:green}Cassknows{} {s:1.25,C:white,X:red}lord.ruby{} {s:1.25,C:white,X:gold}Camostar{}" "{s:1.25,C:white,X:busterb_eechips}Astro{}",
+					"{s:1.25,C:white,X:attention}Candycane{} {s:1.25,C:white,X:green}Cassknows{} {s:1.25,C:white,X:red}lord.ruby{} {s:1.25,C:white,X:gold}Camostar{} {s:1.25,C:white,X:busterb_eechips}Astro{}",
 					"{s:1.25,C:busterb_balatro}The Balatro Modding Community",
 					"{s:0.5,C:inactive}--------------------------------------------------------------------------------------------------------------------------------------",
 					"{s:2,C:busterb_epileptic}Special Thanks:",
