@@ -76,6 +76,9 @@ if context.selling_card and
 context.card.config.center.key == 'c_unik_gateway' and 
 G.jokers.highlighted[1] and 
 G.jokers.highlighted[1].config.center.key == 'j_unik_unik' then
+    play_sound("highlight2")
+    play_sound("glass6")
+    G.jokers.highlighted[1]:juice_up(100,100)
     G.jokers.highlighted[1]:set_ability('j_busterb_unik')
     end
 end

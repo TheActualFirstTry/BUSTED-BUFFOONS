@@ -1,15 +1,9 @@
-SMODS.Atlas {
-    key = "atlas_Dream",
-    path = "Dream.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'dream',
     set = 'Spectral',
-    atlas = "atlas_Dream",
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 1, draw = function(card, scale_mod, rotate_mod)
+    atlas = "non",
+    pos = { x = 0, y = 7 },
+    soul_pos = { x = 1, y = 7, draw = function(card, scale_mod, rotate_mod)
         local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
             0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
             (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
@@ -73,9 +67,9 @@ SMODS.Atlas {
 SMODS.Consumable {
     key = 'Fantasy',
     set = 'Spectral',
-    atlas = "atlas_Fantasy",
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1} },
+    atlas = "non",
+    pos = { x = 2, y = 8 },
+    soul_pos = { x = 4, y = 8, new = { x = 3, y = 8} },
     soul_rate = 0.1,
     can_repeat_soul = true,
     soul_set = 'Spectral',
@@ -162,8 +156,8 @@ SMODS.Atlas {
 SMODS.Consumable {
     key = 'slumber',
     set = 'Spectral',
-    atlas = "atlas_Slumber",
-    pos = { x = 0, y = 0 },
+    atlas = "non",
+    pos = { x = 2, y = 7 },
     soul_rate = 0.1,
     can_repeat_soul = true,
     soul_set = 'Spectral',

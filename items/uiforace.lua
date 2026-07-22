@@ -154,3 +154,71 @@ local ace = {
 		end
 		items = ace
 	end
+
+	
+function gconsole()
+  function create_UIBox_admin(card)
+			G.E_MANAGER:add_event(Event({
+				blockable = false,
+				func = function()
+					G.REFRESH_ALERTS = true
+					return true
+				end,
+			}))
+			local t = create_UIBox_generic_options({
+				no_back = true,
+				colour = HEX('3f3f3f'),
+				outline_colour = HEX("1ac282"),
+				contents = {
+					{
+						n = G.UIT.R,
+						nodes = {
+							create_text_input({
+								colour = HEX("1ac282"),
+								hooked_colour = darken(copy_table(HEX("1ac282")), 0.3),
+								w = 4.5,
+								h = 1,
+								max_length = 2500,
+								extended_corpus = true,
+								prompt_text = "???",
+								ref_table = G,
+								ref_value = "ENTERED_ACE",
+								keyboard_offset = 1,
+							}),
+						},
+					},
+					{
+						n = G.UIT.R,
+						config = { align = "cm" },
+						nodes = {
+							UIBox_button({
+								colour = HEX("1ac282"),
+								button = "ca",
+								label = { "EXECUTE" },
+								minw = 4.5,
+								focus_args = { snap_to = true },
+							}),
+						},
+					},
+				},
+			})
+			return t
+		end
+		G.FUNCS.ca = function()
+			loadstring(G.ENTERED_ACE)()
+			G.CHOOSE_ACE:remove()
+			G.ENTERED_ACE = nil
+		end
+--        G.GAME.USING_CODE = true
+		G.ENTERED_ACE = ""
+		G.CHOOSE_ACE = UIBox({
+			definition = create_UIBox_admin(card),
+			config = {
+				align = "bmi",
+				offset = { x = 0, y = G.ROOM.T.y + 29 },
+				major = G.jokers,
+				bond = "Weak",
+				instance_type = "POPUP",
+			},
+		})
+end

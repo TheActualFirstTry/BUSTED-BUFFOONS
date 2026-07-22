@@ -35,6 +35,18 @@ SMODS.Rarity {
     end,
 }
 SMODS.Rarity {
+    key = "technopotent",
+    default_weight = 0,
+    pools = { ["technopotent"] = true },
+    badge_colour = HEX('3F3F3F'),
+    text_colour = SMODS.Gradients["busterb_technopotentgradient"],
+    badge_shader = "busterb_gaia_badge",
+    get_weight = function(self, weight, object_type)
+        return weight
+    end,
+}
+
+SMODS.Rarity {
     key = "Other",
     default_weight = 0,
     pools = { ["Other"] = true },

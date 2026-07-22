@@ -13,8 +13,8 @@ SMODS.Atlas {
 SMODS.Consumable {
     key = 'mugen',
     set = 'Spectral',
-    atlas = "atlas_Mugen",
-    cost = 4, pos = { x = 0, y = 0 },
+    atlas = "non",
+    cost = 4, pos = { x = 3, y = 7 },
     hidden = true,
     can_repeat_soul = true,
     soul_set = 'Infinity',
@@ -43,7 +43,8 @@ can_use = function(self, card)
                  v.rarity == "jen_omegatranscendent" or
                  v.rarity == "jen_omnipotent" or 
                  v.rarity == "jen_miscellaneous" or
-                 v.rarity == "busterb_Secret"
+                 v.rarity == "busterb_Secret" or 
+                 v.rarity == "busterb_technopotent"
             ) then
             selectable_jokers[#selectable_jokers + 1] = v
           end
@@ -636,47 +637,34 @@ SMODS.Consumable {
     atlas = "a_ic",
     cost = 4, pos = { x = 1, y = 3 },
     config = {
-    extra = { max_highlighted = 1 }
+    extra = { max_highlighted = 1, multiuse = 2 }
   },
- use = function(self, card, area, copier)
-    for i = 1, #G.hand.highlighted do
-            if not G.hand.highlighted[i].entr_aleph or G.hand.highlighted[i].busterb_omega then
-                G.E_MANAGER:add_event(Event({
-                        trigger = 'after',
-                        func = function()
-                            G.hand.highlighted[i]:start_dissolve()
-                            play_sound("tarot1")
-                            return true
-                        end
-                    }))
-                    G.E_MANAGER:add_event(Event({
-                        trigger = 'after',
-                        func = function()
-                            local inf_pool = get_current_pool('Infinity')
-            local infget = pseudorandom_element(inf_pool, 'busterb_inffetch')
-            local it = 1
-            while infget == 'UNAVAILABLE' do
-                it = it + 1
-                infget = pseudorandom_element(inf_pool, 'busterb_inffetch_re'..it)
-            end
-            local c = SMODS.add_card{set = "Playing Card"}
-                    c:set_ability(infget, true, nil, inf_pool)
-                            c:juice_up(0.3, 0.3)
-                            play_sound("tarot1")
-                            return true
-                        end
-                    }))
-            end
-        end
-    end,
-    can_use = function(self, card)
-        local selected = Spectrallib.get_highlighted_cards({ G.hand }, nil, 1, card.ability.extra.max_highlighted)
-        return #selected > 0 and #selected <= card.ability.extra.max_highlighted
-    	end,
+can_use = function(self, card)
+    return #G.consumeables.cards > 0
+  end,
+  use = function(self, card, area, copier)
+    local check = false
+			for i, v in pairs(G.consumeables.cards) do
+				if v ~= card then
+                        v.ability.cry_multiuse = ((v.ability.cry_multiuse or 1) + self.config.extra.multiuse)
+						check = true
+				end
+			end
+			if check then
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = "+"..self.config.extra.multiuse.. " Multiuse", colour = HEX('E36956') }
+				)
+			end
+  end,
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.extra.max_highlighted, colours = {HEX('E36956')}
+                card.ability.extra.max_highlighted, card.ability.extra.multiuse, colours = {HEX('E36956')}
             }
         }
     end,

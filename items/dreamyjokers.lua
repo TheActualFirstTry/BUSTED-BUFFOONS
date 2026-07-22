@@ -1,12 +1,12 @@
 SMODS.Atlas {
-    key = "opm",
-    path = "Saitama.png",
+    key = "djkr",
+    path = "dreamy.png",
     px = 71,
     py = 95,
 }
 SMODS.Joker {
     key = "saitama",
-    atlas = "opm",
+    atlas = "djkr",
     rarity = "busterb_Dreamy",
     cost = 16,
     discovered = true,
@@ -42,22 +42,16 @@ end,
         end
     end,
 }
-SMODS.Atlas {
-    key = "AX",
-    path = "AlienX.png",
-    px = 71,
-    py = 95,
-}
 SMODS.Joker {
     key = "alienx",
-    atlas = "AX",
+    atlas = "djkr",
     rarity = "busterb_Dreamy",
     cost = 16,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
+    pos = { x = 1, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     config = {
         extra = {  
@@ -102,16 +96,10 @@ SMODS.Joker {
 --	end
 --end
 
-SMODS.Atlas{
-    key = "kaio",
-    path = "ko.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "ko",
-    atlas = "kaio",
-    pos = { x = 0, y = 0 },
+    atlas = "djkr",
+    pos = { x = 0, y = 1 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     rarity = "busterb_Dreamy",
     cost = 16,
@@ -165,34 +153,35 @@ calculate = function(self, card, context)
 end
 }
 
-SMODS.Atlas {
-    key = "Peri",
-    path = "Peridot.png",
-    px = 71,
-    py = 95,
-}
 SMODS.Joker {
     key = "peridot",
-    atlas = "Peri",
+    atlas = "djkr",
     rarity = "busterb_Dreamy",
     cost = 16,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
+    pos = { x = 2, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     config = {
-        extra = {  vm = 1.1
-        }
+        extra = { vm = 1.1, triggered = false }
     },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.vm } }
     end,
 
     calculate = function(self, card, context)
-           if context.using_consumeable and context.consumeable.ability.set == 'Bootleg' then
-                local mypos = nil
+        if context.starting_shop and not card.ability.extra.triggered then
+     local booster = SMODS.add_booster_to_shop("p_busterb_s_pack_1")
+	 booster.cost = 0
+      card.ability.extra.triggered = true
+    end
+    if context.open_booster then
+      card.ability.extra.triggered = false
+    end
+    if context.skipping_booster and not context.blueprint then
+                 local mypos = nil
 		        for i = 1, #G.jokers.cards do
 			        if G.jokers.cards[i] == card then
 				        mypos = i
@@ -201,31 +190,25 @@ SMODS.Joker {
 		        end
                 if G.jokers.cards[mypos - 1] then
 					Spectrallib.manipulate(G.jokers.cards[mypos-1], { value = card.ability.extra.vm })
-                SMODS.calculate_effect({ message = "< X" ..card.ability.extra.vm, colour = G.C.FILTER}, card)
+                SMODS.calculate_effect({ message = "X" ..card.ability.extra.vm, colour = G.C.FILTER}, G.jokers.cards[mypos-1])
 				end 
                 if G.jokers.cards[mypos + 1] then
 					Spectrallib.manipulate(G.jokers.cards[mypos+1], { value = card.ability.extra.vm })
-                SMODS.calculate_effect({ message = "X".. card.ability.extra.vm.. " >", colour = G.C.FILTER}, card)
+                SMODS.calculate_effect({ message = "X".. card.ability.extra.vm, colour = G.C.FILTER}, G.jokers.cards[mypos+1])
 				end
-			end
         end
-}
-SMODS.Atlas {
-    key = "Isaac",
-    path = "Isaac.png",
-    px = 71,
-    py = 95,
+    end
 }
 SMODS.Joker {
     key = "isaac",
-    atlas = "Isaac",
+    atlas = "djkr",
     rarity = "busterb_Dreamy",
     cost = 16,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
+    pos = { x = 3, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     config = { immutable = { roll_rounds = 0, total_rounds = 3, round_add = 1 } },
     loc_vars = function(self, info_queue, card)
@@ -315,28 +298,22 @@ SMODS.Joker {
         end
     end
 }
-SMODS.Atlas{
-    key = "hq",
-    path = "Harley.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "harley",
-    atlas = "hq",
+    atlas = "djkr",
     rarity = "busterb_Dreamy",
     cost = 16,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
+    pos = { x = 2, y = 1 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
 calculate = function(self, card, context)
 		if
 			context.retrigger_joker_check
 			and not context.retrigger_joker
-			and not (context.other_card.ability and context.other_card.ability.key == "harley")
+			and not (context.other_card.ability and context.other_card.ability.key == "j_busterb_harley")
 		then
 				return {
 					message = localize("k_again_ex"),
@@ -360,22 +337,16 @@ SMODS.Sound{
     key = "pizzafacelaugh",
     path = "Pizzaface.ogg"
 }
-SMODS.Atlas{
-    key = "pizzaf",
-    path = "pizzaface.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "pizzaface",
-    atlas = "pizzaf",
+    atlas = "djkr",
     rarity = "busterb_Dreamy",
     cost = 16,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
+    pos = { x = 1, y = 1 },
     config = { immutable = { boss_size = 1.25 } },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     loc_vars = function(self, info_queue, center)
@@ -455,60 +426,55 @@ SMODS.Sound{
     key = "dbzpowerup",
     path = "DBZPowerup.ogg"
 }
-SMODS.Atlas{
-    key = "avegeta",
-    path = "Vegeta.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "vegeta",
-    atlas = "avegeta",
+    atlas = "djkr",
     rarity = "busterb_Dreamy",
     cost = 16,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
+    pos = { x = 3, y = 1 },
     config = { 
         extra = { 
-            mult = 2, 
-            xmult = 2.5, 
+            asc = 4,
             powerup = 1.5
         } 
     },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.mult, card.ability.extra.xmult, card.ability.extra.powerup } }
+		return { vars = { card.ability.extra.asc, card.ability.extra.powerup } }
 	end,
     calculate = function(self, card, context)
         if context.before and G.GAME.current_round.hands_left == 0 then
-            card.ability.extra.mult = card.ability.extra.mult * card.ability.extra.powerup
-            card.ability.extra.xmult = card.ability.extra.xmult * card.ability.extra.powerup
-            SMODS.calculate_effect({ message = "X" ..card.ability.extra.powerup, sound = "busterb_dbzpowerup", colour = G.C.GOLD}, card)
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "asc",
+                operation = "X",
+                scalar_value = "powerup",
+                scaling_message = {
+                message = "X" ..card.ability.extra.powerup,
+                sound = "busterb_dbzpowerup", 
+                colour = G.C.GOLD
+            }
+            })
         end
         if context.joker_main then
-            SMODS.calculate_effect({ mult = card.ability.extra.mult, xmult = card.ability.extra.xmult}, card)
+            SMODS.calculate_effect({ asc = card.ability.extra.asc}, card)
         end
     end
 }
-SMODS.Atlas{
-    key = "athanos",
-    path = "Thanos.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "thanos",
-    atlas = "athanos",
+    atlas = "djkr",
     rarity = "busterb_Dreamy",
     cost = 16,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
+    pos = { x = 0, y = 2 },
     config = { 
         extra = { 
         } 
@@ -524,22 +490,16 @@ SMODS.Joker{
         end
     end
 }
-SMODS.Atlas{
-    key = "ll",
-    path = "Lapis.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "lapis",
-    atlas = "ll",
+    atlas = "djkr",
     rarity = "busterb_Dreamy",
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = false,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
+    pos = { x = 1, y = 2 },
     config = { 
         extra = { 
             xchips = 2
@@ -573,13 +533,6 @@ SMODS.Joker{
         
 }
 
-SMODS.Atlas{
-    key = "pep",
-    path = "pino.png",
-    px = 71,
-    py = 95
-}
-
 local PinoTalk = {
     'Okay paisano, here is-a your order.',
     'Enjoy-a your pizza.',
@@ -591,18 +544,19 @@ local RarePino = {
     "You're a pretty lucky one, aren't you?",
     "Ooh, how do you know about-a this?",
     "You've won the lottery, paisano!",
-    "This-a one is on the house!"
+    "This-a one is on the house!",
+    "That blue guy is hiding something..."
 }
 SMODS.Joker {
     key = "peppino",
     unlocked = false, 
-    atlas = "pep",
+    atlas = "djkr",
     blueprint_compat = true,
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
 --    pino = true,
     rarity = "busterb_Dreamy",
     cost = 16,
-    pos = { x = 0, y = 0 },
+    pos = { x = 2, y = 2 },
     config = { extra = { xmult = 1, xmult_mod = .5 }, immutable = { odds = 25 } },
     loc_vars = function(self, info_queue, card)
         local pinorare, pinoodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_pinorare')
@@ -663,22 +617,16 @@ SMODS.Joker {
         end
     end
 }
-SMODS.Atlas{
-    key = "n",
-    path = "Oise.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "noise",
-    atlas = "n",
+    atlas = "djkr",
     rarity = "busterb_Dreamy",
     cost = 16,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
+    pos = { x = 3, y = 2 },
     config = { 
         extra = { 
             hand = 1
@@ -691,6 +639,203 @@ SMODS.Joker{
     calculate = function(self, card, context)
         if context.joker_main and G.GAME.current_round.hands_left == 0 then
             ease_hands_played(card.ability.extra.hand)
+        end
+    end
+}
+SMODS.Joker{
+    key = "bear5",
+    atlas = "djkr",
+    rarity = "busterb_Dreamy",
+    cost = 16,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 3 },
+    config = { 
+        extra = { 
+            perma = 0.5,
+            asc = 5,
+            dollars = 25,
+            scoring = 5
+
+        } 
+    },
+    pools = { ["Dreamy"] = true, ["bustjokers"] = true },
+    loc_vars = function(self, info_queue, card)
+		return { vars = { } }
+	end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and context.other_card:get_id() == 5 then
+            local bear5 = pseudorandom(pseudoseed("busterb_bear5"), 1, 5)
+            if bear5 == 1 then
+                return { dollars = card.ability.extra.dollars, sound = "busterb_maltigi" }
+            end
+            if bear5 == 2 then
+                card:juice_up(10, 10)
+                context.other_card.ability.slib_perma_e_mult = (context.other_card.ability.slib_perma_e_mult or 0) +
+                card.ability.extra.perma
+                play_sound("busterb_bear5",1,0.1)
+            return {
+                message = localize('k_upgrade_ex'),
+                colour = SMODS.Gradients["busterb_eemultgradient"],
+            }
+            end
+            if bear5 == 3 then
+                card:juice_up(10, 10)
+                context.other_card.ability.slib_perma_e_chips = (context.other_card.ability.slib_perma_e_chips or 0) +
+                card.ability.extra.perma
+                play_sound("busterb_bear5",1,0.1)
+                return {
+                message = localize('k_upgrade_ex'),
+                colour = SMODS.Gradients["busterb_eechipsgradient"],
+            }
+            end
+            if bear5 == 4 then
+                return { asc = card.ability.extra.asc, sound = "busterb_maltigi" }
+            end
+            if bear5 == 5 then
+                return { xscore = card.ability.extra.scoring, sound = "busterb_maltigi" }
+            end
+        end
+    end
+}
+
+SMODS.Joker {
+    key = "cesare",
+    atlas = "djkr",
+    rarity = "busterb_Dreamy",
+    cost = 16,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 1, y = 3 },
+    pools = { ["Dreamy"] = true, ["bustjokers"] = true },
+    config = {
+        extra = {  
+        },
+        immutable = { ante = -8 }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.immutable.ante } }
+    end,
+
+    calculate = function(self, card, context)
+        if context.end_of_round and context.game_over and context.main_eval then
+        if G.GAME.dollars > 5 then
+            ease_dollars(-(G.GAME.dollars/2))
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.hand_text_area.blind_chips:juice_up()
+                        G.hand_text_area.game_chips:juice_up()
+                        play_sound('tarot1')
+                        return true
+                    end
+                }))
+                return {
+                    message = "Nope!",
+                    saved = 'Not just yet!',
+                    colour = G.C.UI.TEXT_DARK
+                }
+            end
+        end
+    end
+}
+SMODS.Joker {
+    key = 'amazo',
+    cost = 16,
+    rarity = 'busterb_Dreamy',
+    atlas = 'djkr',
+    pos = { x = 2, y = 3 },
+    blueprint_compat = true,
+    pools = { ["Dreamy"] = true, ["bustjokers"] = true }, 
+      loc_vars = function(self, info_queue, card)
+    if card.area and card.area == G.jokers then
+      local left_joker = nil
+      local right_joker = nil
+      for i = 1, #G.jokers.cards do
+        if G.jokers.cards[i] == card then
+          left_joker = G.jokers.cards[i - 1]
+          right_joker = G.jokers.cards[i + 1]
+        end
+      end
+      local left_compatible = left_joker and left_joker ~= card and left_joker.config.center.blueprint_compat
+      local right_compatible = right_joker and right_joker ~= card and right_joker.config.center.blueprint_compat
+
+      local main_end = { {
+        n = G.UIT.C,
+        config = { align = "bm", minh = 0.4 },
+        nodes = { {
+          n = G.UIT.C,
+          config = {
+            ref_table = card,
+            align = "m",
+            colour = left_compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8),
+            r = 0.05,
+            padding = 0.06
+          },
+          nodes = { {
+            n = G.UIT.T,
+            config = {
+              text = ' ' .. localize('k_' .. (left_compatible and 'compatible' or 'incompatible')) .. ' ',
+              colour = G.C.UI.TEXT_LIGHT,
+              scale = 0.32 * 0.8
+            }
+          } }
+        }, {
+          n = G.UIT.C,
+          config = {
+            ref_table = card,
+            align = "m",
+            colour = right_compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8),
+            r = 0.05,
+            padding = 0.06
+          },
+          nodes = { {
+            n = G.UIT.T,
+            config = {
+              text = ' ' .. localize('k_' .. (right_compatible and 'compatible' or 'incompatible')) .. ' ',
+              colour = G.C.UI.TEXT_LIGHT,
+              scale = 0.32 * 0.8
+            }
+          } }
+        } }
+      } }
+
+      return { main_end = main_end }
+    end
+  end,
+    calculate = function(self, card, context)
+        if not G.jokers then return nil end
+        local right_effect, left_effect = nil, nil
+
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i] == card then
+                local right_joker = G.jokers.cards[i + 1]
+                local left_joker = G.jokers.cards[i - 1]
+
+                if right_joker and right_joker ~= card and right_joker.config.center.blueprint_compat then
+                    right_effect = SMODS.blueprint_effect(card, right_joker, context)
+                end
+
+                if left_joker and left_joker ~= card and left_joker.config.center.blueprint_compat then
+                    left_effect = SMODS.blueprint_effect(card, left_joker, context)
+                end
+
+                break
+            end
+        end
+
+        if right_effect or left_effect then
+            local merged = SMODS.merge_effects(
+                { right_effect or {} },
+                { left_effect or {} }
+            )
+
+            return merged
+        else
+            return nil
         end
     end
 }

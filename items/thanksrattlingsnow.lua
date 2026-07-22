@@ -255,3 +255,137 @@ function busterb_use_consumable_animation(card, cards_to_flip, action, sound)
     delay(0.5)
   end
 end
+
+function gjoker()
+        G.SETTINGS.paused = true
+
+        local selectable = {}
+
+        for _, v in ipairs(G.P_CENTER_POOLS.Joker) do
+          if not (   v.rarity == "jen_ritualistic" or
+                 v.rarity == "jen_transcendent" or
+                 v.rarity == "jen_omegatranscendent" or
+                 v.rarity == "jen_omnipotent" or 
+                 v.rarity == "jen_miscellaneous"
+                ) then
+            selectable[#selectable + 1] = v
+          end
+        end
+
+        -- If the list of jokers is empty, we want at least one option so the user can leave the menu
+        if #selectable <= 0 then
+          selectable[#selectable + 1] = G.P_CENTERS.j_joker
+        end
+
+        G.FUNCS.overlay_menu {
+          config = { no_esc = true },
+          definition = mugen_apostle_of_wands_collection_UIBox(
+            selectable,
+            { 5, 5, 5 },
+            {
+              no_materialize = true,
+              modify_card = function(other_card, center)
+                other_card.sticker = get_joker_win_sticker(center)
+                busterb_create_select_card_ui(other_card, G.jokers)
+              end,
+              h_mod = 1.05,
+            }
+          ),
+        }
+end
+function gconsumable()
+        G.SETTINGS.paused = true
+
+        local selectable = {}
+
+        for _, v in ipairs(G.P_CENTER_POOLS.Consumeables) do
+          if not (  
+            v.set == "jen_omegaconsumable" or
+            v.set == "jen_ability"
+                ) then
+            selectable[#selectable + 1] = v
+          end
+        end
+
+        -- If the list of jokers is empty, we want at least one option so the user can leave the menu
+        if #selectable <= 0 then
+          selectable[#selectable + 1] = G.P_CENTERS.c_fool
+        end
+
+        G.FUNCS.overlay_menu {
+          config = { no_esc = true },
+          definition = mugen_apostle_of_wands_collection_UIBox(
+            selectable,
+            { 10, 10, 10 },
+            {
+              no_materialize = true,
+              modify_card = function(other_card, center)
+                other_card.sticker = get_joker_win_sticker(center)
+                busterb_create_select_card_ui(other_card, G.consumeables)
+              end,
+              h_mod = 1.05,
+            }
+          ),
+        }
+end
+function gbooster()
+        G.SETTINGS.paused = true
+
+        local selectable = {}
+
+        for _, v in ipairs(G.P_CENTER_POOLS.Booster) do
+            selectable[#selectable + 1] = v
+        end
+
+        -- If the list of jokers is empty, we want at least one option so the user can leave the menu
+        if #selectable <= 0 then
+          selectable[#selectable + 1] = G.P_CENTERS.p_arcana_1
+        end
+
+        G.FUNCS.overlay_menu {
+          config = { no_esc = true },
+          definition = mugen_apostle_of_wands_collection_UIBox(
+            selectable,
+            { 4,4 },
+            {
+              no_materialize = true,
+              modify_card = function(other_card, center)
+                other_card.sticker = get_joker_win_sticker(center)
+                busterb_create_select_card_ui(other_card, G.consumeables)
+              end,
+              h_mod = 1.05,
+            }
+          ),
+        }
+end
+
+function gvoucher()
+        G.SETTINGS.paused = true
+
+        local selectable = {}
+
+        for _, v in ipairs(G.P_CENTER_POOLS.Voucher) do
+            selectable[#selectable + 1] = v
+        end
+
+        -- If the list of jokers is empty, we want at least one option so the user can leave the menu
+        if #selectable <= 0 then
+          selectable[#selectable + 1] = G.P_CENTERS.v_overstock
+        end
+
+        G.FUNCS.overlay_menu {
+          config = { no_esc = true },
+          definition = mugen_apostle_of_wands_collection_UIBox(
+            selectable,
+            { 4,4 },
+            {
+              no_materialize = true,
+              modify_card = function(other_card, center)
+                other_card.sticker = get_joker_win_sticker(center)
+                busterb_create_select_card_ui(other_card, G.consumeables)
+              end,
+              h_mod = 1.05,
+            }
+          ),
+        }
+end

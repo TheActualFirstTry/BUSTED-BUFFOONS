@@ -107,7 +107,8 @@ local ZagreusTalk = {
     "We're not done yet.",
     "Care for another chance?",
     "Let's not get ahead of ourselves...",
-    "Ah, so you thought!"
+    "Ah, so you thought!",
+    "That blue fellow has some skeletons hidden somewhere..."
 }
 
 SMODS.Joker {
@@ -468,7 +469,6 @@ SMODS.Joker {
         local amt = amt or 1
         local used_consumable = copier or card
         delay(0.4)
-        local max=0
         update_hand_text(
           { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
           { handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
@@ -482,8 +482,8 @@ SMODS.Joker {
           delay = 0.2,
           func = function()
             play_sound("tarot1")
-            ease_colour(G.C.UI_CHIPS, copy_table(Entropy.get_asc_colour(to_big(1) * to_big(amt) + to_big(card.ability.extra.level))), 0.1)
-            ease_colour(G.C.UI_MULT, copy_table(Entropy.get_asc_colour(to_big(1) * to_big(amt) + to_big(card.ability.extra.level))), 0.1)
+            ease_colour(G.C.UI_CHIPS, copy_table(Spectrallib.get_asc_colour(to_big(1) * to_big(amt) + to_big(card.ability.extra.level))), 0.1)
+            ease_colour(G.C.UI_MULT, copy_table(Spectrallib.get_asc_colour(to_big(1) * to_big(amt) + to_big(card.ability.extra.level))), 0.1)
             Spectrallib.pulse_flame(0.01, sunlevel)
             used_consumable:juice_up(0.8, 0.5)
             G.E_MANAGER:add_event(Event({

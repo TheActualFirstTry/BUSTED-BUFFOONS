@@ -1,11 +1,12 @@
 return {
 	["misc"] = {
 		["dictionary"] = {
-			["k_busterb_secret"] = "Secret",
+			["k_busterb_secret"] = "Eldritch",
 			["k_busterb_fantastic"] = "Fantastic",
 			["k_infinity"] = "Infinity",
 			["k_busterb_dreamy"] = "Dreamy",
 			["k_busterb_grandiose"] = "Grandiose",
+			["k_busterb_technopotent"] = "Technopotent",
 			["k_busterb_other"] = "Other",
 			["k_bootleg"] = "Bootleg",
 			["b_bootleg_cards"] = "Bootleg Cards",
@@ -29,10 +30,11 @@ return {
 			["k_booster_group_p_busterb_bbpack_2"] = "Busted Buffoons",
 		},
 		["labels"] = {
-			["k_busterb_secret"] = "Secret",
+			["k_busterb_secret"] = "Eldritch",
 			["busterb_atomic"] = "Atomic",
 			["k_busterb_fantastic"] = "Fantastic",
 			["k_busterb_grandiose"] = "Grandiose",
+			["k_busterb_technopotent"] = "Technopotent",
 			["k_busterb_dreamy"] = "Dreamy",
 			["k_busterb_other"] = "Other",
 			["busterb_omega"] = "Omega",
@@ -54,14 +56,16 @@ return {
 					"",
 					"",
 					"{s:1.25,C:white,X:dark_edition}Vylet Pony",
-					"{C:dark_edition}NI4NI",
+					"{C:dark_edition}Ultrakill - NI4NI",
 					"{s:1.25,C:white,X:busterb_bigbang}Heaven Pierce Her",
-					"{C:busterb_bigbang}Ultrakill 8-3 Theme No.3 (Event Horizon) [COMBAT]",
+					"{C:busterb_bigbang}Ultrakill 8-3 Theme No.3 - Event Horizon (COMBAT)",
+					"{s:1.25,C:white,X:busterb_secrets}Mr. Sauceman",
+					"{C:busterb_secrets}Pizza Tower - Thousand March",
 					"{s:0.5,C:inactive}--------------------------------------------------------------------------------------------------------------------------------------",
 					"{s:2,C:green}Code Credits:",
 					"{s:1.25,C:white,X:default}RattlingSnow{} {s:1.25,C:white,X:legendary}Paperback_Team{} {s:1.25,C:white,X:spectral}Cryptid{} {s:1.25,C:white,X:black}900n1{}",
 					"{s:1.25,C:white,X:inactive}Revo{} {s:1.25,C:white,X:busterb_grand}Somethingcom515{} {s:1.25,C:white,X:dark_edition}GhostSalt{} {s:1.25,C:white,X:edition}Ivy{} {s:1.25,C:white,X:dark_edition}SagaJonh{}",
-					"{s:1.25,C:white,X:attention}Candycane{} {s:1.25,C:white,X:green}Cassknows{} {s:1.25,C:white,X:red}lord.ruby{} {s:1.25,C:white,X:gold}Camostar{}",
+					"{s:1.25,C:white,X:attention}Candycane{} {s:1.25,C:white,X:green}Cassknows{} {s:1.25,C:white,X:red}lord.ruby{} {s:1.25,C:white,X:gold}Camostar{}" "{s:1.25 C:white,X:busterb_eechips}Astro{}",
 					"{s:1.25,C:busterb_balatro}The Balatro Modding Community",
 					"{s:0.5,C:inactive}--------------------------------------------------------------------------------------------------------------------------------------",
 					"{s:2,C:busterb_epileptic}Special Thanks:",
@@ -358,8 +362,29 @@ return {
 					"{C:inactive}Holy GOLF Reference"
 				},
 			},
+			["j_busterb_bear5"] = {
+				["name"] = "BEAR5",
+				["text"] = {
+					"Scored 5s do {C:red,E:1}EVIL{} things..."
+				},
+			},
+			["j_busterb_ceasre"] = {
+				["name"] = "Cesare",
+				["text"] = {
+					"Prevents death for",
+					"half your{C:attention} money",
+					"{C:inactive}(Doesn't accept {C:gold}$5{C:inactive} or less)"
+				},
+			},
+			["j_busterb_amazo"] = {
+				["name"] = "Amazo",
+				["text"] = {
+					"Copies the abilities",
+					"of {C:attention}Adjacent Jokers"
+				},
+			},
 			["j_busterb_maxwell"] = {
-				["name"] = "{C:blue,E:1,s:2}MAXWELL{}",
+				["name"] = "{C:blue,E:1}MAXWELL{}",
 				["text"] = {
 					"For {C:attention}every card held in hand{}, create a {C:attention}random{} {C:dark_edition}negative{} {C:attention}consumable{}.",
 					"Sell this joker to spawn a {C:dark_edition}negative{} {V:1,E:1,s:1.5}Dream{} {C:attention}card{}.",
@@ -384,7 +409,7 @@ return {
                 },
             },
 			["j_busterb_golden_freddy"] = {
-				["name"] = "{V:1,s:2}GOLDEN FREDDY{}",
+				["name"] = "{V:1}GOLDEN FREDDY{}",
 				["text"] = {
 					"Spawn a ",
 					"{C:white,B:1,s:1.5}Random#1#Rare#1#Consumable",
@@ -393,7 +418,7 @@ return {
 				},
 			},
 			["j_busterb_caine"] = {
-				["name"] = "{C:busterb_grand,s:2}CAINE{}",
+				["name"] = "{C:busterb_grand}CAINE{}",
 				["text"] = {
 					"When a {C:attention}Boss Blind{} is {C:attention}beaten{},",
 					"Gain {X:busterb_grand,C:white}+#2#{} Redeem",
@@ -414,7 +439,7 @@ return {
 				},
 			},
 			["j_busterb_dd1"] = {
-				["name"] = "{C:tarot,E:1,s:2}DARK DONALD{}",
+				["name"] = "{C:tarot,E:1}DARK DONALD{}",
 				["text"] = {
 					"Multiplies all {C:attention}poker hand{} values",
 					"by {C:white,X:dark_edition}X#1#{} when a {C:attention}Boss Blind{}",
@@ -424,7 +449,7 @@ return {
 				},
 			},
 			["j_busterb_dreamena"] = {
-				["name"] = "{C:white,E:1,s:2}DREAM{} {C:hearts,E:1,s:2}ENA{}",
+				["name"] = "{C:white,E:1}DREAM{} {C:hearts,E:1}ENA{}",
 				["text"] = {
 					"Spawns a random free voucher in the shop.",
 					"Gains {X:gold,C:white}X$#1#{} and {C:attention}+#2#{} {C:attention}Joker Slots{}",
@@ -433,15 +458,17 @@ return {
 				},
 			},
 			["j_busterb_igor"] = {
-				["name"] = "{V:1,s:2}IGOR{}",
+				["name"] = "{V:1}IGOR{}",
 				["text"] = {
-					"All scored {C:attention}Face Cards{} become {C:attention}Crystallized{}",
-					"Gains {B:2,C:white}^^#1#{} Mult whenever a {C:attention}Face Card{} is scored",
+					"All scored {C:attention}Face Cards{}",
+					"become {C:attention}Crystallized{}",
+					"Gains {B:2,C:white}^^#1#{} Mult",
+					"When a {C:attention}Face Card{} is scored",
 					"{C:inactive}(Currently {B:2,C:white}^^#2#{C:inactive} Mult){}",
 				},
 			},
 			["j_busterb_spy"] = {
-				["name"] = "{s:2,C:legendary}SPY{}",
+				["name"] = "{C:legendary}SPY{}",
 				["text"] = {
 					"When {C:attention}selecting blind{},",
 					"Destroy the {C:attention}joker{} to the right",
@@ -457,7 +484,7 @@ return {
 				},
 			},
 			["j_busterb_alucard"] = {
-				["name"] = "{V:1,s:2}ALUCARD{}",
+				["name"] = "{V:1}ALUCARD{}",
 				["text"] = {
 					"Gain {X:busterb_eemult,C:white}^^#2#{} Mult",
                     "per scoring {C:attention}Enhanced card{} played,",
@@ -467,7 +494,7 @@ return {
 				},
 			},
 			["j_busterb_vajram"] = {
-				["name"] = "{V:1,s:2}VAJRAM{}",
+				["name"] = "{V:1}VAJRAM{}",
 				["text"] = {
 					"Give {X:busterb_eemult,C:white}^Mult{} equal to {V:1}Gauge",
 					"Gain {B:1,C:white}+#3#{} Gauge",
@@ -479,7 +506,7 @@ return {
 				},
 			},
 			["j_busterb_joker"] = {
-				["name"] = "{V:1,s:2}JIMBO{}",
+				["name"] = "{V:1}JIMBO{}",
 				["text"] = {
 					"{C:legendary}Legendary Jokers{} can spawn in the",
 					"shop and are {C:attention}free,",
@@ -491,20 +518,20 @@ return {
 				["name"] = "{C:edition}RAINBOW DASH{}",
 				["text"] = {
 					"Applies {C:dark_edition}Polychrome{} to cards in",
-					"{C:attention}first played hand{} each round,",
+					"the {C:attention}first played hand{} each round,",
 					"retriggers all played {C:dark_edition}Polychrome{}",
 					"cards by number of jokers",
 					"{C:inactive}(Currently: {C:dark_edition}#1#{}{C:inactive})",
 				},
 			},
 			["j_busterb_peacock"] = {
-				["name"] = "{C:gold}PEACOCK{}",
+				["name"] = "{C:gold}DREAM CATCHER PEACOCK{}",
 				["text"] = {
-					"{C:green}#4# in #5# chance{} to",
+					"{C:green}#3# in #4# chance{} to",
 					"apply {C:edition}Polychrome{} to a scored card in hand.",
-					"Gains {C:attention}#3#{} more {X:chips,C:white}XChips{} and {X:mult,C:white}XMult{}",
+					"Gains {C:gold}+#2#{} Ascension Power",
 					"per scored {C:edition}Polychrome{} card.",
-					"{C:inactive}(Currently{} {X:chips,C:white}X#1#{} {C:inactive}Chips and {}{X:mult,C:white}X#2#{}{C:inactive} Mult.){}",
+					"{C:inactive}(Currently{} {C:gold}+#1#{C:inactive})",
 				},
 			},
 			["j_busterb_thomas"] = {
@@ -513,14 +540,12 @@ return {
 					"\"All that makes me who I am\"",
 				},
 				["text"] = {
-					{"Spawn a {C:white,B:1}MUGEN{} at the end of the round",
-					"Gain {C:white,B:2}^^#2#{} Mult with {C:attention}each use",
-					"{C:attention}incremental value{} also {V:1}increases{} by {B:1,C:white}+#3#{} with {C:attention}each use",
+					{"Spawn a {V:1}MUGEN{} at the end of the round",
+					"Gain {C:white,B:2}^^#2#{} Mult and",
+					"{B:1,C:white}+#3#{} incremental value with {C:attention}each use",
 					"{C:inactive}({V:1}MUGEN {C:inactive}May overflow.)",
 					"{C:inactive}(Currently {B:2,C:white}^^#1#{C:inactive} Mult){}",
 					"{s:0.5,C:inactive}There's a special interaction with a certain character.{}"},
-					{"Spawn Condition: Reach {C:attention}Ante 8{}",
-					"Go to {C:clubs}Cerulean Bell{} and sell {C:white,B:1}MUGEN{}",}
 				},
 			},
 			["j_busterb_grahkon"] = {
@@ -542,7 +567,6 @@ return {
 					"7. {C:dark_edition}+#3#{} Joker Slots",
 					"8. {C:dark_edition}+#3#{} Consumable Slots",
 				},
-					{"Spawn Condition: ???",}
 				},
 			},
 			["j_busterb_ruby"] = {
@@ -553,13 +577,12 @@ return {
 				["text"] = {
 					{"Using a consumable",
 					"creates {C:attention}#1# {C:dark_edition}Negative{} consumables"},
-					{"Spawn Condition: ???",}
 				},
 			},
 			["j_busterb_hawaii"] = {
 				["name"] = {
-					"{C:busterb_grand,s:2}Hawaii Pt. II{}",
-					"By Miracle Musical",
+					"{s:2}Hawaii Pt. II{}",
+					"{C:busterb_grand}By Miracle Musical",
 				},
 				["text"] = {
 					{"This joker has all the abilites of",
@@ -580,15 +603,119 @@ return {
 					"Gain permanent {C:attention}+#5#{} card selection limit","",
 					"after {C:attention}23{} cards have been discarded",
 				},
-					{"Spawn Condition: ???",}
+				},
+			},
+			["j_busterb_jade"] = {
+				["name"] = {
+					"{C:green,s:2}Jade Penguin{}",
+					'"I am a Penguin"',
+				},
+				["text"] = {
+					{"{C:green}Probabilities{} are",
+					"half the denominator",
+					"Gain {C:white,X:busterb_eemult}^#1#{} Mult",
+					"When {C:green}chance{} hits"},
+				},
+			},
+			["j_busterb_crystal"] = {
+				["name"] = {
+					"{C:spectral,s:2}Crystal{}",
+					'"Meow!"',
+				},
+				["text"] = {
+					{"Retrigger all jokers",
+					"by the {C:attention}number{} of jokers",
+					"currently owned",
+					"{C:inactive}(Crystal Excluded)",
+					"{C:inactive}(Currently: {C:dark_edition}#1#{}{C:inactive})",},
+				},
+			},
+			["j_busterb_sappy"] = {
+				["name"] = {
+					"{C:diamonds,s:2}Sappy{}",
+					'Greetings gentlemen.',
+				},
+				["text"] = {
+					{"Discarded cards {C:attention}return to hand",
+					"and gain {C:white,X:busterb_eemult}^#1#{} Mult",},
+				},
+			},
+			["j_busterb_revo"] = {
+				["name"] = {
+					"{C:inactive,s:0.5,st:inactive}Revo{}",
+					"{s:2}Moon Knight{}",
+				[[{s:0.5}I know you're here {s:0.5,C:hearts,E:1}Dracula{s:0.5},]],
+				[[{s:0.5}you big {s:0.5,C:red}f**king{s:0.5} nerd.]],
+				[[{s:0.5}Where's my goddamn {s:0.5,C:money}money?]],
+				},
+				["text"] = {
+					{"Hey you! Use a {C:green}print{} card!",
+					"I promise you, you won't regret it!",},
+				},
+			},
+			["j_busterb_aikoyori"] = {
+				["name"] = {
+					"{C:clubs,s:2}Aikoyori{}",
+					'{C:green}"Play My Mod"',
+				},
+				["text"] = {
+					{"Duplicates upon {C:attention}blind select",
+					"{C:white,X:busterb_eemult}^#1#{} Mult",},
+					{"{C:inactive,s:0.5}https://github.com/Aikoyori/Balatro-Aikoyoris-Shenanigans"}
+				},
+			},
+			["j_busterb_nxkoo"] = {
+				["name"] = {
+					"{C:busterb_epileptic}n x k o o{}",
+					'{C:white,s:0.2}no...',
+				},
+				["text"] = {
+					{"{C:white,X:busterb_unstable}^#1#{} score for every",
+					"got dam {C:busterb_balatro}mod{} you have open...",
+						"{C:hearts}heart {C:red}discard{} for the {C:white,X:busterb_unstable}^#3#",
+					"{C:white,X:busterb_unstable}^#4#{} score if umm... {C:busterb_epileptic}scoring enhancment{}... check the info box",
+					"oughhhh i have {X:busterb_unstable,C:white}^#2#{} score {C:white,X:busterb_grand,s:2}atm",},
+				},
+			},
+			["j_busterb_theia"] = {
+				["name"] = {
+					"{C:busterb_gfreddy,s:2}Theia{}",
+					'{C:white}The Lady Of Light',
+				},
+				--Each scored card doubles this Joker's multiplier for the hand, giving ^#1# Ascendant power per card.
+				["text"] = {
+					"Infinite {C:attention}card selection",
+					"All cards score and give {C:gold}+#1#{} Ascension Power",
+					"{C:busterb_gfreddy}Doubles{} total {X:gold,C:white}X#6#Ascension#6#Power{} on each card,",
+ 				   	"Scores full {X:gold,C:white}X#6#Ascension#6#Power{} on{C:attention} last card{},",
+					"resets after",
+				    "Gains {X:black,C:busterb_gfreddy}+#4#{} starting {C:busterb_gfreddy}Base Power{} on {C:attention}Boss Blinds",
+--					"Gives {X:black,C:busterb_gfreddy}^#6#Ascension#6#Power{} equal to how many cards are played",
+					"{C:inactive}(Current Ascension Power: {X:gold,C:white}X#2#{}{C:inactive})",
+   					"{C:inactive}(Current Base: {X:black,C:busterb_gfreddy}X#3#{}{C:inactive})"
+	--				"{C:inactive}(Current hand: {X:black,C:busterb_gfreddy}#5#{C:inactive})"
 				},
 			},
 			["j_busterb_tsc"] = {
-				["name"] = "{C:green,s:2}The Second Coming",
+				["name"] = "{C:green}The Second Coming",
 				["text"] = {
-            		"Gains {X:busterb_eechips,C:white}^^#2#{} Chips when",
-		            "a {C:green}Bootleg Card{} is used",
-        		    "{C:inactive}(Currently {X:busterb_eechips,C:white}^^#1#{C:inactive}){}"
+            		"All jokers gain {C:busterb_technopotentgradient}+#1#{} values",
+					"whenever a {C:attention}consumable{} is {C:attention}used",
+					"This joker gains {C:busterb_technopotentgradient}+#2#{} more",
+					"incemental value whenever a {C:atttention}consumable{} is",
+					"instead {C:attention}sold"
+		        },
+			},
+			["j_busterb_upgrade"] = {
+				["name"] = "{C:busterb_technopotentgradient}UPGRADE",
+				["text"] = {
+            		"On {C:attention}blind select{}, temporarily",
+					"multiply {C:attention}All Jokers' Values",
+					"by {X:busterb_technopotentgradient,C:white}X#1#{} each round",
+					"Add the {C:dark_edition}scale value{} of any",
+					"active {C:attention}scaling jokers{} to this",
+					"joker's {C:busterb_technopotentgradient}multiplier",
+					"whenever scaling occurs"
 		        },
 			},
 			["j_busterb_pizzaface"] = {
@@ -602,13 +729,13 @@ return {
 			["j_busterb_vegeta"] = {
 				["name"] = "Vegeta",
 				["text"] = {
-					"Gain {X:gold,C:white}X#3#{C:mult} Mult{} and {X:mult,C:white}XMult",
+					"Gain {C:gold}X#2#{} Ascension Power",
 					"When playing your {C:attention}Final hand.{}",
-					"{C:inactive}(Currently {C:mult}+#1#{C:inactive} and {X:mult,C:white}X#2#{C:inactive})",
+					"{C:inactive}(Currently {C:gold}+#1#{C:inactive})",
 				},
 			},
 			["j_busterb_sisyphus"] = {
-				["name"] = "{C:gold,E:1,s:2}SISYPHUS PRIME{}",
+				["name"] = "{C:gold,E:1}SISYPHUS PRIME{}",
 				["text"] = {
 					"After selecting a {C:attention}Boss Blind{}",
 					"Double {C:money}money{}",
@@ -641,13 +768,15 @@ return {
 			["j_busterb_peridot"] = {
 				["name"] = "Peridot",
 				["text"] = {
-					"If a {C:green}Bootleg Card{} is used",
-					"adjacent joker values are",
-					"multiplied by {C:attention}x#1#{}",
+					"A {C:green}Free Bootleg Pack",
+					"is in the shop",
+					"upon {C:attention}skipping a pack",
+					"multiply {C:attention}adjacent Joker's",
+					"values by {C:attention}x#1#{}",
 				},
 			},
 			["j_busterb_queen"] = {
-				["name"] = "{C:planet,s:2}QUEEN{}",
+				["name"] = "{C:planet}QUEEN{}",
 				["text"] = {
 					"* Upon {C:attention}Selecting A Blind{}, Spawn {C:common}Gros Michel",
 					"When {C:common}Gros Michel{} Is {C:gold}Sold{}, Gain {C:white,X:mult}X#3#{} Mult",
@@ -663,7 +792,7 @@ return {
 					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}",
 				},
 			},
-			["j_busterb_samson"] = {
+			["j_busterb_samsonoc"] = {
 				["name"] = {
 					"{V:1,s:2}Samson{}",
 					"The Blissful Bugbear",
@@ -671,9 +800,6 @@ return {
 				["text"] = {
 					{"Scored and held {C:attention}Gold Cards{} and {C:attention}Gold Seals{}",
 					"give {X:money,C:white}^#1#{} dollars and Mult"},
-					{"Spawn Condition: Reach up to {C:money}$1e50",
-					"Beat {C:attention}The Ox{}",
-					"Sacrifice your Temperance and your Money"},
 				},
 			},
 			["j_busterb_garnet"] = {
@@ -690,7 +816,141 @@ return {
 				["name"] = "Murphy",
 				["text"] = {
 					"Scored {C:attention}9s{} gain",
-					"{C:mult}+9{} Mult"
+					"{C:mult}+#1#{} Mult"
+				},
+			},
+			["j_busterb_samsontboi"] = {
+				["name"] = "Samson",
+				["text"] = {
+					"Scored {C:hearts}Hearts{} give",
+					"{X:mult,C:white}X#2#{} Mult",
+					"Held {C:hearts}Hearts{} gain",
+					"{C:white,X:mult}X#1#{} Mult",
+					"and give {C:mult}+#3#{} Mult"
+				},
+			},
+			["j_busterb_annie"] = {
+				["name"] = "Dynamite Annie",
+				["text"] = {
+					"Scored {C:clubs}Clubs{} give",
+					"{X:chips,C:white}X#2#{} Chips",
+					"Held {C:clubs}Clubs{} gain",
+					"{C:white,X:chips}X#1#{} Chips",
+					"and give {C:chips}+#3#{} Chips"
+				},
+			},
+			["j_busterb_cerebella"] = {
+				["name"] = "Cerebella",
+				["text"] = {
+					"Scored {C:diamonds}Diamonds{} give",
+					"{C:gold}+#2#{} Ascension Power",
+					"Held {C:diamonds}Diamonds{} gain",
+					"{C:gold}+#1#{} Ascension Power",
+					"and give {C:money}$#3#{}"
+				},
+			},
+			["j_busterb_spade_king"] = {
+				["name"] = "Spade King",
+				["text"] = {
+					"Scored {C:spades}Spades{} give",
+					"{C:white,X:purple}X#2#{} Score",
+					"Held {C:spades}Spades{} gain",
+					"{C:attention}+#1#{} Retrigger",
+					"and give {C:purple}+#3#{} Score"
+				},
+			},
+			["j_busterb_walter"] = {
+				["name"] = "Heisenberg",
+				["text"] = {
+					"Selling a consumable gives {C:money}$#1#",
+					"sell value to {C:attention}All Jokers"
+				},
+			},
+			["j_busterb_reda"] = {
+				["name"] = "PinkPunkPrincess",
+				["text"] = {
+					"Gives {C:attention}+#1#{} Repetitions",
+					"to scored {C:attention}Glittery{} cards",
+--					"{C:attention}Glittery{} cards count as all suits"
+				},
+			},
+			["j_busterb_yahiamice"] = {
+				["name"] = "Yahiamice",
+				["text"] = {
+					"After beating a {C:attention}Boss Blind",
+					"All cards in the {C:attention}Shop Slots{}",
+					"are {C:dark_edition}Negative"
+				},
+			},
+			["j_busterb_muscle_man"] = {
+				["name"] = "Muscle Man",
+				["text"] = {
+					"Free {C:busterb_epileptic}Busted Buffoons Pack",
+					"in the Shop"
+				},
+			},
+			["j_busterb_gangle"] = {
+				["name"] = "Gangle",
+				["text"] = {
+					"Alternates between {C:gold}Happy{} and {C:blue}Sad{}",
+					"upon {C:attention}selecting blind",
+					"{C:blue}Sad:{} Scored {C:spades}Spades{} and {C:clubs}Clubs",
+					"give {C:white,X:chips}X#1#{} Chips",
+					"Scored {C:spades}Spades{} and {C:clubs}Clubs",
+					"{C:attention} face cards{} instead give {C:white,X:chips}X#2#{} Chips",
+					"{C:gold}Happy:{} Scored {C:diamonds}Diamonds{} and {C:hearts}Hearts",
+					"give {C:white,X:mult}X#1#{} Mult",
+					"Scored {C:diamonds}Diamonds{} and {C:hearts}Hearts",
+					"{C:attention} face cards{} instead give {C:white,X:mult}X#2#{} Mult",
+
+				},
+			},
+			["j_busterb_cupcake"] = {
+				["name"] = "Cupcake",
+				["text"] = {
+					"{C:red,E:2}Do not stare at him."
+				},
+			},
+			["j_busterb_jevil"] = {
+				["name"] = "Jevil",
+				["text"] = {
+					"Scored {C:hearts}Hearts{} give {C:mult}+#1#{} Mult",
+					"Scored {C:clubs}Clubs{} give {C:chips}+#2#{} Chips",
+					"Scored {C:diamonds}Diamonds{} give {C:gold}+#1#{} Ascension Power",
+					"Scored {C:spades}Spades{} give {C:purple}+#1#{} Score",
+					"Scored {C:hearts}Wild{} cards give all listed effects",
+				},
+			},
+			["j_busterb_captain"] = {
+				["name"] = "Captain Falcon",
+				["text"] = {
+					"Stores {C:gold}+#2#{} Ascension Power",
+					"during scoring",
+					"Release over {C:gold}+#1#{} Ascension Power",
+					"on the next hand {C:attention} upon use",
+				},
+			},
+			["j_busterb_reset_spinel"] = {
+				["name"] = "Reset Spinel",
+				["text"] = {
+					"Gains {X:mult,C:white}X#2#{} Mult",
+					"every {C:attention}4 Aces{} or {C:attention}4 Face cards{} scored",
+					"{C:inactive}(Currently: {X:mult,C:white}X#1#{}{C:inactive})",
+				},
+			},
+			["j_busterb_garn47"] = {
+				["name"] = "Garn47",
+				["text"] = {
+					"{C:attention}+#1#{} Card Selection Limit,",
+					"{C:blue}+#2#{} Hand Size"
+				},
+			},
+			["j_busterb_carr"] = {
+				["name"] = "Carr",
+				["text"] = {
+					"After {C:attention}#1#{C:inactive}[#2#]{} rounds,",
+					"create a {C:dark_edition}Random Rare Consumable",
+					"and {C:red}self-destruct"
 				},
 			},
 			["j_busterb_harley"] = {
@@ -709,10 +969,6 @@ return {
 					{"{C:green}Fixed coinflip chance{} to either",
 					"Set total {C:chips}Chips{} and {C:mult}Mult{} to 0",
 					"or {C:busterb_unstable}Instantly Win Blind."},
-					{"Spawn Condition: Reach {C:attention}Ante 8{}",
-					"Sell your {C:spectral}Soul{} to {C:purple} The Vessel",
-					"Beat {C:purple}Violent Vessel{}",
-					"Good Luck",}
 				}
 			},
 			["j_busterb_hedera"] = {
@@ -728,27 +984,29 @@ return {
 				"{C:spectral}Incantation{}, {C:spectral}Grim{} or {C:spectral}Familiar{}",
 				"at the end of round",
 				"{C:inactive}(Currently: {C:white,X:busterb_gfreddy}^^#1#{C:inactive})"},
-				{"Spawn Condition: Find the {C:attention}Crimson Heart{} in {C:attention}Ante 8{}",
-				"Sell your {C:spectral}Soul{} and {C:spectral}Dream{} and Let {C:tarot}Judgement{} Commence",
-				"Beat the {C:attention}Crimson Heart{}",
-				},
 			},
 			},
 			["j_busterb_bbd"] = {
-				["name"] = "{C:busterb_bigbang,s:2}BIG BANG DONALD{}",
+				["name"] = "{C:busterb_bigbang}BIG BANG DONALD{}",
 				["text"] = {
 					"On final hand, increase the {C:chips}Chips{} and {C:mult}Mult{}",
 					"of the {C:attention}played hand{} by {C:white,X:busterb_bigbang}^#1#{}",
 				},
 			},
 			["j_busterb_superman"] = {
-				["name"] = "{V:1,s:2}SUPERMAN{}",
+				["name"] = "{V:1}SUPERMAN{}",
 				["text"] = {
-					"Scoring cards gain",
-					"{C:gold}+#2#{} and {C:white,X:gold}X#2#",
-					"Ascension Power",
-					"and {C:mult}+#2#{} Mult",
-					"before hand scores"
+					"Ascend all hands by {C:gold}+#2#",
+					"if only one {C:blue}hand{} remains"
+				},
+			},
+			["j_busterb_yd"] = {
+				["name"] = "{C:busterb_gfreddy}YELLOW DIAMOND{}",
+				["text"] = {
+					"All unscoring cards become {C:attention}Electric",
+					"And give {X:black,C:busterb_gfreddy}^#1#{} Ascension Power",
+					"{C:attention}Electric cards{} always score and",
+					"gain {C:gold}+#1# and {C:white,X:gold}X#2#{} Ascension Power"
 				},
 			},
 			["j_busterb_alienx"] = {
@@ -761,8 +1019,12 @@ return {
 			["j_busterb_susie"] = {
 				["name"] = "Susie (and Kris)",
 				["text"] = {
-					"{X:mult,C:white}X#3#{} Mult whenever an {C:attention}Ace{} is scored.",
-					"{s:0.8,C:inactive}({}{s:0.8,C:green}#1# in #2# chance{}{s:0.8,C:inactive} when scoring cards to spawn a {}{s:0.8,C:red}Red Seal{} {s:0.8}Steel{} {C:dark_edition,s:0.8}Polychrome{}{C:attention,s:0.8} Ace{}{C:inactive,s:0.8}.){}",
+					"{X:mult,C:white}X#3#{} Mult whenever an",
+					"{C:attention}Ace{} is scored.",
+					"{s:0.8,C:inactive}({}{s:0.8,C:green}#1# in #2# chance{}",
+					"{s:0.8,C:inactive} when scoring cards",
+					"{s:0.8,C:inactive}to spawn a",
+					"{s:0.8,C:red}Red Seal{} {s:0.8}Steel{} {C:dark_edition,s:0.8}Polychrome{}{C:attention,s:0.8} Ace{}{C:inactive,s:0.8}.){}",
 				},
 			},
 			["j_busterb_saitama"] = {
@@ -820,14 +1082,15 @@ return {
 					"The Star of Everything in Space",
 				},
 				["text"] = {
-					{"Gains {B:2,C:white}^^#2#{} Chips at the end of the round.",
-					"Multiply gained {B:2,C:white}^^Chips{} by {B:1,C:white}#3#{} when ante changes.",
+					{"Gains {B:2,C:white}^^#2#{} Chips",
+					"at the end of the round.",
+					"Multiply gained {B:2,C:white}^^Chips{}",
+					"by {B:1,C:white}#3#{} when ante changes.",
 					"{C:inactive}(Currently {B:2,C:white}^^#1#{C:inactive} Chips){}",},
-					{"Spawn Condition: Beat {C:attention}The Goad{} with only {C:spades}Spades{}",}
 				},
 			},
 			["j_busterb_doise"] = {
-				["name"] = "{V:1,s:2}DOISE{}",
+				["name"] = "{V:1}DOISE{}",
 				["text"] = {
 					"Gives a random {X:chips,C:white}XChips{}",
 					"Between {X:chips,C:white}#1#-#2#",
@@ -836,27 +1099,30 @@ return {
 				},
 			},
 			["j_busterb_asriel"] = {
-				["name"] = "{V:1,s:2}ASRIEL DREEMURR{}",
+				["name"] = "{V:1}ASRIEL DREEMURR{}",
 				["text"] = {
-					"Adds a free {C:spectral}Mega Spectral Booster Pack{} in the shop.",
-					"If a {C:attention}Dream{} is consumed, gain {B:3,C:white}^#3#{} Mult",
-					"If a {C:attention}Soul{} is consumed, gain {B:2,C:white}^#4#{} Chips",
-					"When skipping a {C:attention}Booster Pack{}, spawns a random {C:spectral}Spectral{} card.",
+					"Free {C:spectral}Mega Spectral Pack{}",
+					"in the shop.",
+					"Gain {B:3,C:white}^#3#{} Mult",
+					"when {C:spectral}Dream{} is used",
+					"Gain {B:2,C:white}^#4#{} Chips",
+					"when {C:spectral}Soul{} is used",
+					"When skipping a {C:attention}Booster Pack{}",
+					"spawn a {C:dark_edition}Negative {C:spectral}Spectral{} card.",
 					"{C:inactive}(Currently {B:3,C:white}^#1#{C:inactive} Mult and {B:2,C:white}^#2#{C:inactive} Chips){}",
 				},
 			},
 			["j_busterb_peddito"] = {
-				["name"] = "{V:1,s:2}PEDDITO{}",
+				["name"] = "{V:1}PEDDITO{}",
 				["text"] = {
-					"Using up {B:1,C:white}#5#{} {V:1}Revive{}",
-					"increases {V:1}Growth{} by {B:1,C:white}#6#{} and {B:2,C:white}^^Mult{} by half of {V:1}Growth{}",
-					"Gains {B:1,C:white}#2#{} {V:1}Revive{} when",
-					"{C:attention}Boss Blind{} is {C:red}defeated",
-					"{V:1}Growth: {B:1,C:white}#4#{} {V:2}Mult: {B:2,C:white}^^#3#{} {V:1}Revives: {B:1,C:white}#1#{}",
+					"On death, {B:1,C:white}-#5#{} {V:1}Revive{}",
+					"Then increase {X:busterb_eemult,C:white}^^Mult{} by {V:1}Revives Used",
+					"{B:1,C:white}+#2#{} {V:1}Revive{} when beating {C:attention}Boss Blind{}",
+					"{V:1}Revives Used: {B:1,C:white}#4#{} {V:2}Mult: {B:2,C:white}^^#3#{} {V:1}Revives: {B:1,C:white}#1#{}",
 				},
 			},
 			["j_busterb_neometalsonic"] = {
-				["name"] = "{C:spectral,s:2}NEO METAL SONIC{}",
+				["name"] = "{C:spectral}NEO METAL SONIC{}",
 				["text"] = {
 					"{C:attention}Retrigger{} all jokers",
 					"to the left of {C:attention}this joker{}",
@@ -864,14 +1130,15 @@ return {
 				},
 			},
 			["j_busterb_spinel"] = {
-				["name"] = "{C:hearts,E:1,s:2}SPINEL{}",
+				["name"] = "{C:hearts,E:1}SPINEL{}",
 				["text"] = {
-					"{X:mult,C:white}X#2#{} Mult every {C:attention}4 Aces{} or {C:attention}4 Face cards{} scored.",
-					"{C:dark_edition}Stores {X:mult,C:white}XMult{} per card played,",
-					"applies on the last card and resets after.",
-					"{X:dark_edition,C:white}+#5#{} {C:dark_edition}Storing Power{} when selecting Boss Blind.",
-					"{C:inactive}(Current Mult from 4 Aces/Face: {}{X:mult,C:white}X#1#{}{C:inactive}){}",
-					"{C:inactive}({C:dark_edition}Stockpiling Power{C:inactive}: {}{X:dark_edition,C:white}X#4#{}{C:inactive}){}",
+					"Gains {X:mult,C:white}X#2#{} Mult every {C:attention}4 Aces{} or {C:attention}4 Face cards{} scored.",
+					"{C:dark_edition}Doubles{} total {X:mult,C:white}XMult{} on each card,",
+ 				   	"Scores full {X:mult,C:white}XMult{} on{C:attention} last card{},",
+					"resets after",
+					"{X:dark_edition,C:white}+#5#{} starting {C:dark_edition}Base Power{} on {C:attention}Boss Blinds",
+					"{C:inactive}(Current Mult: {X:mult,C:white}X#1#{}{C:inactive})",
+					"{C:inactive}(Current Base: {C:inactive}:{} {X:dark_edition,C:white}X#4#{}{C:inactive}){}",
 				},
 			},
 			["j_busterb_sonic"] = {
@@ -938,7 +1205,7 @@ return {
 			["j_busterb_twilight"] = {
 				["name"] = "Twilight Sparkle",
 				["text"] = {
-					"Gain {C:gold}+#2#{} Asc Power when",
+					"Gain {C:gold}+#2#{} Ascension Power when",
 					"a {C:attention}consumable{} is used",
 					"{C:inactive}(Currently: {C:gold}+#1#{C:inactive})",
 				},
@@ -947,7 +1214,8 @@ return {
 				["name"] = "Noelle Holiday",
 				["text"] = {
 					"Leftmost first drawn card",
-					"of {C:attention}each round{} is {C:attention}Frost"
+					"of {C:attention}each round{} is {C:attention}Frost",
+					"{C:attention}Frost cards{} always score"
 				},
 			},
 			["j_busterb_salty"] = {
@@ -973,7 +1241,7 @@ return {
 				["text"] = {
 					"{C:attention}Unscoring cards{} give",
 					"{C:mult}+#1#{} Mult, {C:chips}+#2#{} Chips",
-					"{C:gold}+#3#{} Asc Power, and {C:purple}+#4#{} Score"
+					"{C:gold}+#3#{} Ascension Power, and {C:purple}+#4#{} Score"
 				},
 			},
 			["j_busterb_jake"] = {
@@ -988,7 +1256,7 @@ return {
 				["name"] = "Power",
 				["text"] = {
 					"Scored {C:attention}8s{} give",
-					"{C:gold}+#1#{} Asc Power"
+					"{C:gold}+#1#{} Ascension Power"
 				},
 			},
 			["j_busterb_batman"] = {
@@ -1136,9 +1404,9 @@ return {
 			["j_busterb_uknux"] = {
 				["name"] = "Ugandan Knuckles",
 				["text"] = {
-					"Gain {C:money}$#2#{} payout value",
+					"Gain {C:white,X:chips}X#2#{} payout value",
 					"each time {C:tarot}The Devil{} is {C:attention}used",
-					"{C:inactive}(Currently:{C:money} $#1#{C:inactive})"
+					"{C:inactive}(Currently: {C:white,X:chips}X#1#{C:inactive})"
 				},
 			},			
 			["j_busterb_frylock"] = {
@@ -1305,12 +1573,29 @@ return {
 				["name"] = "Hastur",
 				["text"] = {
 					"Played {C:diamonds}#2#{} give",
-					"{C:gold}+#1#{} Asc Power but have a",
+					"{C:gold}+#1#{} Ascension Power but have a",
 					"{C:green}1 in 4{} chance of being",
 					"{C:red}destroyed{} after scoring",
 				},
 			},
-			
+			["j_busterb_gaia"] = {
+        ["name"] = {"{V:1,s:2}GAIA{}",
+		    '"I am the ultimate gamer hacker dude!!!"'},
+        ["text"] = {{
+	          "I make {C:green}bootleg cards{}",
+			  "with disregard for the slot limits",
+	        },
+	      {"{V:1,s:2}#2#"}}
+    },
+		["j_busterb_gaia_true"] = {
+        ["name"] = {"{V:1,s:2}TRUE GAIA{}",
+		    '"I am the immortal and unstoppable busted buffoon"'},
+        ["text"] = {{
+	          "What the fuck"
+	        },
+	      {"{V:1,s:2}#2#"}}
+    },
+
 		},
 		["Bootleg"] = {
 			["c_busterb_stable"] = {
@@ -1473,12 +1758,22 @@ return {
 			},
 		},
 		["Voucher"] = {
-			["v_busterb_industryconnections"] = {
+			["v_busterb_indus"] = {
 				["name"] = "Industry Connections",
 				["text"] = {
 					"Creates a {C:attention}custom{} shop slot where",
 					"It always has a random {C:dark_edition}Negative{}",
 					"{C:attention}Joker{} that is not {C:common}Common or {C:uncommon}Uncommon",
+				},
+			},
+			["v_busterb_top"] = {
+				["name"] = "Top of the Game",
+				["text"] = {
+					"Creates 2 {C:attention}custom{} shop slots",
+					"where they always have",
+					"either a {C:dark_edition}Negative{}",
+					"{C:busterb_grand}Grandiose{} or an {C:busterb_secrets}Eldritch{} Joker",
+					"with an {C:busterb_secret}Omega{} sticker"
 				},
 			},
 		},
@@ -1512,10 +1807,8 @@ return {
 			["m_busterb_nanotech"] = {
 				["name"] = "Nanotech",
 				["text"] = {
-					"{C:white,X:chips}#2#{} Chips when scoring",
-					"{C:white,X:chips}X#1#{} Chips",
-					"while this card",
-					"stays in hand"
+					"Upon discard, {C:red}self-destruct",
+					"and create a {C:attention}random card"
 				},			
 			},
 			["m_busterb_bloodmarked"] = {
@@ -1532,6 +1825,15 @@ return {
 					"{C:red}self destructs{} after",
 					"held {C:attention}#2#{C:inactive}[#3#]{} times"
 				},
+			},
+			["m_busterb_glittery"] = {
+				["name"] = "Glittery",
+				["text"] = {
+					"{C:purple}+#1#{} Score",
+					"{C:chips}+#2#{} Chips",
+					"{C:mult}+#3#{} Mult",
+					"{C:gold}+#4#{} Ascension Power"
+				},			
 			},
 	},
 		["Infinity"] = {
@@ -1597,8 +1899,8 @@ return {
 			["c_busterb_beatrix"] = {
 				["name"] = "Beatrix",
 				["text"] = {
-					"Destroy atleast {C:attention}#1#{} selected card",
-					"And create an {V:1}Infinity{} {C:attention}CCD card{} in hand"
+					"Apply {C:green}+#2#{} Multiuse",
+					"to all held {C:attention}Consumables"
 				},
 			},
 			["c_busterb_blackc"] = {
@@ -1749,6 +2051,13 @@ return {
 				"to a {C:attention}Bloodmarked Card"
 			},
 			},
+			["c_busterb_unicorn"] = {
+			["name"] = "Unicorn",
+			["text"] = {
+				"Enhances {C:attention}#1#{} selected card",
+				"to a {C:attention}Glittery Card"
+			},
+			}
 		},
 		['Tag'] = {
 			["tag_busterb_immortal"] = {

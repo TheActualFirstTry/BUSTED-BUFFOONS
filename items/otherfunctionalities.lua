@@ -1,4 +1,3 @@
-BustB = {}
 BustB.Food = {
   j_gros_michel = true,
   j_ice_cream = true,

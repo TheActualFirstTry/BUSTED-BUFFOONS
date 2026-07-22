@@ -523,13 +523,13 @@ SMODS.Joker {
 --                colour = G.C.RED
             })
         if ((card.ability.immutable.rounds) >= (card.ability.immutable.total_rounds)) then
-                        SMODS.upgrade_poker_hands{
+                    SMODS.upgrade_poker_hands{
                         from = card,
                         parameters = { },
-                        ascension_power = card.ability.extra.pow,
+                        ascension_power = card.ability.extra.asc,
                         hands = most_played,
                     }
-            card.ability.immutable.rounds = 0
+                card.ability.immutable.rounds = 0
             SMODS.calculate_effect({ message = "Reset!", colour = G.C.FILTER}, card)
         end
     end
@@ -544,7 +544,7 @@ SMODS.Joker {
     rarity = 1,
     cost = 2,
     pos = { x = 3, y = 3 },
-    config = { extra = { dollar = 0, gain = 2 } },
+    config = { extra = { xchips = 0, gain = 0.1 } },
     loc_vars = function(self, info_queue, card)
          info_queue[#info_queue + 1] = G.P_CENTERS.c_devil
         return { vars = { card.ability.extra.dollar, card.ability.extra.gain } }
@@ -553,18 +553,17 @@ SMODS.Joker {
         if ( ( context.using_consumeable and context.consumeable.config.center_key == "c_devil" ) and not context.blueprint and not context.retrigger_joker ) or context.forcetrigger then
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
-                ref_value = "dollar",
+                ref_value = "xchips",
                 scalar_value = "gain",
                 scaling_message = {
-                message = "$" .. (card.ability.extra.dollar + card.ability.extra.gain),
-                colour = G.C.GOLD
+                message = "X" .. (card.ability.extra.xchips + card.ability.extra.gain).. " Chips",
+                colour = G.C.CHIPS
             }})
         end
+        if context.joker_main then
+            return { xchips = card.ability.extra.xchips}
+        end
 end,
-    calc_dollar_bonus = function(self, card)
-		return lenient_bignum(card.ability.extra.dollar)
-    end
-
 }
 
 SMODS.Joker {
@@ -596,7 +595,7 @@ SMODS.Joker {
                 }
             end
         end
-        if context.joker_main then
+        if context.joker_main and (G.GAME.blind and G.GAME.blind.boss) then
             return {
                 xmult = card.ability.extra.mult
             }

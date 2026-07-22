@@ -21,18 +21,18 @@ SMODS.Joker {
         extra = {
             xmult = 6,           
             xmult_mod = 6,       
-            stockpile = 1,         
-            stockpile_return = 1,
-            stockpile_add = 1
+            stack = 1,         
+            stack_return = 1,
+            stack_add = 1
         }
     },
     loc_vars = function(self, info_queue, card)
         return { 
             vars = { card.ability.extra.xmult, 
             card.ability.extra.xmult_mod, 
-            card.ability.extra.stockpile, 
-            card.ability.extra.stockpile_return, 
-            card.ability.extra.stockpile_add },
+            card.ability.extra.stack, 
+            card.ability.extra.stack_return, 
+            card.ability.extra.stack_add },
         }
     end,
     calculate = function(self, card, context)
@@ -44,10 +44,10 @@ SMODS.Joker {
             }
         end
 
-        -- Stockpile xmult for each played card
+        -- stack xmult for each played card
         if context.individual and context.cardarea == G.play then
-            card.ability.extra.stockpile = card.ability.extra.stockpile * 2
-            local total_xmult = (card.ability.extra.stockpile * card.ability.extra.xmult)
+            card.ability.extra.stack = card.ability.extra.stack * 2
+            local total_xmult = (card.ability.extra.stack * card.ability.extra.xmult)
             if context.other_card == context.scoring_hand[#context.scoring_hand] then
                 card:juice_up(0.5, 0.5)
                 play_sound('holo1', 1, 0.5)
@@ -56,7 +56,7 @@ SMODS.Joker {
                 }
             end
             return {
-                message = "Stockpiling X" .. total_xmult .. "!",
+                message = "Accumulating X" .. total_xmult .. " Mult",
                 colour = G.C.RED,
                 card = card
             }
@@ -85,9 +85,9 @@ SMODS.Joker {
             end
         end
 
-        -- Reset stockpile and cards_played after hand
+        -- Reset stack and cards_played after hand
         if context.after then
-            card.ability.extra.stockpile = card.ability.extra.stockpile_return
+            card.ability.extra.stack = card.ability.extra.stack_return
             return {
                 message = "Reset",
                 colour = G.C.RED,
@@ -95,17 +95,17 @@ SMODS.Joker {
             }
         end
 
-        -- Adds stockpile power at the start of the round
+        -- Adds stack power at the start of the round
         if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
-                ref_value = "stockpile_return",
-                scalar_value = "stockpile_add",
+                ref_value = "stack_return",
+                scalar_value = "stack_add",
                 scaling_message = {
-                message = "+" .. card.ability.extra.stockpile_add .. " Power!",
+                message = "+" .. card.ability.extra.stack_add .. " Power!",
                 colour = G.C.DARK_EDITION,
             }})
-            card.ability.extra.stockpile = card.ability.extra.stockpile_return
+            card.ability.extra.stack = card.ability.extra.stack_return
         end
     end
 }
@@ -253,13 +253,13 @@ SMODS.Joker {
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     pos = { x = 3, y = 0 },
 	soul_pos = { x = 3, y = 1 },
-    config = { extra = { edition = 'e_polychrome'} },
+    config = { extra = { edition = 'e_polychrome', polyapply = true } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'e_polychrome', set = 'Edition', config = { extra = 1.5 } }
         return { vars = { G.jokers and #G.jokers.cards or 1 } }
     end,
     calculate = function(self, card, context)
-    if context.before then
+if context.before and G.GAME.current_round.hands_played == 1 then -- or context.after depending on when you want to apply Polychrome
         local poly = 0
             for k, v in ipairs(context.scoring_hand) do
                 if v and not (v.edition and v.edition.polychrome) then
@@ -272,15 +272,15 @@ SMODS.Joker {
                             return true
                         end
                     }))
-                end
             end
+        end
 if poly > 0 then
                 return {
                     message = "Applied!",
                     colour = G.C.DARK_EDITION
                 }
             end
-        end
+    end
         
         if context.repetition and context.cardarea == G.play then
             if context.other_card.edition and context.other_card.edition.polychrome then
@@ -739,8 +739,7 @@ SMODS.Joker {
     discovered = true,
     config = {
         extra = {
-            SA2XChips = 11,
-            SA2XMult = 11,
+            SA2Asc = 11,
             SA2Mod = 1,
             odds = 4
         }
@@ -754,8 +753,7 @@ SMODS.Joker {
         local polychance, polyodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_peacock_polychrome')
         return {
             vars = {
-                card.ability.extra.SA2XChips,
-                card.ability.extra.SA2XMult,
+                card.ability.extra.SA2Asc,
                 card.ability.extra.SA2Mod,
                 polychance,
                 polyodds
@@ -770,48 +768,31 @@ SMODS.Joker {
             if is_polychrome then
                 SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
-                ref_value = "SA2XChips",
+                ref_value = "SA2Asc",
                 scalar_value = "SA2Mod",
                 scaling_message = {
-                message = "X" ..(card.ability.extra.SA2XChips + card.ability.extra.SA2Mod).. " Chips",
-                colour = G.C.CHIPS
-            }})
-                SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "SA2XMult",
-                scalar_value = "SA2Mod",
-                scaling_message = {
-                message = "X" ..(card.ability.extra.SA2XMult + card.ability.extra.SA2Mod).. " Mult",
-                colour = G.C.MULT
+                message = "+" ..(card.ability.extra.SA2Asc + card.ability.extra.SA2Mod).. " Asc Power",
+                colour = G.C.GOLD
             }})
             else
                 if SMODS.pseudorandom_probability(card, 'busterb_peacock_polychrome', 1, card.ability.extra.odds, 'busterb_peacock_polychrome') then
                     context.other_card:set_edition({ polychrome = true }, true)
                 SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
-                ref_value = "SA2XChips",
+                ref_value = "SA2Asc",
                 scalar_value = "SA2Mod",
                 scaling_message = {
-                message = "X" ..(card.ability.extra.SA2XChips + card.ability.extra.SA2Mod).. " Chips",
-                colour = G.C.CHIPS
+                message = "+" ..(card.ability.extra.SA2Asc + card.ability.extra.SA2Mod).. " Asc Power",
+                colour = G.C.GOLD
             }})
-                SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "SA2XMult",
-                scalar_value = "SA2Mod",
-                scaling_message = {
-                message = "X" ..(card.ability.extra.SA2XMult + card.ability.extra.SA2Mod).. " Mult",
-                colour = G.C.MULT
-            }})
-
+ 
                 else
                 end
             end
         end
         if context.joker_main and context.cardarea == G.jokers then
             return {
-                xchips = card.ability.extra.SA2XChips,
-                xmult = card.ability.extra.SA2XMult,
+                asc = card.ability.extra.SA2Asc,
                 card = card
             }
         end
@@ -894,9 +875,9 @@ SMODS.Joker {
     --        xchipsndollar_mod = 1, --1
   --          xchips = 1, --2
 --            money_value = 1, --3
-            --stockpile = 1, --4
+            --stack = 1, --4
           --  add = 1, --5
-        --    stockpile_return = 1, --6
+        --    stack_return = 1, --6
       --      gold_seal_retrigger = 1, --7
     --        { first_hand_triggered = false },
   --           { seal = 'Gold' }
@@ -909,7 +890,7 @@ SMODS.Joker {
 --            "gains {X:chips,C:white}X#1#{} Chips and {C:money}$#1#{} Money.",
 --            "each time a card with a {C:gold}gold seal{} is played.",
 --            "Retriggers played cards with a {C:gold}gold seal{}",
---            "Stockpiles {X:chips,C:white}XChips{} and {C:money}Money{} for each played card,",
+--            "stacks {X:chips,C:white}XChips{} and {C:money}Money{} for each played card,",
             --"which also resets on the final card.",
           --  "Gains an extra Stockpiling Power of {X:dark_edition,C:white}+#4#{} whenever a boss blind is selected.",
         --    "{C:inactive}Currently {}{X:chips,C:white}X#2#{}{C:inactive} Chips and {}{C:money}$#3#{C:inactive} Money.",
@@ -924,15 +905,15 @@ SMODS.Joker {
              --   card.ability.extra.xchips,
            --     card.ability.extra.money_value,
          --       card.ability.extra.add,
-         --       card.ability.extra.stockpile_return,
-        --        card.ability.extra.stockpile,
+         --       card.ability.extra.stack_return,
+        --        card.ability.extra.stack,
       --          card.ability.extra.gold_seal_retrigger,
-    --            card.ability.extra.stockpile_add,
+    --            card.ability.extra.stack_add,
   --          }
 --        }
  --   end,
 --    calculate = function(self, card, context)
---        -- Stockpile XChips and money 
+--        -- stack XChips and money 
 --        if context.individual and context.cardarea == G.play then
 --            local is_talisman = context.other_card.seal and context.other_card.seal == 'Gold'
 --            if is_talisman then
@@ -944,11 +925,11 @@ SMODS.Joker {
 --                    card = card
 --                })
 --            end
---            card.ability.extra.stockpile = card.ability.extra.stockpile * 2
---            local total_xchips = card.ability.extra.stockpile * card.ability.extra.xchips
---            local total_dollar = card.ability.extra.stockpile * card.ability.extra.money_value
+--            card.ability.extra.stack = card.ability.extra.stack * 2
+--            local total_xchips = card.ability.extra.stack * card.ability.extra.xchips
+--            local total_dollar = card.ability.extra.stack * card.ability.extra.money_value
 --            if context.other_card == context.scoring_hand[#context.scoring_hand] then
---                card.ability.extra.stockpile = card.ability.extra.stockpile_return
+--                card.ability.extra.stack = card.ability.extra.stack_return
 --                card:juice_up(0.5, 0.5)
 --                play_sound('holo1', 1, 0.5)
 --                return {
@@ -962,9 +943,9 @@ SMODS.Joker {
 --                card = card
 --            }
 --        end
---        -- Reset stockpile
+--        -- Reset stack
 --        if context.after then
---            card.ability.extra.stockpile = card.ability.extra.stockpile_return
+--            card.ability.extra.stack = card.ability.extra.stack_return
 --            return {
 --                message = "Reset",
 --                colour = G.C:inactive,
@@ -972,7 +953,7 @@ SMODS.Joker {
 --            }
 --        end
 --        if context.setting_blind and G.GAME.blind.boss then
---            card.ability.extra.stockpile_return = card.ability.extra.add + card.ability.extra.stockpile_return
+--            card.ability.extra.stack_return = card.ability.extra.add + card.ability.extra.stack_return
 --            card.ability.extra.gold_seal_retrigger = card.ability.extra.gold_seal_retrigger + card.ability.extra.add
 --            return {
 --                message = localize('k_upgrade_ex'),
@@ -1164,11 +1145,6 @@ SMODS.Joker{
 -- 15th Fantastic Joker: "" - Destroys the joker to the right to create a random negative joker of any rarity.
 
 
- SMODS.Sound {
-    key = "crit",
-    path = "crit.ogg",
-}
-
  SMODS.Joker {
  key = "spy",
     atlas = "Atlas_Fantastic",
@@ -1214,6 +1190,7 @@ calculate = function(self, card, context)
         local rarity_map = {
   busterb_Grandiose = 'busterb_Dreamy',
   busterb_Secret = 'busterb_Fantastic',
+  busterb_technopotent = "busterb_Fantastic",
   Common = 'Rare',
   Uncommon = 'Rare',
   cry_cursed = 'cry_exotic',

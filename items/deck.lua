@@ -87,6 +87,7 @@ SMODS.Back {
         local rarity_map = {
   busterb_Grandiose = 'busterb_Dreamy',
   busterb_Secret = 'busterb_Fantastic',
+  busterb_technopotent = "busterb_Fantastic",
   Common = 'Rare',
   Uncommon = 'Rare',
   cry_cursed = 'cry_exotic',
@@ -138,13 +139,14 @@ SMODS.Back {
     return {vars = { self.config.ante, self.config.operator }}
     end,
     apply = function(self, back)
-        G.GAME.win_ante = G.GAME.win_ante + self.config.ante
+        G.GAME.win_ante = G.GAME.win_ante + 24
 end,
 calculate = function(self, card, context)
     if context.ante_change then
         change_operator(self.config.operator)
         play_sound("timpani")
         G.HUD:get_UIE_by_ID('hand_operator_container'):juice_up()
+        SMODS.calculate_effect({message = "+"..self.config.operator.. " Operator"}, card)
     end
 	end,
 }

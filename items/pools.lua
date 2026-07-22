@@ -82,7 +82,7 @@ SMODS.UndiscoveredSprite {
 }
 SMODS.ConsumableType{
     key = "Bootleg",
-    default = "c_busterb_admin",
+    default = "c_busterb_flag",
     cards = {},
     collection_rows = { 4, 4 },
     primary_colour = HEX('138f60'),
@@ -165,3 +165,12 @@ SMODS.ObjectType{
 --        SMODS.ObjectType.inject(self)
 --    end,
 --}
+
+SMODS.ObjectType{
+    key = "technopotent",
+    default = "j_busterb_gaia",
+    cards = {},
+    inject = function(self)
+        SMODS.ObjectType.inject(self)
+    end,
+}

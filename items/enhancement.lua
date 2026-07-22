@@ -1,39 +1,7 @@
-SMODS.Atlas {
-    key = "elec",
-    path = "Electric.png",
-    px = 71,
-    py = 95
-}
-
-SMODS.Atlas {
-    key = "crystal",
-    path = "Crystallized.png",
-    px = 71,
-    py = 95
-}
-SMODS.Atlas {
-    key = "nano",
-    path = "Nanotech.png",
-    px = 71,
-    py = 95
-}
-SMODS.Atlas {
-    key = "blood",
-    path = "Bloodmarked.png",
-    px = 71,
-    py = 95
-}
-SMODS.Atlas {
-    key = "ice",
-    path = "Frost.png",
-    px = 71,
-    py = 95
-}
-
 SMODS.Enhancement {
     key = 'electric',
-    atlas = "elec",
-    pos = { x = 0, y = 0 },
+    atlas = "non",
+    pos = { x = 0, y = 9 },
     config = { extra = { mult = 1, gain = .25 }, immutable = { retrigger_max = 5 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.gain } }
@@ -64,8 +32,8 @@ SMODS.Enhancement {
 }
 SMODS.Enhancement {
     key = 'crystallized',
-    atlas = "crystal",
-    pos = { x = 0, y = 0 },
+    atlas = "non",
+    pos = { x = 1, y = 9 },
     config = { Xmult = 2.5, x_chips = 2.5, extra = { odds = 8 } },
     shatters = true,
     loc_vars = function(self, info_queue, card)
@@ -82,37 +50,55 @@ SMODS.Enhancement {
 }
 SMODS.Enhancement {
     key = 'nanotech',
-    atlas = "nano",
-    pos = { x = 0, y = 0 },
-    config = { h_x_chips = 2.5, x_chips = 1.5 },
+    atlas = "non",
+    pos = { x = 2, y = 9 },
+    config = { chips = 1, mult = 1 },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.h_x_chips, card.ability.x_chips } }
     end,
-}
-
-SMODS.Enhancement {
-    key = 'electric',
-    atlas = "elec",
-    pos = { x = 0, y = 0 },
-    config = { retrigger = 1, immutable = { retrigger_max = 5 } },
-    loc_vars = function(self, info_queue, card)
-        return { vars = {  } }
-    end,
     calculate = function(self, card, context)
-		if context.repetition then
-			return {
-				message = localize("k_again_ex"),
-				repetitions = 1,
-				card = card,
-			}
-		end
-	end,
+        if (context.pre_discard and context.cardarea == G.hand and card.highlighted) then
+            local nano = pseudorandom(pseudoseed("busterb_nano"), 1, 5)
+            if nano == 1 then
+            for i = 1, 1 do
+            local card = SMODS.add_card{set = "Playing Card"}
+            local edition = SMODS.poll_edition({guaranteed = true, key = "busterb_package"})
+            local enhancement_type = pseudorandom_element({"Enhanced","Enhanced","Enhanced","Joker","Consumeables","Voucher","Booster"}, pseudoseed("package"))
+            local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("package")).key
+            while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] or (enhancement_type == "Joker" and SMODS.Rarities[G.P_CENTERS[enhancement].rarity]
+                and (
+                    SMODS.Rarities[G.P_CENTERS[enhancement].rarity].get_weight
+                    or (SMODS.Rarities[G.P_CENTERS[enhancement].rarity].default_weight and SMODS.Rarities[G.P_CENTERS[enhancement].rarity].default_weight > 0)
+                )) do
+                enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("package")).key
+            end
+            local seal = SMODS.poll_seal{guaranteed = true, key = "package"}
+            card:set_edition(edition)
+            card:set_ability(G.P_CENTERS[enhancement])
+            card:set_seal(seal)
+        end
+        end
+        if nano == 2 then
+            SMODS.add_card{set="Joker",area=G.jokers}
+        end 
+        if nano == 3 then
+            SMODS.add_card{set="Consumeables",area=G.consumeables}
+        end
+        if nano == 4 then
+            SMODS.add_card({set="Booster",area=G.consumeables})
+        end
+        if nano == 5 then
+            SMODS.add_card{set="Voucher",area=G.consumeables}
+        end
+            SMODS.destroy_cards(card)
+        end
+    end
 }
 
 SMODS.Enhancement {
     key = 'bloodmarked',
-    atlas = "blood",
-    pos = { x = 0, y = 0 },
+    atlas = "non",
+    pos = { x = 3, y = 9 },
     config = { extra = { Emult = 1.5 } , immutable = { } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.Emult } }
@@ -129,9 +115,9 @@ SMODS.Enhancement {
 
 SMODS.Enhancement {
     key = 'frost',
-    atlas = "ice",
+    atlas = "non",
     shatters = true,
-    pos = { x = 0, y = 0 },
+    pos = { x = 4, y = 9 },
     config = { extra = { Echips = 1.5, unscore = 10, remaining = 10 }},
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.Echips, card.ability.extra.unscore, card.ability.extra.remaining } }
@@ -153,4 +139,25 @@ end
 end
 end
 end,
+}
+
+SMODS.Enhancement {
+    key = 'glittery',
+    atlas = "non",
+    pos = { x = 5, y = 9 },
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    config = { score = 50, chips = 20, mult = 5, asc = 2.5 },
+    loc_vars = function(self, info_queue, card)
+        local c = card.ability
+        return { vars = { c.score,c.chips,c.mult,c.asc } }
+    end,
+    calculate = function(self, card, context)
+    if context.cardarea == G.play and context.main_scoring then
+        local c = card.ability
+        return { score = c.score, chips = c.chips, mult = c.mult, asc = c.asc }
+     end
+end
 }

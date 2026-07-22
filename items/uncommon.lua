@@ -261,9 +261,15 @@ SMODS.Joker {
             SMODS.calculate_effect{message = ":P", colour = G.C.BLACK, card = card}
                 G.E_MANAGER:add_event(Event({
                     func = function()
+                        if G.STATE ~= G.STATES.SELECTING_HAND then
+                            return
+                        end
                         G.GAME.chips = G.GAME.blind.chips
                         G.hand_text_area.blind_chips:juice_up()
-                        G.hand_text_area.game_chips:juice_up()
+                        G.hand_text_area.game_chips:juice_up()                        
+                        G.STATE = G.STATES.HAND_PLAYED
+                        G.STATE_COMPLETE = true
+                        end_round()
                         play_sound('tarot1')
                         return true
                     end
@@ -327,6 +333,14 @@ SMODS.Joker {
                     play_sound("tarot1")
         end
     end
+            if context.modify_scoring_hand and not context.blueprint then
+                if context.other_card.config.center.key == 'm_busterb_frost' then
+                    return {
+                        add_to_hand = true,
+                    }
+                end
+            end
+
 end
 }
 
@@ -424,24 +438,30 @@ SMODS.Joker {
 		local additive = card.ability.extra.value
         if funval == 1 then
 		G.hand:change_size(additive)
+        SMODS.calculate_effect{card = card, message = "+"..card.ability.extra.value.." Hand Size", colour = G.C.BLACK}
         else
         if funval == 2 then
         G.jokers:change_size(additive)
+        SMODS.calculate_effect{card = card, message = "+"..card.ability.extra.value.." Joker Slots", colour = G.C.BLACK}
         else
         if funval == 3 then
         G.consumeables:change_size(additive)
+        SMODS.calculate_effect{card = card, message = "+"..card.ability.extra.value.." Consumable Slots", colour = G.C.BLACK}
         else
         if funval == 4 then
         G.GAME.round_resets.hands = G.GAME.round_resets.hands + additive
         ease_hands_played(additive)
+        SMODS.calculate_effect{card = card, message = "+"..card.ability.extra.value.." Hands", colour = G.C.BLACK}
         else
         if funval == 5 then
         G.GAME.round_resets.discards = G.GAME.round_resets.discards + additive
         ease_discard(additive)
+        SMODS.calculate_effect{card = card, message = "+"..card.ability.extra.value.." Discards", colour = G.C.BLACK}
         else
         if funval == 6 then
         SMODS.change_play_limit(additive)
 		SMODS.change_discard_limit(additive)
+        SMODS.calculate_effect{card = card, message = "+"..card.ability.extra.value.." Card Selection", colour = G.C.BLACK}
         end
         end
     end

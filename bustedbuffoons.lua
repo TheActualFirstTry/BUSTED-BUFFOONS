@@ -1,4 +1,63 @@
+local https = require "SMODS.https"
+
+SMODS.Sound{
+    key = "fahhh1",
+    path = "fah.ogg",
+}
+
+BustB = {}
+BustB.current_mod = SMODS.current_mod
+-- Mod Badge Shader
+SMODS.Atlas{
+	key = "mask",
+	path = "mask.png",
+	px = 240,
+	py = 263
+}
+SMODS.Atlas{
+	key = "non",
+	path = "nonjoker.png",
+	px = 71,
+	py = 95
+}
 SMODS.Shader({ key = 'atomic', path = 'atomic.fs' })
+SMODS.Sound{
+    key = "maltigi",
+    path = "maltigi.ogg"
+}
+SMODS.Sound{
+    key = "bear5",
+    path = "Bear5.ogg",
+    volume = 0.1
+}
+SMODS.Sound{
+    key = "cast",
+    path = "cast.wav",
+}
+SMODS.Sound{
+    key = "star",
+    path = "star.wav",
+}
+SMODS.Sound{
+    key = "gigapunch",
+    path = "gigapunch.wav",
+}
+
+
+ SMODS.Sound {
+    key = "crit",
+    path = "crit.ogg",
+}
+
+SMODS.Gradient{
+    key = "technopotentgradient",
+    colours = {
+        HEX("1ac282"),
+        HEX("97f1cf")
+    },
+    cycle = 1,
+    interpolation = 'trig',
+}
 
 SMODS.Atlas{
 	key = "modicon",
@@ -12,6 +71,12 @@ SMODS.Atlas {
     path = "placeholder.png",
     px = 71,
     py = 95,
+}
+SMODS.Atlas{
+    key = "Grandholder",
+    path = "Grandholder.png",
+    px = 71,
+    py = 95
 }
 -- Epileptic color for Grandiose
 SMODS.Gradient{
@@ -51,7 +116,7 @@ SMODS.Gradient{
         G.C.SUITS.Spades,
         G.C.SECONDARY_SET.Enhanced
     },
-    cycle = 4,
+    cycle = 1,
     interpolation = 'trig',
 }
 SMODS.Gradient{
@@ -171,7 +236,7 @@ G.ARGS.LOC_COLOURS.busterb_hedra = SMODS.Gradients["busterb_hedera"]
 G.ARGS.LOC_COLOURS.busterb_bigbang = SMODS.Gradients["busterb_bigbang"]
 G.ARGS.LOC_COLOURS.busterb_unstable = SMODS.Gradients["busterb_unstable"]
 G.ARGS.LOC_COLOURS.busterb_secrets = SMODS.Gradients["busterb_SecretG"]
-
+G.ARGS.LOC_COLOURS.busterb_technopotent = SMODS.Gradients["busterb_technopotent"]
 
 
 
@@ -204,6 +269,7 @@ assert(SMODS.load_file("items/uiforace.lua"))()
 assert(SMODS.load_file("items/ace.lua"))()
 assert(SMODS.load_file("items/summusic.lua"))()
 assert(SMODS.load_file("items/tag.lua"))()
+assert(SMODS.load_file("items/projectgaia.lua"))()
 --assert(SMODS.load_file("unused for now/testingjokers.lua"))() -- for future jokers
 --assert(SMODS.load_file("unused for now/buttonjoker.lua"))()
 SMODS.current_mod.optional_features = function()
@@ -217,10 +283,13 @@ SMODS.current_mod.optional_features = function()
 end
 SMODS.Mods["BustedBuffoons"].spectrallib_features = { "ascension_power" }
 
-
 SMODS.Sound{
     key = "cashregister",
     path = "cashregister.ogg"
+}
+SMODS.Sound{
+    key = "huh",
+    path = "huh.ogg"
 }
 SMODS.Sound{
     key = "fahhh",
@@ -292,6 +361,80 @@ SMODS.current_mod.calculate = function(self, context)
         end
     end
 end
+
+SMODS.Shader({
+    key = "mod_badge",
+    path = "shiny.fs",
+    send_vars = function (element, ...)
+--        if math.random() < 0.01 then print("shader's working") end
+        local tile_scale = G.TILESCALE*G.TILESIZE*G.CANV_SCALE
+        local vt = {x=element.VT.x, y=element.VT.y, w=element.VT.w, h=element.VT.h}
+        vt.x = vt.x + (element.container and element.container.T.x or 0)
+        vt.y = vt.y + (element.container and element.container.T.y + 0.018 or 0)
+        local pos = {vt.x * tile_scale, vt.y * tile_scale}
+        local size = {vt.w * tile_scale, vt.h * tile_scale}
+        return {
+            badge_pos = pos,
+            badge_size = size,
+            mask = SMODS.Atlases.busterb_mask.image,
+        }
+    end
+})
+
+local badgeHook = SMODS.create_mod_badges
+function SMODS.create_mod_badges(obj, badges)
+    badgeHook(obj, badges)
+    if obj then
+        for i = 1, #badges do
+            if badges[i].nodes[1].nodes[2].config.object.content and badges[i].nodes[1].nodes[2].config.object.content.string == BustB.current_mod.display_name then
+                if not obj.no_shader_on_modbadge then
+                    -- badges[i].nodes[1].config.minw = 2
+                    badges[i].nodes[1].config.shader = "busterb_mod_badge"
+                end
+            end
+        end
+    end
+end
+
+
+SMODS.Atlas{
+	key = "gaiamask",
+	path = "gaiamask.png",
+	px = 240,
+	py = 263
+}
+
+SMODS.Shader({
+    key = "gaia_badge",
+    path = "gaia.fs",
+    send_vars = function (element, ...)
+--        if math.random() < 0.01 then print("shader's working") end
+        local tile_scale = G.TILESCALE*G.TILESIZE*G.CANV_SCALE
+        local vt = {x=element.VT.x, y=element.VT.y, w=element.VT.w, h=element.VT.h}
+        vt.x = vt.x + (element.container and element.container.T.x or 0)
+        vt.y = vt.y + (element.container and element.container.T.y + 0.018 or 0)
+        local pos = {vt.x * tile_scale, vt.y * tile_scale}
+        local size = {vt.w * tile_scale, vt.h * tile_scale}
+        return {
+            badge_pos = pos,
+            badge_size = size,
+            mask = SMODS.Atlases.busterb_gaiamask.image,
+        }
+    end
+})
+
+local create_badge_ref = create_badge
+function create_badge(_string, _badge_col, _text_col, scaling)
+    local badge = create_badge_ref(_string, _badge_col, _text_col, scaling)
+    local target_rarity = localize("k_busterb_technopotent")
+--    print("_string: ".._string)
+--    print("target: "..target_rarity)
+    if _string == target_rarity  then
+        badge.nodes[1].config.shader = "busterb_gaia_badge"
+    end
+    return badge
+end
+
 
 -- 900n1 Gambapack
 if next(SMODS.find_mod("900N1GAMBLE")) then assert(SMODS.load_file("items/crossmodshit/silencedenhancement.lua"))() assert(SMODS.load_file("items/crossmodshit/crk.lua"))() end

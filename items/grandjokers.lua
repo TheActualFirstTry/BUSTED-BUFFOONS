@@ -1,15 +1,10 @@
 SMODS.Atlas{
-    key = "Grandholder",
-    path = "Grandholder.png",
+    key = "a_g",
+    path = "Grandiose.png",
     px = 71,
     py = 95
 }
-SMODS.Atlas{
-    key = "a_igor",
-    path = "IGOR.png",
-    px = 71,
-    py = 95
-}
+
 local IGORTalk = {
     'Stay the fuck away from me...',
     'I need to get her out the picture.',
@@ -19,11 +14,12 @@ local IGORTalk = {
     "He's coming!",
     "Are we still friends?",
     "Exactly what you run from, you end up chasing.",
-    "I can't even buy a home in private..."
+    "I can't even buy a home in private...",
+    "Take that mask off and tell 'em the truth let's talk about it"
 }
 SMODS.Joker{
     key = "igor",
-    atlas = "a_igor",
+    atlas = "a_g",
     pos = { x = 0, y = 0 },
     soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
@@ -40,6 +36,7 @@ SMODS.Joker{
         }
     },
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_crystallized
         return { vars = { card.ability.extra.em, card.ability.extra.emtotal, colours = {HEX('f7b4c6'), SMODS.Gradients["busterb_eemultgradient"]}} }
     end,
     calculate = function(self, card, context)
@@ -83,17 +80,11 @@ if faces > 0 then
     end
 end
 }
-SMODS.Atlas{
-    key = "Flowey",
-    path = "Asriel.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "asriel",
-    atlas = "Flowey",
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    atlas = "a_g",
+    pos = { x = 0, y = 1 },
+    soul_pos = { x = 2, y = 1, new = { x = 1, y = 1 } },
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     rarity = "busterb_Grandiose",
     cost = 500,
@@ -169,23 +160,17 @@ SMODS.Joker{
     end
 end
 }
-SMODS.Atlas{
-    key = "jimbussy",
-    path = "Jimbo.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "joker",
-    atlas = "jimbussy",
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    atlas = "a_g",
+    pos = { x = 0, y = 2 },
+    soul_pos = { x = 2, y = 2, new = { x = 1, y = 2 } },
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     rarity = "busterb_Grandiose",
     cost = 500,
     blueprint_compat = true,
     eternal_compat = true,
-    demicoloncompat = true,
+    forcetrigger_compat = true,
     unlocked = true,
     discovered = true,
     config = {
@@ -201,9 +186,9 @@ calculate = function(self, card, context)
     for i, joker in ipairs(G.jokers.cards) do
         if joker.config.center.key ~= "j_busterb_joker" then
         Spectrallib.manipulate(joker, { value = card.ability.immutable.valuemodification })
+        SMODS.calculate_effect({message = "X" ..card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_balatro"], card = joker})
       end
     end
-    SMODS.calculate_effect({message = "X" ..card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_balatro"], card = card})
   end
 end,
     add_to_deck = function(self, card, from_debuff)
@@ -260,25 +245,18 @@ SMODS.Sound{
     path = "g_freddy_giggle.ogg",
 }
 
-SMODS.Atlas{
-    key = "g_freddy",
-    path = "GFreddy.png",
-    px = 71,
-    py = 95
-}
-
 SMODS.Joker{
     key = "golden_freddy",
-    atlas = "g_freddy",
+    atlas = "a_g",
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    pos = { x = 0, y = 3 },
+    soul_pos = { x = 2, y = 3, new = { x = 1, y = 3 } },
     cost = 500,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
-    demicoloncompat = true,
+    forcetrigger_compat = true,
     eternal_compat = true,
     config = {
         extra = {
@@ -320,7 +298,7 @@ SMODS.Joker{
                     sound = "busterb_gfreddygiggle",
                     colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
                    card = card
-                }            
+                }
             end
         end
 }
@@ -337,23 +315,17 @@ SMODS.Sound{
     path = "peppinoangryscream2.ogg"
 }
 
-SMODS.Atlas{
-    key = "a_peddito",
-    path = "peddito.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "peddito",
-    atlas = "a_peddito",
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    atlas = "a_g",
+    pos = { x = 0, y = 4 },
+    soul_pos = { x = 2, y = 4, new = { x = 1, y = 4 } },
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
     rarity = "busterb_Grandiose",
     cost = 500,
     blueprint_compat = true,
     eternal_compat = true,
-    demicoloncompat = true,
+    forcetrigger_compat = true,
     unlocked = true,
     discovered = true,
     config = {extra = {emult = 1},
@@ -426,28 +398,22 @@ end
 end
 end
 }
-SMODS.Atlas{
-    key = "QD",
-    path = "QueenDeltarune.png",
-    px = 71,
-    py = 95
-} 
 SMODS.Sound{
     key = "deltabomb",
     path = "deltarune-explosion.ogg"
 }
 SMODS.Joker{
     key = "queen",
-    atlas = "QD",
+    atlas = "a_g",
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    pos = { x = 0, y = 6 },
+    soul_pos = { x = 2, y = 6, new = { x = 1, y = 6 } },
     cost = 500,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
-    demicoloncompat = true,
+    forcetrigger_compat = true,
     eternal_compat = true,
     config = {
         extra = {
@@ -499,12 +465,6 @@ SMODS.Joker{
             end
     end
 }
-SMODS.Atlas{
-    key = "thedoise",
-    path = "Doise.png",
-    px = 71,
-    py = 95
-} 
 SMODS.Sound{
     key = "doag",
     path = "Doag.ogg"
@@ -519,16 +479,16 @@ SMODS.Sound{
 }
 SMODS.Joker{
 key = "doise",
-    atlas = "thedoise",
+    atlas = "a_g",
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    pos = { x = 0, y = 5 },
+    soul_pos = { x = 2, y = 5, new = { x = 1, y = 5 } },
     cost = 500,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
-    demicoloncompat = true,
+    forcetrigger_compat = true,
     eternal_compat = true,
     config = {
         extra = {
@@ -572,19 +532,13 @@ key = "doise",
     end
 end
 }
-SMODS.Atlas{
-    key = "orange",
-    path = "TSC.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "tsc",
-    atlas = "orange",
+    atlas = "a_g",
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    pos = { x = 0, y = 12 },
+    soul_pos = { x = 2, y = 12, new = { x = 1, y = 12 } },
     cost = 500,
     discovered = true,
     unlocked = true,
@@ -592,8 +546,8 @@ SMODS.Joker{
     eternal_compat = true,
     config = {
         extra = {
-            eechips = 1,
-            eechipsincrement = 0.1,
+            vmod = 0.1,
+            vmod_mod = 0.1,
         },
         immutable = {
             eecap = 700,
@@ -601,49 +555,45 @@ SMODS.Joker{
     },
     loc_vars = function(self, info_queue, card)
 		return { vars = { 
-            card.ability.extra.eechips, 
-            card.ability.extra.eechipsincrement, 
+            card.ability.extra.vmod, 
+            card.ability.extra.vmod_mod, 
             " "} }
     end,
     calculate = function(self, card, context)
-
-        if context.joker_main then
-            return {
-                eechips = card.ability.extra.eechips
-            }
+        if context.using_consumeable then
+        for i, joker in ipairs(G.jokers.cards) do
+            if joker.config.center.key ~= "j_busterb_tsc" then
+                Spectrallib.manipulate(joker, { value = card.ability.extra.vmod, type = "+" })
+                SMODS.calculate_effect({message = "+" ..card.ability.extra.vmod, colour = SMODS.Gradients["busterb_technopotentgradient"], card = joker})
+            end
         end
-        if context.using_consumeable and context.consumeable.ability.set == 'Bootleg' then
-            SMODS.scale_card(card, {
+        end
+        if context.selling_card and context.card.ability.consumeable then
+        SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
-                ref_value = "eechips",
-                scalar_value = "eechipsincrement",
+                ref_value = "vmod",
+                scalar_value = "vmod_mod",
                 scaling_message = {
-                message = "^^" .. (card.ability.extra.eechipsincrement + card.ability.extra.eechips).. " Chips",
-                colour = SMODS.Gradients["busterb_eechipsgradient"]
+                message = "+"..card.ability.extra.vmod+card.ability.extra.vmod_mod,
+                colour = SMODS.Gradients["busterb_technopotentgradient"]
                 }})
         end
     end
 }
 
-SMODS.Atlas{
-    key = "hellsing",
-    path = "Alucard.png",
-    px = 71,
-    py = 95
-}
 --
 SMODS.Joker{
     key = "alucard",
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
-    atlas = "hellsing",
+    atlas = "a_g",
     blueprint_compat = true,
-    demicoloncompat = true,
+    forcetrigger_compat = true,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    pos = { x = 0, y = 7 },
+    soul_pos = { x = 2, y = 7, new = { x = 1, y = 7 } },
     cost = 500,
     config = {
         extra = {
@@ -652,6 +602,7 @@ SMODS.Joker{
         },
     },
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_bloodmarked
         return {
             vars = {
                 card.ability.extra.eemult,
@@ -695,25 +646,18 @@ SMODS.Joker{
     end,
 }
 
-SMODS.Atlas{
-    key = "vajra",
-    path = "Vajram.png",
-    px = 71,
-    py = 95
-}
---
 SMODS.Joker{
     key = "vajram",
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
-    atlas = "vajra",
+    atlas = "a_g",
     blueprint_compat = true,
-    demicoloncompat = true,
+    forcetrigger_compat = true,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    pos = { x = 0, y = 8 },
+    soul_pos = { x = 2, y = 8, new = { x = 1, y = 8 } },
     cost = 500,
     config = {
         extra = {
@@ -775,26 +719,20 @@ SMODS.Joker{
         end
 end
 }
-SMODS.Atlas{
-    key = "a_caine",
-    path = "Caine.png",
-    px = 71,
-    py = 95
-}
 --
 SMODS.Joker{
     key = "caine",
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
-    atlas = "a_caine",
+    atlas = "a_g",
     caine = true,
     blueprint_compat = true,
-    demicoloncompat = true,
+    forcetrigger_compat = true,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    pos = { x = 0, y = 9 },
+    soul_pos = { x = 2, y = 9, new = { x = 1, y = 9 } },
     cost = 500,
     config = {
         extra = {
@@ -840,24 +778,18 @@ SMODS.Joker{
         end
     end
 }
-SMODS.Atlas{
-    key = "bigbang",
-    path = "BBD.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "bbd",
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
-    atlas = "bigbang",
+    atlas = "a_g",
     blueprint_compat = true,
-    demicoloncompat = true,
+    forcetrigger_compat = true,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    pos = { x = 0, y = 10 },
+    soul_pos = { x = 2, y = 10, new = { x = 1, y = 10 } },
     cost = 500,
     config = {
         extra = {
@@ -895,25 +827,18 @@ SMODS.Joker{
     end
 end
 }
-SMODS.Atlas{
-    key = "sman",
-    path = "Soup.png",
-    px = 71,
-    py = 95
-}
-
 SMODS.Joker{
     key = "superman",
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
-    atlas = "sman",
+    atlas = "a_g",
     blueprint_compat = true,
-    demicoloncompat = true,
+    forcetrigger_compat = true,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
+    pos = { x = 0, y = 11 },
+    soul_pos = { x = 2, y = 11, new = { x = 1, y = 11 } },
     cost = 500,
     config = {
         extra = {
@@ -928,32 +853,51 @@ SMODS.Joker{
         }
     end,
     calculate = function(self, card, context)
-        local super = card.ability.extra.super
-        if context.before and not context.blueprint --[[and #context.full_hand == 1]] then
-            for k, v in ipairs(context.scoring_hand) do
-                    v.ability.slib_perma_plus_asc = v.ability.slib_perma_plus_asc + super
-                    v.ability.slib_perma_x_asc = v.ability.slib_perma_x_asc + super
-                    v.ability.perma_mult = v.ability.perma_mult + super
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            v:juice_up()
-                            return true
-                        end
-                    }))
-
-
---[[                if v:get_id() == 14 then
-                    v.ability.slib_perma_plus_asc = v.ability.slib_perma_plus_asc + super
-                    v.ability.slib_perma_x_asc = v.ability.slib_perma_x_asc + super
-                    v.ability.slib_perma_exp_asc = v.ability.slib_perma_exp_asc + super
-                    end
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            v:juice_up()
-                            return true
-                        end
-                    }))
-]]            end
+        if context.after and G.GAME.current_round.hands_left == 1 then
+        local amt = amt or 0
+        local me = copier or card
+        delay(0.4)
+        update_hand_text(
+          { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+          { handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
+        )
+                    SMODS.upgrade_poker_hands{
+                        from = card,
+                        parameters = { },
+                        ascension_power = card.ability.extra.super,
+                        instant = true,
+                    }
+        delay(1.0)
+        G.E_MANAGER:add_event(Event({
+          trigger = "after",
+          delay = 0.2,
+          func = function()
+            play_sound("tarot1")
+            ease_colour(G.C.UI_CHIPS, copy_table(Spectrallib.get_asc_colour(1 * amt + card.ability.extra.super)), 0.1)
+            ease_colour(G.C.UI_MULT, copy_table(Spectrallib.get_asc_colour(1 * amt + card.ability.extra.super)), 0.1)
+            Spectrallib.pulse_flame(0.01, sunlevel)
+            me:juice_up(0.8, 0.5)
+            G.E_MANAGER:add_event(Event({
+              trigger = "after",
+              blockable = false,
+              blocking = false,
+              delay = 1.2,
+              func = function()
+                ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+                ease_colour(G.C.UI_MULT, G.C.RED, 1)
+                return true
+              end,
+            }))
+            return true
+          end,
+        }))
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+ ..." })
+        delay(1.0)
+        delay(2.6)
+        update_hand_text(
+          { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+          { mult = 0, chips = 0, handname = "", level = "" }
+        )
         end
     end,
 --[[        add_to_deck = function(self, card, from_debuff)
@@ -971,9 +915,7 @@ SMODS.Joker{
         end 
     end
 ]]}
-
-
---[[if not next(SMODS.find_mod("Cryptid")) then
+--[[
 local soup_or_man = Spectrallib.has_tether
 function Spectrallib.has_tether()
     if next(SMODS.find_card('j_busterb_superman')) then
@@ -981,4 +923,129 @@ function Spectrallib.has_tether()
     end
     return soup_or_man()
 end
-end]]
+]]
+
+SMODS.Joker{
+    key = "upgrade",
+    atlas = "a_g",
+    pos = { x = 0, y = 13 },
+    soul_pos = { x = 2, y = 13, new = { x = 1, y = 13 } },
+    pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    rarity = "busterb_Grandiose",
+    cost = 500,
+    blueprint_compat = false,
+    eternal_compat = true,
+    forcetrigger_compat = true,
+    unlocked = true,
+    discovered = true,
+    config = {
+        extra = { valuemodification = 4
+        },
+        immutable = { valuemodification = 4, valuecap = 1e100 }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.valuemodification, " ", colours = {SMODS.Gradients["busterb_balatro"], SMODS.Gradients["busterb_epileptic"]}} }
+    end,
+    
+calculate = function(self, card, context)
+  if context.setting_blind or context.forcetrigger then
+    for i, joker in ipairs(G.jokers.cards) do
+        if joker and not joker.config.upgrade_multiply then
+			joker.config.upgrade_multiply = 1
+		end
+		joker.config.upgrade_multiply = joker.config.upgrade_multiply * 2
+        if joker.config.center.key ~= "j_busterb_upgrade" then
+        Spectrallib.manipulate(joker, { value = card.ability.extra.valuemodification })
+        SMODS.calculate_effect({message = "X" ..card.ability.extra.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = joker})
+      end
+    end
+  end
+  if context.end_of_round and context.main_eval then
+    for i, joker in ipairs(G.jokers.cards) do
+        if joker.config.center.key ~= "j_busterb_upgrade" then
+            if joker.config.upgrade_multiply then
+                Spectrallib.manipulate(joker, { value = 1/card.ability.extra.valuemodification })
+                        SMODS.calculate_effect({message = "/" ..card.ability.extra.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = joker})
+                    joker.config.upgrade_multiply = nil
+    	        end
+            end
+        end
+    end
+end,
+    calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
+		if not other.ability.cry_scaling_info then
+			other.ability.cry_scaling_info = {
+				[args.scalar_value] = current_scalar
+			}
+		elseif not other.ability.cry_scaling_info[args.scalar_value] then
+			other.ability.cry_scaling_info[args.scalar_value] = current_scalar
+		end
+
+		local original_scalar = other.ability.cry_scaling_info[args.scalar_value]
+        local new_scale = current_scalar
+        card.ability.extra.valuemodification = card.ability.extra.valuemodification + new_scale
+        return{ message = "+ ".. card.ability.extra.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = card }
+	end,
+}
+
+SMODS.Sound{
+    key = "lightning",
+    path = "lightning.Wav",
+    pitch = 1,
+    volume = 0.25,
+}
+
+SMODS.Joker{
+    key = "yd",
+    atlas = "a_g",
+    rarity = "busterb_Grandiose",
+    pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    pos = { x = 0, y = 14 },
+    soul_pos = { x = 2, y = 14, new = { x = 1, y = 14 } },
+    cost = 500,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    forcetrigger_compat = true,
+    eternal_compat = true,
+    config = {
+        extra = {
+            asc = 4,
+            asc_mod = 0.1,
+        },
+    },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_electric
+        return { vars = {
+             card.ability.extra.asc,
+             card.ability.extra.asc_mod,
+             colours = {HEX('48A0F8'),SMODS.Gradients["busterb_eechipsgradient"]}
+            } }
+    end,
+    calculate = function(self, card, context)
+    if context.individual then
+        if context.cardarea == "unscored" then
+                context.other_card:set_ability("m_busterb_electric")
+                context.other_card:juice_up(5,5)
+                SMODS.calculate_effect({card = context.other_card, message = "!!!", exp_asc = card.ability.extra.asc, sound = "busterb_lightning", volume = 0.4, colour = G.C.BLACK, text_colour = SMODS.Gradients["busterb_GoldenFreddyGradient"] })
+            end
+            if context.cardarea == G.play then
+                local v = context.other_card
+                if SMODS.has_enhancement(v, 'm_busterb_electric') then
+                    v.ability.slib_perma_plus_asc = (v.ability.slib_perma_plus_asc or 0) + card.ability.extra.asc
+                    v.ability.slib_perma_x_asc = (v.ability.slib_perma_x_asc or 0) + card.ability.extra.asc_mod
+                end
+            end
+        end
+
+        if context.modify_scoring_hand and not context.blueprint then
+                if SMODS.has_enhancement(context.other_card, 'm_busterb_electric') then
+                    return {
+                        add_to_hand = true,
+                    }
+                end
+            end
+        end
+
+        
+}

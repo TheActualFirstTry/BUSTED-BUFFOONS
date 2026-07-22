@@ -1,19 +1,19 @@
 -- Nostalgic Spinel - Deals X6000 Mult for every scored Queen.
 -- Astro - Doubles XChips at the end of the round.
 SMODS.Atlas{
-    key = "a_astro",
-    path = "ASTRO.PNG",
+    key = "secjkr",
+    path = "Unseen.png",
     px = 71,
     py = 95
 }
 SMODS.Joker{
     key = "astro",
-    atlas = "a_astro",
+    atlas = "secjkr",
     rarity = "busterb_Secret",
-    pools = { ["Secret"] = true, ["bustjokers"] = true },
+    pools = { ["Secret"] = true},
     pos = { x = 0, y = 0 },
     soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
-    cost = 1e100,
+    cost = 1e50,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
@@ -91,6 +91,7 @@ end,
 end
 })
 local ThomasYap = {
+    "I'm hiding something.",
     "I'm at Arby's, have fun!",
     "Screw you, take this!",
     "I love tall and hunky women, don't tell anyone, here you go.",
@@ -102,29 +103,23 @@ local ThomasYap = {
     "Har har har, har har!",
     "You win a prize!!!",
     "Go Wild!",
-    ":)",
+    ":D",
     "Circus (Chicken Mix) - Five Nights at Freddy's",
     "{1e308}1e308 Mult",
     "Infinity Mult"
 }
-SMODS.Atlas{
-    key = "a_thomas",
-    path = "Thomas.PNG",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "thomas",
-    atlas = "a_thomas",
+    atlas = "secjkr",
     rarity = "busterb_Secret",
-    pools = { ["Secret"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
-    cost = 1e100,
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 1 },
+    soul_pos = { x = 2, y = 1, new = { x = 1, y = 1 } },
+    cost = 1e50,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
-    demicoloncompat = true,
+    forcetrigger_compat = true,
     eternal_compat = true,
     config = {
         extra = {
@@ -259,24 +254,15 @@ end
 --Art and Code by Camostar34, teehee! Special thanks to FirstTry for letting me be a guest joker in his mod and guiding me with the art direction. 
 
 to_big = to_big or function(x) return x end
-SMODS.Atlas({
-    key = "secretsamson",
-    path = "secretsamson-Sheet.png",
-    px = 71,
-    py = 95
-})
-
-
-
 
 SMODS.Joker{
-    key = "samson",
-    atlas = "secretsamson",
+    key = "samsonoc",
+    atlas = "secjkr",
     rarity = "busterb_Secret",
-    pools = { ["Secret"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
-    cost = 1e100,
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 2 },
+    soul_pos = { x = 1, y = 2, new = { x = 2, y = 2 } },
+    cost = 1e50,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
@@ -432,13 +418,6 @@ end,
 end
 })
 
-SMODS.Atlas{
-    key = "a_hedera",
-    path = "Hedera.png",
-    px = 71,
-    py = 95
-}
-
 local function count_mod()
     seen = {}
     for _, c in ipairs(G.playing_cards or {}) do
@@ -458,12 +437,12 @@ end
 
 SMODS.Joker{
     key = "hedera",
-    atlas = "a_hedera",
+    atlas = "secjkr",
     rarity = "busterb_Secret",
-    pools = { ["Secret"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
-    cost = 1e100,
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 3 },
+    soul_pos = { x = 2, y = 3, new = { x = 1, y = 3 } },
+    cost = 1e50,
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
@@ -573,20 +552,14 @@ SMODS.Blind:take_ownership('bl_final_heart', {
     end
 end
 })
-SMODS.Atlas{
-    key = "v",
-    path = "Vessel.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "vessel",
-    atlas = "v",
+    atlas = "secjkr",
     rarity = "busterb_Secret",
-    pools = { ["Secret"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
-    cost = 1e100,
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 4 },
+    soul_pos = { x = 2, y = 4, new = { x = 1, y = 4 } },
+    cost = 1e50,
     discovered = true,
     unlocked = true,
     blueprint_compat = false,
@@ -668,21 +641,14 @@ end,
     end
 end
 })
-
-SMODS.Atlas{
-    key = "r",
-    path = "Ruby.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "ruby",
-    atlas = "r",
+    atlas = "secjkr",
     rarity = "busterb_Secret",
-    pools = { ["Secret"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
-    cost = 1e100,
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 5 },
+    soul_pos = { x = 2, y = 5, new = { x = 1, y = 5 } },
+    cost = 1e50,
     discovered = true,
     unlocked = true,
     blueprint_compat = false,
@@ -705,21 +671,14 @@ SMODS.Joker{
     end
 end
 }
-
-SMODS.Atlas{
-    key = "gk",
-    path = "Grahkon.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "grahkon",
-    atlas = "gk",
+    atlas = "secjkr",
     rarity = "busterb_Secret",
-    pools = { ["Secret"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
-    cost = 1e100,
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 6 },
+    soul_pos = { x = 2, y = 6, new = { x = 1, y = 6 } },
+    cost = 1e50,
     discovered = true,
     unlocked = true,
     blueprint_compat = false,
@@ -875,20 +834,14 @@ local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
 end
 }
 
-SMODS.Atlas{
-    key = "hpii",
-    path = "Hawaii.png",
-    px = 71,
-    py = 95
-}
 SMODS.Joker{
     key = "hawaii",
-    atlas = "hpii",
+    atlas = "secjkr",
     rarity = "busterb_Secret",
-    pools = { ["Secret"] = true, ["bustjokers"] = true },
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
-    cost = 1e100,
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 7 },
+    soul_pos = { x = 2, y = 7, new = { x = 1, y = 7 } },
+    cost = 1e50,
     discovered = true,
     unlocked = true,
     blueprint_compat = false,
@@ -959,4 +912,436 @@ SMODS.Joker{
                 }))
         end
 end
+}
+
+SMODS.Joker{
+    key = "jade",
+    atlas = "secjkr",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 8 },
+    soul_pos = { x = 2, y = 8, new = { x = 1, y = 8 } },
+    cost = 1e50,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = false,
+    eternal_compat = true,
+    config = { extra = { emult = 1 }, immutable = {  } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.emult } }
+    end,
+    calculate = function (self, card, context)
+        if context.mod_probability and not context.blueprint then
+            return {
+                numerator = context.denominator / 2
+            }
+        end
+        if context.pseudorandom_result and context.result then
+        SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "emult",
+                scalar_table = {val = context.numerator},
+                scalar_value = "val"
+            })
+        end
+        if context.joker_main then
+            return { emult = card.ability.extra.emult}
+        end
+end
+}
+
+SMODS.Joker{
+    key = "crystal",
+    atlas = "secjkr",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 9 },
+    soul_pos = { x = 2, y = 9, new = { x = 1, y = 9 } },
+    cost = 1e50,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    config = { extra = {  }, immutable = {  } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { G.jokers and #G.jokers.cards or 1 } }
+    end,
+    calculate = function (self, card, context)
+        		if
+			context.retrigger_joker_check
+			and not context.retrigger_joker
+			and not (context.other_card.ability and context.other_card.ability.key == "j_busterb_crystal")
+		then
+				return {
+					message = localize("k_again_ex"),
+					repetitions = #G.jokers.cards,
+                    colour = G.C.BLUE,
+					card = card,
+				}
+		end
+
+end
+}
+SMODS.Joker{
+    key = "sappy",
+    atlas = "secjkr",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 10 },
+    soul_pos = { x = 2, y = 10, new = { x = 1, y = 10 } },
+    cost = 1e50,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = false,
+    eternal_compat = true,
+    config = { extra = { emult = 1 }, immutable = {  } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.emult } }
+    end,
+    calculate = function (self, card, context)
+      if context.pre_discard then
+         local carddraw = 0
+         for i, c in ipairs(context.full_hand) do
+            if c and not c.config.sappy_discard then
+			c.config.sappy_discard = true
+		end
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                   c:juice_up(0.5, 0.5)
+                   card:juice_up(0.5, 0.5)
+
+                   return true
+                end
+            }))
+
+        c.ability.slib_perma_e_mult = (c.ability.slib_perma_e_mult or 1) + card.ability.extra.emult
+        SMODS.calculate_effect({card = c, message = "^"..c.ability.slib_perma_e_mult+card.ability.extra.emult.." Mult", exp_asc = card.ability.extra.emult, colour = SMODS.Gradients["busterb_eemultgradient"] })
+        end
+        end
+      if context.discard then
+        local c = context.other_card
+          G.E_MANAGER:add_event(Event({
+              blocking = false,
+              func = function()
+                  if G.STATE ~= G.STATES.SELECTING_HAND then return false end
+                  G.E_MANAGER:add_event(Event({
+                      func = function()
+                        if c.config.sappy_discard then
+                          draw_card(G.discard, G.hand, 0, 'down', nil, c, 0.07)
+                          c.config.sappy_discard = nil
+                        end
+                          return true
+                      end
+                  }))
+
+                  return true
+              end
+          }))
+      end
+   end
+}
+
+SMODS.Joker{
+    key = "revo",
+    atlas = "secjkr",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 11 },
+    soul_pos = { x = 2, y = 11, new = { x = 1, y = 11 } },
+    cost = 1e50,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = false,
+    eternal_compat = true,
+    config = { extra = {  }, immutable = {  } },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.c_busterb_print
+        return { vars = {  } }
+    end,
+    add_to_deck = function(self, card, from_debuff)
+    SMODS.add_card{key="c_busterb_print"}
+    end,
+    calculate = function (self, card, context)
+        if ( ( context.using_consumeable and context.consumeable.config.center_key == "c_busterb_print" ) and not context.blueprint and not context.retrigger_joker ) or context.forcetrigger then
+            SMODS.add_card{key="c_busterb_print"}
+            local nano = pseudorandom(pseudoseed("busterb_nano"), 1, 5)
+            if nano == 1 then
+            for i = 1, 1 do
+            local card = SMODS.add_card{set = "Playing Card"}
+            local edition = SMODS.poll_edition({guaranteed = true, key = "busterb_package"})
+            local enhancement_type = pseudorandom_element({"Enhanced","Enhanced","Enhanced","Joker","Consumeables","Voucher","Booster"}, pseudoseed("package"))
+            local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("package")).key
+            while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] or (enhancement_type == "Joker" and SMODS.Rarities[G.P_CENTERS[enhancement].rarity]
+                and (
+                    SMODS.Rarities[G.P_CENTERS[enhancement].rarity].get_weight
+                    or (SMODS.Rarities[G.P_CENTERS[enhancement].rarity].default_weight and SMODS.Rarities[G.P_CENTERS[enhancement].rarity].default_weight > 0)
+                )) do
+                enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("package")).key
+            end
+            local seal = SMODS.poll_seal{guaranteed = true, key = "package"}
+            card:set_edition(edition)
+            card:set_ability(G.P_CENTERS[enhancement])
+            card:set_seal(seal)
+        end
+        end
+        if nano == 2 then
+            SMODS.add_card{set="Joker",area=G.jokers}
+        end 
+        if nano == 3 then
+            SMODS.add_card{set="Consumeables",area=G.consumeables}
+        end
+        if nano == 4 then
+            SMODS.add_card({set="Booster",area=G.consumeables})
+        end
+        if nano == 5 then
+            SMODS.add_card{set="Voucher",area=G.consumeables}
+        end
+    end
+    if context.setting_blind and not context.blueprint then
+        for k,v in ipairs(G.jokers.cards) do
+        if v.config.center.key == "j_busterb_alucard" then
+            local my_pos = nil
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i] == card then
+                    my_pos = i
+                    break
+                end
+            end
+            if my_pos and G.jokers.cards[my_pos + 1] and not G.jokers.cards[my_pos + 1].getting_sliced then
+                local sliced_card = G.jokers.cards[my_pos + 1]
+                sliced_card.getting_sliced = true
+                G.GAME.joker_buffer = G.GAME.joker_buffer - 1
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.GAME.joker_buffer = 0
+                        card:juice_up(0.8, 0.8)
+                        sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
+                        play_sound('busterb_crit', 0.96 + math.random() * 0.08)
+                        return true
+                    end
+                }))
+                card_eval_status_text(card, "extra", nil, nil, nil, {
+				message = "Critical Hit!",
+				colour = G.C.GREEN,
+				no_juice = true,
+			})
+        local rarity_map = {
+  busterb_technopotent = "busterb_Grandiose",
+  Common = 'Rare',
+  Uncommon = 'Rare',
+  cry_cursed = 'cry_exotic',
+  crp_abysmal = 'crp_mythic',
+  unik_detrimental = 'unik_ancient',
+  valk_supercursed = 'valk_exquisite',
+  jen_junk = 'Rare',
+  jen_omegatranscendent = 'cry_exotic',
+  jen_omnipotent = 'cry_exotic',
+  jen_transcendent = 'cry_exotic',
+  jen_ritualistic = 'cry_exotic',
+  jen_miscellaneous = 'Rare',
+  bos_transcendent = 'bos_exotic',
+  bos_miscellaneous = 'Rare',
+  gj_detri = "gj_uniq",
+  ocstobal_challengeexclusive = "ocstobal_omega",
+  ocstobal_absolute_curse = "ocstobal_beyondexotic",
+  ocstobal_cursed = "ocstobal_unique"
+}
+
+local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
+           key = rarity_map[key] or key
+        local c = SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.jokers }
+        SMODS.calculate_effect{card=c,message="???"}
+			return nil, true
+		    end
+        end
+    end
+end
+end
+}
+
+SMODS.Joker{
+    key = "aikoyori",
+    atlas = "secjkr",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 12 },
+    soul_pos = { x = 2, y = 12, new = { x = 1, y = 12 } },
+    cost = 1e50,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = false,
+    eternal_compat = false,
+    config = { extra = { emult = 2 }, immutable = {  } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.emult } }
+    end,
+    calculate = function (self, card, context)
+        if context.setting_blind or context.forcetrigger then
+            if (#SMODS.find_card("j_busterb_aikoyori") + (G.GAME.aiko_buffer or 0) < 32) or G.GAME.modifiers.entr_gfb then
+                G.GAME.aiko_buffer = (G.GAME.aiko_buffer or 0) + 1
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        local card2 = copy_card(card)
+                        card.area:emplace(card2)
+                        card2:add_to_deck()
+                        G.GAME.aiko_buffer = 0
+                        return true
+                    end
+                })
+            end
+        end
+        if context.joker_main then
+            return { emult = card.ability.extra.emult, colour = SMODS.Gradients["busterb_eemultgradient"] }
+        end
+    end,
+        add_to_deck = function(self, card, from_debuff)
+            G.jokers:change_size(1)
+    end,
+        remove_from_deck = function(self, card, from_debuff)
+            G.jokers:change_size(-1)
+    end,
+
+}
+
+SMODS.Joker{
+    key = "nxkoo",
+    atlas = "secjkr",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 13 },
+    soul_pos = { x = 2, y = 13, new = { x = 1, y = 13 } },
+    cost = 1e50,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    config = { extra = { e = 1, e_mod = 0.5, e_mod2 = 1.5 }, immutable = {  } },
+  loc_vars = function(self, info_queue, card)
+    info_queue[#info_queue + 1] = G.P_CENTERS.m_wild
+   local count = 0
+    for _, v in pairs(SMODS.Mods) do
+      if v.can_load then
+        count = count + 1
+      end
+    end
+    return {vars = {card.ability.extra.e, 1 + card.ability.extra.e * count, card.ability.extra.e_mod, card.ability.extra.e_mod2}}
+  end,
+  calculate = function(self, card, context)
+    if context.joker_main then
+      local count = 0
+      for _, v in pairs(SMODS.Mods) do
+        if v.can_load then
+          count = count + 1
+          card.ability.extra.e = count
+        end
+      end
+      return {message = "FAHHHHHHH!!!", sound = "busterb_fahhh", colour = SMODS.Gradients["busterb_epileptic"],escore = (1 + card.ability.extra.e * count)}
+    end
+      if context.pre_discard then
+         for i, c in ipairs(context.full_hand) do
+            if c:is_suit('Hearts') then
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "e",
+                scalar_value = "e_mod",
+                scaling_message = {
+                message = "^" ..card.ability.extra.e+card.ability.extra.e_mod.. " Score",
+                colour = SMODS.Gradients["busterb_unstable"],
+                sound = "busterb_fahhh1"
+            }
+            })
+
+        end
+    end
+end
+    if context.individual and context.cardarea == G.play then
+        if SMODS.has_enhancement(context.other_card, 'm_wild') then
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "e",
+                scalar_value = "e_mod2",
+                scaling_message = {
+                message = "^" ..card.ability.extra.e+card.ability.extra.e_mod2.. " Score",
+                colour = SMODS.Gradients["busterb_unstable"],
+                sound = "busterb_fahhh1"
+            }
+            })
+        end
+  end
+end
+  
+}
+
+SMODS.Joker{
+    key = "theia",
+    atlas = "secjkr",
+    rarity = "busterb_Secret",
+    pools = { ["Secret"] = true},
+    pos = { x = 0, y = 14 },
+    soul_pos = { x = 2, y = 14, new = { x = 1, y = 14 } },
+    cost = 1e50,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    config = { extra = { asc = 1, x_asc = 1, stack = 2, stack_mod = 1, stack_re = 1 }, immutable = { final_stack = 1 } },
+  loc_vars = function(self, info_queue, card)
+    return {vars = {card.ability.extra.asc, card.ability.extra.x_asc, card.ability.extra.stack, card.ability.extra.stack_mod, G.play and #G.play.cards or 0, " "}}
+  end,
+        add_to_deck = function(self, card, from_debuff)
+        SMODS.change_play_limit(1e100)
+		SMODS.change_discard_limit(1e100)
+    end,
+        remove_from_deck = function(self, card, from_debuff)
+        SMODS.change_play_limit(-1e100)
+		SMODS.change_discard_limit(-1e100)
+    end,
+  calculate = function(self, card, context)
+        if context.modify_scoring_hand and not context.blueprint then
+            return {
+                add_to_hand = true
+            }
+        end
+        if context.individual and context.cardarea == G.play then
+            card.ability.extra.stack = card.ability.extra.stack * 2
+            local total_asc = (card.ability.extra.stack * card.ability.extra.x_asc)
+            if context.other_card == context.scoring_hand[#context.scoring_hand] then
+                card:juice_up(0.5, 0.5)
+                play_sound('highlight2', 1, 0.5)
+                SMODS.calculate_effect({card = context.other_card, x_asc = total_asc, sound = "busterb_lightning", volume = 0.4, colour = G.C.BLACK, text_colour = SMODS.Gradients["busterb_GoldenFreddyGradient"] })        
+            end
+            return {
+                asc = card.ability.extra.asc,
+                message = "Accumulating X" .. total_asc .. " Asc Power",
+                colour = G.C.BLACK,
+                text_colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
+                card = card
+            }
+    end
+            if context.after then
+            card.ability.extra.stack = card.ability.extra.stack_re
+            return {
+                message = "Reset",
+                colour = G.C.BLACK,
+                text_colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
+                card = card
+            }
+        end
+                if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "stack_re",
+                scalar_value = "stack_mod",
+                scaling_message = {
+                message = "+" .. card.ability.extra.stack_mod .. " Power!",
+                colour = G.C.BLACK,
+                text_colour = SMODS.Gradients["busterb_GoldenFreddyGradient"]
+            }})
+            card.ability.extra.stack = card.ability.extra.stack_re
+        end
+--        if context.joker_main then
+--            return { exp_asc = #G.play.cards}
+--        end
+end
+  
 }
