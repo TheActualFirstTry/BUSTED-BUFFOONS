@@ -804,26 +804,21 @@ SMODS.Joker {
         }
     end,
     calculate = function(self, card, context)
-        local m = card.ability.extra.mult
-        local c = card.ability.extra.chips
-        local a = card.ability.extra.asc
-        local s = card.ability.extra.score
+	local ret = {}
         if context.individual and context.cardarea == G.play then
             if context.other_card:is_suit("Hearts") then
-            return { mult = m }
+            ret.mult = card.ability.extra.mult
         end
             if context.other_card:is_suit("Clubs") then
-            return { chips = c }
+            ret.chips = card.ability.extra.chips
         end
             if context.other_card:is_suit("Spades") then
-            return { score = s }
+            ret.score = card.ability.extra.score
         end
             if context.other_card:is_suit("Diamonds") then
-            return { asc = a }
+            ret.asc = card.ability.extra.asc
         end
-            if context.other_card.config.center.key == 'm_wild' then
-            return { mult = m, chips = c, asc = a, score = s }
-        end
+        return ret
     end
 end
 }
