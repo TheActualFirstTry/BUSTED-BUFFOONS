@@ -588,9 +588,12 @@ SMODS.Joker {
     return copy
     end
     if context.using_consumeable and not (context.consumeable.edition or {}).negative then
-    local copy = moony_planet(context.consumeable)
+    local copy = moony_planet(context.consumeable,nil,G.conusmeables)
     if SMODS.pseudorandom_probability(card, self.key, 1, card.ability.extra.moonyodds) then
         copy:set_edition('e_negative')
+    if Incantation and context.consumeable.bulkuse then
+    copy:setQty(context.consumeable:getQty())
+    end
     end
     end
     end
