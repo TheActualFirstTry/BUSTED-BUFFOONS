@@ -368,7 +368,7 @@ return {
 					"Scored 5s do {C:red,E:1}EVIL{} things..."
 				},
 			},
-			["j_busterb_ceasre"] = {
+			["j_busterb_cesare"] = {
 				["name"] = "Cesare",
 				["text"] = {
 					"Prevents death for",
