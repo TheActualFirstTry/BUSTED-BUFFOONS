@@ -58,12 +58,7 @@ SMODS.DrawStep {
    end,
    conditions = { vortex = false, facing = 'front' },
 }
-SMODS.Atlas {
-    key = "atlas_Fantasy",
-    path = "Fantasy.png",
-    px = 71,
-    py = 95
-}
+
 SMODS.Consumable {
     key = 'Fantasy',
     set = 'Spectral',
@@ -147,12 +142,6 @@ SMODS.DrawStep {
    conditions = { vortex = false, facing = 'front' },
 }
 
-SMODS.Atlas {
-    key = "atlas_Slumber",
-    path = "Slumber.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'slumber',
     set = 'Spectral',
