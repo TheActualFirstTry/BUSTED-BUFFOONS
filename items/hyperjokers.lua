@@ -1120,7 +1120,7 @@ SMODS.Joker{
 			local num_retriggers = 0
 			for i = 1, #G.jokers.cards do
 				if
-					card.T
+				card.T
 				and context.other_card.T
 				and (card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2)
 				then
@@ -1134,8 +1134,9 @@ SMODS.Joker{
 			then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = Card.get_gameset(card) ~= "modest" and num_retriggers or math.min(2, num_retriggers),
+					repetitions = num_retriggers,
 					card = card,
+                    colour = G.C.BLUE
 				}
 			end
 		end

@@ -1282,7 +1282,7 @@ SMODS.Joker{
     cost = 1e50,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = false,
     eternal_compat = false,
     config = { extra = { asc = 1, x_asc = 1, stack = 2, stack_mod = 1, stack_re = 1 }, immutable = { final_stack = 1 } },
   loc_vars = function(self, info_queue, card)
@@ -1306,9 +1306,30 @@ SMODS.Joker{
             card.ability.extra.stack = card.ability.extra.stack * 2
             local total_asc = (card.ability.extra.stack * card.ability.extra.x_asc)
             if context.other_card == context.scoring_hand[#context.scoring_hand] then
-                card:juice_up(0.5, 0.5)
-                play_sound('highlight2', 1, 0.5)
-                SMODS.calculate_effect({card = context.other_card, x_asc = total_asc, sound = "busterb_lightning", volume = 0.4, colour = G.C.BLACK, text_colour = SMODS.Gradients["busterb_GoldenFreddyGradient"] })        
+                local ret = {}
+                local c = context.other_card
+                G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+							attention_text({
+								text = "[ ]",
+								scale = 5,
+                                hold = 1.5,
+                                backdrop_colour = G.C.BLACK,
+								colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
+								align = 'cm',
+								major = c,
+								offset = {x = 0, y = 0}
+							})
+							play_sound('busterb_gigapunch',1, 0.5)
+							c:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							return true
+                        end
+						}))   
+                        ret.x_asc = total_asc
+                        return ret     
             end
             return {
                 asc = card.ability.extra.asc,

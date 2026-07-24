@@ -6,7 +6,7 @@ SMODS.Atlas{
 SMODS.Joker {
     key = "pepsiman",
     atlas = "joker_u",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 2,
     cost = 4,
@@ -36,7 +36,7 @@ end,
 SMODS.Joker {
     key = "spongebob",
     atlas = "joker_u",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 2,
     cost = 4,
@@ -73,7 +73,7 @@ end,
 SMODS.Joker {
     key = "soldier",
     atlas = "joker_u",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 2,
     cost = 4,
@@ -132,11 +132,14 @@ SMODS.Joker {
                 SMODS.change_play_limit(card.ability.immutable.select_gain)
         		SMODS.change_discard_limit(card.ability.immutable.select_gain)
         end
-    end,
-        remove_from_deck = function(self, card, from_debuff)
+            if context.selling_self and not context.blueprint then
                 SMODS.change_play_limit(-card.ability.immutable.select)
         		SMODS.change_discard_limit(-card.ability.immutable.select)                 
                 SMODS.calculate_effect{card = card, message = "Reset!", colour = G.C.CHIPS}
+        end
+
+    end,
+        remove_from_deck = function(self, card, from_debuff)
     end,
 }
 SMODS.Joker {
@@ -176,7 +179,7 @@ SMODS.Joker {
     key = "glados",
     unlocked = true, 
     atlas = "joker_u",
-    blueprint_compat = true,
+    blueprint_compat = false,
     pools = { ["bustjokers"] = true },
     rarity = 2,
     cost = 4,

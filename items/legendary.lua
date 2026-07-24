@@ -418,28 +418,27 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 0, y = 4 },
     soul_pos = { x = 0, y = 5 },
-    config = { extra = { dollars = 0, gain = 3 } },
+    config = { extra = { x = 1, gain = 0.1 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.dollars, card.ability.extra.gain } }
+        return { vars = { card.ability.extra.x, card.ability.extra.gain } }
     end,
     add_to_deck = function(self, card, from_debuff)
-    G.jokers:change_size(1)
 end,
     calculate = function(self, card, context)
         if context.using_consumeable and context.consumeable.ability.set == 'Bootleg' then
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
-                ref_value = "dollars",
+                ref_value = "x",
                 scalar_value = "gain",
                 scaling_message = {
-                message = "$" .. (card.ability.extra.dollars + card.ability.extra.gain),
-                colour = G.C.GOLD
+                message = "^" .. (card.ability.extra.x + card.ability.extra.gain).. " Mult",
+                colour = SMODS.Gradients["busterb_eemultgradient"]
             }})
         end
+        if context.joker_main then
+            return { emult = card.ability.extra.x }
+        end
     end,
-    calc_dollar_bonus = function(self, card)
-		return lenient_bignum(card.ability.extra.dollars)
-    end
 }
 
 --thank u ruby

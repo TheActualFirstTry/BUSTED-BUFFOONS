@@ -498,7 +498,7 @@ SMODS.Joker {
     key = "yahiamice",
     unlocked = true, 
     atlas = "rare",
-    blueprint_compat = true,
+    blueprint_compat = false,
     pools = { ["bustjokers"] = true },
     rarity = 3,
     cost = 8,
@@ -530,7 +530,7 @@ SMODS.Joker {
     key = "muscle_man",
     unlocked = true, 
     atlas = "rare",
-    blueprint_compat = true,
+    blueprint_compat = false,
     pools = { ["bustjokers"] = true },
     rarity = 3,
     cost = 8,
@@ -634,7 +634,7 @@ SMODS.Joker {
     key = "garn47",
     unlocked = true, 
     atlas = "rare",
-    blueprint_compat = true,
+    blueprint_compat = false,
     pools = { ["bustjokers"] = true },
     rarity = 3,
     cost = 8,
@@ -716,13 +716,16 @@ SMODS.Joker {
     key = "cupcake",
     unlocked = true, 
     atlas = "rare",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 3,
     cost = 8,
     pos = { x = 0, y = 4 },
     config = {
         extra = {
+            minchips = 1,
+            maxchips = 5,
+            maxerchips = 10
         },
         immutable = {
             minchips = 1,
@@ -756,22 +759,43 @@ SMODS.Joker {
     end
         if context.individual and context.cardarea == G.play then
             if G.GAME.blind.boss then
-            return {
-                score = pseudorandom('busterb_cupcake2', card.ability.immutable.maxerchips, card.ability.immutable.minchips),
-                chips = pseudorandom('busterb_cupcake2', card.ability.immutable.maxerchips, card.ability.immutable.minchips),
-                mult = pseudorandom('busterb_cupcake2', card.ability.immutable.maxerchips, card.ability.immutable.minchips),
-                asc = pseudorandom('busterb_cupcake2', card.ability.immutable.maxerchips, card.ability.immutable.minchips),
-                sound = "busterb_lightning",
-                volume = 0.4,
-                colour = SMODS.Gradients["busterb_grand"],
-                card = card
-            }
+            local c = context.other_card
+				local ret = {}
+                G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+							attention_text({
+								text = "[ ]",
+								scale = 5,
+                                hold = 1.5,
+								colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
+								backdrop_colour = SMODS.Gradients["busterb_grand"],
+								align = 'cm',
+								major = c,
+								offset = {x = 0, y = 0}
+							})
+							play_sound('busterb_lightning',1, 0.5)
+							c:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							return true
+                        end
+						}))
+                    ret.score = pseudorandom('busterb_cupcake2', card.ability.extra.maxerchips, card.ability.immutable.minchips)                        
+					ret.mult = pseudorandom('busterb_cupcake2', card.ability.extra.maxerchips, card.ability.immutable.minchips)
+                    ret.chips = pseudorandom('busterb_cupcake2', card.ability.extra.maxerchips, card.ability.immutable.minchips)
+                    ret.plus_asc = pseudorandom('busterb_cupcake2', card.ability.extra.maxerchips, card.ability.immutable.minchips)
+                    ret.xscore = pseudorandom('busterb_cupcake2', card.ability.extra.maxerchips, card.ability.immutable.minchips)
+                    ret.dollars = pseudorandom('busterb_cupcake2', card.ability.extra.maxerchips, card.ability.immutable.minchips)
+                    ret.xblind_size = (1/(pseudorandom('busterb_cupcake2', card.ability.extra.maxerchips, card.ability.immutable.minchips)))
+                    return ret 
         else
             return {
                 score = pseudorandom('busterb_cupcake', card.ability.immutable.maxchips, card.ability.immutable.minchips),
                 chips = pseudorandom('busterb_cupcake', card.ability.immutable.maxchips, card.ability.immutable.minchips),
                 mult = pseudorandom('busterb_cupcake', card.ability.immutable.maxchips, card.ability.immutable.minchips),
                 asc = pseudorandom('busterb_cupcake', card.ability.immutable.maxchips, card.ability.immutable.minchips),
+                dollars = pseudorandom('busterb_cupcake', card.ability.immutable.maxchips, card.ability.immutable.minchips),
                 message = "HUH???",
                 sound = "busterb_huh",
                 colour = SMODS.Gradients["busterb_grand"],
@@ -781,12 +805,11 @@ SMODS.Joker {
     end
 end
 }
-
 SMODS.Joker {
     key = "jevil",
     unlocked = true, 
     atlas = "rare",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 3,
     cost = 8,
@@ -804,7 +827,7 @@ SMODS.Joker {
         }
     end,
     calculate = function(self, card, context)
-	local ret = {}
+        local ret = {}
         if context.individual and context.cardarea == G.play then
             if context.other_card:is_suit("Hearts") then
             ret.mult = card.ability.extra.mult
@@ -827,7 +850,7 @@ SMODS.Joker {
     key = "captain",
     unlocked = true, 
     atlas = "rare",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 3,
     cost = 8,
@@ -845,21 +868,37 @@ SMODS.Joker {
         juice_card_until(card, eval, false)
         if context.joker_main then
             if card.ability.extra.trigger then
-                SMODS.calculate_effect({
-                asc = card.ability.extra.asc,
-                sound = "busterb_gigapunch",
-                volume = 0.4,
-                colour= SMODS.Gradients["busterb_gfreddy"],
-                message= "PUNCH!!!"},card)
-                card.ability.extra.asc = card.ability.immutable.revert
+                local ret = {}
+                G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+						attention_text({
+								text = "PUNCH",
+								scale = 2.5,
+                                hold = 1.5,
+								backdrop_colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
+								align = 'bm',
+								major = card,
+								offset = {x = 0, y = 0.15*G.CARD_H}
+							})
+							play_sound('busterb_gigapunch',1, 0.5)
+							card:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							return true
+                        end
+						}))
+                        ret.plus_asc = card.ability.extra.asc
                 card.ability.extra.trigger = false
+                return ret
                 else
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "asc",
                 scalar_value = "gain",
+                operation = "X",
                 scaling_message = {
-                message = "+" .. (card.ability.extra.asc + card.ability.extra.gain).." Ascension Power",
+                message = "+" .. (card.ability.extra.asc * card.ability.extra.gain).." Ascension Power",
                 colour = G.C.GOLD
             }})
         end
@@ -876,11 +915,26 @@ end,
         local cap = card.children.center
         cap:set_sprite_pos({x = 0, y = 5})
         card.ability.extra.trigger = true
-                SMODS.calculate_effect({
-                sound = "busterb_cast",
-                volume = 0.4,
-                colour= SMODS.Gradients["busterb_gfreddy"],
-                message= "Falcon..."},card)
+                    G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+						attention_text({
+								text = "FALCON",
+								scale = 2.5,
+                                hold = 1.5,
+								backdrop_colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
+								align = 'bm',
+								major = card,
+								offset = {x = 0, y = 0.15*G.CARD_H}
+							})
+							play_sound('busterb_cast',1, 0.5)
+							card:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							return true
+                        end
+						}))
+
     end
 }
 
@@ -888,7 +942,7 @@ SMODS.Joker {
     key = "reset_spinel",
     unlocked = true, 
     atlas = "rare",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 3,
     cost = 8,

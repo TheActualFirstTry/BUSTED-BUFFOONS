@@ -549,7 +549,7 @@ local RarePino = {
 }
 SMODS.Joker {
     key = "peppino",
-    unlocked = false, 
+    unlocked = true, 
     atlas = "djkr",
     blueprint_compat = true,
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
@@ -708,7 +708,7 @@ SMODS.Joker {
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = false,
     eternal_compat = true,
     pos = { x = 1, y = 3 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },

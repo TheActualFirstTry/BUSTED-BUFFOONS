@@ -157,7 +157,8 @@ local PostalDude = {
     "Man, i gotta stop smoking this crap",
     "Have a nice day!",
     "This can't be good for me but I feel great",
-    "Hey! Now i can't feel my legs!"
+    "Hey! Now i can't feel my legs!",
+    "That weirdo freak guy has got something hiding from us all."
 }
 
 SMODS.Joker {
@@ -187,7 +188,7 @@ SMODS.Joker {
     rarity = 1,
     cost = 2,
     pos = { x = 2, y = 1 },
-    config = { extra = { dollar = 1, dollar_bonus = 1 } },
+    config = { extra = { dollar = 1, dollar_bonus = 3 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.dollar, card.ability.extra.dollar_bonus } }
     end,
@@ -232,7 +233,7 @@ SMODS.Joker {
 SMODS.Joker {
     key = "doom",
     atlas = "joker_c",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 1,
     cost = 2,
@@ -265,7 +266,7 @@ SMODS.Joker {
 SMODS.Joker {
     key = "nyancat",
     atlas = "joker_c",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 1,
     cost = 2,
@@ -454,7 +455,7 @@ end
 SMODS.Joker {
     key = "hfg",
     atlas = "joker_c",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 1,
     cost = 2,
@@ -539,15 +540,15 @@ end,
 SMODS.Joker {
     key = "uknux",
     atlas = "joker_c",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 1,
     cost = 2,
     pos = { x = 3, y = 3 },
-    config = { extra = { xchips = 0, gain = 0.1 } },
+    config = { extra = { xchips = 1, gain = 0.1 } },
     loc_vars = function(self, info_queue, card)
          info_queue[#info_queue + 1] = G.P_CENTERS.c_devil
-        return { vars = { card.ability.extra.dollar, card.ability.extra.gain } }
+        return { vars = { card.ability.extra.xchips, card.ability.extra.gain } }
     end,
     calculate = function(self, card, context)
         if ( ( context.using_consumeable and context.consumeable.config.center_key == "c_devil" ) and not context.blueprint and not context.retrigger_joker ) or context.forcetrigger then
@@ -561,7 +562,7 @@ SMODS.Joker {
             }})
         end
         if context.joker_main then
-            return { xchips = card.ability.extra.xchips}
+            return { xchips = card.ability.extra.xchips }
         end
 end,
 }
@@ -569,7 +570,7 @@ end,
 SMODS.Joker {
     key = "frylock",
     atlas = "joker_c",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true, ["Food"] = true },
     rarity = 1,
     cost = 2,
@@ -631,7 +632,7 @@ end
 SMODS.Joker {
     key = "susapphire",
     atlas = "joker_c",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 1,
     cost = 2,
@@ -653,7 +654,7 @@ end,
 SMODS.Joker {
     key = "suruby",
     atlas = "joker_c",
-    blueprint_compat = false,
+    blueprint_compat = true,
     pools = { ["bustjokers"] = true },
     rarity = 1,
     cost = 2,

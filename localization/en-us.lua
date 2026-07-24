@@ -131,7 +131,7 @@ return {
 					"{C:attention}#2#{} {V:1}Infinity{} cards",
 				},
 			},
-			["p_busterb_inf_pack_M"] = {
+			["p_busterb_inf_pack_m"] = {
 				["group_name"] = "Infinity Pack",
 				["name"] = "Mega Infinity Pack",
 				["text"] = {
@@ -613,8 +613,10 @@ return {
 				["text"] = {
 					{"{C:green}Probabilities{} are",
 					"half the denominator",
-					"Gain {C:white,X:busterb_eemult}^#1#{} Mult",
-					"When {C:green}chance{} hits"},
+					"Gain {C:white,X:busterb_eemult}^Mult{}",
+					"equal to {C:green}numerator",
+					"When {C:green}chance{} hits",
+				"{C:inactive}(Currently: {C:white,X:busterb_eemult}^#1#{C:inactive})"},
 				},
 			},
 			["j_busterb_crystal"] = {
@@ -924,10 +926,10 @@ return {
 			["j_busterb_captain"] = {
 				["name"] = "Captain Falcon",
 				["text"] = {
-					"Stores {C:gold}+#2#{} Ascension Power",
+					"Stores {C:gold}X#2#{} Ascension Power",
 					"during scoring",
 					"Release over {C:gold}+#1#{} Ascension Power",
-					"on the next hand {C:attention} upon use",
+					"on the next hand {C:attention}upon use",
 				},
 			},
 			["j_busterb_reset_spinel"] = {
@@ -1539,9 +1541,9 @@ return {
 			["j_busterb_eggman"] = {
 				["name"] = "Dr. Robotnik",
 				["text"] = {
-					"Gains {C:money}$#2#{} cash out value",
+					"Gains {X:busterb_eemult,C:white}^#2#{} Mult",
 					"whenever a {C:green}Bootleg Card{} is used",
-					"{C:inactive}(Currently: {C:money}$#1#{C:inactive})"
+					"{C:inactive}(Currently: {C:white,X:busterb_eemult}^#1#{C:inactive})"
 				},
 			},
 			["j_busterb_bill"] = {

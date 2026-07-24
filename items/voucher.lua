@@ -82,6 +82,7 @@ SMODS.Voucher {
     atlas = "vouch",
     pos = { x = 0, y = 1 },
     config = { extra = { shop_slots = 1 } },
+    requires = { "v_busterb_indus" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
         info_queue[#info_queue+1] = {set="Other", key = "busterb_omega"}
