@@ -1,35 +1,3 @@
-SMODS.Atlas {
-    key = "conduct",
-    path = "Conductor.png",
-    px = 71,
-    py = 95
-}
-
-SMODS.Atlas {
-    key = "inject",
-    path = "Injector.png",
-    px = 71,
-    py = 95
-}
-
-SMODS.Atlas {
-    key = "mtr",
-    path = "Matrix.png",
-    px = 71,
-    py = 95
-}
-SMODS.Atlas {
-    key = "marks",
-    path = "Marksman.png",
-    px = 71,
-    py = 95
-}
-SMODS.Atlas {
-    key = "blizz",
-    path = "Blizzard.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'conductor',
     set = 'Tarot',
