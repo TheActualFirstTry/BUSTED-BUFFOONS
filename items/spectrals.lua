@@ -127,21 +127,6 @@ can_use = function(self, card)
     end
 }
 
-SMODS.DrawStep {
-   key = 'busterb_Fantasy',
-   order = 50,
-   func = function(card)
-       if card.config.center.key == "c_busterb_Fantasy" and (card.config.center.discovered or card.bypass_discovery_center) then
-           local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
-               0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
-               (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
-           local rotate_mod = 0.1 * math.sin(1.219 * G.TIMERS.REAL) +
-               0.07 * math.sin((G.TIMERS.REAL) * math.pi * 5) * (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 2
-       end
-   end,
-   conditions = { vortex = false, facing = 'front' },
-}
-
 SMODS.Consumable {
     key = 'slumber',
     set = 'Spectral',
