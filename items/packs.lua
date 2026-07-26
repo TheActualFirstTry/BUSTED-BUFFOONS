@@ -476,6 +476,21 @@ SMODS.Booster{
     in_pool = function() return true end
 }
 
+--thank you sdm
+local fahhh = Card.open
+function Card:open()
+    fahhh(self)
+    if self.config and self.config.center and self.config.center.kind and self.config.center.key == "p_busterb_gem" then
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                play_sound('busterb_fahhh')
+                play_sound('busterb_vineboom')
+            return true
+        end}))
+    end
+end
+--
+
 SMODS.Atlas {
     key = "bbpack1",
     path = "bbp1.png",

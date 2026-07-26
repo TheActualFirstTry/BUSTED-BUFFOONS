@@ -1616,7 +1616,7 @@ return {
 				},
 			},
 			["c_busterb_forkboot"] = {
-				["name"] = "forkboot",
+				["name"] = "fork",
 				["text"] = {
 					"Open a random {C:attention}booster pack"
 				},

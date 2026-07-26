@@ -539,7 +539,7 @@ loc_vars = function(self, info_queue, card)
                 func = function()
                     local pool = {}
                     for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
-                      if v.hidden  and not ( v.set == "jen_omegaconsumable" or v.set == "jen_ability" ) then pool[#pool+1] = v.key end
+                      if v.hidden and v.key ~= "c_busterb_special"  and not ( v.set == "jen_omegaconsumable" or v.set == "jen_ability" ) then pool[#pool+1] = v.key end
                 end
                 local random_key = pseudorandom_element(pool, "random_rare_consumeable")
             G.hand.highlighted[i]:set_ability(random_key, true, nil, pool)

@@ -636,7 +636,7 @@ SMODS.Joker {
         if context.joker_type_destroyed then
             local other_card = context.card
             if other_card.ability.set == "Joker" then
-                return { no_destroy = true }
+                return { no_destroy = true, dont_dissolve = true }
             end
         end
     end

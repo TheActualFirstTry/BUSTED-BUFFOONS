@@ -203,10 +203,10 @@ SMODS.Joker {
                 colour = G.C.GOLD
             }})
         end
-        calc_dollar_bonus = function(self, card)
+    end,
+     calc_dollar_bonus = function(self, card)
 		return lenient_bignum(card.ability.extra.dollar)
     end
-    end,
 }
 
 SMODS.Joker {
