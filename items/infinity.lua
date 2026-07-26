@@ -4,12 +4,6 @@ SMODS.Atlas {
     px = 71,
     py = 95
 }
-SMODS.Atlas {
-    key = "atlas_Mugen",
-    path = "Mugen.png",
-    px = 71,
-    py = 95
-}
 SMODS.Consumable {
     key = 'mugen',
     set = 'Spectral',
