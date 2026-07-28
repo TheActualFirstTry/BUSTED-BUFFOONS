@@ -188,25 +188,29 @@ SMODS.Consumable {
     pos = { x = 3, y = 0 },
     config = { select = 1 },
             can_use = function(self, card)
-            local num = #Spectrallib.get_highlighted_cards({G.shop_jokers}, card, 1, card.ability.select)
-        return (num > 0 and num <= card.ability.select) and ((#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) or (#G.jokers.cards < G.jokers.config.card_limit))
+            return G.STATE == G.STATES.BLIND_SELECT or G.STATE == G.STATES.SHOP
         end,
     use = function(self, card2, area, copier)
-                local cards = Spectrallib.get_highlighted_cards({G.shop_jokers}, card2, 1, card2.ability.select)
+                local cards = Spectrallib.get_highlighted_cards({G.shop_jokers, G.shop_vouchers,G.shop_booster}, card2, 1, card2.ability.select)
         for i, v in pairs(cards) do
             local card = cards[i]
             G.E_MANAGER:add_event(Event({
                 func = function()
                     local copy = copy_card(card)
                     if card.ability.set == "Joker" then
-                        if G.jokers.config.card_limit > #G.jokers.cards then
                         G.jokers:emplace(copy)
-                        end
                     end
                         if card.ability.consumeable then
-                            if G.consumeables.config.card_limit > #G.consumeables.cards then
                             G.consumeables:emplace(copy)
-                            end
+                        end
+                        if card.ability.set == "Voucher" then
+                            G.consumeables:emplace(copy)
+                        end
+                        if card.ability.set == "Booster" then
+                            G.consumeables:emplace(copy)
+                        end
+                        if card.ability.set == "Back" then
+                            G.consumeables:emplace(copy)
                         end
                     return true
                 end
