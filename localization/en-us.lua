@@ -1623,9 +1623,8 @@ return {
 				["name"] = "pull",
 				["text"] = {
 					"Create a {C:attention}copy{} of a",
-					"selected {C:attention}joker{} or {C:attention}consumable",
+					"selected {C:attention}Joker{} or {C:attention}Consumable",
 					"in the {C:attention}shop",
-					"{C:inactive}(Must have room)"
 				},
 			},
 			["c_busterb_reset"] = {
