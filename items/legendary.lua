@@ -89,6 +89,7 @@ SMODS.Joker {
     soul_pos = { x = 2, y = 1 },
     config = { extra = { } },
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.j_busterb_hilgard
         return { vars = { } }
     end,
     calculate = function(self, card, context)

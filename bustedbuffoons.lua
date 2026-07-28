@@ -107,7 +107,7 @@ SMODS.Gradient{
         G.C.SECONDARY_SET.Planet,
         G.C.CHIPS
     },
-    cycle = 2,
+    cycle = 4,
     interpolation = 'trig',
 }
 SMODS.Gradient{
@@ -272,6 +272,7 @@ assert(SMODS.load_file("items/tag.lua"))()
 assert(SMODS.load_file("items/projectgaia.lua"))()
 --assert(SMODS.load_file("unused for now/testingjokers.lua"))() -- for future jokers
 --assert(SMODS.load_file("unused for now/buttonjoker.lua"))()
+--assert(SMODS.load_file("unused for now/evilconsumable.lua"))()
 SMODS.current_mod.optional_features = function()
     return { retrigger_joker = true,
     	cardareas = {
@@ -305,20 +306,6 @@ SMODS.Sound{
 }
 to_big = to_big or function(x) return x end
 to_number = to_number or function(x) return x end
---thank you sdm
-local fahhh = Card.open
-function Card:open()
-    fahhh(self)
-    if self.config and self.config.center and self.config.center.kind and self.config.center.key == "p_busterb_gem" then
-        G.E_MANAGER:add_event(Event({
-            func = function()
-                play_sound('busterb_fahhh')
-                play_sound('busterb_vineboom')
-            return true
-        end}))
-    end
-end
---
 function deckset()
     for i = 1, #G.deck.cards do
             G.E_MANAGER:add_event(Event({

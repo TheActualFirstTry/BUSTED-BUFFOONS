@@ -15,7 +15,7 @@ SMODS.Consumable {
             0.1 + 0.03 * math.sin(1.8 * G.TIMERS.REAL), nil, 0.6)
         card.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, card.children.center, scale_mod, rotate_mod)
     end,},
-    soul_rate = 0.1,
+    soul_rate = 0.001,
     can_repeat_soul = true,
     soul_set = 'Spectral',
 loc_vars = function(self, info_queue, card)
@@ -64,7 +64,8 @@ SMODS.Consumable {
     atlas = "non",
     pos = { x = 2, y = 8 },
     soul_pos = { x = 4, y = 8, new = { x = 3, y = 8} },
-    soul_rate = 0.1,
+    hidden = true,
+    soul_rate = 0.00001,
     can_repeat_soul = true,
     soul_set = 'Spectral',
 loc_vars = function(self, info_queue, card)

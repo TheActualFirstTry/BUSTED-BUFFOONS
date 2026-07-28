@@ -81,7 +81,7 @@ return {
 			["b_busterb_truekinda"] = {
 				["name"] = "True Kinda Deck",
 				["text"] = {
-					"Start with {C:hearts,E:1}Spinel{} and {X:hearts,C:clubs,E:1}Gar{X:clubs,C:hearts,E:1}net{}",
+					"Start with {C:hearts,E:1}Spinel{} or {X:hearts,C:clubs,E:1}Gar{X:clubs,C:hearts,E:1}net{}",
 					"and a deck of 52 cards consisting of only",
 					"the {C:hearts}Hearts{} and {C:clubs}Clubs{} suits.",
 				},
@@ -98,11 +98,9 @@ return {
 			},
 			["b_busterb_sttgl"] = {
 				["name"] = "Super Tengen Toppa Deck",
-				["text"] = {
-					"During ante change",
-					"{C:busterb_epileptic}upgrade{} table operator",
-					"by {C:white,X:busterb_epileptic}+#2#{}",
-					"set Win Ante to {C:attention}+#1#"
+				["text"] =  {
+				"Operator is {C:white,X:busterb_grand}^",
+				"set Win Ante to {C:attention}+#1#"
 				},
 			},
 		},
@@ -420,10 +418,10 @@ return {
 			["j_busterb_caine"] = {
 				["name"] = "{C:busterb_grand}CAINE{}",
 				["text"] = {
-					"When a {C:attention}Boss Blind{} is {C:attention}beaten{},",
-					"Gain {X:busterb_grand,C:white}+#2#{} Redeem",
-					"After using a {C:busterb_grand}Redeem{}",
-					"This joker spawns {C:busterb_grand}a random deck",
+					"When {C:attention}Boss Blind{} is {C:attention}beaten{},",
+					"{X:busterb_grand,C:white}+#2#{} Redeem",
+					"Using a {C:busterb_grand}Redeem{}",
+					"spawns {C:busterb_grand}a random voucher",
 					"in your {C:attention}consumables tray",
 					"{C:inactive}(Current Redeems: {X:busterb_grand,C:white}#1#{C:inactive}){}",
 				},

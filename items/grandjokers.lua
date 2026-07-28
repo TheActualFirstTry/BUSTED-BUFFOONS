@@ -350,6 +350,7 @@ if to_big(card.ability.extra.emult) > to_big(1) then
     eemult = card.ability.extra.emult,
     colour = HEX('d868a0'),
     sound = "busterb_pepangry",
+    pitch = 0.9,
     card = card
     }
 end    
@@ -769,7 +770,7 @@ SMODS.Joker{
             end
         end
         if context.cainebutton and card.ability.extra.redeem > 0 then
-            SMODS.add_card{set="Back",area=G.consumeables}
+            SMODS.add_card{set="Voucher",area=G.consumeables}
             card.ability.extra.redeem = card.ability.extra.redeem - 1
             return {
                 message = "-1",

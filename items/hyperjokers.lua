@@ -340,12 +340,12 @@ SMODS.Joker {
           } }
         } }
       } }
+    end
       return { vars = { 
             math.min(card.ability.immutable.max_retriggers, card.ability.extra.repetitions),
             math.min(card.ability.immutable.morerepeatmax, card.ability.extra.morerepeat)
          },
       main_end = main_end }
-    end
 end,
     calculate = function(self, card, context)
         if context.ante_change then

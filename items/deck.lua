@@ -22,26 +22,17 @@ SMODS.Back {
     apply = function(self, back)
         G.E_MANAGER:add_event(Event({
         func = function()
-            local card = SMODS.create_card({
-					set = 'Joker',
-					area = G.jokers,
-					key = 'j_busterb_spinel',
-					edition = e_negative,
-					stickers = {"eternal"}
-				})
-                card:add_to_deck()
-                G.jokers:emplace(card)
-				card:set_edition({ negative = true })
-				local card2 = SMODS.create_card({
-					set = 'Joker',
-					area = G.jokers,
-					key = 'j_busterb_garnet',
-					edition = e_negative,
-					stickers = {"eternal"}
-				})
-                card2:add_to_deck()
-                G.jokers:emplace(card2)
-				card2:set_edition({ negative = true })
+            local flipchance = pseudorandom(pseudoseed("busterb_truekinda"), 1, 2)
+           if flipchance == 1 then 
+                local c = SMODS.create_card({key = "j_busterb_spinel", edition = "e_negative"})
+                    c:add_to_deck()
+                    G.jokers:emplace(c)
+            end
+            if flipchance == 2 then 
+                local c = SMODS.create_card({key = "j_busterb_garnet", edition = "e_negative"})
+                    c:add_to_deck()
+                    G.jokers:emplace(c)
+            end
             if not G.playing_cards then return false end
             for k, v in pairs(G.playing_cards) do
                 if v.base.suit == 'Spades' then
@@ -139,14 +130,15 @@ SMODS.Back {
     return {vars = { self.config.ante, self.config.operator }}
     end,
     apply = function(self, back)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                change_operator(self.config.operator)
+                return true
+            end
+        }))
+        
         G.GAME.win_ante = G.GAME.win_ante + 24
 end,
 calculate = function(self, card, context)
-    if context.ante_change then
-        change_operator(self.config.operator)
-        play_sound("timpani")
-        G.HUD:get_UIE_by_ID('hand_operator_container'):juice_up()
-        SMODS.calculate_effect({message = "+"..self.config.operator.. " Operator"}, card)
-    end
 	end,
 }

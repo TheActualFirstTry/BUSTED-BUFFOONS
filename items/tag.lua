@@ -171,7 +171,7 @@ SMODS.Tag {
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
 		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_busterb_mugen" }
-		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_busterb_Fantasy" }
+		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_busterb_admin" }
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)

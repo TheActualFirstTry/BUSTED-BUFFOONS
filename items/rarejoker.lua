@@ -889,7 +889,6 @@ SMODS.Joker {
                         end
 						}))
                         ret.plus_asc = card.ability.extra.asc
-                card.ability.extra.trigger = false
                 return ret
                 else
             SMODS.scale_card(card, {
@@ -906,6 +905,10 @@ SMODS.Joker {
     if context.after then
         local cap = card.children.center
         cap:set_sprite_pos({x = 2, y = 4})
+        if card.ability.extra.trigger then
+        card.ability.extra.asc = card.ability.immutable.revert
+        card.ability.extra.trigger = false
+        end
     end
 end,
     can_use = function(self,card)
