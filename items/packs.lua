@@ -459,11 +459,10 @@ SMODS.Booster{
 	create_card = function(self, card, i)
 		if
 			i % 2 == 1
-			and Cryptid.enabled("c_busterb_Fantasy") == true
-			and not G.GAME.banned_keys["c_busterb_Fantasy"]
-			and not (G.GAME.used_jokers["c_busterb_Fantasy"] and not next(find_joker("Showman")))
+			and not G.GAME.banned_keys["c_busterb_admin"]
+			and not (G.GAME.used_jokers["c_busterb_admin"] and not next(find_joker("Showman")))
 		then
-			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_busterb_Fantasy")
+			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_busterb_admin")
 		elseif
 			not (G.GAME.used_jokers["c_busterb_mugen"] and not next(find_joker("Showman"))) and not G.GAME.banned_keys["c_busterb_mugen"]
 		then
