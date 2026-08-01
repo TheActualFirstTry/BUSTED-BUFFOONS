@@ -1,11 +1,3 @@
-SMODS.Atlas({
-	key = 'atlas_Admin',
-	path = 'ls.png',
-	px = 71, py = 95,
-	atlas_table = 'ANIMATION_ATLAS',
-	frames = 2,
-	fps = 2
-})
 
 local admin = {
 SMODS.Consumable{

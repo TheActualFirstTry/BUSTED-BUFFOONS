@@ -23,6 +23,7 @@ SMODS.Joker{
     pos = { x = 0, y = 0 },
     soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     pools = { ["Grandiose"] = true, ["bustjokers"] = true },
+    attributes = {"hypermult", "enhancements", "face", "scaling", "modify_card"},
     rarity = "busterb_Grandiose",
     cost = 500,
     blueprint_compat = true,
@@ -92,6 +93,7 @@ SMODS.Joker{
     eternal_compat = true,
     unlocked = true,
     discovered = true,
+    attributes = {"emult", "echips", "spectral", "generation", "scaling"},
     config = {
     extra = {
       emult = 1,
@@ -173,6 +175,7 @@ SMODS.Joker{
     forcetrigger_compat = true,
     unlocked = true,
     discovered = true,
+    attributes = {"passive", "value_manip"},
     config = {
         extra = {
         },
@@ -258,6 +261,7 @@ SMODS.Joker{
     blueprint_compat = true,
     forcetrigger_compat = true,
     eternal_compat = true,
+    attributes = {"generation", "boss_blind"},
     config = {
         extra = {
             jokerslot = 1,
@@ -329,7 +333,8 @@ SMODS.Joker{
     unlocked = true,
     discovered = true,
     config = {extra = {emult = 1},
-    immutable = { gain = .25, dp = 1, tallyup = 1, tally = 0, deduction = 1}},
+    attributes = {"hypermult", "scaling", "prevents_death"},
+    immutable = { gain = .5, dp = 1, tallyup = 1, tally = 0, deduction = 1}},
     loc_vars = function(self, info_queue, card)
         return { vars = {
              card.ability.immutable.dp,
@@ -416,6 +421,7 @@ SMODS.Joker{
     blueprint_compat = true,
     forcetrigger_compat = true,
     eternal_compat = true,
+    attributes = {"emult", "xmult", "scaling", "generation"},
     config = {
         extra = {
             xmult = 10,
@@ -491,6 +497,7 @@ key = "doise",
     blueprint_compat = true,
     forcetrigger_compat = true,
     eternal_compat = true,
+    attributes = {"xchips", "echips", "chance"},
     config = {
         extra = {
             odds = 2
@@ -545,6 +552,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
+    attributes = {"value_manip", "scaling", "consumeables"},
     config = {
         extra = {
             vmod = 0.1,
@@ -596,6 +604,7 @@ SMODS.Joker{
     pos = { x = 0, y = 7 },
     soul_pos = { x = 2, y = 7, new = { x = 1, y = 7 } },
     cost = 500,
+    attributes = {"hypermult", "enhancements", "scaling", "modify_card"},
     config = {
         extra = {
             eemult = 1,
@@ -660,6 +669,7 @@ SMODS.Joker{
     pos = { x = 0, y = 8 },
     soul_pos = { x = 2, y = 8, new = { x = 1, y = 8 } },
     cost = 500,
+    attributes = {"hypermult", "emult", "scaling"},
     config = {
         extra = {
             eemult = 1,
@@ -735,6 +745,7 @@ SMODS.Joker{
     pos = { x = 0, y = 9 },
     soul_pos = { x = 2, y = 9, new = { x = 1, y = 9 } },
     cost = 500,
+    attributes = {"vouchers", "scaling"},
     config = {
         extra = {
             more = 1,
@@ -792,6 +803,7 @@ SMODS.Joker{
     pos = { x = 0, y = 10 },
     soul_pos = { x = 2, y = 10, new = { x = 1, y = 10 } },
     cost = 500,
+    attributes = {"hands", "hand_type", "emult", "echips"},
     config = {
         extra = {
             pokerhand = 2,
@@ -841,6 +853,7 @@ SMODS.Joker{
     pos = { x = 0, y = 11 },
     soul_pos = { x = 2, y = 11, new = { x = 1, y = 11 } },
     cost = 500,
+    attributes = {"hands", "asc_power", "hand_type"},
     config = {
         extra = {
             super = 5
@@ -939,16 +952,18 @@ SMODS.Joker{
     forcetrigger_compat = true,
     unlocked = true,
     discovered = true,
+    attributes = {"value_manip", "scaling"},
     config = {
         extra = { valuemodification = 4
         },
         immutable = { valuemodification = 4, valuecap = 1e100 }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.valuemodification, " ", colours = {SMODS.Gradients["busterb_balatro"], SMODS.Gradients["busterb_epileptic"]}} }
+        return { vars = { card.ability.immutable.valuemodification, " ", colours = {SMODS.Gradients["busterb_balatro"], SMODS.Gradients["busterb_epileptic"]}} }
     end,
     
 calculate = function(self, card, context)
+if not context.repertition or not context.blueprint then
   if context.setting_blind or context.forcetrigger then
     for i, joker in ipairs(G.jokers.cards) do
         if joker and not joker.config.upgrade_multiply then
@@ -956,8 +971,8 @@ calculate = function(self, card, context)
 		end
 		joker.config.upgrade_multiply = joker.config.upgrade_multiply * 2
         if joker.config.center.key ~= "j_busterb_upgrade" then
-        Spectrallib.manipulate(joker, { value = card.ability.extra.valuemodification })
-        SMODS.calculate_effect({message = "X" ..card.ability.extra.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = joker})
+        Spectrallib.manipulate(joker, { value = card.ability.immutable.valuemodification })
+        SMODS.calculate_effect({message = "X" ..card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = joker})
       end
     end
   end
@@ -965,13 +980,14 @@ calculate = function(self, card, context)
     for i, joker in ipairs(G.jokers.cards) do
         if joker.config.center.key ~= "j_busterb_upgrade" then
             if joker.config.upgrade_multiply then
-                Spectrallib.manipulate(joker, { value = 1/card.ability.extra.valuemodification })
-                        SMODS.calculate_effect({message = "/" ..card.ability.extra.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = joker})
+                Spectrallib.manipulate(joker, { value = 1/card.ability.immutable.valuemodification })
+                        SMODS.calculate_effect({message = "/" ..card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = joker})
                     joker.config.upgrade_multiply = nil
     	        end
             end
         end
     end
+end
 end,
     calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
 		if not other.ability.cry_scaling_info then
@@ -984,8 +1000,8 @@ end,
 
 		local original_scalar = other.ability.cry_scaling_info[args.scalar_value]
         local new_scale = current_scalar
-        card.ability.extra.valuemodification = card.ability.extra.valuemodification + new_scale
-        return{ message = "+ ".. card.ability.extra.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = card }
+        card.ability.immutable.valuemodification = card.ability.immutable.valuemodification + new_scale
+        return{ message = "+ ".. card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = card }
 	end,
 }
 
@@ -1009,6 +1025,7 @@ SMODS.Joker{
     blueprint_compat = true,
     forcetrigger_compat = true,
     eternal_compat = true,
+    attributes = {"asc", "easc", "xasc", "perma_bonus", "enhancements","modify_card"},
     config = {
         extra = {
             asc = 4,

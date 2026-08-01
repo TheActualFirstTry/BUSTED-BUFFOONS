@@ -31,6 +31,44 @@ local GaiaYap = {
   "My favorite character isn't Sonic or Tails, it's Silver",
   "Jimbo can suck it!!!",
   "M",
+  "* local c =",
+  "* SMODS.add_card{'j_busterb_gaia'};",
+  "* c.config.center.gaia = true",
+  "Thomas and Theia are really good friends of mine!",
+  "That's right i heard the story over and over again",
+  "Thomas a loser for liking Spinel XDDDDDDDD",
+  "Yea Theia can actually cook bro, she done own a fastfood business and everything",
+  "Ok i guess i'm also a loser for liking Spinel",
+  "We both love Spinel... :/",
+  "I'm sorry for dissing you Thomas",
+  "Hey, got any grapes?",
+  "King Bach pulls out comically large spoon",
+  "Gee it's swell to finally meet her other friends",
+  "Hi Murphy",
+  "Hi Unseen",
+  "Hi Roffle",
+  "Hi Dr.",
+  "Hi Exattox",
+  "Hi Nightmare",
+  "Hi Bean",
+  "Hi Yahiamice",
+  "Hi Watto",
+  "Hi Marq",
+  "Hi Robbi",
+  "Yo Astro",
+  "Yo Ruby",
+  "Yo Aiko",
+  "Yo Revo",
+  "Yo Crystal",
+  "Yo Grahkon",
+  "Yo Sappy",
+  "Yo Hawaii",
+  "Yo Thomas",
+  "Yo Theia",
+  "Yo Nxkoo",
+  "Yo Vessel",
+  "Yo Hedera",
+  "Yo JP",
   gaiatable1
 }
 
@@ -51,7 +89,7 @@ SMODS.Joker{
     config = {
         extra = { vm = 2
         },
-        immutable = { odds = 50 }
+        immutable = { odds = 25 }
     },
     loc_vars = function(self, info_queue, card)
       local gaiarare, gaiaodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_gaiarare')
@@ -63,21 +101,26 @@ SMODS.Joker{
     
     use = function(self, card, area, copier)
                     if SMODS.pseudorandom_probability(card, 'busterb_gaiarare', 1, card.ability.immutable.odds, 'busterb_gaiarare', true) then
-                SMODS.add_card({ key = "c_busterb_admin" })
-                play_sound('busterb_vineboom')
-                play_sound('busterb_fahhh1')
-                SMODS.calculate_effect{
-                        message = "FAHHH!",
-                        colour = SMODS.Gradients["busterb_technopotentgradient"],
-                        card = card
-                    }
+                local c = SMODS.add_card({ key = "c_busterb_admin" })
+                play_sound('busterb_vineboom',1,1.2)
+                play_sound('busterb_fahhh1',1,1.2)
+                attention_text({
+								text = "> <",
+								scale = 5,
+                hold = 1.5,
+                backdrop_colour = G.C.BLACK,
+								colour = G.C.SECONDARY_SET.Spectral,
+								align = 'cm',
+								major = c,
+								offset = {x = 0, y = 0}
+							})
             else
-            SMODS.add_card({ set = "Bootleg", area = G.consumeables})
+            local c = SMODS.add_card({ set = "Bootleg", area = G.consumeables})
             play_sound('holo1', 1, 0.5)
             SMODS.calculate_effect{
                     message = "Added!",
                     colour = G.C.GREEN,
-                    card = card
+                    card = c
                 }
             end
     end,

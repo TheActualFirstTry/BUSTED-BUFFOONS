@@ -16,6 +16,7 @@ SMODS.Joker {
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
     config = { extra = { } },
+    attributes = { "xchips" },
     loc_vars = function(self, info_queue, card)
         local speedvalue = G.SETTINGS.GAMESPEED * 4
         return { vars = { speedvalue, " " } }
@@ -39,6 +40,7 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 1, y = 0 },
     soul_pos = { x = 1, y = 1 },
+    attributes = { "multiuse", "bootleg", "generation" },
     config = { extra = { multiuse = 2 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.multiuse } }
@@ -68,6 +70,7 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 0, y = 0 },
     config = { extra = { e_mult = 1.25 } },
+    attributes = { "emult" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.e_mult ,colours = {SMODS.Gradients["busterb_eemultgradient"]} } }
     end,
@@ -87,6 +90,7 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 2, y = 0 },
     soul_pos = { x = 2, y = 1 },
+    attributes = { "generation", "boss_blind" },
     config = { extra = { } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.j_busterb_hilgard
@@ -122,6 +126,7 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 3, y = 0 },
     soul_pos = { x = 3, y = 1 },
+    attributes = { "prevents_death", "hand_type" },
     config = { extra = { deathdefiance = false }, immutable = { counter = 0, goal = 3, addition = 1, adddisplay = 0 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.deathdefiance and "Active" or "Inactive", card.ability.immutable.counter, card.ability.immutable.goal } }
@@ -183,6 +188,7 @@ SMODS.Joker {
     pos = { x = 4, y = 0 },
     soul_pos = { x = 4, y = 1 },
     config = { extra = { xmult = 1, xmult_mod = 1 } },
+    attributes = { "food", "scaling", "xmult" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod } }
     end,
@@ -214,6 +220,7 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 0, y = 2 },
     soul_pos = { x = 0, y = 3 },
+    attributes = { "xchips", "xmult", "suit", "spades", "clubs", "hearts", "diamonds" },
     config = { extra = { xmult = 2.5, xchips = 2.5 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.xchips, card.ability.extra.xmult } }
@@ -241,6 +248,7 @@ SMODS.Joker {
     pos = { x = 1, y = 2 },
     soul_pos = { x = 1, y = 3 },
     config = { extra = { } },
+    attributes = { "modify_card", "enhancements", "mod_chance" },
     loc_vars = function(self, info_queue, card)
         return { vars = { } }
     end,
@@ -275,6 +283,7 @@ SMODS.Joker {
     pos = { x = 2, y = 2 },
     soul_pos = { x = 2, y = 3 },
     config = { extra = { perma_x_mult = 0.5 } },
+    attributes = { "modify_card", "retrigger", "perma_bonus", "xmult", "enhancements" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.perma_x_mult } }
     end,
@@ -311,6 +320,7 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 3, y = 2 },
     soul_pos = { x = 3, y = 3 },
+    attributes = { "generation", "boss_blind" },
     config = { extra = { }, immutable = { characters = 3 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.immutable.characters, colours = {SMODS.Gradients["busterb_grand"]} } }
@@ -337,6 +347,7 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 4, y = 2 },
     soul_pos = { x = 4, y = 3 },
+    attributes = { "tarot", "planet", "spectral", "generation", "passive", "consumeables", "economy" },
     config = { extra = { }, immutable = { spent = 0, reset = 0 } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = {key = "price_tower", set = "Other"}
@@ -420,6 +431,7 @@ SMODS.Joker {
     pos = { x = 0, y = 4 },
     soul_pos = { x = 0, y = 5 },
     config = { extra = { x = 1, gain = 0.1 } },
+    attributes = { "bootleg", "emult", "scaling" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.x, card.ability.extra.gain } }
     end,
@@ -456,6 +468,7 @@ SMODS.Joker {
     pos = { x = 1, y = 4 },
     soul_pos = { x = 1, y = 5 },
     config = { extra = { level = 0 } },
+    attributes = { "asc_power", "ace", "diamonds", "suit", "rank" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.level+1 } }
     end,
@@ -564,6 +577,7 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 2, y = 4 },
     soul_pos = { x = 2, y = 5 },
+    attributes = { "generation", "consumeables", "editions" },
     config = { extra = { moony = 1, moonyodds = 4 } },
     loc_vars = function(self, info_queue, card)
     local oddwin, oddnope = SMODS.get_probability_vars(card, 1, card.ability.extra.moonyodds, self.key)
@@ -610,6 +624,7 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 3, y = 4 },
     soul_pos = { x = 3, y = 5 },
+    attributes = { "xmult", "scaling", "economy" },
     config = { extra = { xmult = 1, xmult_mod = 1.5 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod } }
@@ -645,6 +660,7 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 4, y = 4 },
     soul_pos = { x = 4, y = 5 },
+    attributes = { "asc", "suit", "diamonds" },
     config = { extra = { emult = 10, suit = 'Diamonds', destroyodds = 4 } },
     loc_vars = function(self, info_queue, card)
     local oddwin, oddnope = SMODS.get_probability_vars(card, 1, card.ability.extra.destroyodds, self.key)

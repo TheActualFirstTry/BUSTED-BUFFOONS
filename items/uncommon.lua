@@ -12,16 +12,36 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 0, y = 0 },
     config = { extra = { odds = 4 }, immutable = {  } },
+    attributes = { "tag", "chance" },
     loc_vars = function(self, info_queue, card)
+        local pchance, podds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_pepsiman')
         info_queue[#info_queue + 1] = { key = 'tag_double', set = 'Tag' }
-        return { vars = {  } }
+        return { vars = { pchance, podds } }
     end,
     calculate = function(self, card, context)
-        if context.end_of_round and G.GAME.blind.boss and context.main_eval then
+        if context.end_of_round and context.main_eval then
+            if SMODS.pseudorandom_probability(card, 'busterb_pepsiman', 1, card.ability.extra.odds, 'busterb_pepsiman') then
                 G.E_MANAGER:add_event(Event({
                 func = (function()
-                    card:juice_up(5,5)
-                    SMODS.calculate_effect{card = card, message = "PEPSIMAN!", colour = G.C.CHIPS}
+                    card:juice_up(1,1)
+                    attention_text({
+								text = "PEPSI",
+								scale = 2.5,
+                                hold = 1.5,
+								backdrop_colour = G.C.CHIPS,
+								align = 'bm',
+								major = card,
+								offset = {x = -1.15*G.CARD_W, y = 0.15*G.CARD_H}
+							})
+                            attention_text({
+								text = "MAN",
+								scale = 2.5,
+                                hold = 1.5,
+								backdrop_colour = G.C.MULT,
+								align = 'bm',
+								major = card,
+								offset = {x = 1.15*G.CARD_W, y = 0.15*G.CARD_H}
+							})
                     add_tag(Tag('tag_double'))
                     play_sound('busterb_pepsiman')
                     play_sound('generic1', 0.9 + math.random() * 0.1, 0.8)
@@ -30,6 +50,7 @@ SMODS.Joker {
                 end)
             }))
         end
+    end
 end,
 }
 
@@ -42,6 +63,7 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 1, y = 0 },
     config = { extra = {  }, immutable = { creates = 1 } },
+    attributes = { "food", "generation", "boss_blind" },
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,
@@ -79,6 +101,7 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 2, y = 0 },
     config = { extra = {  }, immutable = { repetitions = 2 } },
+    attributes = { "ace", "retrigger", "rank" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.repetitions } }
     end,
@@ -100,6 +123,7 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 3, y = 0 },
     config = { extra = {  } },
+    attributes = { "chips" },
     loc_vars = function(self, info_queue, card)
         local speedvalue = G.SETTINGS.GAMESPEED * 16
         return { vars = { speedvalue, " " } }
@@ -121,20 +145,19 @@ SMODS.Joker {
     rarity = 2,
     cost = 4,
     pos = { x = 0, y = 1 },
-    config = { extra = {  }, immutable = { select = 0, select_gain = 1, select_limit = 4 } },
+    attributes = { "hands", "scaling" },
+    config = { extra = {  }, immutable = { select = 0, select_gain = 1, select_limit = 0 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.immutable.select, card.ability.immutable.select_gain, card.ability.immutable.select_limit } }
     end,
     calculate = function(self, card, context)
         if context.end_of_round and G.GAME.blind.boss and context.main_eval then
                 card.ability.immutable.select = card.ability.immutable.select + card.ability.immutable.select_gain
-                SMODS.calculate_effect{card = card, message = "+"..card.ability.immutable.select_gain.." Card Selection", colour = G.C.CHIPS}
-                SMODS.change_play_limit(card.ability.immutable.select_gain)
-        		SMODS.change_discard_limit(card.ability.immutable.select_gain)
+                SMODS.calculate_effect{card = card, message = "+"..card.ability.immutable.select_gain.." Hand Size", colour = G.C.CHIPS}
+        		G.hand:change_size(card.ability.immutable.select_gain)
         end
             if context.selling_self and not context.blueprint then
-                SMODS.change_play_limit(-card.ability.immutable.select)
-        		SMODS.change_discard_limit(-card.ability.immutable.select)                 
+        		G.hand:change_size(-card.ability.immutable.select)
                 SMODS.calculate_effect{card = card, message = "Reset!", colour = G.C.CHIPS}
         end
 
@@ -152,6 +175,7 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 1, y = 1 },
     config = { extra = {  }, immutable = { reduce = 0.80 } },
+    attributes = { "boss_blind", "blindsize" },
     loc_vars = function(self, info_queue, card)
         local value = card.ability.immutable.reduce
         local display = string.format("%d%%",(1-value)*100)
@@ -185,6 +209,7 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 2, y = 1 },
     config = { extra = {  }, immutable = { reduce = 0.80 } },
+    attributes = { "passive" },
     loc_vars = function(self, info_queue, card)
         return { vars = { } }
     end,
@@ -213,11 +238,12 @@ SMODS.Joker{
     unlocked = true, 
     atlas = "joker_u",
     blueprint_compat = true,
-    pools = { ["bustjokers"] = true },
+    pools = { ["bustjokers"] = true, ["Food"] = true },
     rarity = 2,
     cost = 4,
     pos = { x = 3, y = 1 },
     config = { extra = { mult = 2, odds = 2048 }, immutable = { divider = 2 } },
+    attributes = { "food", "emult", "chance" },
         loc_vars = function(self, info_queue, card)
         local pbj, pbjodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_pbj')
         return {
@@ -259,6 +285,7 @@ SMODS.Joker {
     rarity = 2,
     cost = 4,
     pos = { x = 0, y = 2 },
+        attributes = { "boss_blind", "on_sell" },
     calculate = function(self, card, context)
         if context.selling_self and not G.GAME.blind.boss then
             SMODS.calculate_effect{message = ":P", colour = G.C.BLACK, card = card}
@@ -290,6 +317,7 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 1, y = 2 },
     config = { extra = { plus_asc = 0, gain = 0.25 }, immutable = {  } },
+    attributes = { "consumeables", "asc", "tarot", "planet", "spectral", "scaling" },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -325,6 +353,7 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 2, y = 2 },
     config = { extra = {  }, immutable = {  } },
+    attributes = { "enhancements", "modify_card" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_frost
     end,
@@ -357,6 +386,7 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 3, y = 2 },
     config = { extra = { chips = 0, gain = 50 }, immutable = {  } },
+    attributes = { "enhancements", "scaling", "chips" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
         return { vars = { card.ability.extra.chips, card.ability.extra.gain } }
@@ -392,6 +422,7 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 0, y = 3 },
     config = { extra = { mult = 1, gain = 0.2 }, immutable = {  } },
+    attributes = { "consumeables", "pizza", "scaling", "xmult" },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -427,7 +458,8 @@ SMODS.Joker {
     rarity = 2,
     cost = 4,
     pos = { x = 1, y = 3 },
-    config = { extra = { value = 1 }, immutable = {  } },
+    config = { extra = { value = 1 }, immutable = { minvalue = 1 } },
+    attributes = { "hands", "discard", "joker_slot", "hand_size" },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -438,7 +470,7 @@ SMODS.Joker {
     calculate = function(self, card, context)
         if context.selling_self then
         local funval = pseudorandom(pseudoseed("busterb_funval"), 1, 6)
-		local additive = card.ability.extra.value
+		local additive = card.ability.extra.value -- pseudorandom(pseudoseed("busterb_add"), 1, card.ability.extra.value)
         if funval == 1 then
 		G.hand:change_size(additive)
         SMODS.calculate_effect{card = card, message = "+"..card.ability.extra.value.." Hand Size", colour = G.C.BLACK}
@@ -484,6 +516,7 @@ SMODS.Joker {
     rarity = 2,
     cost = 4,
     pos = { x = 2, y = 3 },
+    attributes = { "mult", "chips", "asc", "score" },
     config = { extra = { mult = 6, chips = 12, asc = 1, score = 25 }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return {
@@ -514,6 +547,7 @@ SMODS.Joker {
     rarity = 2,
     cost = 4,
     pos = { x = 3, y = 3 },
+    attributes = { "hand_size" },
     config = { extra = { value = 0, gain = 1, hand = 1 }, immutable = { req = 5, inc = 2, handmax = 0 } },
     loc_vars = function(self, info_queue, card)
         return {
@@ -553,6 +587,7 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 0, y = 4 },
     config = { extra = { asc = 3 }, immutable = {  } },
+    attributes = { "asc", "eight", "rank" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.asc } }
     end,
@@ -574,6 +609,7 @@ SMODS.Joker {
     cost = 4,
     pos = { x = 1, y = 4 },
     config = { extra = {  }, immutable = {  } },
+    attributes = { "hands", "boss_blind" },
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,
@@ -605,6 +641,7 @@ SMODS.Joker {
     rarity = 2,
     cost = 4,
     pos = { x = 2, y = 4 },
+    attributes = { "passive" },
     config = { extra = { booster_mod = 1}, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.booster_mod } }
@@ -628,6 +665,7 @@ SMODS.Joker {
     rarity = 2,
     cost = 4,
     pos = { x = 3, y = 4 },
+    attributes = { "passive" },    
     config = { extra = { }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }

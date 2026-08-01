@@ -21,6 +21,26 @@ SMODS.Atlas{
 	py = 95
 }
 SMODS.Shader({ key = 'atomic', path = 'atomic.fs' })
+
+SMODS.Atlas({
+	key = 'atlas_Admin',
+	path = 'ls.png',
+	px = 71, py = 95,
+	atlas_table = 'ANIMATION_ATLAS',
+	frames = 2,
+	fps = 2
+})
+
+
+SMODS.Atlas {
+  key = "mblinds",
+  path =  "MythBlinds.png",
+  px = 34,
+  py = 34,
+  atlas_table = 'ANIMATION_ATLAS',
+  frames = 10
+}
+
 SMODS.Sound{
     key = "maltigi",
     path = "maltigi.ogg"
@@ -274,12 +294,15 @@ assert(SMODS.load_file("items/projectgaia.lua"))()
 --assert(SMODS.load_file("unused for now/buttonjoker.lua"))()
 --assert(SMODS.load_file("unused for now/evilconsumable.lua"))()
 SMODS.current_mod.optional_features = function()
-    return { retrigger_joker = true,
-    	cardareas = {
+    return {
         post_trigger = true,
-		deck = true,
-		discard = true,
-	},
+        retrigger_joker = true,
+        quantum_enhancements = true,
+		object_weights = true,
+		cardareas = {
+            discard = true,
+            deck = true
+        }
 }
 end
 SMODS.Mods["BustedBuffoons"].spectrallib_features = { "ascension_power" }

@@ -28,6 +28,7 @@ SMODS.Joker {
             seal = 'Red'
         }
     },
+    attributes = { "generation" , "ace" , "rank", "chance", "seals", "editions", "enhancements", "xmult" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_steel
         info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
@@ -92,6 +93,7 @@ SMODS.Joker{
             luckychance = 10,
         }
     },
+    attributes = { "modify_card", "chance", "enhancements", "xchips" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_lucky
         local vigichance, vigiodds = SMODS.get_probability_vars(card, 1, card.ability.extra.luckychance, 'busterb_lucky_vigi')
@@ -148,6 +150,7 @@ SMODS.Joker {
             xmult = 1
         }
     },
+    attributes = { "hearts", "spades", "suit", "scaling", "xmult" },
     loc_vars = function(self, info_queue, card)
     return {vars = {card.ability.extra.xmultmod, card.ability.extra.xmult}}
     end,
@@ -188,6 +191,7 @@ SMODS.Joker{
             xmult = 1
         }
     },
+    attributes = { "scaling", "king", "face" , "rank", "chance", "retrigger", "xmult" },
     loc_vars = function(self, info_queue, card)
             return { key = (card.edition and card.edition.negative) and "j_busterb_roffle_heavy" or nil , vars = {card.ability.extra.xmultmod, card.ability.extra.xmult}}
     end,
@@ -233,7 +237,8 @@ SMODS.Joker{
             perma = 9
         }
     },
-        loc_vars = function(self, info_queue, card)
+    attributes = { "nine", "rank", "mult", "perma_bonus" },
+    loc_vars = function(self, info_queue, card)
                 return {vars = { card.ability.extra.perma }}
             end,
         calculate = function(self, card, context)
@@ -252,7 +257,7 @@ SMODS.Joker{
     key = "samsontboi",
     atlas = "rare",
     rarity = 3,
-    pools = { ["bustjokers"] = true },
+    pools = { ["Food"] = true, ["bustjokers"] = true },
     cost = 8,
     discovered = true,
     unlocked = true,
@@ -266,11 +271,12 @@ SMODS.Joker{
             held = 4
         }
     },
+    attributes = { "hearts", "suit", "perma_bonus", "modify_card", "xmult", "mult", "food" },
         loc_vars = function(self, info_queue, card)
             local x = card.ability.extra.perma
             local y = card.ability.extra.give
             local z = card.ability.extra.held
-                return {vars = { x, y, z }}
+                return {vars = { "x, y, z" }}
             end,
         calculate = function(self, card, context)--
             local x = card.ability.extra.perma
@@ -306,6 +312,7 @@ SMODS.Joker{
             held = 10
         }
     },
+    attributes = { "clubs", "suit", "perma_bonus", "modify_card", "xchips", "chips" },
         loc_vars = function(self, info_queue, card)
             local x = card.ability.extra.perma
             local y = card.ability.extra.give
@@ -346,6 +353,7 @@ SMODS.Joker{
             held = 5
         }
     },
+    attributes = { "diamonds", "suit", "perma_bonus", "modify_card", "asc", "economy" },
         loc_vars = function(self, info_queue, card)
             local x = card.ability.extra.perma
             local y = card.ability.extra.give
@@ -387,6 +395,7 @@ SMODS.Joker{
             held = 25
         }
     },
+    attributes = { "spades", "suit", "perma_bonus", "modify_card", "score", "retrigger", "xscore" },
         loc_vars = function(self, info_queue, card)
             local x = card.ability.extra.perma
             local y = card.ability.extra.give
@@ -427,6 +436,7 @@ SMODS.Joker {
             }
         }
     end,
+    attributes = { "sell_value", "economy" },
     calculate = function(self, card, context)
         if context.selling_card and context.card.ability.consumeable then
             for _, area in ipairs({ G.jokers }) do
@@ -455,12 +465,13 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 2, y = 2 },
-    config = { extra = { vmod = 1 }, immutable = {  } },
+    attributes = { "enhancements", "tarot", "generation", "perma_bonus", "retrigger", "boss_blind" },
+    config = { extra = { vmod = 1 }, immutable = { vm = 1 } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_glittery
         return {
             vars = {
-                card.ability.extra.vmod,
+                card.ability.immutable.vm,
             }
         }
     end,
@@ -468,10 +479,18 @@ SMODS.Joker {
     if context.before then
         for k,v in ipairs(G.play.cards) do
             if SMODS.has_enhancement(v,"m_busterb_glittery") then
-                v.ability.perma_repetitions = (v.ability.perma_repetitions or 0) + card.ability.extra.vmod
-                SMODS.calculate_effect({message = "+" ..card.ability.extra.vmod.. " Repetitions", colour = SMODS.Gradients["busterb_grand"], card = v})
+                v.ability.perma_repetitions = (v.ability.perma_repetitions or 0) + card.ability.immutable.vm
+                SMODS.calculate_effect({message = "+" ..card.ability.immutable.vm.. " Repetitions", colour = SMODS.Gradients["busterb_grand"], card = v})
             end
         end
+    end
+    if context.setting_blind and G.GAME.blind.boss then
+        local c = SMODS.add_card{key="c_busterb_unicorn"}
+        SMODS.calculate_effect{
+                    message = "Added!",
+                    colour = SMODS.Gradients["busterb_grand"],
+                    card = c
+                }
     end
 end,
 }
@@ -503,6 +522,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 3, y = 2 },
+    attributes = { "editions", "passive", "boss_blind" },
     config = { extra = { triggered = false }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
@@ -535,6 +555,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 0, y = 3 },
+    attributes = { "passive", "boss_blind" },
     config = { extra = { triggered = false }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.p_busterb_bbpack_1
@@ -565,6 +586,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 1, y = 3 },
+    attributes = { "suit", "hearts", "diamonds", "spades", "clubs", "face" },
     config = { extra = { x = 1.5, face = 2.5, switch = "sad" }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
                 local x = card.ability.extra.x
@@ -639,6 +661,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 2, y = 3 },
+    attributes = { "passive", "hand_size", "hands" },
     config = { extra = { ga = 4, rn = 7 }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return {
@@ -677,6 +700,7 @@ SMODS.Joker {
     cost = 8,
     pos = { x = 3, y = 3 },
     config = { extra = {  }, immutable = { garn = 47, garn_47 = 0 } },
+    attributes = { "generation", "hands", "scaling" },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -690,7 +714,7 @@ SMODS.Joker {
         remove_from_deck = function(self, card, from_debuff)
     end,
     calculate = function(self, card, context)
-        if context.end_of_round and context.main_eval then
+        if context.after and context.main_eval then
             card.ability.immutable.garn_47 = card.ability.immutable.garn_47 + 1
             SMODS.calculate_effect({message = localize("k_upgrade_ex"),colour = G.C.BLACK},card)
             if card.ability.immutable.garn_47 == card.ability.immutable.garn then
@@ -721,6 +745,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 0, y = 4 },
+    attributes = { "mult","chips","asc","score","boss_blind","economy","xblindsize", "xscore" },
     config = {
         extra = {
             minchips = 1,
@@ -734,7 +759,11 @@ SMODS.Joker {
         }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = {
+        
+        return { 
+            background_colour = SMODS.Gradients["busterb_grand"],
+            text_colour = G.C.WHITE,
+            vars = { " "
             } }
     end,
     remove_from_deck = function(self, card, from_debuff)
@@ -814,6 +843,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 1, y = 4 },
+    attributes = { "mult","chips","asc","score","enhancements" },
     config = { extra = { mult = 8, chips = 24, asc = 2, score = 50 }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_wild        
@@ -855,6 +885,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 2, y = 4 },
+    attributes = { "asc","scaling" },
     config = { extra = { asc = 1, gain = 2, trigger = false }, immutable = { revert = 1 } },
     loc_vars = function(self, info_queue, card)
         return {
@@ -950,6 +981,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 3, y = 4 },
+    attributes = { "xmult", "ace", "face", "rank" },
     config = { extra = { xmult = 1, xmult_mod = 6 }, immutable = { } },
     loc_vars = function(self, info_queue, card)
         return {

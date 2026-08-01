@@ -16,3 +16,11 @@ if not SMODS.ObjectTypes.Food then
         cards = copy_table(BustB.Food)
     }
 end
+
+local attributes = {
+    "consumeables", "pizza", "bootleg", "infinity"
+}
+
+for _, v in ipairs(attributes) do
+    SMODS.Attribute { key = v }
+end

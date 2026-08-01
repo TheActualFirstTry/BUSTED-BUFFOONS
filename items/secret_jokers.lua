@@ -18,6 +18,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
+    attributes = {"hyperchips", "scaling"},
     config = {
         extra = {
             eechips = 1,
@@ -121,6 +122,7 @@ SMODS.Joker{
     blueprint_compat = true,
     forcetrigger_compat = true,
     eternal_compat = true,
+    attributes = {"hypermult", "generation", "scaling"},
     config = {
         extra = {
             jokerslot = 1,
@@ -267,7 +269,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-
+    attributes = {"emult", "economy", "enhancements", "seals"},
     config = {
         extra = {
             bonus = 1.2,
@@ -447,6 +449,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
+    attributes = {"hypermult", "hyperchips", "hand_type", "generation", "spectral"},
     config = {
         extra = {
             cm = 0.33,
@@ -564,6 +567,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
+    attributes = {"score", "chance"},
     config = { extra = {}, immutable = { score = 0, odds = 2 } },
     loc_vars = function(self, info_queue, card)
         local pinorare, pinoodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_unstable')
@@ -653,6 +657,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
+    attributes = {"consumeables", "generation"},
     config = { extra = {}, immutable = { number = 2 } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
@@ -683,6 +688,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
+    attributes = {"emult", "echips", "generation", "consumeables", "value_manip", "chance", "tag", "joker_slot"},
     config = { extra = { slots = 2, chipmult = 2, }, immutable = { vmin = 10, vmax = 1000, cmmin = 10, cmmax = 1000, vm = 2 } },
     loc_vars = function(self, info_queue, card)
 --        info_queue[#info_queue+1] = {key = "grahkon_list", set = "Other"}
@@ -846,6 +852,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
+    attributes = {"face", "king", "queen", "rank", "boss_blind", "generation", "hands", "blindsize", "economy", "xmult"},
     config = { extra = { dollars = 10, select_mod = 1 }, immutable = { number = 2, reduce = 0.5, discards = 23, discards_remaining = 23 } },
     loc_vars = function(self, info_queue, card)
 --        local tribvalue = 0
@@ -926,6 +933,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
+    attributes = {"mod_chance", "emult", "scaling", "passive"},
     config = { extra = { emult = 1 }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.emult } }
@@ -962,6 +970,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
+    attributes = {"retrigger"},
     config = { extra = {  }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return { vars = { G.jokers and #G.jokers.cards or 1 } }
@@ -994,6 +1003,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
+    attributes = {"emult", "modify_card", "discard"},
     config = { extra = { emult = 1 }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.emult } }
@@ -1054,6 +1064,7 @@ SMODS.Joker{
     blueprint_compat = false,
     eternal_compat = true,
     config = { extra = {  }, immutable = {  } },
+    attributes = {"generation", "bootleg"},
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.c_busterb_print
         return { vars = {  } }
@@ -1097,65 +1108,6 @@ SMODS.Joker{
             SMODS.add_card{set="Voucher",area=G.consumeables}
         end
     end
-    if context.setting_blind and not context.blueprint then
-        for k,v in ipairs(G.jokers.cards) do
-        if v.config.center.key == "j_busterb_alucard" then
-            local my_pos = nil
-            for i = 1, #G.jokers.cards do
-                if G.jokers.cards[i] == card then
-                    my_pos = i
-                    break
-                end
-            end
-            if my_pos and G.jokers.cards[my_pos + 1] and not G.jokers.cards[my_pos + 1].getting_sliced then
-                local sliced_card = G.jokers.cards[my_pos + 1]
-                sliced_card.getting_sliced = true
-                G.GAME.joker_buffer = G.GAME.joker_buffer - 1
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        G.GAME.joker_buffer = 0
-                        card:juice_up(0.8, 0.8)
-                        sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
-                        play_sound('busterb_crit', 0.96 + math.random() * 0.08)
-                        return true
-                    end
-                }))
-                card_eval_status_text(card, "extra", nil, nil, nil, {
-				message = "Critical Hit!",
-				colour = G.C.GREEN,
-				no_juice = true,
-			})
-        local rarity_map = {
-  busterb_technopotent = "busterb_Grandiose",
-  Common = 'Rare',
-  Uncommon = 'Rare',
-  cry_cursed = 'cry_exotic',
-  crp_abysmal = 'crp_mythic',
-  unik_detrimental = 'unik_ancient',
-  valk_supercursed = 'valk_exquisite',
-  jen_junk = 'Rare',
-  jen_omegatranscendent = 'cry_exotic',
-  jen_omnipotent = 'cry_exotic',
-  jen_transcendent = 'cry_exotic',
-  jen_ritualistic = 'cry_exotic',
-  jen_miscellaneous = 'Rare',
-  bos_transcendent = 'bos_exotic',
-  bos_miscellaneous = 'Rare',
-  gj_detri = "gj_uniq",
-  ocstobal_challengeexclusive = "ocstobal_omega",
-  ocstobal_absolute_curse = "ocstobal_beyondexotic",
-  ocstobal_cursed = "ocstobal_unique"
-}
-
-local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
-           key = rarity_map[key] or key
-        local c = SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.jokers }
-        SMODS.calculate_effect{card=c,message="???"}
-			return nil, true
-		    end
-        end
-    end
-end
 end
 }
 
@@ -1171,6 +1123,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = false,
+    attributes = {"emult", "generation"},
     config = { extra = { emult = 2 }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.emult } }
@@ -1215,6 +1168,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = false,
+    attributes = {"scaling", "escore", "enhancements", "hearts", "suit"},
     config = { extra = { e = 1, e_mod = 0.5, e_mod2 = 1.5 }, immutable = {  } },
   loc_vars = function(self, info_queue, card)
     info_queue[#info_queue + 1] = G.P_CENTERS.m_wild
@@ -1227,6 +1181,9 @@ SMODS.Joker{
     return {vars = {card.ability.extra.e, 1 + card.ability.extra.e * count, card.ability.extra.e_mod, card.ability.extra.e_mod2}}
   end,
   calculate = function(self, card, context)
+    if context.before then
+        G.GAME.chips = G.GAME.chips + 10
+    end
     if context.joker_main then
       local count = 0
       for _, v in pairs(SMODS.Mods) do
@@ -1284,6 +1241,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = false,
+    attributes = {"passive", "asc", "xasc", "scaling"},
     config = { extra = { asc = 1, x_asc = 1, stack = 2, stack_mod = 1, stack_re = 1 }, immutable = { final_stack = 1 } },
   loc_vars = function(self, info_queue, card)
     return {vars = {card.ability.extra.asc, card.ability.extra.x_asc, card.ability.extra.stack, card.ability.extra.stack_mod, G.play and #G.play.cards or 0, " "}}

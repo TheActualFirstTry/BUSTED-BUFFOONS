@@ -17,6 +17,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
+    attributes = { "xmult", "scaling", "ace", "face", "rank" },
     config = {
         extra = {
             xmult = 6,           
@@ -135,6 +136,7 @@ SMODS.Joker {
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     pos = { x = 1, y = 0 },
     soul_pos = { x = 1, y = 1 },
+    attributes = { "xchips", "scaling", "spectral", "discard" },
     config = {
         extra = {
             xchips = 1,
@@ -200,6 +202,7 @@ SMODS.Joker {
   pools = { ["Fantastic"] = true, ["bustjokers"] = true },
   pos = { x = 2, y = 0 },
   soul_pos = { x = 2, y = 1 },
+    attributes = { "xmult", "scaling", "tarot" },
   config = {
     extra = {
       triggered = false,
@@ -254,6 +257,7 @@ SMODS.Joker {
     pos = { x = 3, y = 0 },
 	soul_pos = { x = 3, y = 1 },
     config = { extra = { edition = 'e_polychrome', polyapply = true } },
+    attributes = { "editions", "retrigger", "modify_card" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'e_polychrome', set = 'Edition', config = { extra = 1.5 } }
         return { vars = { G.jokers and #G.jokers.cards or 1 } }
@@ -304,6 +308,7 @@ SMODS.Joker {
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     pos = { x = 4, y = 0 },
     soul_pos = { x = 4, y = 1 },
+    attributes = { "copying", "scaling" },
     config = {
         extra = { repetitions = 1, morerepeat = 1 },
         immutable = { max_retriggers = 25, morerepeatmax = 5 }
@@ -386,6 +391,7 @@ SMODS.Joker {
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
+    attributes = { "xmult", "scaling", "xchips", "economy", "clubs", "suit" },
     config = {
         extra = {
             xchips_mod = 2,
@@ -498,6 +504,7 @@ SMODS.Joker {
     pos = { x = 1, y = 2 },
     soul_pos = { x = 1, y = 3 },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    attributes = { "asc", "economy" },
     config = {
         extra = {
             xasc = 6,         
@@ -513,10 +520,10 @@ SMODS.Joker {
     calculate = function(self, card, context)
         if context.joker_main and G.GAME.dollars > 1 then
             return {
-                xmult = (G.GAME.dollars / 2),
+                asc = (G.GAME.dollars / 2),
                 message = "Destroy!",
                 sound = "busterb_destroy",
-                colour = G.C.MULT
+                colour = G.C.GOLD
             }
         end
         if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then
@@ -562,6 +569,7 @@ SMODS.Joker {
     blueprint_compat = true,
     pos = { x = 2, y = 2 },
     soul_pos = { x = 2, y = 3 },
+    attributes = { "spectral", "planet", "hand_type", "boss_blind", "scaling", "xmult", "xchips" },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
     config = {
         extra = {
@@ -644,6 +652,7 @@ SMODS.Joker {
     key = "garnet",
     atlas = "Atlas_Fantastic",
     pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    attributes = { "xmult", "xchips", "scaling", "hearts", "clubs", "suit" },
     config = {
         extra = {
             Sapphire = 1.5,
@@ -737,6 +746,7 @@ SMODS.Joker {
     eternal_compat = true,
     unlocked = true,
     discovered = true,
+    attributes = { "modify_card", "scaling", "asc", "chance", "editions" },
     config = {
         extra = {
             SA2Asc = 11,
@@ -819,6 +829,7 @@ SMODS.Joker {
         x = 0,
         y = 5
     },
+    attributes = { "emult", "scaling" },
     config = {
         extra = {
             xmult = 1,
@@ -1024,6 +1035,7 @@ SMODS.Joker {
     eternal_compat = true,
     unlocked = true,
     discovered = true,
+    attributes = { "joker_slot", "economy", "vouchers" },
     config = {
         extra = {
             joker_slots = 2,
@@ -1052,6 +1064,7 @@ SMODS.Joker {
         -- Buying a voucher increases moneys and joker slots
         if context.buying_card and context.card.ability.set == "Voucher" then
             G.jokers:change_size(math.min(100, card.ability.extra.joker_slots))
+            G.consumeables:change_size(math.min(100, card.ability.extra.joker_slots))
             card.ability.extra.dollars = lenient_bignum(card.ability.extra.dollars * card.ability.extra.money_multiplier)
             card.ability.extra.triggered = false
             play_sound("busterb_cashregister")
@@ -1076,12 +1089,13 @@ SMODS.Joker {
     eternal_compat = true,
     unlocked = true,
     discovered = true,
+    attributes = { "consumeables", "planet", "tarot", "spectral", "generation" },
     loc_vars = function(self, info_queue, card)
 		return { vars = { colours = {HEX('b00b69')} } }
     end,
     calculate = function(self, card, context)
         -- For every card held in hand, create a random negative consumable
-        if context.individual and context.cardarea == G.hand then
+        for k, v in ipairs(context.full_hand) do
             local c = SMODS.create_card({set = "Consumeables", edition = "e_negative"})
                     c:add_to_deck()
                     G.consumeables:emplace(c)
@@ -1111,6 +1125,7 @@ SMODS.Joker{
     eternal_compat = true,
     unlocked = true,
     discovered = true,
+    attributes = { "retrigger" },
     loc_vars = function(self, info_queue, card)
         return { vars = { 
         } }
@@ -1158,6 +1173,7 @@ SMODS.Joker{
     eternal_compat = true,
     unlocked = true,
     discovered = true,
+    attributes = {"destroy_card", "generation"},
     loc_vars = function(self, info_queue, card)
 		return { vars = { " ", colours = { SMODS.Gradients["busterb_epileptic"] } } }
     end,

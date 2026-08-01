@@ -15,6 +15,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 0, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
+    attributes = { "passive" },
     config = {
         extra = {  
         }
@@ -58,6 +59,7 @@ SMODS.Joker {
         },
         immutable = { ante = -8 }
     },
+    attributes = { "prevents_death", "space" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.immutable.ante } }
     end,
@@ -107,6 +109,7 @@ SMODS.Joker{
     eternal_compat = true,
     unlocked = true,
     discovered = true,
+    attributes = { "scaling", "xmult", "mult", "chips", "xchips", "economy" },
     config = {
         extra = { mult = 4, chips = 10, xmult = 2, xchips = 2.5, money = 3, valueincrease = 2 },
         immutable = { powincreasecap = 10, pow = 1, powcap = 100, valueincreasecap = 100, reset = 0 }
@@ -164,6 +167,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 2, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
+    attributes = { "passive", "value_manip" },
     config = {
         extra = { vm = 1.1, triggered = false }
     },
@@ -210,6 +214,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 3, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
+    attributes = { "scaling", "generation" },
     config = { immutable = { roll_rounds = 0, total_rounds = 3, round_add = 1 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.immutable.roll_rounds, card.ability.immutable.total_rounds, colours = { HEX('b00b69'), HEX('5e7297') } } }
@@ -231,9 +236,9 @@ SMODS.Joker {
                     trigger = 'after',
                         delay = 0.4,
                         func = function()
-                SMODS.calculate_effect({ message = "1", colour = G.C.RARITY.Common}, card)
-                SMODS.add_card({ set = "Joker", rarity = "Common", edition = 'e_negative', key_append = "busterb_isaac" })
-                            return true
+                local c = SMODS.add_card({ set = "Joker", rarity = "Common", edition = 'e_negative', key_append = "busterb_isaac" })
+                SMODS.calculate_effect({ message = "1", colour = G.C.RARITY.Common}, c)
+                return true
                         end
                     })
             end
@@ -242,8 +247,8 @@ SMODS.Joker {
                     trigger = 'after',
                         delay = 0.4,                    
                         func = function()
-                SMODS.calculate_effect({ message = "2", colour = G.C.RARITY.Uncommon}, card)
-                SMODS.add_card({ set = "Joker", rarity = "Uncommon", edition = 'e_negative', key_append = "busterb_isaac" })
+                local c = SMODS.add_card({ set = "Joker", rarity = "Uncommon", edition = 'e_negative', key_append = "busterb_isaac" })
+                SMODS.calculate_effect({ message = "2", colour = G.C.RARITY.Uncommon}, c)
                             return true
                         end
                     })
@@ -253,9 +258,9 @@ SMODS.Joker {
                     trigger = 'after',
                         delay = 0.4,
                         func = function()
-                SMODS.calculate_effect({ message = "3", colour = G.C.RARITY.Rare}, card)
-                SMODS.add_card({ set = "Joker", rarity = "Rare", edition = 'e_negative', key_append = "busterb_isaac" })
-                            return true
+                local c = SMODS.add_card({ set = "Joker", rarity = "Rare", edition = 'e_negative', key_append = "busterb_isaac" })
+                SMODS.calculate_effect({ message = "3", colour = G.C.RARITY.Rare}, c)
+                return true
                         end
                     })
             end
@@ -264,8 +269,8 @@ SMODS.Joker {
                     trigger = 'after',
                         delay = 0.4,
                         func = function()
-                            SMODS.calculate_effect({ message = "4", colour = HEX('5e7297')}, card)
-                            SMODS.add_card({ set = "Dreamy", area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
+                            local c = SMODS.add_card({ set = "Dreamy", area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
+                            SMODS.calculate_effect({ message = "4", colour = HEX('5e7297')}, c)
                             return true
                         end
                     })
@@ -275,8 +280,8 @@ SMODS.Joker {
                     trigger = 'after',
                         delay = 0.4,
                         func = function()
-                            SMODS.calculate_effect({ message = "5", colour = G.C.RARITY.Legendary}, card)
-                            SMODS.add_card({ set = "Joker", rarity = "Legendary", edition = 'e_negative', key_append = "busterb_isaac" })
+                            local c = SMODS.add_card({ set = "Joker", rarity = "Legendary", edition = 'e_negative', key_append = "busterb_isaac" })
+                            SMODS.calculate_effect({ message = "5", colour = G.C.RARITY.Legendary}, c)
                             return true
                         end
                     })
@@ -286,8 +291,8 @@ SMODS.Joker {
                     trigger = 'after',
                         delay = 0.4,
                         func = function()
-                            SMODS.calculate_effect({ message = "6", colour = HEX('b00b69')}, card)
-                            SMODS.add_card({ set = "Fantastic", area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
+                            local c = SMODS.add_card({ set = "Fantastic", area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
+                            SMODS.calculate_effect({ message = "6", colour = HEX('b00b69')}, c)
                             return true
                         end
                     })
@@ -308,6 +313,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 2, y = 1 },
+    attributes = { "retrigger" },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
 calculate = function(self, card, context)
 		if
@@ -347,6 +353,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 1 },
+    attributes = { "boss_blind", "destroy_card", "generation", "spectral" },
     config = { immutable = { boss_size = 1.25 } },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
     loc_vars = function(self, info_queue, center)
@@ -436,6 +443,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 1 },
+    attributes = { "asc","scaling", "hands" },
     config = { 
         extra = { 
             asc = 4,
@@ -475,6 +483,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 2 },
+    attributes = { "infinity", "generation", "hands" },
     config = { 
         extra = { 
         } 
@@ -500,6 +509,7 @@ SMODS.Joker{
     blueprint_compat = false,
     eternal_compat = true,
     pos = { x = 1, y = 2 },
+    attributes = { "xchips", "passive", "suit", "clubs", "seals", "enhancements", "editions" },
     config = { 
         extra = { 
             xchips = 2
@@ -557,6 +567,7 @@ SMODS.Joker {
     rarity = "busterb_Dreamy",
     cost = 16,
     pos = { x = 2, y = 2 },
+    attributes = { "generation", "pizza", "scaling", "xmult" },
     config = { extra = { xmult = 1, xmult_mod = .5 }, immutable = { odds = 25 } },
     loc_vars = function(self, info_queue, card)
         local pinorare, pinoodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_pinorare')
@@ -627,6 +638,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 2 },
+    attributes = { "passive","hands" },
     config = { 
         extra = { 
             hand = 1
@@ -662,6 +674,7 @@ SMODS.Joker{
         } 
     },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
+    attributes = { "emult", "echips", "xscore", "modify_card", "economy", "rank", "five", "asc" },
     loc_vars = function(self, info_queue, card)
 		return { vars = { } }
 	end,
@@ -712,6 +725,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 1, y = 3 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true },
+    attributes = { "prevents_death" },
     config = {
         extra = {  
         },
@@ -749,6 +763,7 @@ SMODS.Joker {
     atlas = 'djkr',
     pos = { x = 2, y = 3 },
     blueprint_compat = true,
+    attributes = { "copying" },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true }, 
       loc_vars = function(self, info_queue, card)
     if card.area and card.area == G.jokers then

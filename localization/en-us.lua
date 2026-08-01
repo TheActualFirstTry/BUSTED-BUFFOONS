@@ -384,8 +384,13 @@ return {
 			["j_busterb_maxwell"] = {
 				["name"] = "{C:blue,E:1}MAXWELL{}",
 				["text"] = {
-					"For {C:attention}every card held in hand{}, create a {C:attention}random{} {C:dark_edition}negative{} {C:attention}consumable{}.",
-					"Sell this joker to spawn a {C:dark_edition}negative{} {V:1,E:1,s:1.5}Dream{} {C:attention}card{}.",
+					"For each card",
+					"{C:attention}in full hand{}",
+					"Create a {C:attention}random{}",
+					"{C:dark_edition}negative{} {C:attention}consumable{}.",
+					"Sell this joker",
+					"to spawn a {C:dark_edition}negative{}",
+					"{V:1,E:1,s:1.5}Dream{} {C:attention}card{}.",
 				},
 			},
 			["j_busterb_roffle"] = {
@@ -449,10 +454,13 @@ return {
 			["j_busterb_dreamena"] = {
 				["name"] = "{C:white,E:1}DREAM{} {C:hearts,E:1}ENA{}",
 				["text"] = {
-					"Spawns a random free voucher in the shop.",
-					"Gains {X:gold,C:white}X$#1#{} and {C:attention}+#2#{} {C:attention}Joker Slots{}",
+					"Random free voucher",
+					"in the shop.",
+					"Gain {X:gold,C:white}X$#1#{} payout",
+					"{C:dark_edition}+#2#{} Joker Slots",
+					"and {C:dark_edition}+#2#{} Consumable Slots",
 					"per redeemed voucher.",
-					"{C:inactive}(Raked in dough from bought vouchers: {}{C:money}$#3#{C:inactive}.){}",
+					"{C:inactive}(Currently: {}{C:money}$#3#{C:inactive}.){}",
 				},
 			},
 			["j_busterb_igor"] = {
@@ -671,7 +679,7 @@ return {
 				},
 				["text"] = {
 					{"{C:white,X:busterb_unstable}^#1#{} score for every",
-					"got dam {C:busterb_balatro}mod{} you have open...",
+					"got dam {C:busterb_balatro}mod{} you have...",
 						"{C:hearts}heart {C:red}discard{} for the {C:white,X:busterb_unstable}^#3#",
 					"{C:white,X:busterb_unstable}^#4#{} score if umm... {C:busterb_epileptic}scoring enhancment{}... check the info box",
 					"oughhhh i have {X:busterb_unstable,C:white}^#2#{} score {C:white,X:busterb_grand,s:2}atm",},
@@ -739,9 +747,9 @@ return {
 				["text"] = {
 					"After selecting a {C:attention}Boss Blind{}",
 					"Double {C:money}money{}",
-					"Give {X:mult,C:white}XMult{} equal to",
+					"Give {C:gold}Ascension Power{} equal to",
 					"half your {C:money}money",
-					"{C:inactive}(Current: {}{X:mult,C:white}X#1#{}{C:inactive})",
+					"{C:inactive}(Current: {}{C:gold}+#1#{}{C:inactive})",
 				},
 			},
 			["j_busterb_vigilante"] = {
@@ -778,17 +786,21 @@ return {
 			["j_busterb_queen"] = {
 				["name"] = "{C:planet}QUEEN{}",
 				["text"] = {
-					"* Upon {C:attention}Selecting A Blind{}, Spawn {C:common}Gros Michel",
-					"When {C:common}Gros Michel{} Is {C:gold}Sold{}, Gain {C:white,X:mult}X#3#{} Mult",
-					"When {C:common}Gros Michel{} Is {C:red}Destroyed{} Instead, Gain {C:white,X:busterb_eemult}^#4#{} Mult",
+					"* Upon {C:attention}Selecting A Blind{}","Spawn {C:common}Gros Michel",
+					"When {C:common}Gros Michel{} Is {C:gold}Sold{}",
+					"Gain {C:white,X:mult}X#3#{} Mult",
+					"When {C:common}Gros Michel{} Is {C:red}Destroyed{} Instead",
+					"Gain {C:white,X:busterb_eemult}^#4#{} Mult",
 					"{C:inactive}(Currently {C:white,X:mult}X#1#{C:inactive} And {C:white,X:busterb_eemult}^#2#{C:inactive})",
 				},
 			},
 			["j_busterb_papyrus"] = {
 				["name"] = "{C:clubs}PAPYRUS{}",
 				["text"] = {
-					"This Joker adds a free {C:tarot}Mega Arcana Pack{} to the {C:attention}shop{}",
-					"{X:dark_edition,C:white}X#2#{} {X:mult,C:white}XMult{} each time you skip a {C:attention}Booster Pack{}",
+					"Free {C:tarot}Mega Arcana Pack{}",
+					"in the {C:attention}shop{}",
+					"{X:dark_edition,C:white}X#2#{} {X:mult,C:white}XMult{} when",
+					"you skip a {C:attention}Booster Pack{}",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}",
 				},
 			},
@@ -805,11 +817,14 @@ return {
 			["j_busterb_garnet"] = {
 				["name"] = "{X:clubs,C:hearts}GAR{}{X:hearts,C:clubs}NET{}",
 				["text"] = {
-					"Gives {X:chips,C:white}X#4#{} Chips and {X:mult,C:white}X#5#{} Mult each hand.",
-					"Played {C:clubs}Clubs{} cards increase {X:chips,C:white}XChips{} by {C:attention}#1#{}.",
-					"Played {C:hearts}Hearts{} cards increase {X:mult,C:white}XMult{} by {C:attention}#2#{}.",
-					"If a hand contains both {C:clubs}Clubs{} and {C:hearts}Hearts{},",
-					"{X:chips,C:white}XChips{} and {X:mult,C:white}XMult{} are multiplied by {C:attention}#3#{}.",
+					"{X:chips,C:white}X#4#{} Chips and {X:mult,C:white}X#5#{} Mult",
+					"{C:attention}+#1#{} {X:chips,C:white}XChips{} when",
+					"{C:clubs}Clubs{} are played",
+					"{C:attention}+#2#{} {X:mult,C:white}XMult{} when",
+					"{C:hearts}Hearts{} are played",
+					"{C:attention}X#3#{} incremental value",
+					"If hand contains",
+					"both {C:clubs}Clubs{} and {C:hearts}Hearts{}",
 				},
 			},
 			["j_busterb_murphy"] = {
@@ -886,29 +901,31 @@ return {
 				["name"] = "Muscle Man",
 				["text"] = {
 					"Free {C:busterb_epileptic}Busted Buffoons Pack",
-					"in the Shop"
+					"in {C:attention}the shop{} after",
+					"beating a boss blind"
 				},
 			},
 			["j_busterb_gangle"] = {
 				["name"] = "Gangle",
 				["text"] = {
-					"Alternates between {C:gold}Happy{} and {C:blue}Sad{}",
-					"upon {C:attention}selecting blind",
-					"{C:blue}Sad:{} Scored {C:spades}Spades{} and {C:clubs}Clubs",
+					{"Alternates between {C:gold}Happy{} and {C:blue}Sad{}",
+					"upon {C:attention}selecting blind",},
+					{"{s:1.25,C:blue}SAD{}",
+					"Scored {C:spades}Spades{} and {C:clubs}Clubs",
 					"give {C:white,X:chips}X#1#{} Chips",
 					"Scored {C:spades}Spades{} and {C:clubs}Clubs",
-					"{C:attention} face cards{} instead give {C:white,X:chips}X#2#{} Chips",
-					"{C:gold}Happy:{} Scored {C:diamonds}Diamonds{} and {C:hearts}Hearts",
+					"{C:attention} face cards{} instead give {C:white,X:chips}X#2#{} Chips",},
+					{"{s:1.25,C:gold}HAPPY{}",
+					"Scored {C:diamonds}Diamonds{} and {C:hearts}Hearts",
 					"give {C:white,X:mult}X#1#{} Mult",
 					"Scored {C:diamonds}Diamonds{} and {C:hearts}Hearts",
-					"{C:attention} face cards{} instead give {C:white,X:mult}X#2#{} Mult",
-
+					"{C:attention} face cards{} instead give {C:white,X:mult}X#2#{} Mult",}
 				},
 			},
 			["j_busterb_cupcake"] = {
-				["name"] = "Cupcake",
+				["name"] = "{C:busterb_grand}Cupcake",
 				["text"] = {
-					"{C:red,E:2}Do not stare at him."
+					"{E:2,s:2,C:white}Watch#1#and#1#Learn"
 				},
 			},
 			["j_busterb_jevil"] = {
@@ -1030,8 +1047,8 @@ return {
 			["j_busterb_saitama"] = {
 				["name"] = "Saitama",
 				["text"] = {
-					"Prevents {s:1.5,C:spectral}Fantasy{} from {C:red}destroying jokers{},",
-					"Also prevents jokers from being {C:red}debuffed{}.",
+					"Prevents {s:1.5,C:spectral}Fantasy{}","from {C:red}destroying jokers{},",
+					"Also prevents jokers","from being {C:red}debuffed{}.",
 				},
 			},
 			["j_busterb_true_hyper_sonic"] = {
@@ -1048,7 +1065,7 @@ return {
 					"Create {C:attention}#3#{} Random {C:dark_edition}Negative{} {C:spectral}Spectral{} cards",
 					"per {C:attention}discard{}, gaining {X:chips,C:white}X#2#{} Chips",
 					"for each {C:spectral}Spectral{} card created",
-					"{C:inactive}(Currently {X:chips,C:white}X#1#{} {C:inactive}){}",
+					"{C:inactive}(Currently {X:chips,C:white}X#1#{}{C:inactive}){}",
 				},
 			},
 			["j_busterb_isaac"] = {
@@ -1171,9 +1188,8 @@ return {
 			["j_busterb_dandy"] = {
 				["name"] = "Dandy",
 				["text"] = {
-					"{C:dark_edition}+#2#{} Card Selection Limit",
+					"{C:chips}+#2#{} Hand Size",
 					"When a {C:attention}Boss Blind{} is beaten",
-					"{C:inactive}(Up to {C:dark_edition}+#3#{C:inactive})",
 					"{C:inactive}(Currently: {C:dark_edition}+#1#{C:inactive})",
 				},
 			},
@@ -1439,7 +1455,8 @@ return {
 			["j_busterb_pepsiman"] = {
 				["name"] = "Pepsiman",
 				["text"] = {
-					"After beating a {C:attention}Boss Blind",
+					"{C:green}#1# in #2#{} chance at the",
+					"end of round to",
 					"create a {C:attention}Double Tag{}",
 				},
 			},
@@ -1602,7 +1619,7 @@ return {
 				["name"] = "table",
 				["text"] = {
 					"Adds {C:chips}Chips{} and {C:mult}Mult{} equal to",
-					"a quarter of your current {C:blue}hand size",
+					"your current {C:blue}hand size",
 					"for the current {C:attention}poker hand"
 				},
 			},

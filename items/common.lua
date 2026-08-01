@@ -12,6 +12,7 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 2,
     discovered = true,
+    attributes = { "chips", "two", "four", "six", "eight", "rank" },
     config = { extra = { chips2 = 10, chips4 = 20, chips6 = 30, chips8 = 40  }, },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.chips2, card.ability.extra.chips4, card.ability.extra.chips6, card.ability.extra.chips8 } }
@@ -38,6 +39,7 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 2,
     discovered = true,
+    attributes = { "mult", "two", "four", "six", "eight", "rank" },
     config = { extra = { mult2 = 2, mult4 = 4, mult6 = 6, mult8 = 8 }, },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult2,card.ability.extra.mult4,card.ability.extra.mult6,card.ability.extra.mult8 } }
@@ -64,6 +66,7 @@ SMODS.Joker {
     rarity = 1,
     cost = 2,
     pos = { x = 2, y = 0 },
+    attributes = { "joker_slot" },
     config = { extra = { slots = 2 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.slots } }
@@ -86,6 +89,7 @@ SMODS.Joker {
     rarity = 1,
     cost = 2,
     pos = { x = 3, y = 0 },
+    attributes = { "ace" },
     config = { extra = { chips = 0, gain = 10 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.chips, card.ability.extra.gain } }
@@ -116,6 +120,7 @@ SMODS.Joker {
     rarity = 1,
     cost = 2,
     pos = { x = 0, y = 1 },
+    attributes = { "tag", "money" },
     config = { extra = { }, immutable = { spent = 0 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.immutable.spent } }
@@ -169,6 +174,7 @@ SMODS.Joker {
     rarity = 1,
     cost = 2,
     pos = { x = 1, y = 1 },
+    attributes = { "clubs","spades","economy","face" },
     config = { extra = { chips = 30 } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_gold
@@ -188,6 +194,7 @@ SMODS.Joker {
     rarity = 1,
     cost = 2,
     pos = { x = 2, y = 1 },
+    attributes = { "economy", "destroy_card" },
     config = { extra = { dollar = 1, dollar_bonus = 3 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.dollar, card.ability.extra.dollar_bonus } }
@@ -218,6 +225,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 3, y = 1 },
     config = { extra = { score = .01 } },
+    attributes = { "xscore","hands" },
     loc_vars = function(self, info_queue, card)
         local display = card.ability.extra.score*100
         return { vars = { display } }
@@ -239,6 +247,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 0, y = 2 },
     config = { extra = {  } },
+    attributes = { "tarot", "ace", "king", "generation" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.c_death
         return { vars = { } }
@@ -272,6 +281,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 1, y = 2 },
     config = { extra = {  } },
+    attributes = { "editions","modify_card" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.e_polychrome
         return { vars = { } }
@@ -348,6 +358,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 2, y = 2 },
     config = { extra = {  } },
+    attributes = { "enhancements","modify_card" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_nanotech
         return { vars = { } }
@@ -378,6 +389,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 3, y = 2 },
     config = { extra = { select = 1 }, immutable = { max = 10 } },
+    attributes = { "modify_card","boss_blind", "ccd" },
     loc_vars = function(self, info_queue, card)
         return { vars = { math.min(card.ability.immutable.max, card.ability.extra.select) } }
     end,
@@ -431,6 +443,7 @@ SMODS.Joker {
     cost = 2,
     discovered = true,
     config = { extra = { mult = 0, gain = 2 }, },
+    attributes = { "mult", "two", "scaling", "rank" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.gain } }
     end,
@@ -461,6 +474,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 1, y = 3 },
     config = { extra = { chance = 1, odds = 4 } },
+    attributes = { "spectral", "five", "generation" },
     loc_vars = function(self, info_queue, card)
         local ghostrare, ghostodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_ghostrare')
         return { vars = { ghostrare, ghostodds } }
@@ -494,6 +508,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 2, y = 3 },
     config = { extra = { asc = 1 }, immutable = { rounds = 0, round_add = 1, total_rounds = 3} },
+    attributes = { "asc_power", "hand_type" },
     loc_vars = function(self, info_queue, card)
         local _handname, _played = 'High Card', -1
             for hand_key, hand in pairs(G.GAME.hands) do
@@ -546,6 +561,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 3, y = 3 },
     config = { extra = { xchips = 1, gain = 0.1 } },
+    attributes = { "tarot", "xchips", "scaling" },
     loc_vars = function(self, info_queue, card)
          info_queue[#info_queue + 1] = G.P_CENTERS.c_devil
         return { vars = { card.ability.extra.xchips, card.ability.extra.gain } }
@@ -576,6 +592,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 0, y = 4 },
     config = { extra = { mult = 4 }, immutable = { mult_loss = 1 } },
+    attributes = { "scaling", "food", "xmult" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.immutable.mult_loss } }
     end,
@@ -612,6 +629,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 1, y = 4 },
     config = { extra = {  }, immutable = {  } },
+    attributes = { "suit", "clubs", "spades", "passive" },
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,
@@ -638,6 +656,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 2, y = 4 },
     config = { extra = { scoring = 3 }, immutable = {  } },
+    attributes = { "xchips", "hands" },
     loc_vars = function(self, info_queue, card)
         local s = card.ability.extra.scoring
         return { vars = { s } }
@@ -660,6 +679,7 @@ SMODS.Joker {
     cost = 2,
     pos = { x = 3, y = 4 },
     config = { extra = { scoring = 2 }, immutable = {  } },
+    attributes = { "hands", "xmult" },
     loc_vars = function(self, info_queue, card)
         local s = card.ability.extra.scoring
         return { vars = { s } }

@@ -22,12 +22,12 @@ SMODS.Consumable{
     config = { immutable = { max_highlighted = 1} },
 	can_use = function(self, card)
         local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
-		local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
+		local hand = Spectrallib.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
 		return #hand >= min and G.hand.config.card_limit > 0
 	end,
 	use = function(self, card, area, copier)
         local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
-		local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
+		local hand = Spectrallib.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
 		local hand_type
 		if #hand >= min then
 			hand_type = G.GAME.hands[G.FUNCS.get_poker_hand_info(hand)] or G.GAME.hands.cry_None
@@ -38,9 +38,9 @@ SMODS.Consumable{
                         parameters = { "chips", "mult"},
                         level_up = false,
                         hands = hand_type.key,
-                        StatusText = "X"..(G.hand.config.card_limit*.25),
+                        StatusText = "+"..(G.hand.config.card_limit),
                         func = function (base, hand, param)
-                            return (base*(G.hand.config.card_limit*.25))
+                            return (base+(G.hand.config.card_limit))
                         end
                     }
                 end
@@ -59,12 +59,12 @@ SMODS.Consumable{
     config = { immutable = { max_highlighted = 1} },
 	can_use = function(self, card)
 		local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
-		local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
+		local hand = Spectrallib.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
 		return #hand >= min and G.hand.config.card_limit > 0
 	end,
 	use = function(self, card, area, copier)
 		local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
-		local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
+		local hand = Spectrallib.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
 		local hand_type
 		if #hand >= min then
 			hand_type = G.GAME.hands[G.FUNCS.get_poker_hand_info(hand)] or G.GAME.hands.cry_None
