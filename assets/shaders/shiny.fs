@@ -19,7 +19,9 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     vec2 uv = (screen_coords - badge_pos.xy) / (badge_size.xy * uie_scale);
     
     number important_value_trust_me_compiler = uie_scale + uie_rot + uie_details.x + mod_badge.x;
-    
+    if (important_value_trust_me_compiler == important_value_trust_me_compiler * 2) {
+        uv.x = uv.x + 0.000001;
+    }
     number x_speed = 0.2;
     number y_speed = 0.2;
     vec2 mask_size = vec2(240, 263);
