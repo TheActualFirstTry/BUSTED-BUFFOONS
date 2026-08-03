@@ -1095,11 +1095,13 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         -- For every card held in hand, create a random negative consumable
+		if context.joker_main then
         for k, v in ipairs(context.full_hand) do
             local c = SMODS.create_card({set = "Consumeables", edition = "e_negative"})
                     c:add_to_deck()
                     G.consumeables:emplace(c)
         end
+		end
         -- sell this joker to create a negative dream card.
         if context.selling_self then
             SMODS.add_card({ key = "c_busterb_dream", edition = 'e_negative' })
