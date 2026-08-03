@@ -642,6 +642,9 @@ if next(SMODS.find_mod("starspace")) then assert(SMODS.load_file("items/crossmod
 -- UNIK's Mod
 if next(SMODS.find_mod("unik")) then assert(SMODS.load_file("items/crossmodshit/awakened.lua"))() assert(SMODS.load_file("items/crossmodshit/UNIK.lua"))() end
 
+-- Mayhem
+if next(SMODS.find_mod("mayhem")) then assert(SMODS.load_file("items/crossmodshit/mayhem.lua"))() end
+
 -- Cryptid
 --if next(SMODS.find_mod("Cryptid")) then return nil else assert(SMODS.load_file("items/uiforace.lua"))() end
 
