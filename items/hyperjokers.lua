@@ -9,7 +9,7 @@ SMODS.Joker {
     key = "spinel",
     atlas = "Atlas_Fantastic",
     rarity = "busterb_Fantastic",
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     cost = 100,
     discovered = true,
     unlocked = true,
@@ -133,7 +133,7 @@ SMODS.Joker {
     unlocked = true,
     eternal_compat = true,
     blueprint_compat = true,
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     pos = { x = 1, y = 0 },
     soul_pos = { x = 1, y = 1 },
     attributes = { "xchips", "scaling", "spectral", "discard" },
@@ -199,7 +199,7 @@ SMODS.Joker {
   unlocked = true,
   blueprint_compat = true,
   eternal_compat = true,
-  pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+  pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
   pos = { x = 2, y = 0 },
   soul_pos = { x = 2, y = 1 },
     attributes = { "xmult", "scaling", "tarot" },
@@ -253,7 +253,7 @@ SMODS.Joker {
     blueprint_compat = true,
     rarity = "busterb_Fantastic",
     cost = 100,
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     pos = { x = 3, y = 0 },
 	soul_pos = { x = 3, y = 1 },
     config = { extra = { edition = 'e_polychrome', polyapply = true } },
@@ -305,7 +305,7 @@ SMODS.Joker {
     blueprint_compat = true,
     rarity = "busterb_Fantastic",
     cost = 100,
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     pos = { x = 4, y = 0 },
     soul_pos = { x = 4, y = 1 },
     attributes = { "copying", "scaling" },
@@ -385,7 +385,7 @@ SMODS.Joker {
     atlas = "Atlas_Fantastic",
     pos = { x = 0, y = 2 },
     soul_pos = { x = 0, y = 3 },
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     rarity = "busterb_Fantastic",
     cost = 100,
     unlocked = true,
@@ -503,7 +503,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 1, y = 2 },
     soul_pos = { x = 1, y = 3 },
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     attributes = { "asc", "economy" },
     config = {
         extra = {
@@ -570,7 +570,7 @@ SMODS.Joker {
     pos = { x = 2, y = 2 },
     soul_pos = { x = 2, y = 3 },
     attributes = { "spectral", "planet", "hand_type", "boss_blind", "scaling", "xmult", "xchips" },
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     config = {
         extra = {
             multiplier = 2,
@@ -651,7 +651,7 @@ SMODS.Joker {
     name = "Garnet",
     key = "garnet",
     atlas = "Atlas_Fantastic",
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     attributes = { "xmult", "xchips", "scaling", "hearts", "clubs", "suit" },
     config = {
         extra = {
@@ -739,7 +739,7 @@ SMODS.Joker {
     atlas = "Atlas_Fantastic",
     pos = { x = 4, y = 2 },
     soul_pos = { x = 4, y = 3 },
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     cost = 100,
     rarity = "busterb_Fantastic",
     blueprint_compat = true,
@@ -815,7 +815,7 @@ SMODS.Joker {
     atlas = "Atlas_Fantastic",
     rarity = "busterb_Fantastic",
     cost = 20,
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     blueprint_compat = true,
     perishable_compat = false,
     discovered = true,
@@ -880,7 +880,7 @@ SMODS.Joker {
 --    blueprint_compat = true,
     --pos = { x = 0, y = 0 },
   --  soul_pos = { x = 0, y = 1 },
---    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+--    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     --config = {
       --  extra = {
     --        xchipsndollar_mod = 1, --1
@@ -1028,7 +1028,7 @@ SMODS.Joker {
     atlas = "Atlas_Fantastic",
     pos = { x = 1, y = 4 },
     soul_pos = { x = 1, y = 5 },
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     rarity = "busterb_Fantastic",
     cost = 100,
     blueprint_compat = true,
@@ -1082,7 +1082,7 @@ SMODS.Joker {
     atlas = "Atlas_Fantastic",
     pos = { x = 3, y = 4 },
     soul_pos = { x = 3, y = 5 },
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     rarity = "busterb_Fantastic",
     cost = 100,
     blueprint_compat = true,
@@ -1095,13 +1095,13 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         -- For every card held in hand, create a random negative consumable
-		if context.joker_main then
+    if context.joker_main then
         for k, v in ipairs(context.full_hand) do
             local c = SMODS.create_card({set = "Consumeables", edition = "e_negative"})
                     c:add_to_deck()
                     G.consumeables:emplace(c)
         end
-		end
+    end
         -- sell this joker to create a negative dream card.
         if context.selling_self then
             SMODS.add_card({ key = "c_busterb_dream", edition = 'e_negative' })
@@ -1114,7 +1114,7 @@ SMODS.Joker{
     atlas = "Atlas_Fantastic",
     pos = { x = 2, y = 4 },
     soul_pos = { x = 2, y = 5},
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     rarity = "busterb_Fantastic",
     cost = 100,
     config = {
@@ -1168,7 +1168,7 @@ SMODS.Joker{
     atlas = "Atlas_Fantastic",
     pos = { x = 4, y = 4 },
     soul_pos = { x = 4, y = 5 },
-    pools = { ["Fantastic"] = true, ["bustjokers"] = true },
+    pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     rarity = "busterb_Fantastic",
     cost = 100,
     blueprint_compat = true,

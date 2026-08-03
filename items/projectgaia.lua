@@ -79,6 +79,9 @@ SMODS.Joker{
     soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     pools = { ["technopotent"] = true, ["Bootleg"] = true },
     rarity = "busterb_technopotent",
+    can_sell = function(self, card, context)
+      return false
+    end,
     cost = math.huge,
     gaia = false,
     no_collection = true,

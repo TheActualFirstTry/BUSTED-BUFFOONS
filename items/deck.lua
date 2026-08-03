@@ -67,10 +67,10 @@ SMODS.Back {
     atlas = "atlas_hate",
     pos = { x = 0, y = 0 },
     config =  {
-            fantasticodds = 10
+            odds = 100
     },
         loc_vars = function(self, info_queue, back)
-    local fchance, fodds = SMODS.get_probability_vars(self, 1, self.config.fantasticodds, 'busterb_fantasticjokerchance')
+    local fchance, fodds = SMODS.get_probability_vars(self, 1, self.config.odds, 'busterb_hatechance')
     return {vars = {fchance, fodds, " ", 
     colours = {HEX('b00b69'), SMODS.Gradients["busterb_epileptic"]}}}
     end,
@@ -109,7 +109,12 @@ SMODS.Back {
             		G.E_MANAGER:add_event(Event({
     func = function()
         if not G.jokers then return false end
-        SMODS.add_card({ set = 'bustjokers', area = G.jokers })
+        if SMODS.pseudorandom_probability(card, 'busterb_hatechance', 1, self.config.odds, 'busterb_hatechance') then
+        local c = SMODS.add_card({ key = 'j_busterb_gaia', area = G.jokers, force_stickers = true, stickers = { "busterb_omega" } })
+        c.config.center.gaia = true
+        else
+            SMODS.add_card({ set = 'all_bb_joker', area = G.jokers })
+        end
         return true
     end
 }))
