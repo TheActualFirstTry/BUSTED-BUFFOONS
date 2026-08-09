@@ -276,7 +276,7 @@ SMODS.Joker{
             local x = card.ability.extra.perma
             local y = card.ability.extra.give
             local z = card.ability.extra.held
-                return {vars = { "x, y, z" }}
+                return {vars = { x, y, z }}
             end,
         calculate = function(self, card, context)--
             local x = card.ability.extra.perma
