@@ -8,3 +8,5 @@ Install [Amulet](https://github.com/frostice482/amulet) and [Spectrallib](https:
 [900n1Gamblepack](https://github.com/900n1/900n1Gamblepack),
 
 [UNIK's Mod](https://github.com/70UNIK/UNIKs-mod)
+
+[Mayhem](https://codeberg.org/BalatroMayhem/Mayhem)
