@@ -1,6 +1,6 @@
 SMODS.Atlas {
     key = "djkr",
-    path = "dreamy.png",
+    path = "Dreamy.png",
     px = 71,
     py = 95,
 }

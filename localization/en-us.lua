@@ -611,18 +611,22 @@ return {
 				},
 				},
 			},
-			["j_busterb_jade"] = {
+			["j_busterb_notmario"] = {
 				["name"] = {
-					"{C:green,s:2}Jade Penguin{}",
-					'"I am a Penguin"',
+					"{V:1,s:2}Triangle{}",
+					[[It's a triangle.]],
 				},
 				["text"] = {
-					{"{C:green}Probabilities{} are",
-					"half the denominator",
-					"Gain {C:white,X:busterb_eemult}^Mult{}",
-					"equal to {C:green}numerator",
-					"When {C:green}chance{} hits",
-				"{C:inactive}(Currently: {C:white,X:busterb_eemult}^#1#{C:inactive})"},
+					{
+						"When a {V:1}Card{C:attention} scales",
+						"scale this joker",
+						"by the same amount",
+						"as the {C:attention}scalar value",
+						"of the {V:1}Card",
+						"At the {C:attention}end of round",
+						"all owned jokers",
+						"gain {C:white,B:1}+#1#{} values"
+					},
 				},
 			},
 			["j_busterb_crystal"] = {

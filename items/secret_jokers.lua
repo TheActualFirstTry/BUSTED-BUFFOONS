@@ -2,7 +2,7 @@
 -- Astro - Doubles XChips at the end of the round.
 SMODS.Atlas{
     key = "secjkr",
-    path = "Unseen.png",
+    path = "Eldritch.png",
     px = 71,
     py = 95
 }
@@ -922,7 +922,7 @@ end
 }
 
 SMODS.Joker{
-    key = "jade",
+    key = "notmario",
     atlas = "secjkr",
     rarity = "busterb_Secret",
     pools = { ["Secret"] = true, ["all_bb_joker"] = true},
@@ -934,11 +934,25 @@ SMODS.Joker{
     blueprint_compat = false,
     eternal_compat = true,
     attributes = {"mod_chance", "emult", "scaling", "passive"},
-    config = { extra = { emult = 1 }, immutable = {  } },
+    config = { extra = { emult = 1, vmod = 1 }, immutable = { vmod = 1 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.emult } }
+        return { vars = { card.ability.extra.vmod, colours = { HEX("BC1006") }  } }
     end,
     calculate = function (self, card, context)
+        if context.scaling_card and context.scalar > 0 then
+            local new_scale = context.scalar
+            card.ability.extra.vmod = card.ability.extra.vmod + new_scale
+        return{ message = "+".. card.ability.extra.vmod, colour = HEX("BC1006"), card = card }
+    end
+    if context.end_of_round and context.main_eval then
+        for i, joker in ipairs(G.jokers.cards) do
+            if joker.config.center.key ~= "j_busterb_notmario" then
+                Spectrallib.manipulate(joker, { value = card.ability.extra.vmod, type = "+" })
+                SMODS.calculate_effect({message = "+" ..card.ability.extra.vmod, colour = HEX("BC1006"), card = joker})
+            end
+        end
+    end
+--[[
         if context.mod_probability and not context.blueprint then
             return {
                 numerator = context.denominator / 2
@@ -955,7 +969,8 @@ SMODS.Joker{
         if context.joker_main then
             return { emult = card.ability.extra.emult}
         end
-end
+]]
+    end
 }
 
 SMODS.Joker{
