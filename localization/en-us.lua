@@ -28,6 +28,12 @@ return {
 			["b_pizza_cards"] = "Pizza",
 			["k_booster_group_p_busterb_bbpack_1"] = "Busted Buffoons",
 			["k_booster_group_p_busterb_bbpack_2"] = "Busted Buffoons",
+			["k_busterb_cmd"] = "Command Prompt",
+			["k_busterb_cmd_desc"] = "Enter a command of your choice.",
+			["k_busterb_cmd_empty"] = "Enter Here",
+			["k_busterb_back"] = "Back",
+			["k_busterb_enter"] = "Enter",
+			["k_busterb_help"] = "Help"
 		},
 		["labels"] = {
 			["k_busterb_secret"] = "Eldritch",
@@ -38,6 +44,17 @@ return {
 			["k_busterb_dreamy"] = "Dreamy",
 			["k_busterb_other"] = "Other",
 			["busterb_omega"] = "Omega",
+			["k_busterb_back"] = "Back",
+			["k_busterb_enter"] = "Enter",
+			["k_busterb_help"] = "Help",
+			["busterb_lime_seal"] = "Lime Seal",
+			["busterb_sun_seal"] = "Sun Seal",
+			["busterb_pizza_seal_seal"] = "Pizza Seal",
+			["busterb_butterfly_seal"] = "Butterfly Seal",
+			["busterb_burgundy_seal"] = "Burgundy Seal",
+			["busterb_periwinkle_seal"] = "Periwinkle Seal",
+			["busterb_galaxy_seal"] = "Galaxy Seal",
+			["busterb_gateway_seal"] = "Gateway Seal",
 		},
 	},
 	["descriptions"] = {
@@ -69,7 +86,7 @@ return {
 					"{s:1.25,C:busterb_balatro}The Balatro Modding Community",
 					"{s:0.5,C:inactive}--------------------------------------------------------------------------------------------------------------------------------------",
 					"{s:2,C:busterb_epileptic}Special Thanks:",
-					"{C:white,X:busterb_eechips}Astro{} , {C:white,X:red}lord.ruby{} , {C:white,X:gold}Camostar{} , {C:white,X:green}Grahkon{} , {C:white,X:hearts}Isotypical{}",
+					"{C:white,X:busterb_eechips}Astro{} , {C:white,X:red}lord.ruby{} , {C:white,X:gold}Camostar{} , {C:white,X:busterb_grahkongradient}Grahkon{} , {C:white,X:hearts}Isotypical{}",
 					"{C:white,X:legendary}FireIce{} , {C:white,X:attention}Candycane{} , {C:white,X:edition}Lily{} , {C:white,X:dark_edition}GhostSalt{} , {C:white,X:default}RattlingSnow{}",
 					"{C:white,X:inactive}Revo{} , {C:white,X:spades}Slipstream{} , {C:white,X:green}Cassknows{} , {C:white,X:busterb_grand}Somethingcom515{}",
 					"{s:2,C:busterb_balatro}And The Balatro Modding Community{}",
@@ -100,11 +117,102 @@ return {
 				["name"] = "Super Tengen Toppa Deck",
 				["text"] =  {
 				"Operator is {C:white,X:busterb_grand}^",
-				"set Win Ante to {C:attention}+#1#"
+				"set Win Ante to {C:red,X:black}X#1#"
 				},
 			},
 		},
 		["Other"] = {
+			["busterb_butterfly_seal"] = {
+				["name"] = "Butterfly Seal",
+				["text"] = { "Always {C:purple}balances {C:chips}Chips{} and {C:mult}Mult" }
+			},
+			["busterb_periwinkle_seal"] = {
+				["name"] = "Periwinkle Seal",
+				["text"] = { "Creates a {C:spectral}Spectral{} card when",
+							"blind is beaten in",
+							"{C:attention}one hand",
+							"{C:inactive}(Must have room)" }
+			},
+			["busterb_sun_seal"] = {
+				["name"] = "Sun Seal",
+				["text"] = { "Always ascends played hand by {C:gold}+#1#{}" }
+			},
+			["busterb_lime_seal"] = {
+				["name"] = "Lime Seal",
+				["text"] = { "Creates a {C:busterb_technopotentgradient}Bootleg{} card when held",
+			"{C:inactive}(Must have room)" }
+			},
+			["busterb_burgundy_seal"] = {
+				["name"] = "Burgundy Seal",
+				["text"] = { "Creates an {C:busterb_infinity}Infinity{} card",
+			"{C:inactive}(Must have no room)" }
+			},
+			["busterb_pizza_seal_seal"] = {
+				["name"] = "Pizza Seal",
+				["text"] = { "Creates a {C:busterb_pizza}Pizza{} card",
+			"{C:inactive}(Must have room)" }
+			},
+			["busterb_galaxy_seal"] = {
+				["name"] = "Galaxy Seal",
+				["text"] = { "Always levels up played hand by {C:planet}#1#%" }
+			},
+			["busterb_gateway_seal"] = {
+				["name"] = "Gateway Seal",
+				["text"] = { "Gains {C:white,X:busterb_eemult}^#2#{} Mult",
+							"before scoring",
+							"{C:inactive}(Currently: {C:white,X:busterb_eemult}^#1#{C:inactive})" }
+			},
+			["sbe_busterb_hand_level"] = {
+				["text"] = {"Level up {C:attention}played hand{} by {C:attention}#1#"},
+			},
+			["sbe_busterb_ascend"] = {
+				["text"] = {"Ascend {C:attention}played hand{} by {C:gold}#1#"},
+			},
+			["sbe_busterb_plus_hands"] = {
+				["text"] = {"{C:dark_edition}#1#{} values to {C:attention}played hand"},
+			},
+			["sbe_busterb_x_hands"] = {
+				["text"] = {"{X:dark_edition,C:white}X#1#{} values to {C:attention}played hand"},
+			},
+			["sbe_busterb_x_adj_joker"] = {
+				["text"] = {"{X:dark_edition,C:white}X#1#{} values to {C:attention}adjacent Jokers"},
+			},
+			["sbe_busterb_plus_adj_joker"] = {
+				["text"] = {"{C:attention}#1#{} values to {C:attention}adjacent Jokers"},
+			},
+			["sbe_busterb_e_adj_joker"] = {
+				["text"] = {"{C:dark_edition,X:black}^#1#{} values to {C:attention}adjacent Jokers"},
+			},
+			["sbe_busterb_forcetrigger"] = {
+				["text"] = {"Forcetriggers {C:attention}adjacent Jokers"},
+			},
+			["sbe_busterb_all_hands"] = {
+				["text"] = {"Level up {C:attention}All hands{} by {C:attention}#1#"},
+			},
+			["sbe_busterb_all_asc"] = {
+				["text"] = {"Ascend {C:attention}All hands{} by {C:gold}#1#"},
+			},
+			["sbe_busterb_random_jade"] = {
+				["text"] = {"Give a random {C:busterb_technopotentgradient}Ability{} to {C:attention}adjacent Jokers"},
+			},
+			["sbe_busterb_consumable"] = {
+				["text"] = {"Create a Random Consumable",
+			"{C:inactive}(May overflow)"},
+			},
+			["sbe_busterb_rare_card"] = {
+				["text"] = {"Create a Random {C:busterb_gfreddy}Rare{} Consumable",
+			"{C:inactive}(May overflow)"},
+			},
+			["sbe_busterb_x_selfmanip"] = {
+				["text"] = {"{X:dark_edition,C:white}X#1#{} values to {C:attention}This Joker"},
+			},
+			["sbe_busterb_plus_selfmanip"] = {
+				["text"] = {"{C:attention}#1#{} values to {C:attention}This Joker"},
+			},
+			["sbe_busterb_e_selfmanip"] = {
+				["text"] = {"{C:dark_edition,X:black}^#1#{} values to {C:attention}This Joker"},
+			},
+
 			["p_busterb_inf_pack_1"] = {
 				["group_name"] = "Infinity Pack",
 				["name"] = "Infinity Pack",
@@ -231,7 +339,6 @@ return {
 					"{C:attention}#2#{C:busterb_grand} Busted Buffoons{} joker#<s>2#",
 				},
 			},
-			
 			["undiscovered_pizza"] = {
 				["name"] = "???",
 				["text"] = {
@@ -250,7 +357,7 @@ return {
 					"{C:gold}$50{} = {C:busterb_dreamy}Dreamy",
 					"{C:gold}$100{} = {C:legendary}Legendary",
 					"{C:gold}$500{} = {C:busterb_fantastic}Fantastic",
-					"{C:gold}$1000{} = {C:dark_edition}Rare Consumable",
+					"{C:gold}$1000{} = {C:busterb_gfreddy}Rare Consumable",
 				}
             },
 			["grahkon_list"] = {
@@ -556,7 +663,7 @@ return {
 			},
 			["j_busterb_grahkon"] = {
 				["name"] = {
-					"{C:green,s:2}Grahkon{}",
+					"{C:busterb_grahkongradient,s:2}Grahkon{}",
 					"The Immortal Green Flame",
 				},
 				["text"] = {
@@ -581,8 +688,9 @@ return {
 					"Entropy Incarnate",
 				},
 				["text"] = {
-					{"Using a consumable",
-					"creates {C:attention}#1# {C:dark_edition}Negative{} consumables"},
+					{"Using a non-{C:dark_edition}Negative{} consumable",
+					"creates {C:attention}#1# {C:dark_edition}Negative{} consumables",
+					"Consumables can be {C:white,X:busterb_gfreddy}Rare"},
 				},
 			},
 			["j_busterb_hawaii"] = {
@@ -595,12 +703,12 @@ return {
 					"{C:red}Chicot{}, {C:green}Perkeo{}, {C:gold}Yorick{}",
 					"{C:inactive}Canio{}, and {C:blue}Triboulet{}",
 					"{C:busterb_secrets}But far more powerful",
-					"{C:inactive}(Currently: {C:attention}#2#{C:inactive}[#3#]){}"},
+					"{C:inactive}(Currently: {C:attention}#2#{C:inactive}[#3#], {C:white,X:busterb_eemult}^#7#{C:inactive})"},
 				{
 					"{C:red,s:1.25}Chicot's Will{}",
 					"Reduce the Boss Blind's {C:attention}chips by {C:attention}50%","",
 					"{C:blue,s:1.25}Triboulet's Wits{}",
-					"{C:attention}Scored face cards{} give {C:white,X:mult}XMult{} equal to all face cards in deck","",
+					"{C:attention}Scored face cards{} give {C:white,X:busterb_eemult}^Mult{} equal to all face cards in deck","",
 					"{C:green,s:1.25}Perkeo's Spirit{}",
 					"Creates a {C:dark_edition}Negative{} {C:green}Perkeo{} at the end of shop","",
 					"{C:inactive,s:1.25}Canio's Madness",
@@ -676,17 +784,14 @@ return {
 					{"{C:inactive,s:0.5}https://github.com/Aikoyori/Balatro-Aikoyoris-Shenanigans"}
 				},
 			},
-			["j_busterb_nxkoo"] = {
+			["j_busterb_jade"] = {
 				["name"] = {
-					"{C:busterb_epileptic}n x k o o{}",
-					'{C:white,s:0.2}no...',
+					"{s:2,C:busterb_technopotentgradient}Jade",
+					'"I Have {X:black,C:busterb_technopotentgradient}EVERY{C:busterb_technopotentgradient} Ability{}"',
 				},
 				["text"] = {
-					{"{C:white,X:busterb_unstable}^#1#{} score for every",
-					"got dam {C:busterb_balatro}mod{} you have...",
-						"{C:hearts}heart {C:red}discard{} for the {C:white,X:busterb_unstable}^#3#",
-					"{C:white,X:busterb_unstable}^#4#{} score if umm... {C:busterb_epileptic}scoring enhancment{}... check the info box",
-					"oughhhh i have {X:busterb_unstable,C:white}^#2#{} score {C:white,X:busterb_grand,s:2}atm",},
+					"Gains a random {C:busterb_technopotentgradient}Ability{}",
+					"upon {C:attention}selecting blind"
 				},
 			},
 			["j_busterb_theia"] = {
@@ -969,8 +1074,8 @@ return {
 			["j_busterb_carr"] = {
 				["name"] = "Carr",
 				["text"] = {
-					"After {C:attention}#1#{C:inactive}[#2#]{} rounds,",
-					"create a {C:dark_edition}Random Rare Consumable",
+					"After {C:attention}#1#{C:inactive}[#2#]{} hands,",
+					"create a {C:busterb_gfreddy}Random Rare Consumable",
 					"and {C:red}self-destruct"
 				},
 			},
@@ -1729,9 +1834,8 @@ return {
 			["c_busterb_path"] = {
 				["name"] = "path",
 				["text"] = {
-					"{C:attention}-#1#{} ante if it's even",
-					"{C:attention}+#1#{} ante if it's odd",
-					"random choice if ante is neither"
+					"{C:attention}-#1#{} ante on even rounds",
+					"{C:attention}+#1#{} ante on odd rounds",
 				},
 			},
 		},
@@ -1745,6 +1849,70 @@ return {
 					"{C:green}run any command",
 					"{C:inactive,s:0.8}good luck figuring out how to use it",
 					"{C:inactive,s:0.6}yes it works, i tested this myself a number of times"
+				},
+			},
+			["c_busterb_eden"] = {
+				["name"] = "#2#",
+				["text"] = {
+					"Add a {C:attention}Galaxy Seal{}",
+                    "to {C:attention}#1#{} selected",
+                    "card in your hand",
+				},
+			},
+			["c_busterb_supernova"] = {
+				["name"] = "#2#",
+				["text"] = {
+					"Add a {C:attention}Sun Seal{}",
+                    "to {C:attention}#1#{} selected",
+                    "card in your hand",
+				},
+			},
+			["c_busterb_gemini"] = {
+				["name"] = "#2#",
+				["text"] = {
+					"Add a {C:attention}Lime Seal{}",
+                    "to {C:attention}#1#{} selected",
+                    "card in your hand",
+				},
+			},
+			["c_busterb_hearth"] = {
+				["name"] = "#2#",
+				["text"] = {
+					"Add a {C:attention}Pizza Seal{}",
+                    "to {C:attention}#1#{} selected",
+                    "card in your hand",
+				},
+			},
+			["c_busterb_continuum"] = {
+				["name"] = "#2#",
+				["text"] = {
+					"Add a {C:attention}Burgundy Seal{}",
+                    "to {C:attention}#1#{} selected",
+                    "card in your hand",
+				},
+			},
+			["c_busterb_spiral"] = {
+				["name"] = "#2#",
+				["text"] = {
+					"Add a {C:attention}Periwinkle Seal{}",
+                    "to {C:attention}#1#{} selected",
+                    "card in your hand",
+				},
+			},
+			["c_busterb_chrysalis"] = {
+				["name"] = "#2#",
+				["text"] = {
+					"Add a {C:attention}Butterfly Seal{}",
+                    "to {C:attention}#1#{} selected",
+                    "card in your hand",
+				},
+			},
+			["c_busterb_exaltation"] = {
+				["name"] = "#2#",
+				["text"] = {
+					"Add a {C:attention}Gateway Seal{}",
+                    "to {C:attention}#1#{} selected",
+                    "card in your hand",
 				},
 			},
 			["c_busterb_Fantasy"] = {
@@ -1796,6 +1964,104 @@ return {
 					"with an {C:busterb_secret}Omega{} sticker"
 				},
 			},
+			["v_busterb_stargazer"] = {
+				["name"] = "Stargazer",
+				["text"] = {
+					"{C:green}#2# in #3#{} chance to",
+					"level up a hand by {C:gold}+#1#",
+					"whenever the hand is {C:attention}upgraded",
+					},
+			},
+			["v_busterb_forever"] = {
+				["name"] = "Forever Stellar",
+				["text"] = {
+					{"{C:green}#2# in #3#{} chance to",
+					"upgrade ascended hands by {C:gold}+#1#",
+					"whenever the hand is {C:attention}upgraded"},
+					{"{C:attention}All cards{} also count toward {C:gold}Ascension Power"}
+					},
+			},
+			["v_busterb_phantasm"] = {
+				["name"] = "Phantasm",
+				["text"] = {
+					{"{C:green}#2# in #3#{} chance to",
+					"create {C:dark_edition}Negative {C:busterb_infinity}Infinity{} cards",
+					"whenever {C:spectral}Spectral{} cards are {C:attention}used"},
+					},
+			},
+			["v_busterb_eternity"] = {
+				["name"] = "Eternity",
+				["text"] = {
+					{"{C:green}#2# in #3#{} chance to",
+					"create {C:dark_edition}Negative {C:spectral}Spectral{} cards",
+					"whenever {C:busterb_infinity}Infinity{} cards are {C:attention}used"},
+					},
+			},
+			["v_busterb_dealmaker"] = {
+				["name"] = "Dealmaker",
+				["text"] = {
+					{"{C:green}#2# in #3#{} chance to",
+					"Gain back {C:gold}#1#%{} of",
+					"the {C:money}money{} you lost"
+					},
+			},
+		},
+		["v_busterb_bigshot"] = {
+				["name"] = "[[BIG SHOT]]",
+				["text"] = {
+					"Gain back {C:gold}ALL{} of", 
+					"the {C:money}money{} you lost"
+					},
+			},
+		["v_busterb_scrap_merch"] = {
+				["name"] = "Scrap Merchant",
+				["text"] = {
+                    "{C:busterb_technopotentgradient}Bootleg{} cards appear",
+                    "{C:attention}#1#X{} more frequently",
+                    "in the shop",
+					},
+			},
+		["v_busterb_scrap_ty"] = {
+				["name"] = "Scrap Tycoon",
+				["text"] = {
+                    {"{C:busterb_technopotentgradient}Bootleg{} cards appear",
+                    "{C:attention}#1#X{} more frequently",
+                    "in the shop"},
+					},
+			},
+		["v_busterb_endurance"] = {
+				["name"] = "Endurance",
+				["text"] = {
+					"{C:red,X:black}X#2#{} Win Ante",
+					"Operator is upgraded",
+					"by {C:white,X:busterb_grand}+#1#",
+					},
+			},
+		["v_busterb_marathon"] = {
+				["name"] = "Marathon",
+				["text"] = {
+					"{C:red,X:black}X#2#{} Win Ante",
+					"Operator is upgraded",
+					"by {C:white,X:busterb_grand}+#1#",
+					},
+			},
+		["v_busterb_treasure_hunter"] = {
+				["name"] = "Treasure Hunter",
+				["text"] = {
+					"{C:busterb_gfreddy}Rare Consumables{} can",
+					"appear in the shop",
+					"{C:attention}+#1#{} Shop Slots"
+					},
+			},
+		["v_busterb_thief"] = {
+				["name"] = "Rouge The Thief",
+				["text"] = {
+					"Used {C:busterb_gfreddy}Rare Consumables{} have",
+					"a {C:green}#2# in #3#{} chance to",
+					"be {C:attention}duplicated{} upon use",
+					"{C:attention}+#1#{} Shop Slots"
+					},
+			},
 		},
 		["Edition"] = {
 			["e_busterb_atomic"] = {
@@ -1814,6 +2080,17 @@ return {
 					"gain {C:mult}+#2#{} Mult after scoriing",
 					"{C:inactive}(Currently: {C:mult}+#1#{C:inactive})"
 				},
+			},			
+			["m_busterb_nebular"] = {
+				["name"] = "Nebular",
+				["text"] = { "Gives your current hand's",
+							"{C:chips}Chips{} and {C:mult}Mult",
+							"in scoring",
+							"Gives {C:white,X:planet}X#1#{} more when held" }
+			},
+			["m_busterb_solar"] = {
+				["name"] = "Solar",
+				["text"] = { "{C:gold}+#2#{} Ascension Power", "{C:gold}+#1#{} Ascension Power when held" }
 			},
 			["m_busterb_crystallized"] = {
 				["name"] = "Crystallized",
@@ -1933,7 +2210,7 @@ return {
 				["name"] = "Infinite Soulabyss",
 				["text"] = {
 					"{C:red}Banish{} a selected joker",
-					"to spawn a random {C:dark_edition}Rare Consumable"
+					"to spawn a random {C:busterb_gfreddy}Rare Consumable"
 				},
 			},
 			["c_busterb_otw"] = {
@@ -2077,7 +2354,21 @@ return {
 				"Enhances {C:attention}#1#{} selected card",
 				"to a {C:attention}Glittery Card"
 			},
-			}
+			},
+			["c_busterb_splendor"] = {
+			["name"] = "Splendor",
+			["text"] = {
+				"Enhances {C:attention}#1#{} selected card",
+				"to a {C:attention}Solar Card"
+			},
+			},
+			["c_busterb_interloper"] = {
+			["name"] = "Interloper",
+			["text"] = {
+				"Enhances {C:attention}#1#{} selected card",
+				"to a {C:attention}Nebular Card"
+			},
+			},
 		},
 		['Tag'] = {
 			["tag_busterb_immortal"] = {

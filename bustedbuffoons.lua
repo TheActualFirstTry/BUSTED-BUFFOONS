@@ -1,5 +1,3 @@
-local https = require "SMODS.https"
-
 SMODS.Sound{
     key = "fahhh1",
     path = "fah.ogg",
@@ -7,6 +5,9 @@ SMODS.Sound{
 
 BustB = {}
 BustB.current_mod = SMODS.current_mod
+
+SMODS.current_mod.spectrallib_features = { "ascension_power" }
+
 -- Mod Badge Shader
 SMODS.Atlas{
 	key = "mask",
@@ -38,7 +39,7 @@ SMODS.Atlas {
   px = 34,
   py = 34,
   atlas_table = 'ANIMATION_ATLAS',
-  frames = 10
+  frames = 8
 }
 
 SMODS.Sound{
@@ -67,6 +68,29 @@ SMODS.Sound{
  SMODS.Sound {
     key = "crit",
     path = "crit.ogg",
+}
+
+SMODS.Sound {
+    key = "susielaugh",
+    path = "laughsusie.ogg"
+}
+
+SMODS.Sound{
+    key = "mus",
+    path = "mus_create.wav"
+}
+
+SMODS.Sound{
+    key = "locknload",
+    path = "shotgunload.ogg"
+}
+SMODS.Sound{
+    key = "gunshot",
+    path = "shotgunshot.ogg"
+}
+SMODS.Sound{
+    key = "vigi",
+    path = "vigi1.ogg"
 }
 
 SMODS.Gradient{
@@ -153,6 +177,15 @@ SMODS.Gradient{
     colours = {
         G.C.SECONDARY_SET.Spectral,
         HEX('00FFFF'),
+    },
+    cycle = 4,
+    interpolation = 'trig',
+}
+SMODS.Gradient{
+    key = "grahkongradient",
+    colours = {
+        G.C.GOLD,
+        G.C.GREEN,
     },
     cycle = 4,
     interpolation = 'trig',
@@ -257,7 +290,15 @@ G.ARGS.LOC_COLOURS.busterb_bigbang = SMODS.Gradients["busterb_bigbang"]
 G.ARGS.LOC_COLOURS.busterb_unstable = SMODS.Gradients["busterb_unstable"]
 G.ARGS.LOC_COLOURS.busterb_secrets = SMODS.Gradients["busterb_SecretG"]
 G.ARGS.LOC_COLOURS.busterb_technopotent = SMODS.Gradients["busterb_technopotent"]
-
+G.ARGS.LOC_COLOURS.busterb_grahkon = SMODS.Gradients["busterb_grahkongradient"]
+G.C.INFINITY = HEX('E36956')
+G.C.PIZZA = HEX('bc1006')
+G.C.DREAMY = HEX('5e7297')
+G.C.FANTASTIC = HEX('b00b69')
+G.C.THOMAS = SMODS.Gradients["busterb_Thomasgradient"]
+G.C.GRANDIOSE = SMODS.Gradients["busterb_grand"]
+G.C.BALATRO = SMODS.Gradients["busterb_balatro"]
+G.C.EPILEPSY = SMODS.Gradients["busterb_epileptic"]
 -- Jokers Pool
 
 SMODS.ObjectType{
@@ -434,7 +475,7 @@ SMODS.ObjectType{
 --        SMODS.ObjectType.inject(self)
 --    end,
 --}
-
+--[[
 SMODS.ObjectType{
     key = "technopotent",
     default = "j_busterb_gaia",
@@ -443,9 +484,30 @@ SMODS.ObjectType{
         SMODS.ObjectType.inject(self)
     end,
 }
+]]
 
+function moony_planet(card, new_card, area)
+    if not card then return nil end
+    local area = area or (new_card and new_card.area) or card.area or G.consumeables
+    local cardwasindeck = new_card and new_card.added_to_deck or nil
+    local copy = copy_card(card, new_card)
+    if new_card and cardwasindeck then copy:remove_from_deck() end
+    if card.playing_card then
+        G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+        copy.playing_card = G.playing_card
+        G.deck.config.card_limit = G.deck.config.card_limit + 1
+        table.insert(G.playing_cards, copy)
+    end
+    if (new_card and cardwasindeck) or not new_card then copy:add_to_deck() end
+    if not new_card then area:emplace(copy) end
+    return copy
+end
+
+
+-- Loads
 
 assert(SMODS.load_file("items/otherfunctionalities.lua"))()
+assert(SMODS.load_file("items/bonuses.lua"))()
 assert(SMODS.load_file("items/stickers.lua"))()
 assert(SMODS.load_file("items/thanks900n1.lua"))()
 assert(SMODS.load_file("items/rarities.lua"))()
@@ -454,6 +516,7 @@ assert(SMODS.load_file("items/spectrals.lua"))()
 assert(SMODS.load_file("items/infinity.lua"))()
 assert(SMODS.load_file("items/bootleg.lua"))()
 assert(SMODS.load_file("items/enhancement.lua"))()
+assert(SMODS.load_file("items/seals.lua"))()
 assert(SMODS.load_file("items/tarots.lua"))()
 assert(SMODS.load_file("items/packs.lua"))()
 assert(SMODS.load_file("items/common.lua"))()
@@ -479,6 +542,7 @@ assert(SMODS.load_file("items/projectgaia.lua"))()
 --assert(SMODS.load_file("unused for now/evilconsumable.lua"))()
 SMODS.current_mod.optional_features = function()
     return {
+        object_weights = true,
         post_trigger = true,
         retrigger_joker = true,
         quantum_enhancements = true,
@@ -489,7 +553,6 @@ SMODS.current_mod.optional_features = function()
         }
 }
 end
-SMODS.Mods["BustedBuffoons"].spectrallib_features = { "ascension_power" }
 
 SMODS.Sound{
     key = "cashregister",
