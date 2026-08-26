@@ -544,7 +544,6 @@ SMODS.Joker {
         if ((card.ability.immutable.rounds) >= (card.ability.immutable.total_rounds)) then
                     SMODS.upgrade_poker_hands{
                         from = card,
-                        parameters = { },
                         ascension_power = card.ability.extra.asc,
                         hands = most_played,
                     }

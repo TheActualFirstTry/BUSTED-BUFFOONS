@@ -514,7 +514,7 @@ SMODS.Joker {
         },
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { G.GAME.dollars, " " } }
+        return { vars = { math.abs(G.GAME.dollars), " " } }
     end,
 
     calculate = function(self, card, context)
@@ -527,7 +527,7 @@ SMODS.Joker {
             }
         end
         if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then
-            ease_dollars(G.GAME.dollars)
+            ease_dollars(math.abs(G.GAME.dollars))
             play_sound("busterb_keepemcoming")
         end
     end
@@ -593,7 +593,18 @@ SMODS.Joker {
         end
     end,
     calculate = function(self, card, context)
-if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then
+        if context.using_consumeable and context.consumeable.config.center.key == "c_black_hole" then
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "multiplier",
+                scalar_value = "add",
+                scaling_message = {
+                message = "X" ..(card.ability.extra.multiplier + card.ability.extra.add),
+                colour = G.C.DARK_EDITION,
+                sound = "busterb_lovin"
+            }})
+        end
+        if context.setting_blind and context.main_eval and G.GAME.blind.boss and not context.repetition then
     G.E_MANAGER:add_event(Event({
                 trigger = 'after',
                 delay = 0.2,
@@ -610,34 +621,49 @@ if context.setting_blind and context.main_eval and not context.blueprint and G.G
                 sound = "busterb_laugh",
                 card = card
             }
-    return {
-                message = localize("k_upgrade_ex"),
-                colour = G.C.DARK_EDITION,
-                func = function()
-                    SMODS.upgrade_poker_hands{
-                        from = card,
-                        parameters = { "chips", "mult"},
-                        level_up = false,
-                        instant = true,
-                        StatusText = "x"..card.ability.extra.multiplier,
-                        func = function (base, hand, param)
-                            return base * card.ability.extra.multiplier
-                        end
-                    }
-                end
-            },
-    play_sound('busterb_makudonarudo')
-        end
-        if context.using_consumeable and context.consumeable.config.center.key == "c_black_hole" then
-            SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "multiplier",
-                scalar_value = "add",
-                scaling_message = {
-                message = "X" ..(card.ability.extra.multiplier + card.ability.extra.add),
-                colour = G.C.DARK_EDITION,
-                sound = "busterb_lovin"
-            }})
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
+            { handname = localize('k_all_hands'), chips = '...', mult = '...', level = '' })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                G.TAROT_INTERRUPT_PULSE = true
+                return true
+            end
+        }))
+        update_hand_text({ delay = 0 }, { mult = 'X', StatusText = true })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                return true
+            end
+        }))
+        update_hand_text({ delay = 0 }, { chips = 'X', StatusText = true })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                G.TAROT_INTERRUPT_PULSE = nil
+                return true
+            end
+        }))
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.9, delay = 0 }, { level = '#' })
+        delay(1.3)
+        SMODS.upgrade_poker_hands({
+                    instant = true, 
+                    func = function (base, hand, param)
+                    return base * card.ability.extra.multiplier
+                    end
+                })
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
+            { mult = 0, chips = 0, handname = '', level = '' })
         end
     end,
     can_use = function(self, card)

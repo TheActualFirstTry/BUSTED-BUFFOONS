@@ -130,7 +130,7 @@ SMODS.Back {
     key = "sttgl",
     atlas = "atlas_sttgl",
     pos = { x = 0, y = 0 },
-    config = { operator = 1, ante = 24 },
+    config = { operator = 1, ante = 2 },
     loc_vars = function(self, info_queue, back)
     return {vars = { self.config.ante, self.config.operator }}
     end,
@@ -138,11 +138,27 @@ SMODS.Back {
         G.E_MANAGER:add_event(Event({
             func = function()
                 change_operator(self.config.operator)
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1].config.colour = G.C.GRANDIOSE
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1]:juice_up()
                 return true
             end
         }))
-        
-        G.GAME.win_ante = G.GAME.win_ante + 24
+        G.E_MANAGER:add_event(Event({
+            func = function()
+            G.GAME.win_ante = G.GAME.win_ante * self.config.ante
+                play_sound("slib_eblindsize", 1)
+					attention_text({
+						scale = 2,
+						text = "X"..self.config.ante.." Ante",
+                        colour = G.C.RED,
+						hold = 2,
+						align = "cm",
+						offset = { x = 0, y = -2.7 },
+						major = G.play,
+                    })
+                return true
+            end
+        }))
 end,
 calculate = function(self, card, context)
 	end,

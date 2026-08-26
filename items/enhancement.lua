@@ -161,3 +161,60 @@ SMODS.Enhancement {
      end
 end
 }
+
+SMODS.Enhancement {
+    key = 'solar',
+    atlas = "non",
+    pos = { x = 0, y = 8 },
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    config = { asc = 2.5 },
+    loc_vars = function(self, info_queue, card)
+        local c = card.ability
+        return { vars = { c.asc, c.asc/2 } }
+    end,
+    calculate = function(self, card, context)
+            if context.main_scoring or context.forcetrigger then
+                if context.cardarea == G.play then
+                return { asc = self.config.asc/2 }
+            end
+            if context.cardarea == G.hand then
+                return { asc = self.config.asc }
+            end
+        end
+end
+}
+
+SMODS.Enhancement {
+    key = 'nebular',
+    atlas = "non",
+    pos = { x = 1, y = 8 },
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    config = { level = 2 },
+    loc_vars = function(self, info_queue, card)
+        local c = card.ability
+        return { vars = { c.level } }
+    end,
+    calculate = function(self, card, context)
+    local c = self.config
+            if context.main_scoring or context.forcetrigger then
+                if context.cardarea == G.play then
+                    return {
+                    chips = (G.GAME.hands[context.scoring_name].chips),
+                    mult = (G.GAME.hands[context.scoring_name].mult),
+                    }
+                end
+                if context.cardarea == G.hand then
+                    return {
+                    chips = (G.GAME.hands[context.scoring_name].chips*c.level),
+                    mult = (G.GAME.hands[context.scoring_name].mult*c.level),
+                    }
+                end
+            end
+        end
+}

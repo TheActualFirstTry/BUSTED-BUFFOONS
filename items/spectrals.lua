@@ -160,3 +160,337 @@ loc_vars = function(self, info_queue, card)
         end
     end
 }
+
+SMODS.Consumable {
+    atlas = 'non',
+    key = 'continuum',
+    name = "Continuum",
+    set = 'Spectral',
+    pos = { x = 4, y = 7 },
+    config = { extra = { seal = 'busterb_burgundy' }, max_highlighted = 1 },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
+        return { vars = { card.ability.max_highlighted, self.name } }
+    end,
+    use = function(self, card, area, copier)
+        local conv_card = G.hand.highlighted[1]
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function()
+                conv_card:set_seal(card.ability.extra.seal, nil, true)
+                return true
+            end
+        }))
+
+        delay(0.5)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                G.hand:unhighlight_all()
+                return true
+            end
+        }))
+    end,
+}
+SMODS.Consumable {
+    atlas = 'non',
+    key = 'spiral',
+    name = "Spiral",
+    set = 'Spectral',
+    pos = { x = 5, y = 7 },
+    config = { extra = { seal = 'busterb_periwinkle' }, max_highlighted = 1 },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
+        return { vars = { card.ability.max_highlighted, self.name } }
+    end,
+    use = function(self, card, area, copier)
+        local conv_card = G.hand.highlighted[1]
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function()
+                conv_card:set_seal(card.ability.extra.seal, nil, true)
+                return true
+            end
+        }))
+
+        delay(0.5)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                G.hand:unhighlight_all()
+                return true
+            end
+        }))
+    end,
+}
+SMODS.Consumable {
+    atlas = 'non',
+    key = 'hearth',
+    name = "Hearth",
+    set = 'Spectral',
+    pos = { x = 6, y = 7 },
+    config = { extra = { seal = 'busterb_pizza_seal' }, max_highlighted = 1 },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
+        return { vars = { card.ability.max_highlighted, self.name } }
+    end,
+    use = function(self, card, area, copier)
+        local conv_card = G.hand.highlighted[1]
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function()
+                conv_card:set_seal(card.ability.extra.seal, nil, true)
+                return true
+            end
+        }))
+
+        delay(0.5)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                G.hand:unhighlight_all()
+                return true
+            end
+        }))
+    end,
+}
+SMODS.Consumable {
+    atlas = 'non',
+    key = 'gemini',
+    name = "Gemini",
+    set = 'Spectral',
+    pos = { x = 7, y = 7 },
+    config = { extra = { seal = 'busterb_lime' }, max_highlighted = 1 },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
+        return { vars = { card.ability.max_highlighted, self.name } }
+    end,
+    use = function(self, card, area, copier)
+        local conv_card = G.hand.highlighted[1]
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function()
+                conv_card:set_seal(card.ability.extra.seal, nil, true)
+                return true
+            end
+        }))
+
+        delay(0.5)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                G.hand:unhighlight_all()
+                return true
+            end
+        }))
+    end,
+}
+SMODS.Consumable {
+    atlas = 'non',
+    key = 'supernova',
+    name = "Supernova",
+    set = 'Spectral',
+    pos = { x = 8, y = 7 },
+    config = { extra = { seal = 'busterb_sun' }, max_highlighted = 1 },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
+        return { vars = { card.ability.max_highlighted, self.name } }
+    end,
+    use = function(self, card, area, copier)
+        local conv_card = G.hand.highlighted[1]
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function()
+                conv_card:set_seal(card.ability.extra.seal, nil, true)
+                return true
+            end
+        }))
+
+        delay(0.5)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                G.hand:unhighlight_all()
+                return true
+            end
+        }))
+    end,
+}
+SMODS.Consumable {
+    atlas = 'non',
+    key = 'eden',
+    name = "Eden",
+    set = 'Spectral',
+    pos = { x = 9, y = 7 },
+    config = { extra = { seal = 'busterb_galaxy' }, max_highlighted = 1 },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
+        return { vars = { card.ability.max_highlighted, self.name } }
+    end,
+    use = function(self, card, area, copier)
+        local conv_card = G.hand.highlighted[1]
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function()
+                conv_card:set_seal(card.ability.extra.seal, nil, true)
+                return true
+            end
+        }))
+
+        delay(0.5)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                G.hand:unhighlight_all()
+                return true
+            end
+        }))
+    end,
+}
+
+SMODS.Consumable {
+    atlas = 'non',
+    key = 'chrysalis',
+    name = "Chrysalis",
+    set = 'Spectral',
+    pos = { x = 8, y = 6 },
+    config = { extra = { seal = 'busterb_butterfly' }, max_highlighted = 1 },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
+        return { vars = { card.ability.max_highlighted, self.name } }
+    end,
+    use = function(self, card, area, copier)
+        local conv_card = G.hand.highlighted[1]
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function()
+                conv_card:set_seal(card.ability.extra.seal, nil, true)
+                return true
+            end
+        }))
+
+        delay(0.5)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                G.hand:unhighlight_all()
+                return true
+            end
+        }))
+    end,
+}
+SMODS.Consumable {
+    atlas = 'non',
+    key = 'exaltation',
+    name = "Exaltation",
+    set = 'Spectral',
+    hidden = true,
+    can_repeat_soul = true,
+    soul_set = 'Spectral',
+    pos = { x = 9, y = 6 },
+    soul_pos = {x = 9, y = 5, new = { x = 8, y = 5}},
+    config = { extra = { seal = 'busterb_gateway' }, max_highlighted = 1 },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
+        return { vars = { card.ability.max_highlighted, self.name } }
+    end,
+    use = function(self, card, area, copier)
+        local conv_card = G.hand.highlighted[1]
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function()
+                conv_card:set_seal(card.ability.extra.seal, nil, true)
+                return true
+            end
+        }))
+
+        delay(0.5)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                G.hand:unhighlight_all()
+                return true
+            end
+        }))
+    end,
+}

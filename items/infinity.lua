@@ -486,7 +486,7 @@ SMODS.Consumable {
         for i, v in pairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
             if not v.entr_aleph or v.busterb_omega then
                 v:start_dissolve()
-                ease_dollars(G.GAME.dollars)
+                ease_dollars(math.abs(G.GAME.dollars))
             end
         end
     end,

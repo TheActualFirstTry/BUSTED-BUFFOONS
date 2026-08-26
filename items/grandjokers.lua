@@ -877,7 +877,6 @@ SMODS.Joker{
         )
                     SMODS.upgrade_poker_hands{
                         from = card,
-                        parameters = { },
                         ascension_power = card.ability.extra.super,
                         instant = true,
                     }

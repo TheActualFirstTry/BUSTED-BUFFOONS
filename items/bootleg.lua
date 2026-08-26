@@ -752,10 +752,10 @@ SMODS.Consumable{
     end,
     use = function(self, card, area, copier)
         local ante = self.config.ante
-        if G.GAME.round_resets.ante % 2 == 0 or G.GAME.round_resets.ante % -2 == 0 then
+        if G.GAME.round % 2 == 0 or G.GAME.round % -2 == 0 then
             ease_ante(-ante)
         else
-            if G.GAME.round_resets.ante % 2 == 1 or G.GAME.round_resets.ante % -2 == -1 then
+            if G.GAME.round % 2 == 1 or G.GAME.round % -2 == -1 then
                 ease_ante(ante)
             end
         end

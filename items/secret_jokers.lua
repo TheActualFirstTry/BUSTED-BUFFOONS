@@ -90,7 +90,7 @@ end,
         print("winner")
     end
 end
-})
+},true)
 local ThomasYap = {
     "I'm hiding something.",
     "I'm at Arby's, have fun!",
@@ -251,7 +251,7 @@ end,
         print("superwinner")
     end
 end
-})
+},true)
 
 --Art and Code by Camostar34, teehee! Special thanks to FirstTry for letting me be a guest joker in his mod and guiding me with the art direction. 
 
@@ -418,7 +418,7 @@ end,
         print("superwinner")
     end
 end
-})
+},true)
 
 local function count_mod()
     seen = {}
@@ -554,7 +554,7 @@ SMODS.Blind:take_ownership('bl_final_heart', {
         print("hederawinner")
     end
 end
-})
+},true)
 SMODS.Joker{
     key = "vessel",
     atlas = "secjkr",
@@ -644,7 +644,7 @@ end,
         print("vesselwinner")
     end
 end
-})
+},true)
 SMODS.Joker{
     key = "ruby",
     atlas = "secjkr",
@@ -658,13 +658,13 @@ SMODS.Joker{
     blueprint_compat = false,
     eternal_compat = true,
     attributes = {"consumeables", "generation"},
-    config = { extra = {}, immutable = { number = 2 } },
+    config = { extra = {}, immutable = { number = 5 } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
         return { vars = { card.ability.immutable.number } }
     end,
     calculate = function (self, card, context)
-                if context.using_consumeable and not context.blueprint then
+                if (context.using_consumeable and not (context.consumeable.edition or {}).negative) and not context.blueprint then
                     for i = 1, card.ability.immutable.number do
                     local pool = {}
                     for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
@@ -855,31 +855,41 @@ SMODS.Joker{
     attributes = {"face", "king", "queen", "rank", "boss_blind", "generation", "hands", "blindsize", "economy", "xmult"},
     config = { extra = { dollars = 10, select_mod = 1 }, immutable = { number = 2, reduce = 0.5, discards = 23, discards_remaining = 23 } },
     loc_vars = function(self, info_queue, card)
---        local tribvalue = 0
---            for _, c in ipairs(G.deck.cards) do
---                if c:is_face() then tribvalue = tribvalue + 1 end
---            end
+        local tribvalue = 0
+            if G.deck then
+               for _, c in ipairs(G.deck.cards) do
+                    if c:is_face() then tribvalue = tribvalue + 1 end
+            end else tribvalue = "0"
+        end
 --        info_queue[#info_queue+1] = {key = "hawaii_triboulet", set = "Other"}
 --        info_queue[#info_queue+1] = {key = "hawaii_perkeo", set = "Other"}
  --       info_queue[#info_queue+1] = {key = "hawaii_canio", set = "Other"}
  --       info_queue[#info_queue+1] = {key = "hawaii_yorick", set = "Other"}
  --       info_queue[#info_queue+1] = {key = "hawaii_chicot", set = "Other"}
 --        info_queue[#info_queue+1] = {key = "hawaii_powers", set = "Other"}
-        return { vars = { card.ability.immutable.number, card.ability.immutable.discards, card.ability.immutable.discards_remaining, " ", card.ability.extra.select_mod, card.ability.extra.dollars } }
+        return { vars = { 
+        card.ability.immutable.number, 
+        card.ability.immutable.discards, 
+        card.ability.immutable.discards_remaining, 
+        " ", 
+        card.ability.extra.select_mod, 
+        card.ability.extra.dollars, 
+        tribvalue or 0 } }
     end,
     calculate = function (self, card, context)
-        local tribvalue = 0
-            for _, c in ipairs(G.deck.cards) do
-                if c:is_face() then tribvalue = tribvalue + 1 end
-            end
+
         -- Perkeo's Spirit
         if context.ending_shop and not context.blueprint then
             SMODS.add_card{key="j_perkeo",edition="e_negative"}
         end
         -- Triboulet's Wits
         if context.individual and context.cardarea == G.play and context.other_card:is_face() then
+            local tribvalue = 0
+                for _, c in ipairs(G.deck.cards) do
+                    if c:is_face() then tribvalue = tribvalue + 1 end
+            end
             return {
-                xmult = tribvalue
+                emult = tribvalue
             }
         end
         -- Canio's Madness
@@ -1172,7 +1182,7 @@ SMODS.Joker{
 }
 
 SMODS.Joker{
-    key = "nxkoo",
+    key = "jade",
     atlas = "secjkr",
     rarity = "busterb_Secret",
     pools = { ["Secret"] = true, ["all_bb_joker"] = true},
@@ -1183,65 +1193,36 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = false,
-    attributes = {"scaling", "escore", "enhancements", "hearts", "suit"},
-    config = { extra = { e = 1, e_mod = 0.5, e_mod2 = 1.5 }, immutable = {  } },
+    attributes = { },
+    config = { minimum = 100, maximum = 100000000 },
   loc_vars = function(self, info_queue, card)
-    info_queue[#info_queue + 1] = G.P_CENTERS.m_wild
-   local count = 0
-    for _, v in pairs(SMODS.Mods) do
-      if v.can_load then
-        count = count + 1
-      end
-    end
-    return {vars = {card.ability.extra.e, 1 + card.ability.extra.e * count, card.ability.extra.e_mod, card.ability.extra.e_mod2}}
+    return {vars = { }}
   end,
   calculate = function(self, card, context)
-    if context.before then
-        G.GAME.chips = G.GAME.chips + 10
+    if context.setting_blind then
+        Spectrallib.add_bonus_effect(card, BustB.poll_BB_effect_jade("busterb_jade") )
+                        G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+							attention_text({
+								text = localize("k_upgrade_ex"),
+								scale = 5,
+                                hold = 1.5,
+                                backdrop_colour = HEX("3f3f3f"),
+								colour = SMODS.Gradients["busterb_technopotentgradient"],
+								align = 'cm',
+								major = card,
+								offset = {x = 0, y = 0}
+							})
+							play_sound('busterb_mus',1, 0.5)
+							card:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							return true
+                        end
+						}))   
     end
-    if context.joker_main then
-      local count = 0
-      for _, v in pairs(SMODS.Mods) do
-        if v.can_load then
-          count = count + 1
-          card.ability.extra.e = count
-        end
-      end
-      return {message = "FAHHHHHHH!!!", sound = "busterb_fahhh", colour = SMODS.Gradients["busterb_epileptic"],escore = (1 + card.ability.extra.e * count)}
-    end
-      if context.pre_discard then
-         for i, c in ipairs(context.full_hand) do
-            if c:is_suit('Hearts') then
-            SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "e",
-                scalar_value = "e_mod",
-                scaling_message = {
-                message = "^" ..card.ability.extra.e+card.ability.extra.e_mod.. " Score",
-                colour = SMODS.Gradients["busterb_unstable"],
-                sound = "busterb_fahhh1"
-            }
-            })
-
-        end
-    end
-end
-    if context.individual and context.cardarea == G.play then
-        if SMODS.has_enhancement(context.other_card, 'm_wild') then
-            SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "e",
-                scalar_value = "e_mod2",
-                scaling_message = {
-                message = "^" ..card.ability.extra.e+card.ability.extra.e_mod2.. " Score",
-                colour = SMODS.Gradients["busterb_unstable"],
-                sound = "busterb_fahhh1"
-            }
-            })
-        end
-  end
-end
-  
+end  
 }
 
 SMODS.Joker{

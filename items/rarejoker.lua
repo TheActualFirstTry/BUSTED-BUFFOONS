@@ -1,8 +1,4 @@
 -- Ideal Joker - Rare Joker - Deal x10 Mult whenever an Ace is scored, 1 in 10 chance to spawn a red seal steel polychrome ace instead.
-SMODS.Sound {
-    key = "susielaugh",
-    path = "laughsusie.ogg"
-}
 
 SMODS.Atlas {
     key = "rare",
@@ -63,18 +59,6 @@ SMODS.Joker {
 end
 }
 -- Vigilant Joker - Rare Joker - Played Lucky Cards give x1.5 Chips and $3.
-SMODS.Sound{
-    key = "locknload",
-    path = "shotgunload.ogg"
-}
-SMODS.Sound{
-    key = "gunshot",
-    path = "shotgunshot.ogg"
-}
-SMODS.Sound{
-    key = "vigi",
-    path = "vigi1.ogg"
-}
 SMODS.Joker{
     key = "vigilante",
     atlas = "rare",
