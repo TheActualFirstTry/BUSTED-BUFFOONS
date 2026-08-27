@@ -13,7 +13,7 @@
 	"badge_text_colour": "e83f42",
 	"dependencies": [
 		"Amulet",
-		"Steamodded (>=1.0.0~BETA-1814b)",
+		"Steamodded (>=1.0.0~BETA-1814a)",
 		"Lovely (>=0.7)",
         "Balatro (>=1.0.1o)",
 		"Spectrallib"
