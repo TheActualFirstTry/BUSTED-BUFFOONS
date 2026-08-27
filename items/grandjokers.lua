@@ -963,11 +963,13 @@ SMODS.Joker{
     
 calculate = function(self, card, context)
 if not context.repetition or not context.blueprint then
+--[[
     if context.scaling_card and context.scalar > 0 then
         local new_scale = context.scalar
         card.ability.immutable.valuemodification = card.ability.immutable.valuemodification + new_scale
         return{ message = "+ ".. card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = card }
     end
+--]]
     if context.setting_blind or context.forcetrigger then
     for i, joker in ipairs(G.jokers.cards) do
         if joker and not joker.config.upgrade_multiply then
@@ -994,7 +996,7 @@ if not context.repetition or not context.blueprint then
 end
 end,
 
---[[
+--[[]]
 calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
 		if not other.ability.cry_scaling_info then
 			other.ability.cry_scaling_info = {
@@ -1010,7 +1012,7 @@ calc_scaling = function(self, card, other, current_scaling, current_scalar, args
         return{ message = "+ ".. card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = card }
 	end,
 
-]]
+--]]
 }
 
 SMODS.Sound{
