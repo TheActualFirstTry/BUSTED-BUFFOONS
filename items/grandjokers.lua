@@ -821,22 +821,84 @@ SMODS.Joker{
     end,
     calculate = function(self, card, context)
         if context.before and G.GAME.current_round.hands_left == 0 then
-        return{
-                message = localize("k_upgrade_ex"),
+            update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
+            { handname = context.scoring_name, chips = '...', mult = '...', level = '' })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                play_sound('tarot1')
+                G.TAROT_INTERRUPT_PULSE = true
+                return true
+            end
+        }))
+        delay(1.3)
+        update_hand_text({ delay = 0 }, { chips = '^'})
+        ease_colour(G.C.UI_CHIPS, SMODS.Gradients["busterb_bigbang"])
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+            attention_text({
+                text = "   ^",
+                scale = 1.2, 
+                hold = 1,
+                cover = G.HUD:get_UIE_by_ID('hand_chips').parent,
+                cover_colour = G.C.BLACK,
                 colour = SMODS.Gradients["busterb_bigbang"],
-                func = function()
+                align = 'cm',
+                offset = { x = 0, y = 0.02}
+              })
+                play_sound('slib_echips')
+                return true
+            end
+        }))
+        delay(1.3)
+        update_hand_text({ delay = 0 }, { mult = '^' })
+        ease_colour(G.C.UI_MULT, SMODS.Gradients["busterb_bigbang"])
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+            attention_text({
+                text = "^   ",
+                scale = 1.2, 
+                hold = 1,
+                cover = G.HUD:get_UIE_by_ID('hand_mult').parent,
+                cover_colour = G.C.BLACK,
+                colour = SMODS.Gradients["busterb_bigbang"],
+                align = 'cm',
+                offset = { x = 0, y = 0.02}
+              })
+                play_sound('slib_emult')
+                G.TAROT_INTERRUPT_PULSE = nil
+                return true
+            end
+        }))
+        delay(1.3)
                     SMODS.upgrade_poker_hands{
                         from = card,
                         parameters = { "chips", "mult"},
                         level_up = false,
+                        instant = true,
                         hands = context.scoring_name,
-                        StatusText = "^"..card.ability.extra.pokerhand,
                         func = function (base, hand, param)
                             return to_big(base):pow(card.ability.extra.pokerhand)
                         end
                     }
-                end,
-            }
+            G.E_MANAGER:add_event(Event({
+              trigger = "after",
+              blockable = false,
+              blocking = false,
+              delay = 1.2,
+              func = function()
+                ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+                ease_colour(G.C.UI_MULT, G.C.RED, 1)
+                return true
+              end,
+            }))
+            update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
+        { mult = 0, chips = 0, handname = '', level = '' })
     end
 end
 }
@@ -963,13 +1025,11 @@ SMODS.Joker{
     
 calculate = function(self, card, context)
 if not context.repetition or not context.blueprint then
---[[
     if context.scaling_card and context.scalar > 0 then
         local new_scale = context.scalar
         card.ability.immutable.valuemodification = card.ability.immutable.valuemodification + new_scale
         return{ message = "+ ".. card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = card }
     end
---]]
     if context.setting_blind or context.forcetrigger then
     for i, joker in ipairs(G.jokers.cards) do
         if joker and not joker.config.upgrade_multiply then
@@ -996,7 +1056,7 @@ if not context.repetition or not context.blueprint then
 end
 end,
 
---[[]]
+--[[
 calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
 		if not other.ability.cry_scaling_info then
 			other.ability.cry_scaling_info = {
@@ -1012,7 +1072,7 @@ calc_scaling = function(self, card, other, current_scaling, current_scalar, args
         return{ message = "+ ".. card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = card }
 	end,
 
---]]
+]]
 }
 
 SMODS.Sound{
