@@ -17,7 +17,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    attributes = { "xmult", "scaling", "ace", "face", "rank" },
+    attributes = { "all_bb", "bustj", "xmult", "scaling", "ace", "face", "rank" },
     config = {
         extra = {
             xmult = 6,           
@@ -136,7 +136,7 @@ SMODS.Joker {
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     pos = { x = 1, y = 0 },
     soul_pos = { x = 1, y = 1 },
-    attributes = { "xchips", "scaling", "spectral", "discard" },
+    attributes = { "all_bb", "bustj", "xchips", "scaling", "spectral", "discard" },
     config = {
         extra = {
             xchips = 1,
@@ -202,7 +202,7 @@ SMODS.Joker {
   pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
   pos = { x = 2, y = 0 },
   soul_pos = { x = 2, y = 1 },
-    attributes = { "xmult", "scaling", "tarot" },
+    attributes = { "all_bb", "bustj", "xmult", "scaling", "tarot" },
   config = {
     extra = {
       triggered = false,
@@ -257,7 +257,7 @@ SMODS.Joker {
     pos = { x = 3, y = 0 },
 	soul_pos = { x = 3, y = 1 },
     config = { extra = { edition = 'e_polychrome', polyapply = true } },
-    attributes = { "editions", "retrigger", "modify_card" },
+    attributes = { "all_bb", "bustj", "editions", "retrigger", "modify_card" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'e_polychrome', set = 'Edition', config = { extra = 1.5 } }
         return { vars = { G.jokers and #G.jokers.cards or 1 } }
@@ -308,7 +308,7 @@ SMODS.Joker {
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     pos = { x = 4, y = 0 },
     soul_pos = { x = 4, y = 1 },
-    attributes = { "copying", "scaling" },
+    attributes = { "all_bb", "bustj", "copying", "scaling" },
     config = {
         extra = { repetitions = 1, morerepeat = 1 },
         immutable = { max_retriggers = 25, morerepeatmax = 5 }
@@ -391,7 +391,7 @@ SMODS.Joker {
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    attributes = { "xmult", "scaling", "xchips", "economy", "clubs", "suit" },
+    attributes = { "all_bb", "bustj", "xmult", "scaling", "xchips", "economy", "clubs", "suit" },
     config = {
         extra = {
             xchips_mod = 2,
@@ -504,7 +504,7 @@ SMODS.Joker {
     pos = { x = 1, y = 2 },
     soul_pos = { x = 1, y = 3 },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
-    attributes = { "asc", "economy" },
+    attributes = { "all_bb", "bustj", "asc", "economy" },
     config = {
         extra = {
             xasc = 6,         
@@ -569,7 +569,7 @@ SMODS.Joker {
     blueprint_compat = true,
     pos = { x = 2, y = 2 },
     soul_pos = { x = 2, y = 3 },
-    attributes = { "spectral", "planet", "hand_type", "boss_blind", "scaling", "xmult", "xchips" },
+    attributes = { "all_bb", "bustj", "spectral", "planet", "hand_type", "boss_blind", "scaling", "xmult", "xchips" },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     config = {
         extra = {
@@ -705,7 +705,7 @@ SMODS.Joker {
     key = "garnet",
     atlas = "Atlas_Fantastic",
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
-    attributes = { "xmult", "xchips", "scaling", "hearts", "clubs", "suit" },
+    attributes = { "all_bb", "bustj", "xmult", "xchips", "scaling", "hearts", "clubs", "suit" },
     config = {
         extra = {
             Sapphire = 1.5,
@@ -799,7 +799,7 @@ SMODS.Joker {
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "modify_card", "scaling", "asc", "chance", "editions" },
+    attributes = { "all_bb", "bustj", "modify_card", "scaling", "asc", "chance", "editions" },
     config = {
         extra = {
             SA2Asc = 11,
@@ -882,7 +882,7 @@ SMODS.Joker {
         x = 0,
         y = 5
     },
-    attributes = { "emult", "scaling" },
+    attributes = { "all_bb", "bustj", "emult", "scaling" },
     config = {
         extra = {
             xmult = 1,
@@ -1088,7 +1088,7 @@ SMODS.Joker {
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "joker_slot", "economy", "vouchers" },
+    attributes = { "all_bb", "bustj", "joker_slot", "economy", "vouchers" },
     config = {
         extra = {
             joker_slots = 2,
@@ -1142,7 +1142,7 @@ SMODS.Joker {
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "consumeables", "planet", "tarot", "spectral", "generation" },
+    attributes = { "all_bb", "bustj", "consumeables", "planet", "tarot", "spectral", "generation" },
     loc_vars = function(self, info_queue, card)
 		return { vars = { colours = {HEX('b00b69')} } }
     end,
@@ -1180,7 +1180,7 @@ SMODS.Joker{
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "retrigger" },
+    attributes = { "all_bb", "bustj", "retrigger" },
     loc_vars = function(self, info_queue, card)
         return { vars = { 
         } }
@@ -1228,7 +1228,7 @@ SMODS.Joker{
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = {"destroy_card", "generation"},
+    attributes = { "all_bb", "bustj","destroy_card", "generation"},
     loc_vars = function(self, info_queue, card)
 		return { vars = { " ", colours = { SMODS.Gradients["busterb_epileptic"] } } }
     end,

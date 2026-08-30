@@ -525,8 +525,8 @@ SMODS.Booster {
     end,
     draw_hand = false,
     config = {
-        extra = 5,
-        choose = 1, 
+        extra = 10,
+        choose = 2, 
     },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.choose, card.ability.extra, colours = {HEX('009cfd')} } }
@@ -550,7 +550,8 @@ SMODS.Booster {
 
     create_card = function(self, card, i)
         return SMODS.create_card({
-            set = "bustjokers",
+                attributes = { "bustj" },
+                rarity = false,
                 area = G.pack_cards,
                 skip_materialize = true,
                 soulable = true,
@@ -582,8 +583,8 @@ SMODS.Booster {
     end,
     draw_hand = false,
     config = {
-        extra = 5,
-        choose = 1, 
+        extra = 10,
+        choose = 2, 
     },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.choose, card.ability.extra, colours = {HEX('009cfd')} } }
@@ -607,9 +608,9 @@ SMODS.Booster {
 
 
     create_card = function(self, card, i)
-        ease_background_colour(HEX("009cfd"))
         return SMODS.create_card({
-            set = "bustjokers",
+                attributes = { "bustj" },
+                rarity = false,
                 area = G.pack_cards,
                 skip_materialize = true,
                 soulable = true,

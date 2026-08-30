@@ -15,7 +15,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 0, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
-    attributes = { "passive" },
+    attributes = { "all_bb", "bustj", "passive" },
     config = {
         extra = {  
         }
@@ -59,7 +59,7 @@ SMODS.Joker {
         },
         immutable = { ante = -8 }
     },
-    attributes = { "prevents_death", "space" },
+    attributes = { "all_bb", "bustj", "prevents_death", "space" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.immutable.ante } }
     end,
@@ -109,7 +109,7 @@ SMODS.Joker{
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "scaling", "xmult", "mult", "chips", "xchips", "economy" },
+    attributes = { "all_bb", "bustj", "scaling", "xmult", "mult", "chips", "xchips", "economy" },
     config = {
         extra = { mult = 4, chips = 10, xmult = 2, xchips = 2.5, money = 3, valueincrease = 2 },
         immutable = { powincreasecap = 10, pow = 1, powcap = 100, valueincreasecap = 100, reset = 0 }
@@ -167,7 +167,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 2, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
-    attributes = { "passive", "value_manip" },
+    attributes = { "all_bb", "bustj", "passive", "value_manip" },
     config = {
         extra = { vm = 1.1, triggered = false }
     },
@@ -214,7 +214,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 3, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
-    attributes = { "scaling", "generation" },
+    attributes = { "all_bb", "bustj", "scaling", "generation" },
     config = { immutable = { roll_rounds = 0, total_rounds = 3, round_add = 1 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.immutable.roll_rounds, card.ability.immutable.total_rounds, colours = { HEX('b00b69'), HEX('5e7297') } } }
@@ -313,7 +313,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 2, y = 1 },
-    attributes = { "retrigger" },
+    attributes = { "all_bb", "bustj", "retrigger" },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
 calculate = function(self, card, context)
 		if
@@ -353,7 +353,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 1 },
-    attributes = { "boss_blind", "destroy_card", "generation", "spectral" },
+    attributes = { "all_bb", "bustj", "boss_blind", "destroy_card", "generation", "spectral" },
     config = { immutable = { boss_size = 1.25 } },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
     loc_vars = function(self, info_queue, center)
@@ -443,7 +443,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 1 },
-    attributes = { "asc","scaling", "hands" },
+    attributes = { "all_bb", "bustj", "asc","scaling", "hands" },
     config = { 
         extra = { 
             asc = 4,
@@ -483,7 +483,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 2 },
-    attributes = { "infinity", "generation", "hands" },
+    attributes = { "all_bb", "bustj", "infinity", "generation", "hands" },
     config = { 
         extra = { 
         } 
@@ -509,7 +509,7 @@ SMODS.Joker{
     blueprint_compat = false,
     eternal_compat = true,
     pos = { x = 1, y = 2 },
-    attributes = { "xchips", "passive", "suit", "clubs", "seals", "enhancements", "editions" },
+    attributes = { "all_bb", "bustj", "xchips", "passive", "suit", "clubs", "seals", "enhancements", "editions" },
     config = { 
         extra = { 
             xchips = 2
@@ -567,7 +567,7 @@ SMODS.Joker {
     rarity = "busterb_Dreamy",
     cost = 16,
     pos = { x = 2, y = 2 },
-    attributes = { "generation", "pizza", "scaling", "xmult" },
+    attributes = { "all_bb", "bustj", "generation", "pizza", "scaling", "xmult" },
     config = { extra = { xmult = 1, xmult_mod = .5 }, immutable = { odds = 25 } },
     loc_vars = function(self, info_queue, card)
         local pinorare, pinoodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_pinorare')
@@ -638,7 +638,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 2 },
-    attributes = { "passive","hands" },
+    attributes = { "all_bb", "bustj", "passive","hands" },
     config = { 
         extra = { 
             hand = 1
@@ -674,7 +674,7 @@ SMODS.Joker{
         } 
     },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
-    attributes = { "emult", "echips", "xscore", "modify_card", "economy", "rank", "five", "asc" },
+    attributes = { "all_bb", "bustj", "emult", "echips", "xscore", "modify_card", "economy", "rank", "five", "asc" },
     loc_vars = function(self, info_queue, card)
 		return { vars = { } }
 	end,
@@ -725,7 +725,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 1, y = 3 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
-    attributes = { "prevents_death" },
+    attributes = { "all_bb", "bustj", "prevents_death" },
     config = {
         extra = {  
         },
@@ -763,7 +763,7 @@ SMODS.Joker {
     atlas = 'djkr',
     pos = { x = 2, y = 3 },
     blueprint_compat = true,
-    attributes = { "copying" },
+    attributes = { "all_bb", "bustj", "copying" },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true}, 
       loc_vars = function(self, info_queue, card)
     if card.area and card.area == G.jokers then

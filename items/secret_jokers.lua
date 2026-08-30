@@ -18,7 +18,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    attributes = {"hyperchips", "scaling"},
+    attributes = { "all_bb", "hyperchips", "scaling"},
     config = {
         extra = {
             eechips = 1,
@@ -122,7 +122,7 @@ SMODS.Joker{
     blueprint_compat = true,
     forcetrigger_compat = true,
     eternal_compat = true,
-    attributes = {"hypermult", "generation", "scaling"},
+    attributes = { "all_bb", "hypermult", "generation", "scaling"},
     config = {
         extra = {
             jokerslot = 1,
@@ -269,7 +269,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    attributes = {"emult", "economy", "enhancements", "seals"},
+    attributes = { "all_bb", "emult", "economy", "enhancements", "seals"},
     config = {
         extra = {
             bonus = 1.2,
@@ -450,7 +450,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    attributes = {"hypermult", "hyperchips", "hand_type", "generation", "spectral"},
+    attributes = { "all_bb", "hypermult", "hyperchips", "hand_type", "generation", "spectral"},
     config = {
         extra = {
             cm = 0.33,
@@ -632,7 +632,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
-    attributes = {"score", "chance"},
+    attributes = { "all_bb", "score", "chance"},
     config = { extra = {}, immutable = { score = 0, odds = 2 } },
     loc_vars = function(self, info_queue, card)
         local pinorare, pinoodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_unstable')
@@ -722,7 +722,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
-    attributes = {"consumeables", "generation"},
+    attributes = { "all_bb", "consumeables", "generation"},
     config = { extra = {}, immutable = { number = 5 } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
@@ -753,7 +753,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
-    attributes = {"emult", "echips", "generation", "consumeables", "value_manip", "chance", "tag", "joker_slot"},
+    attributes = { "all_bb", "emult", "echips", "generation", "consumeables", "value_manip", "chance", "tag", "joker_slot"},
     config = { extra = { slots = 2, chipmult = 2, }, immutable = { vmin = 10, vmax = 1000, cmmin = 10, cmmax = 1000, vm = 2 } },
     loc_vars = function(self, info_queue, card)
 --        info_queue[#info_queue+1] = {key = "grahkon_list", set = "Other"}
@@ -917,7 +917,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
-    attributes = {"face", "king", "queen", "rank", "boss_blind", "generation", "hands", "blindsize", "economy", "xmult"},
+    attributes = { "all_bb", "face", "king", "queen", "rank", "boss_blind", "generation", "hands", "blindsize", "economy", "xmult"},
     config = { extra = { dollars = 10, select_mod = 1 }, immutable = { number = 2, reduce = 0.5, discards = 23, discards_remaining = 23 } },
     loc_vars = function(self, info_queue, card)
         local tribvalue = 0
@@ -1008,7 +1008,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
-    attributes = {"mod_chance", "emult", "scaling", "passive"},
+    attributes = { "all_bb", "mod_chance", "emult", "scaling", "passive"},
     config = { extra = { emult = 1, vmod = 1 }, immutable = { vmod = 1 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.vmod, colours = { HEX("BC1006") }  } }
@@ -1060,7 +1060,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    attributes = {"retrigger"},
+    attributes = { "all_bb", "retrigger"},
     config = { extra = {  }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return { vars = { G.jokers and #G.jokers.cards or 1 } }
@@ -1093,7 +1093,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
-    attributes = {"emult", "modify_card", "discard"},
+    attributes = { "all_bb", "emult", "modify_card", "discard"},
     config = { extra = { emult = 1 }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.emult } }
@@ -1154,7 +1154,7 @@ SMODS.Joker{
     blueprint_compat = false,
     eternal_compat = true,
     config = { extra = {  }, immutable = {  } },
-    attributes = {"generation", "bootleg"},
+    attributes = { "all_bb", "generation", "bootleg"},
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.c_busterb_print
         return { vars = {  } }
@@ -1213,7 +1213,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = false,
-    attributes = {"emult", "generation"},
+    attributes = { "all_bb", "emult", "generation"},
     config = { extra = { emult = 2 }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.emult } }
@@ -1258,7 +1258,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = false,
-    attributes = { },
+    attributes = { "all_bb",  },
     config = { minimum = 100, maximum = 100000000 },
   loc_vars = function(self, info_queue, card)
     return {vars = { }}
@@ -1302,7 +1302,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = false,
-    attributes = {"passive", "asc", "xasc", "scaling"},
+    attributes = { "all_bb", "passive", "asc", "xasc", "scaling"},
     config = { extra = { asc = 1, x_asc = 1, stack = 2, stack_mod = 1, stack_re = 1 }, immutable = { final_stack = 1 } },
   loc_vars = function(self, info_queue, card)
     return {vars = {card.ability.extra.asc, card.ability.extra.x_asc, card.ability.extra.stack, card.ability.extra.stack_mod, G.play and #G.play.cards or 0, " "}}

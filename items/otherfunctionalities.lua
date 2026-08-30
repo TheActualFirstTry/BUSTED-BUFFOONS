@@ -18,7 +18,7 @@ if not SMODS.ObjectTypes.Food then
 end
 
 local attributes = {
-    "consumeables", "pizza", "bootleg", "infinity"
+    "consumeables", "pizza", "bootleg", "infinity", "bustj", "all_bb"
 }
 
 for _, v in ipairs(attributes) do
