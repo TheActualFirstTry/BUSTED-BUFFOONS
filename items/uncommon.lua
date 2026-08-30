@@ -449,6 +449,57 @@ SMODS.Joker {
         end
     end
 }
+local SymbolsUNT = {
+    "+",
+    "X",
+    "/",
+    "<",
+    ">",
+    "#",
+    "^",
+    "!",
+    "-",
+    "%",
+    "?",
+    "||",
+    "$",
+    "*",
+    ";",
+    ":",
+    "nil",
+    "nan",
+    "inf",
+    "ERROR"
+}
+local CharacterUNT = {
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+}
+
 SMODS.Joker {
     key = "mysteryman",
     unlocked = true, 
@@ -461,15 +512,17 @@ SMODS.Joker {
     config = { extra = { value = 1 }, immutable = { minvalue = 1 } },
     attributes = { "hands", "discard", "joker_slot", "hand_size" },
     loc_vars = function(self, info_queue, card)
+    local randomtext = CharacterUNT[math.random(#CharacterUNT)]..SymbolsUNT[math.random(#SymbolsUNT)]..math.random(0.01,100)..CharacterUNT[math.random(#CharacterUNT)]..SymbolsUNT[math.random(#SymbolsUNT)]..math.random(0.01,100)
         return {
             vars = {
                 card.ability.extra.value,
+                randomtext
             }
         }
     end,
     calculate = function(self, card, context)
         if context.selling_self then
-        local funval = pseudorandom(pseudoseed("busterb_funval"), 1, 6)
+        local funval = pseudorandom(pseudoseed("busterb_funval"), 1, 11)
 		local additive = card.ability.extra.value -- pseudorandom(pseudoseed("busterb_add"), 1, card.ability.extra.value)
         if funval == 1 then
 		G.hand:change_size(additive)
@@ -498,7 +551,59 @@ SMODS.Joker {
 		SMODS.change_discard_limit(additive)
         SMODS.calculate_effect{card = card, message = "+"..card.ability.extra.value.." Card Selection", colour = G.C.BLACK}
         end
+        if funval == 7 then
+        change_shop_size(additive)
+        SMODS.calculate_effect{card = card, message = "+"..card.ability.extra.value.." Shop Slot", colour = G.C.BLACK}
         end
+        if funval == 8 then
+		SMODS.change_voucher_limit(additive)
+        SMODS.calculate_effect{card = card, message = "+"..card.ability.extra.value.." Booster Slot", colour = G.C.BLACK}
+        end
+        if funval == 9 then
+		SMODS.change_booster_limit(additive)
+        SMODS.calculate_effect{card = card, message = "+"..card.ability.extra.value.." Voucher Slot", colour = G.C.BLACK}
+        end
+        if funval == 10 then
+		ease_ante(-additive)
+        SMODS.calculate_effect{card = card, message = "-"..card.ability.extra.value.." Ante", colour = G.C.BLACK}
+        end
+        if funval == 11 then
+        for i = 1, math.random(1,5) do
+		G.hand:change_size(math.random(0.01,5))
+        G.jokers:change_size(math.random(0.01,5))
+        G.consumeables:change_size(math.random(0.01,5))
+        G.GAME.round_resets.hands = G.GAME.round_resets.hands + math.random(0.01,5)
+        ease_hands_played(math.random(0.01,5))
+        G.GAME.round_resets.discards = G.GAME.round_resets.discards + math.random(0.01,5)
+        ease_discard(math.random(0.01,5))
+        SMODS.change_play_limit(math.random(0.01,5))
+		SMODS.change_discard_limit(math.random(0.01,5))
+        change_shop_size(math.random(0.01,5))
+		SMODS.change_voucher_limit(math.random(0.01,5))
+		SMODS.change_booster_limit(math.random(0.01,5))
+		ease_ante(-math.random(0.01,5))
+                        G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0,
+						func = function()
+							attention_text({
+								text = CharacterUNT[math.random(#CharacterUNT)]..SymbolsUNT[math.random(#SymbolsUNT)]..math.random(0.01,100)..CharacterUNT[math.random(#CharacterUNT)]..SymbolsUNT[math.random(#SymbolsUNT)]..math.random(0.01,100),
+								scale = math.random(0.1, 2.5),
+                                hold = 1.5,
+                                backdrop_colour = HEX("3f3f3f"),
+								align = 'cm',
+        						major = G.play,
+								offset = {x = math.random(0.1, 5), y = math.random(0.1, 5)}
+							})
+							play_sound('busterb_mystery',1, 0.5)
+							card:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							return true
+                        end
+						}))   
+                    end
+        end
+    end
     end
     end
     end

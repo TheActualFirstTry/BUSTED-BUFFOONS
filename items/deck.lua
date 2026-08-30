@@ -137,15 +137,26 @@ SMODS.Back {
     apply = function(self, back)
         G.E_MANAGER:add_event(Event({
             func = function()
+				play_sound('busterb_mus',1)
+                	attention_text({
+						scale = 2,
+						text = "+"..self.config.operator.." Operator",
+                        colour = G.C.GRANDIOSE,
+						hold = 2,
+						align = "cm",
+						offset = { x = 0, y = 0 },
+						major = G.play,
+                    })
+					G.ROOM.jiggle = G.ROOM.jiggle + 35
                 change_operator(self.config.operator)
                 G.HUD:get_UIE_by_ID('hand_operator_container').children[1].config.colour = G.C.GRANDIOSE
-                G.HUD:get_UIE_by_ID('hand_operator_container').children[1]:juice_up()
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1]:juice_up(15,15)
                 return true
             end
         }))
         G.E_MANAGER:add_event(Event({
             func = function()
-            G.GAME.win_ante = G.GAME.win_ante * self.config.ante
+                G.GAME.win_ante = G.GAME.win_ante * self.config.ante
                 play_sound("slib_eblindsize", 1)
 					attention_text({
 						scale = 2,

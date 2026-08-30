@@ -437,6 +437,7 @@ end
 return mods
 end
 
+
 SMODS.Joker{
     key = "hedera",
     atlas = "secjkr",
@@ -1007,19 +1008,17 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = false,
     eternal_compat = true,
-    attributes = {"emult", "scaling", "passive"},
+    attributes = {"mod_chance", "emult", "scaling", "passive"},
     config = { extra = { emult = 1, vmod = 1 }, immutable = { vmod = 1 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.vmod, colours = { HEX("BC1006") }  } }
     end,
     calculate = function (self, card, context)
---[[
         if context.scaling_card and context.scalar > 0 then
             local new_scale = context.scalar
             card.ability.extra.vmod = card.ability.extra.vmod + new_scale
         return{ message = "+".. card.ability.extra.vmod, colour = HEX("BC1006"), card = card }
     end
---]]
     if context.end_of_round and context.main_eval then
         for i, joker in ipairs(G.jokers.cards) do
             if joker.config.center.key ~= "j_busterb_notmario" then
@@ -1046,22 +1045,7 @@ SMODS.Joker{
             return { emult = card.ability.extra.emult}
         end
 ]]
-    end,
-calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
-		if not other.ability.cry_scaling_info then
-			other.ability.cry_scaling_info = {
-				[args.scalar_value] = current_scalar
-			}
-		elseif not other.ability.cry_scaling_info[args.scalar_value] then
-			other.ability.cry_scaling_info[args.scalar_value] = current_scalar
-		end
-
-		local original_scalar = other.ability.cry_scaling_info[args.scalar_value]
-        local new_scale = current_scalar
-        card.ability.extra.vmod = card.ability.extra.vmod + new_scale
-        return{ message = "+ ".. card.ability.extra.vmod, colour = HEX("BC1006"), card = card }
-	end,
-
+    end
 }
 
 SMODS.Joker{

@@ -621,49 +621,76 @@ SMODS.Joker {
                 sound = "busterb_laugh",
                 card = card
             }
-        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
-            { handname = localize('k_all_hands'), chips = '...', mult = '...', level = '' })
+            update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
+            { handname = localize("k_all_hands"), chips = '...', mult = '...', level = '' })
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
             delay = 0.2,
             func = function()
                 play_sound('tarot1')
-                card:juice_up(0.8, 0.5)
                 G.TAROT_INTERRUPT_PULSE = true
                 return true
             end
         }))
-        update_hand_text({ delay = 0 }, { mult = 'X', StatusText = true })
+        delay(1.3)
+        update_hand_text({ delay = 0 }, { chips = 'X'})
+        ease_colour(G.C.UI_CHIPS, G.C.PURPLE)
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
             delay = 0.9,
             func = function()
-                play_sound('tarot1')
-                card:juice_up(0.8, 0.5)
+            attention_text({
+                text = "X"..card.ability.extra.multiplier,
+                scale = 1, 
+                hold = 1,
+                cover = G.HUD:get_UIE_by_ID('hand_chips').parent,
+                cover_colour = G.C.PURPLE,
+                align = 'cm',
+              })
+                play_sound('button')
                 return true
             end
         }))
-        update_hand_text({ delay = 0 }, { chips = 'X', StatusText = true })
+        delay(1.3)
+        update_hand_text({ delay = 0 }, { mult = 'X' })
+        ease_colour(G.C.UI_MULT, G.C.PURPLE)
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
             delay = 0.9,
             func = function()
-                play_sound('tarot1')
-                card:juice_up(0.8, 0.5)
+            attention_text({
+                text = "X"..card.ability.extra.multiplier,
+                scale = 1, 
+                hold = 1,
+                cover = G.HUD:get_UIE_by_ID('hand_mult').parent,
+                cover_colour = G.C.PURPLE,
+                align = 'cm',
+              })
+                play_sound('button')
                 G.TAROT_INTERRUPT_PULSE = nil
                 return true
             end
         }))
-        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.9, delay = 0 }, { level = '#' })
         delay(1.3)
-        SMODS.upgrade_poker_hands({
+                SMODS.upgrade_poker_hands({
                     instant = true, 
                     func = function (base, hand, param)
                     return base * card.ability.extra.multiplier
                     end
                 })
-        update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
-            { mult = 0, chips = 0, handname = '', level = '' })
+            G.E_MANAGER:add_event(Event({
+              trigger = "after",
+              blockable = false,
+              blocking = false,
+              delay = 1.2,
+              func = function()
+                ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+                ease_colour(G.C.UI_MULT, G.C.RED, 1)
+                return true
+              end,
+            }))
+            update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
+        { mult = 0, chips = 0, handname = '', level = '' })
         end
     end,
     can_use = function(self, card)

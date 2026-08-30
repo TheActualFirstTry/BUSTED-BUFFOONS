@@ -183,11 +183,11 @@ SMODS.Voucher {
 }
 
 local Souperman = Spectrallib.has_tether
-function Spectrallib.has_tether(card_key)
+function Spectrallib.has_tether()
     if next(SMODS.find_card('v_busterb_forever')) then
         return true
     end
-    return Souperman(card_key)
+    return Souperman()
 end
 
 
@@ -350,9 +350,20 @@ SMODS.Voucher {
         local add = card.ability.extra.singular
         G.E_MANAGER:add_event(Event({
             func = function()
+				play_sound('busterb_mus',1)
+                	attention_text({
+						scale = 2,
+						text = "+"..card.ability.immutable.operator.." Operator",
+                        colour = G.C.GRANDIOSE,
+						hold = 2,
+						align = "cm",
+						offset = { x = 0, y = 0 },
+						major = G.play,
+                    })
+					G.ROOM.jiggle = G.ROOM.jiggle + 35                    
                 change_operator(card.ability.immutable.operator)
                 G.HUD:get_UIE_by_ID('hand_operator_container').children[1].config.colour = G.C.GRANDIOSE
-                G.HUD:get_UIE_by_ID('hand_operator_container').children[1]:juice_up()
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1]:juice_up(15,15)
                 return true
             end
         }))
@@ -394,9 +405,20 @@ SMODS.Voucher {
         local add = card.ability.extra.singular
         G.E_MANAGER:add_event(Event({
             func = function()
+				play_sound('busterb_mus',1)
+                	attention_text({
+						scale = 2,
+						text = "+"..card.ability.immutable.operator.." Operator",
+                        colour = G.C.GRANDIOSE,
+						hold = 2,
+						align = "cm",
+						offset = { x = 0, y = 0 },
+						major = G.play,
+                    })
+					G.ROOM.jiggle = G.ROOM.jiggle + 35
                 change_operator(card.ability.immutable.operator)
                 G.HUD:get_UIE_by_ID('hand_operator_container').children[1].config.colour = G.C.GRANDIOSE
-                G.HUD:get_UIE_by_ID('hand_operator_container').children[1]:juice_up()
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1]:juice_up(15,15)
                 return true
             end
         }))
@@ -425,7 +447,7 @@ SMODS.Voucher {
     atlas = "vouch",
     pos = { x = 1, y = 2 },
     requires = { "v_busterb_endurance" },
-    config = { extra = { shop_size = 5 }, immutable = { chance = 1, odds = 100 } },
+    config = { extra = { shop_size = 5 }, immutable = { chance = 1, odds = 50 } },
     loc_vars = function(self, info_queue, card)
         local chance, odds = SMODS.get_probability_vars(card, card.ability.immutable.chance, card.ability.immutable.odds, 'busterb_treasure_hunter')
         return { vars = { card.ability.extra.shop_size, chance, odds } }

@@ -148,7 +148,29 @@ calculate = function(self, card, context)
     if context.gaiavoucher then
       gvoucher()
 	end
-
+  if context.gaiaability then
+            Spectrallib.add_bonus_effect(card, BustB.poll_BB_effect_jade("busterb_jade") )
+                        G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+							attention_text({
+								text = localize("k_upgrade_ex"),
+								scale = 5,
+                                hold = 1.5,
+                                backdrop_colour = HEX("3f3f3f"),
+								colour = SMODS.Gradients["busterb_technopotentgradient"],
+								align = 'cm',
+								major = card,
+								offset = {x = 0, y = 0}
+							})
+							play_sound('busterb_mus',1, 0.5)
+							card:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							return true
+                        end
+						}))   
+  end
 end,
   in_pool = function()
     return false

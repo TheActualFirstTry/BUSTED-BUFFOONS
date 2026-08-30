@@ -2,7 +2,6 @@
 
 SMODS.ObjectType{
     key = "all_bb_joker",
-    default = "j_busterb_thomas",
     cards = {},
     inject = function(self)
         SMODS.ObjectType.inject(self)
@@ -10,7 +9,6 @@ SMODS.ObjectType{
 }
 SMODS.ObjectType{
     key = "bustjokers",
-    default = "j_busterb_spinel",
     cards = {},
     inject = function(self)
         SMODS.ObjectType.inject(self)
@@ -19,7 +17,7 @@ SMODS.ObjectType{
 -- Secret Jokers
 SMODS.ObjectType{
     key = "Secret",
-    default = "j_busterb_astro",
+--    default = "j_busterb_astro",
     cards = {},
     inject = function(self)
         SMODS.ObjectType.inject(self)

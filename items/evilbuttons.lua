@@ -198,6 +198,13 @@ function Card:highlight(is_highlighted)
                             UIBox_button { label = { "Voucher" }, scale = 0.4, minw = 2, minh = 0.5, colour = HEX('3f3f3f'), text_colour = HEX('1ac282'), r = 0.1, button = 'gaiavoucher' }
                         }
                     },
+                    {
+                        n = G.UIT.R,
+                        config = { minw = 1, minh = 0.5, padding = 0.01, align = 'cl', colour = G.C.CLEAR, button = 'gaiaability', r = 0.1 },
+                        nodes = {
+                            UIBox_button { label = { "Ability" }, scale = 0.4, minw = 2, minh = 0.5, colour = HEX('3f3f3f'), text_colour = HEX('1ac282'), r = 0.1, button = 'gaiaability' }
+                        }
+                    },
                 }
             },
         }
@@ -269,4 +276,8 @@ end
 
 function G.FUNCS.gaiavoucher()
     SMODS.calculate_context({gaiavoucher = true})
+end
+
+function G.FUNCS.gaiaability()
+    SMODS.calculate_context({gaiaability = true})
 end

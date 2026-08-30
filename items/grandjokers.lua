@@ -902,6 +902,7 @@ SMODS.Joker{
     end
 end
 }
+
 SMODS.Joker{
     key = "superman",
     rarity = "busterb_Grandiose",
