@@ -5,13 +5,13 @@
     "author": [
         "FirstTry"
     ],
-    "description":	"A small content mod containing jokers i made in my free time, feel free to throw tomatoes. I highly suggest you play this mod with cryptid, even though it can work without it. Music Credits: NI4NI - Vylet Pony",
+    "description":	"A small content mod containing jokers i made in my free time, feel free to throw tomatoes. I highly suggest you play this mod with cryptid, even though it can work without it. Music Credits: NI4NI - Vylet Pony, Ultrakill 8-3 Theme No.3 - Event Horizon (COMBAT) - Heaven Pierce Her, Thousand March - Mr. Sauceman",
     "prefix": "busterb",
     "main_file": "bustedbuffoons.lua",
     "version": "1.8.2",
 	"badge_colour": "3F3F3F",
 	"badge_text_colour": "e83f42",
-	"badge_shader": "busterb_mod_badge",
+	"badge_shader" : "busterb_mod_badge",
 	"dependencies": [
 		"Amulet",
 		"Steamodded (>=1.0.0~BETA-1814b)",
