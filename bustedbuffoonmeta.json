@@ -11,6 +11,7 @@
     "version": "1.8.2",
 	"badge_colour": "3F3F3F",
 	"badge_text_colour": "e83f42",
+	"badge_shader": "busterb_mod_badge",
 	"dependencies": [
 		"Amulet",
 		"Steamodded (>=1.0.0~BETA-1814b)",
