@@ -524,6 +524,7 @@ SMODS.Joker {
         return { vars = { card.ability.extra.asc, most_played, card.ability.immutable.rounds, card.ability.immutable.total_rounds } }
     end,
     calculate = function(self, card, context)
+                    if context.end_of_round and context.main_eval then
             local _handname, _played = 'High Card', -1
             for hand_key, hand in pairs(G.GAME.hands) do
                 if hand.played > _played then
@@ -532,7 +533,6 @@ SMODS.Joker {
                 end
             end
             local most_played = _handname
-                    if context.end_of_round and context.main_eval then
 --            SMODS.calculate_effect({ message = card.ability.immutable.roll_rounds .."/".. card.ability.immutable.total_rounds , colour = G.C.FILTER}, card)
             SMODS.scale_card(card, {
                 ref_table = card.ability.immutable,
