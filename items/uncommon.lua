@@ -210,11 +210,6 @@ SMODS.Joker {
     pos = { x = 2, y = 1 },
     config = { extra = {  }, immutable = { reduce = 0.80 } },
     attributes = { "all_bb", "bustj", "passive" },
-    loc_vars = function(self, info_queue, card)
-        return { vars = { } }
-    end,
-    calculate = function(self, card, context)
-	end
 }
 
 local oldevalcard = eval_card
