@@ -642,9 +642,12 @@ end,
 local is_suit_ref = Card.is_suit
 Card.is_suit = function(self, suit, bypass_debuff, flush_calc, ...)
   local ret = is_suit_ref(self, suit, bypass_debuff, flush_calc, ...)
-  return (suit == 'Clubs' or suit == 'Spades')
-      and (flush_calc or (not self.debuff or bypass_debuff))
-      and next(SMODS.find_card( "j_busterb_lancer" ))
+  if ret
+      or (suit ~= 'Clubs' and suit ~= 'Spades')
+      or not (flush_calc or not self.debuff or bypass_debuff) then
+    return ret
+  end
+  return next(SMODS.find_card("j_busterb_lancer"))
       and SMODS.has_enhancement(self, 'm_stone')
       or ret
 end
