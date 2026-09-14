@@ -221,13 +221,14 @@ local oldevalcard = eval_card
 function eval_card(card, context)
     if not card:can_calculate(context.ignore_debuff, context.remove_playing_cards or context.joker_type_destroyed) then return oldevalcard(card, context) end
     local oldhandsplayed, oldhandsleft
-    if next((SMODS.find_card('j_busterb_glados'))) then
+    local has_glados = next(SMODS.find_card('j_busterb_glados')) ~= nil
+    if has_glados then
         oldhandsplayed, oldhandsleft = G.GAME.current_round.hands_played, G.GAME.current_round.hands_left
         G.GAME.current_round.hands_played = 0
         G.GAME.current_round.hands_left = 0
     end
     local g, post = oldevalcard(card, context)
-    if next((SMODS.find_card('j_busterb_glados'))) then
+    if has_glados then
         G.GAME.current_round.hands_played = oldhandsplayed
         G.GAME.current_round.hands_left = oldhandsleft
     end
