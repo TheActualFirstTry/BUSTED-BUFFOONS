@@ -11,6 +11,8 @@ Install [Amulet](https://github.com/frostice482/amulet) and [Spectrallib](https:
 
 [Mayhem](https://codeberg.org/BalatroMayhem/Mayhem)
 
+## WARNING: This mod contains flashing lights and visual effects that may trigger seizures in people with photosensitive epilepsy or other light sensitivities. Viewer discretion is advised.
+
 # BUSTED BUFFOONS
 ## What is Busted Buffoons?
 Busted Buffoons is an absolutely broken mod that aims to add as many characters (That i know of) as possible.
