@@ -736,8 +736,8 @@ SMODS.Joker {
 
 
     calculate = function(self, card, context)
-    if context.individual and context.cardarea == G.play then
-        if context.other_card:is_suit("Clubs") and not context.other_card.debuff then
+    if context.individual and context.cardarea == G.play and not context.other_card.debuff then
+        if context.other_card:is_suit("Clubs") then
                             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "BaseSapphire",
@@ -747,7 +747,7 @@ SMODS.Joker {
                 colour = G.C.CHIPS
             }})
         end
-        if context.other_card:is_suit("Hearts") and not context.other_card.debuff then
+        if context.other_card:is_suit("Hearts") then
                 SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "BaseRuby",
@@ -764,6 +764,7 @@ SMODS.Joker {
         for _, c in ipairs(context.full_hand) do
             if c:is_suit("Clubs") then has_clubs = true end
             if c:is_suit("Hearts") then has_hearts = true end
+            if has_clubs and has_hearts then break end
         end
         if has_clubs and has_hearts then
             card.ability.extra.Sapphire = card.ability.extra.Sapphire * card.ability.extra.Garnet

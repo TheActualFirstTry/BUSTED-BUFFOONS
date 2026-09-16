@@ -218,15 +218,13 @@ end,
 -- gray image of thinking baby meme
 local oldgetcurrentpool = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append)
-  if next(SMODS.find_card('j_busterb_joker')) then
-    if _type == 'Joker' and _append == 'sho' then
-        local poll = pseudorandom('rarity'..G.GAME.round_resets.ante.._append)
-        if poll < (1/20) then
-            _legendary = true
-        end
+  if _type == 'Joker' and _append == 'sho' and next(SMODS.find_card('j_busterb_joker')) then
+    local poll = pseudorandom('rarity'..G.GAME.round_resets.ante.._append)
+    if poll < (1/20) then
+      _legendary = true
     end
   end
-    return oldgetcurrentpool(_type, _rarity, _legendary, _append)
+  return oldgetcurrentpool(_type, _rarity, _legendary, _append)
 end
 
 local oldcardsetcost = Card.set_cost

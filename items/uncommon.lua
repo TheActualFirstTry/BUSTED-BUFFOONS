@@ -210,24 +210,34 @@ SMODS.Joker {
     pos = { x = 2, y = 1 },
     config = { extra = {  }, immutable = { reduce = 0.80 } },
     attributes = { "all_bb", "bustj", "passive" },
-    loc_vars = function(self, info_queue, card)
-        return { vars = { } }
-    end,
-    calculate = function(self, card, context)
-	end
 }
+
+local function has_active_glados()
+    if not G.jokers or not G.jokers.cards then return false end
+    for _, area in ipairs(SMODS.get_card_areas('jokers')) do
+        if area.cards then
+            for _, joker in pairs(area.cards) do
+                if joker and joker.config.center.key == 'j_busterb_glados' and not joker.debuff then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
 
 local oldevalcard = eval_card
 function eval_card(card, context)
     if not card:can_calculate(context.ignore_debuff, context.remove_playing_cards or context.joker_type_destroyed) then return oldevalcard(card, context) end
     local oldhandsplayed, oldhandsleft
-    if next((SMODS.find_card('j_busterb_glados'))) then
+    local has_glados = has_active_glados()
+    if has_glados then
         oldhandsplayed, oldhandsleft = G.GAME.current_round.hands_played, G.GAME.current_round.hands_left
         G.GAME.current_round.hands_played = 0
         G.GAME.current_round.hands_left = 0
     end
     local g, post = oldevalcard(card, context)
-    if next((SMODS.find_card('j_busterb_glados'))) then
+    if has_glados then
         G.GAME.current_round.hands_played = oldhandsplayed
         G.GAME.current_round.hands_left = oldhandsleft
     end

@@ -102,116 +102,66 @@ end
 
 
 --I STEALED FROM UNIK'S MOD, ENTROPY AND ISOTYPICAL'S JUNKYARD
+local function single_action_button(label, scale, minw, minh, colour, button)
+    return {
+        n = G.UIT.ROOT,
+        config = { padding = 0, colour = G.C.CLEAR },
+        nodes = {
+            {
+                n = G.UIT.C,
+                config = { minw = 1, minh = 1, padding = 0.1, align = 'cm', colour = G.C.CLEAR },
+                nodes = {
+                    {
+                        n = G.UIT.R,
+                        config = { minw = 1, minh = 0.5, padding = 0.01, align = 'cl', colour = G.C.CLEAR, button = button, r = 0.1 },
+                        nodes = {
+                            UIBox_button { label = { label }, scale = scale, minw = minw, minh = minh, colour = colour, r = 0.1, button = button }
+                        }
+                    },
+                }
+            },
+        }
+    }
+end
+
+local function gaia_buttons()
+    local buttons = {
+        { label = "Joker", button = 'gaiajoker' },
+        { label = "Consumable", button = 'gaiaconsumable' },
+        { label = "Booster", button = 'gaiabooster' },
+        { label = "Voucher", button = 'gaiavoucher' },
+        { label = "Ability", button = 'gaiaability' },
+    }
+    local nodes = {}
+    for i = 1, #buttons do
+        local button = buttons[i]
+        nodes[i] = {
+            n = G.UIT.R,
+            config = { minw = 1, minh = 0.5, padding = 0.01, align = 'cl', colour = G.C.CLEAR, button = button.button, r = 0.1 },
+            nodes = {
+                UIBox_button { label = { button.label }, scale = 0.4, minw = 2, minh = 0.5, colour = HEX('3f3f3f'), text_colour = HEX('1ac282'), r = 0.1, button = button.button }
+            }
+        }
+    end
+    return {
+        n = G.UIT.ROOT,
+        config = { padding = 0, colour = G.C.CLEAR },
+        nodes = {
+            {
+                n = G.UIT.C,
+                config = { minw = 1, minh = 1, padding = 0.1, align = 'cm', colour = G.C.CLEAR },
+                nodes = nodes
+            },
+        }
+    }
+end
+
 ooobuttons = Card.highlight
 function Card:highlight(is_highlighted)
     ooobuttons(self, is_highlighted)
-    asc = {
-        n = G.UIT.ROOT,
-        config = { padding = 0, colour = G.C.CLEAR },
-        nodes = {
-            {
-                n = G.UIT.C,
-                config = { minw = 1, minh = 1, padding = 0.1, align = 'cm', colour = G.C.CLEAR },
-                nodes = {
-                    {
-                        n = G.UIT.R,
-                        config = { minw = 1, minh = 0.5, padding = 0.01, align = 'cl', colour = G.C.CLEAR, button = 'universaljokeruse', r = 0.1 },
-                        nodes = {
-                            UIBox_button { label = { "Spend" }, scale = 0.4, minw = 1.3, minh = 0.7, colour = G.C.MONEY, r = 0.1, button = 'universaljokeruse' }
-                        }
-                    },
-                }
-            },
-        }
-    }
-    pino = {
-        n = G.UIT.ROOT,
-        config = { padding = 0, colour = G.C.CLEAR },
-        nodes = {
-            {
-                n = G.UIT.C,
-                config = { minw = 1, minh = 1, padding = 0.1, align = 'cm', colour = G.C.CLEAR },
-                nodes = {
-                    {
-                        n = G.UIT.R,
-                        config = { minw = 1, minh = 0.5, padding = 0.01, align = 'cl', colour = G.C.CLEAR, button = 'pinobuy', r = 0.1 },
-                        nodes = {
-                            UIBox_button { label = { "Buy a Pizza" }, scale = 0.4, minw = 1.3, minh = 0.7, colour = G.C.GREEN, r = 0.1, button = 'pinobuy' }
-                        }
-                    },
-                }
-            },
-        }
-    }
-    deckthing = {
-        n = G.UIT.ROOT,
-        config = { padding = 0, colour = G.C.CLEAR },
-        nodes = {
-            {
-                n = G.UIT.C,
-                config = { minw = 1, minh = 1, padding = 0.1, align = 'cm', colour = G.C.CLEAR },
-                nodes = {
-                    {
-                        n = G.UIT.R,
-                        config = { minw = 1, minh = 0.5, padding = 0.01, align = 'cl', colour = G.C.CLEAR, button = 'cainebutton', r = 0.1 },
-                        nodes = {
-                            UIBox_button { label = { "REDEEM" }, scale = 0.5, minw = 1.3, minh = 0.7, colour = SMODS.Gradients["busterb_grand"], r = 0.1, button = 'cainebutton' }
-                        }
-                    },
-                }
-            },
-        }
-    }
-    gaia = {
-        n = G.UIT.ROOT,
-        config = { padding = 0, colour = G.C.CLEAR },
-        nodes = {
-            {
-                n = G.UIT.C,
-                config = { minw = 1, minh = 1, padding = 0.1, align = 'cm', colour = G.C.CLEAR },
-                nodes = {
-                    {
-                        n = G.UIT.R,
-                        config = { minw = 1, minh = 0.5, padding = 0.01, align = 'cl', colour = G.C.CLEAR, button = 'gaiajoker', r = 0.1 },
-                        nodes = {
-                            UIBox_button { label = { "Joker" }, scale = 0.4, minw = 2, minh = 0.5, colour = HEX('3f3f3f'), text_colour = HEX('1ac282'), r = 0.1, button = 'gaiajoker' }
-                        }
-                    },
-                    {
-                        n = G.UIT.R,
-                        config = { minw = 1, minh = 0.5, padding = 0.01, align = 'cl', colour = G.C.CLEAR, button = 'gaiaconsumable', r = 0.1 },
-                        nodes = {
-                            UIBox_button { label = { "Consumable" }, scale = 0.4, minw = 2, minh = 0.5, colour = HEX('3f3f3f'), text_colour = HEX('1ac282'), r = 0.1, button = 'gaiaconsumable' }
-                        }
-                    },
-                    {
-                        n = G.UIT.R,
-                        config = { minw = 1, minh = 0.5, padding = 0.01, align = 'cl', colour = G.C.CLEAR, button = 'gaiabooster', r = 0.1 },
-                        nodes = {
-                            UIBox_button { label = { "Booster" }, scale = 0.4, minw = 2, minh = 0.5, colour = HEX('3f3f3f'), text_colour = HEX('1ac282'), r = 0.1, button = 'gaiabooster' }
-                        }
-                    },
-                    {
-                        n = G.UIT.R,
-                        config = { minw = 1, minh = 0.5, padding = 0.01, align = 'cl', colour = G.C.CLEAR, button = 'gaiavoucher', r = 0.1 },
-                        nodes = {
-                            UIBox_button { label = { "Voucher" }, scale = 0.4, minw = 2, minh = 0.5, colour = HEX('3f3f3f'), text_colour = HEX('1ac282'), r = 0.1, button = 'gaiavoucher' }
-                        }
-                    },
-                    {
-                        n = G.UIT.R,
-                        config = { minw = 1, minh = 0.5, padding = 0.01, align = 'cl', colour = G.C.CLEAR, button = 'gaiaability', r = 0.1 },
-                        nodes = {
-                            UIBox_button { label = { "Ability" }, scale = 0.4, minw = 2, minh = 0.5, colour = HEX('3f3f3f'), text_colour = HEX('1ac282'), r = 0.1, button = 'gaiaability' }
-                        }
-                    },
-                }
-            },
-        }
-    }
     if self.highlighted and self.config.center.gaia == true and not self.ability.extra.to_copy then
         self.children.love = UIBox({
-            definition = gaia,
+            definition = gaia_buttons(),
             config = {
                 parent = self,
                 align = 'cm',
@@ -225,7 +175,7 @@ function Card:highlight(is_highlighted)
     end
     if self.highlighted and self.config.center.pino == true and not self.ability.extra.to_copy then
         self.children.love = UIBox({
-            definition = pino,
+            definition = single_action_button("Buy a Pizza", 0.4, 1.3, 0.7, G.C.GREEN, 'pinobuy'),
             config = {
                 parent = self,
                 align = 'cm',
@@ -239,7 +189,7 @@ function Card:highlight(is_highlighted)
     end
     if self.highlighted and self.config.center.caine == true and not self.ability.extra.to_copy then
         self.children.love = UIBox({
-            definition = deckthing,
+            definition = single_action_button("REDEEM", 0.5, 1.3, 0.7, SMODS.Gradients["busterb_grand"], 'cainebutton'),
             config = {
                 parent = self,
                 align = 'cm',

@@ -524,6 +524,7 @@ SMODS.Joker {
         return { vars = { card.ability.extra.asc, most_played, card.ability.immutable.rounds, card.ability.immutable.total_rounds } }
     end,
     calculate = function(self, card, context)
+                    if context.end_of_round and context.main_eval then
             local _handname, _played = 'High Card', -1
             for hand_key, hand in pairs(G.GAME.hands) do
                 if hand.played > _played then
@@ -532,7 +533,6 @@ SMODS.Joker {
                 end
             end
             local most_played = _handname
-                    if context.end_of_round and context.main_eval then
 --            SMODS.calculate_effect({ message = card.ability.immutable.roll_rounds .."/".. card.ability.immutable.total_rounds , colour = G.C.FILTER}, card)
             SMODS.scale_card(card, {
                 ref_table = card.ability.immutable,
@@ -642,9 +642,12 @@ end,
 local is_suit_ref = Card.is_suit
 Card.is_suit = function(self, suit, bypass_debuff, flush_calc, ...)
   local ret = is_suit_ref(self, suit, bypass_debuff, flush_calc, ...)
-  return (suit == 'Clubs' or suit == 'Spades')
-      and (flush_calc or (not self.debuff or bypass_debuff))
-      and next(SMODS.find_card( "j_busterb_lancer" ))
+  if ret
+      or (suit ~= 'Clubs' and suit ~= 'Spades')
+      or not (flush_calc or not self.debuff or bypass_debuff) then
+    return ret
+  end
+  return next(SMODS.find_card("j_busterb_lancer"))
       and SMODS.has_enhancement(self, 'm_stone')
       or ret
 end
