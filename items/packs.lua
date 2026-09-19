@@ -1,12 +1,6 @@
-SMODS.Atlas {
-    key = "inf_packs",
-    path = "infpacks.png",
-    px = 71,
-    py = 95
-}
 SMODS.Booster {
     key = 'inf_pack_1',
-    atlas = 'inf_packs', 
+    atlas = 'a_pack',
     pos = { x = 0, y = 0 },
     pools = {["inf_packs"] = true, ["booster"] = true},
     discovered = true,
@@ -33,6 +27,10 @@ SMODS.Booster {
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.choose, card.ability.extra, colours = {HEX('E36956')} } }
     end,
+    ease_background_colour = function(self)
+		ease_colour(HEX("272736"), HEX("3f3f3f"))
+		ease_background_colour({ new_colour = HEX("272736"), special_colour = HEX("3f3f3f"), contrast = 2 })
+	end,
 
     weight = 1,
     cost = 4,
@@ -40,7 +38,6 @@ SMODS.Booster {
     
 
     create_card = function(self, card, i)
-        ease_background_colour(HEX("272736"))
         return SMODS.create_card({
             set = "Infinity",
                 area = G.pack_cards,
@@ -55,7 +52,7 @@ SMODS.Booster {
 
 SMODS.Booster {
     key = 'inf_pack_2',
-    atlas = 'inf_packs', 
+    atlas = 'a_pack', 
     pos = { x = 1, y = 0 },
     pools = {["inf_packs"] = true, ["booster"] = true},
     discovered = true,
@@ -86,10 +83,13 @@ SMODS.Booster {
     weight = 1,
     cost = 4,
     kind = "Infinity",
+    ease_background_colour = function(self)
+		ease_colour(HEX("272736"), HEX("3f3f3f"))
+		ease_background_colour({ new_colour = HEX("272736"), special_colour = HEX("3f3f3f"), contrast = 2 })
+	end,
 
 
     create_card = function(self, card, i)
-        ease_background_colour(HEX("272736"))
         return SMODS.create_card({
             set = "Infinity",
                 area = G.pack_cards,
@@ -104,7 +104,7 @@ SMODS.Booster {
 
 SMODS.Booster {
     key = 'inf_pack_j',
-    atlas = 'inf_packs', 
+    atlas = 'a_pack', 
     pos = { x = 2, y = 0 },
     pools = {["inf_packs"] = true, ["booster"] = true},
     discovered = true,
@@ -135,10 +135,13 @@ SMODS.Booster {
     weight = 1,
     cost = 6,
     kind = "Infinity",
+    ease_background_colour = function(self)
+		ease_colour(HEX("272736"), HEX("3f3f3f"))
+		ease_background_colour({ new_colour = HEX("272736"), special_colour = HEX("3f3f3f"), contrast = 2 })
+	end,
 
 
     create_card = function(self, card, i)
-        ease_background_colour(HEX("272736"))
         return SMODS.create_card({
             set = "Infinity",
                 area = G.pack_cards,
@@ -153,7 +156,7 @@ SMODS.Booster {
 
 SMODS.Booster {
     key = 'inf_pack_m',
-    atlas = 'inf_packs', 
+    atlas = 'a_pack', 
     pos = { x = 3, y = 0 },
     pools = {["inf_packs"] = true, ["booster"] = true},
     discovered = true,
@@ -184,10 +187,13 @@ SMODS.Booster {
     weight = 1,
     cost = 8,
     kind = "Infinity",
+    ease_background_colour = function(self)
+		ease_colour(HEX("272736"), HEX("3f3f3f"))
+		ease_background_colour({ new_colour = HEX("272736"), special_colour = HEX("3f3f3f"), contrast = 2 })
+	end,
 
 
     create_card = function(self, card, i)
-        ease_background_colour(HEX("272736"))
         return SMODS.create_card({
             set = "Infinity",
                 area = G.pack_cards,
@@ -202,16 +208,10 @@ SMODS.Booster {
 
 
 
-SMODS.Atlas {
-    key = "boxes",
-    path = "Pizzabox.png",
-    px = 71,
-    py = 95
-}
 SMODS.Booster {
     key = 'pizzabox1',
-    atlas = 'boxes', 
-    pos = { x = 0, y = 0 },
+    atlas = 'a_pack', 
+    pos = { x = 4, y = 1 },
     pools = {["pizzaboxes"] = true, ["booster"] = true},
     discovered = true,
     disable_shine = true,
@@ -262,8 +262,8 @@ SMODS.Booster {
 
 SMODS.Booster {
     key = 'pizzabox2',
-    atlas = 'boxes', 
-    pos = { x = 1, y = 0 },
+    atlas = 'a_pack', 
+    pos = { x = 5, y = 1 },
     pools = {["pizzaboxes"] = true, ["booster"] = true},
     discovered = true,
     disable_shine = true,
@@ -314,8 +314,8 @@ SMODS.Booster {
 }
 SMODS.Booster {
     key = 'jumbo_pizzabox',
-    atlas = 'boxes', 
-    pos = { x = 2, y = 0 },
+    atlas = 'a_pack', 
+    pos = { x = 6, y = 1 },
     pools = {["pizzaboxes"] = true, ["booster"] = true},
     discovered = true,
     disable_shine = true,
@@ -365,8 +365,8 @@ SMODS.Booster {
 }
 SMODS.Booster {
     key = 'mega_pizzabox',
-    atlas = 'boxes', 
-    pos = { x = 3, y = 0 },
+    atlas = 'a_pack', 
+    pos = { x = 7, y = 1 },
     pools = {["pizzaboxes"] = true, ["booster"] = true},
     discovered = true,
     disable_shine = true,
@@ -417,18 +417,12 @@ SMODS.Booster {
     in_pool = function() return true end
 }
 
-SMODS.Atlas{
-    key = "Gem",
-    path = "Gem.png",
-    px = 71,
-    py = 95
-}
 SMODS.Booster{
     key = "gem",
 	kind = "Spectral",
 	no_doe = true,
-	atlas = "Gem",
-	pos = { x = 0, y = 0 },
+	atlas = 'a_pack',
+	pos = { x = 8, y = 0 },
 	config = { extra = 2, choose = 1 },
 	cost = -math.huge,
 	weight = 0,
@@ -490,22 +484,10 @@ function Card:open()
 end
 --
 
-SMODS.Atlas {
-    key = "bbpack1",
-    path = "bbp1.png",
-    px = 71,
-    py = 95
-}
-SMODS.Atlas {
-    key = "bbpack2",
-    path = "bbp2.png",
-    px = 71,
-    py = 95
-}
 SMODS.Booster {
     key = 'bbpack_1',
-    atlas = 'bbpack1', 
-    pos = { x = 0, y = 0 },
+    atlas = 'a_pack', 
+    pos = { x = 0, y = 1 },
     pools = {["bust_packs"] = true, ["booster"] = true},
     discovered = true,
     particles = function(self)
@@ -525,15 +507,15 @@ SMODS.Booster {
     end,
     draw_hand = false,
     config = {
-        extra = 10,
-        choose = 2, 
+        extra = 2,
+        choose = 1, 
     },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.choose, card.ability.extra, colours = {HEX('009cfd')} } }
     end,
 
     weight = 1,
-    cost = 10,
+    cost = 8,
     kind = "Joker",
 
             ease_background_colour = function()
@@ -550,7 +532,7 @@ SMODS.Booster {
 
     create_card = function(self, card, i)
         return SMODS.create_card({
-                attributes = { "bustj" },
+                attributes = { "bustb_s" },
                 rarity = false,
                 area = G.pack_cards,
                 skip_materialize = true,
@@ -562,8 +544,8 @@ SMODS.Booster {
 
 SMODS.Booster {
     key = 'bbpack_2',
-    atlas = 'bbpack2', 
-    pos = { x = 0, y = 0 },
+    atlas = 'a_pack', 
+    pos = { x = 1, y = 1 },
     pools = {["bust_packs"] = true, ["booster"] = true},
     discovered = true,
     particles = function(self)
@@ -583,7 +565,127 @@ SMODS.Booster {
     end,
     draw_hand = false,
     config = {
-        extra = 10,
+        extra = 2,
+        choose = 1, 
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.choose, card.ability.extra, colours = {HEX('009cfd')} } }
+    end,
+
+    weight = 1,
+    cost = 8,
+    kind = "Joker",
+
+                ease_background_colour = function()
+            ease_colour(G.C.DYN_UI.MAIN, SMODS.Gradients["busterb_grand"])
+            ease_background_colour({new_colour = SMODS.Gradients["busterb_grand"], special_colour = darken(G.C.BLACK, 0.2), contrast = 1.5})
+        end,
+        update_pack = function(self, ...)
+            SMODS.Booster.update_pack(self, ...)
+            if G.STATE_COMPLETE then
+                self:ease_background_colour()
+                if G.booster_pack_sparkles then G.booster_pack_sparkles.colours = {lighten(SMODS.Gradients["busterb_grand"], 0.1), SMODS.Gradients["busterb_grand"], darken(SMODS.Gradients["busterb_grand"], 0.1)} end
+            end
+        end,
+
+
+    create_card = function(self, card, i)
+        return SMODS.create_card({
+                attributes = { "bustb_s" },
+                rarity = false,
+                area = G.pack_cards,
+                skip_materialize = true,
+                soulable = true,
+            })
+    end,
+    in_pool = function() return true end
+}
+
+
+
+SMODS.Booster {
+    key = 'bbpack_3',
+    atlas = 'a_pack', 
+    pos = { x = 2, y = 1 },
+    pools = {["bust_packs"] = true, ["booster"] = true},
+    discovered = true,
+    particles = function(self)
+        G.booster_pack_sparkles = Particles(1, 1, 0, 0, {
+            timer = 0.015,
+            scale = 0.2,
+            initialize = true,
+            lifespan = 1,
+            speed = 1.1,
+            padding = -1,
+            attach = G.ROOM_ATTACH,
+            colours = { G.C.WHITE, lighten(HEX('3f3f3f'), 0.4), lighten(HEX("009cfd"), 0.2), lighten(HEX('fd5f55'), 0.2) },
+            fill = true
+        })
+        G.booster_pack_sparkles.fade_alpha = 1
+        G.booster_pack_sparkles:fade(1, 0)
+    end,
+    draw_hand = false,
+    config = {
+        extra = 4,
+        choose = 1, 
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.choose, card.ability.extra, colours = {HEX('009cfd')} } }
+    end,
+
+    weight = 1,
+    cost = 25,
+    kind = "Joker",
+
+                ease_background_colour = function()
+            ease_colour(G.C.DYN_UI.MAIN, SMODS.Gradients["busterb_grand"])
+            ease_background_colour({new_colour = SMODS.Gradients["busterb_grand"], special_colour = darken(G.C.BLACK, 0.2), contrast = 1.5})
+        end,
+        update_pack = function(self, ...)
+            SMODS.Booster.update_pack(self, ...)
+            if G.STATE_COMPLETE then
+                self:ease_background_colour()
+                if G.booster_pack_sparkles then G.booster_pack_sparkles.colours = {lighten(SMODS.Gradients["busterb_grand"], 0.1), SMODS.Gradients["busterb_grand"], darken(SMODS.Gradients["busterb_grand"], 0.1)} end
+            end
+        end,
+
+
+    create_card = function(self, card, i)
+        return SMODS.create_card({
+                attributes = { "bustb_d" },
+                rarity = false,
+                area = G.pack_cards,
+                skip_materialize = true,
+                soulable = true,
+            })
+    end,
+    in_pool = function() return true end
+}
+
+SMODS.Booster {
+    key = 'bbpack_4',
+    atlas = 'a_pack', 
+    pos = { x = 3, y = 1 },
+    pools = {["bust_packs"] = true, ["booster"] = true},
+    discovered = true,
+    particles = function(self)
+        G.booster_pack_sparkles = Particles(1, 1, 0, 0, {
+            timer = 0.015,
+            scale = 0.2,
+            initialize = true,
+            lifespan = 1,
+            speed = 1.1,
+            padding = -1,
+            attach = G.ROOM_ATTACH,
+            colours = { G.C.WHITE, lighten(HEX('3f3f3f'), 0.4), lighten(HEX("009cfd"), 0.2), lighten(HEX('fd5f55'), 0.2) },
+            fill = true
+        })
+        G.booster_pack_sparkles.fade_alpha = 1
+        G.booster_pack_sparkles:fade(1, 0)
+    end,
+    draw_hand = false,
+    config = {
+        extra = 4,
         choose = 2, 
     },
     loc_vars = function(self, info_queue, card)
@@ -591,7 +693,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 10,
+    cost = 50,
     kind = "Joker",
 
                 ease_background_colour = function()

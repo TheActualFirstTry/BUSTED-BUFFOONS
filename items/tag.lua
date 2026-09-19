@@ -1,14 +1,14 @@
 SMODS.Atlas{
-    key = "dtag",
-    path = "dtag.png",
+    key = "tag",
+    path = "Tags.png",
     px = 34,
     py = 34
 }
 
 SMODS.Tag{
 	key = "dreamy",
-	atlas = "dtag",
-	pos = { x = 0, y = 0 },
+	atlas = "tag",
+	pos = { x = 1, y = 0 },
 	min_ante = 2,
 	config = { type = "store_joker_create" },
 	apply = function(self, tag, context)
@@ -39,16 +39,10 @@ SMODS.Tag{
 		end
 	end,
 }
-SMODS.Atlas{
-    key = "Itag",
-    path = "Itag.png",
-    px = 34,
-    py = 34
-}
 SMODS.Tag {
     key = "immortal",
-    atlas = "Itag",
-    pos = { x = 0, y = 0 },
+    atlas = "tag",
+    pos = { x = 2, y = 0 },
     loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_busterb_inf_pack_1
 		return { vars = {} }
@@ -75,15 +69,69 @@ SMODS.Tag {
         end
     end
 }
-SMODS.Atlas{
-    key = "Ptag",
-    path = "Ptag.png",
-    px = 34,
-    py = 34
+SMODS.Tag {
+    key = "cracked",
+    atlas = "tag",
+    pos = { x = 4, y = 0 },
+    loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_busterb_s_pack_1
+		return { vars = {} }
+	end,
+    apply = function(self, tag, context)
+        if context.type == 'new_blind_choice' then
+            local lock = tag.ID
+            G.CONTROLLER.locks[lock] = true
+            tag:yep('+', HEX('FFB570'), function()
+                local booster = SMODS.create_card { key = 'p_busterb_s_pack_1', area = G.play }
+                booster.T.x = G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2
+                booster.T.y = G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2
+                booster.T.w = G.CARD_W * 1.27
+                booster.T.h = G.CARD_H * 1.27
+                booster.cost = 0
+                booster.from_tag = true
+                G.FUNCS.use_card({ config = { ref_table = booster } })
+                booster:start_materialize()
+                G.CONTROLLER.locks[lock] = nil
+                return true
+            end)
+            tag.triggered = true
+            return true
+        end
+    end
+}
+SMODS.Tag {
+    key = "busted",
+    atlas = "tag",
+    pos = { x = 5, y = 0 },
+    loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_busterb_bbpack_3
+		return { vars = {} }
+	end,
+    apply = function(self, tag, context)
+        if context.type == 'new_blind_choice' then
+            local lock = tag.ID
+            G.CONTROLLER.locks[lock] = true
+            tag:yep('+', HEX('FFB570'), function()
+                local booster = SMODS.create_card { key = 'p_busterb_bbpack_3', area = G.play }
+                booster.T.x = G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2
+                booster.T.y = G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2
+                booster.T.w = G.CARD_W * 1.27
+                booster.T.h = G.CARD_H * 1.27
+                booster.cost = 0
+                booster.from_tag = true
+                G.FUNCS.use_card({ config = { ref_table = booster } })
+                booster:start_materialize()
+                G.CONTROLLER.locks[lock] = nil
+                return true
+            end)
+            tag.triggered = true
+            return true
+        end
+    end
 }
 SMODS.Tag {
     key = "delivery",
-    atlas = "Ptag",
+    atlas = "tag",
     pos = { x = 0, y = 0 },
     loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_busterb_mega_pizzabox
@@ -111,16 +159,9 @@ SMODS.Tag {
         end
     end
 }
-SMODS.Atlas {
-    key = "Cry",
-    path = "Crine.png",
-    px = 34,
-    py = 34
-}
 SMODS.Tag {
-	order = 13,
-	atlas = "Cry",
-	pos = { x = 0, y = 0 },
+	atlas = "tag",
+	pos = { x = 3, y = 0 },
 	config = { type = "new_blind_choice", odds = 4 },
 	min_ante = 2,
 	key = "crine",
@@ -157,15 +198,9 @@ SMODS.Tag {
 		end
 	end,
 }
-SMODS.Atlas{
-    key =  "rose",
-    path = "Rose.png",
-    px = 34,
-    py = 34
-}
 SMODS.Tag {
-    atlas = "rose",
-	pos = { x = 0, y = 0 },
+    atlas = "tag",
+	pos = { x = 3, y = 4 },
 	config = { type = "new_blind_choice" },
 	key = "rose",
 	loc_vars = function(self, info_queue)
@@ -203,4 +238,47 @@ SMODS.Tag {
 	in_pool = function()
 		return false
 	end,
+}
+SMODS.Tag {
+    key = "boosted",
+    pos = { x = 0, y = 1 },
+	atlas = "tag",
+	apply = function(self, tag, context)
+        if context.type == 'voucher_add' then
+            tag:yep('+', G.C.SECONDARY_SET.Booster, function()
+                local voucher = SMODS.add_booster_to_shop()
+                voucher.from_tag = true
+                return true
+            end)
+            tag.triggered = true
+        end
+    end
+}
+
+SMODS.Tag {
+    key = "pepsi",
+    atlas = "tag",
+    pos = { x = 1, y = 1 },
+    config = { spawn_jokers = 1 },
+    loc_vars = function(self, info_queue, tag)
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_busterb_pepsiman
+        return { vars = { tag.config.spawn_jokers } }
+    end,
+    apply = function(self, tag, context)
+        if context.type == 'immediate' then
+            local lock = tag.ID
+            G.CONTROLLER.locks[lock] = true
+            tag:yep('+', G.C.PURPLE, function()
+                for _ = 1, tag.config.spawn_jokers do
+                        SMODS.add_card {
+							key = "j_busterb_pepsiman",
+                        }
+                end
+                G.CONTROLLER.locks[lock] = nil
+                return true
+            end)
+            tag.triggered = true
+            return true
+        end
+    end
 }

@@ -2,12 +2,13 @@ SMODS.Enhancement {
     key = 'electric',
     atlas = "non",
     pos = { x = 0, y = 9 },
+    demicolon_compat = true,
     config = { extra = { mult = 1, gain = .25 }, immutable = { retrigger_max = 5 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.gain } }
     end,
     calculate = function(self, card, context)
-        if context.cardarea == G.play and context.main_scoring then
+        if context.cardarea == G.play and context.main_scoring or context.forcetrigger then
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "mult",
@@ -34,6 +35,7 @@ SMODS.Enhancement {
     key = 'crystallized',
     atlas = "non",
     pos = { x = 1, y = 9 },
+    demicolon_compat = true,
     config = { Xmult = 2.5, x_chips = 2.5, extra = { odds = 8 } },
     shatters = true,
     loc_vars = function(self, info_queue, card)
@@ -52,59 +54,51 @@ SMODS.Enhancement {
     key = 'nanotech',
     atlas = "non",
     pos = { x = 2, y = 9 },
-    config = { chips = 1, mult = 1 },
+    config = { triggered = false },
+    demicolon_compat = true,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.h_x_chips, card.ability.x_chips } }
+        return { vars = {  } }
     end,
     calculate = function(self, card, context)
-        if (context.pre_discard and context.cardarea == G.hand and card.highlighted) then
-            local nano = pseudorandom(pseudoseed("busterb_nano"), 1, 5)
-            if nano == 1 then
-            for i = 1, 1 do
-            local card = SMODS.add_card{set = "Playing Card"}
-            local edition = SMODS.poll_edition({guaranteed = true, key = "busterb_package"})
-            local enhancement_type = pseudorandom_element({"Enhanced","Enhanced","Enhanced","Joker","Consumeables","Voucher","Booster"}, pseudoseed("package"))
-            local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("package")).key
-            while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] or (enhancement_type == "Joker" and SMODS.Rarities[G.P_CENTERS[enhancement].rarity]
-                and (
-                    SMODS.Rarities[G.P_CENTERS[enhancement].rarity].get_weight
-                    or (SMODS.Rarities[G.P_CENTERS[enhancement].rarity].default_weight and SMODS.Rarities[G.P_CENTERS[enhancement].rarity].default_weight > 0)
-                )) do
-                enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("package")).key
-            end
-            local seal = SMODS.poll_seal{guaranteed = true, key = "package"}
-            card:set_edition(edition)
-            card:set_ability(G.P_CENTERS[enhancement])
-            card:set_seal(seal)
-        end
-        end
-        if nano == 2 then
-            SMODS.add_card{set="Joker",area=G.jokers}
-        end 
-        if nano == 3 then
-            SMODS.add_card{set="Consumeables",area=G.consumeables}
-        end
-        if nano == 4 then
-            SMODS.add_card({set="Booster",area=G.consumeables})
-        end
-        if nano == 5 then
-            SMODS.add_card{set="Voucher",area=G.consumeables}
-        end
-            SMODS.destroy_cards(card)
+        if (context.before and context.cardarea == G.play) or context.forcetrigger then
+            if not card.ability.triggered then
+            card.ability.triggered = true
+            Spectrallib.add_bonus_effect(card, BustB.poll_nano_effect("BustB_effects"))
+                    G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+							attention_text({
+								text = localize("k_upgrade_ex"),
+								scale = 1,
+                                hold = 1.5,
+                                backdrop_colour = G.C.BLACK,
+								colour = G.C.DARK_EDITION,
+								align = 'cm',
+								major = card,
+								offset = {x = 0, y = 0}
+							})
+							play_sound('busterb_cast',1, 0.5)
+							card:juice_up(1, 0.2)
+							return true
+                        end
+				}))   
         end
     end
+end
 }
 
 SMODS.Enhancement {
     key = 'bloodmarked',
     atlas = "non",
     pos = { x = 3, y = 9 },
+    demicolon_compat = true,
     config = { extra = { Emult = 1.5 } , immutable = { } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.Emult } }
     end,
     calculate = function(self, card, context)
-        if context.cardarea == G.play and context.main_scoring then
+        if context.cardarea == G.play and context.main_scoring or context.forcetrigger then
             return { emult = card.ability.extra.Emult }
         end
 		if (context.pre_discard and context.cardarea == G.hand and card.highlighted) then 
@@ -123,7 +117,7 @@ SMODS.Enhancement {
         return { vars = { card.ability.extra.Echips, card.ability.extra.unscore, card.ability.extra.remaining } }
     end,
     calculate = function(self, card, context)
-        if context.main_scoring then
+        if context.main_scoring or context.forcetrigger then
         if context.cardarea == G.play then
             return { echips = card.ability.extra.Echips }
         else
@@ -155,7 +149,7 @@ SMODS.Enhancement {
         return { vars = { c.score,c.chips,c.mult,c.asc } }
     end,
     calculate = function(self, card, context)
-    if context.cardarea == G.play and context.main_scoring then
+    if context.cardarea == G.play and context.main_scoring or context.forcetrigger then
         local c = card.ability
         return { score = c.score, chips = c.chips, mult = c.mult, asc = c.asc }
      end

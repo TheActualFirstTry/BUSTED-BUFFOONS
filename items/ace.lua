@@ -57,7 +57,7 @@ function BustB.busterb_test()
                             n = G.UIT.C,
                             config = { align = 'cm', padding = 0, no_fill = true },
                             nodes = { {
-                                n = G.UIT.T, config = { bond = "Strong", text = localize("k_busterb_back"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true, func = 'set_button_pip' or nil, focus_args = { button = 'back_button' } or nil }
+                                n = G.UIT.T, config = { bond = "Strong", text = localize("k_busterb_back"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true, func = 'set_button_pip' or nil, focus_args = { button = 'b' } or nil }
                             } }
                         } }
                     } }
@@ -72,7 +72,7 @@ function BustB.busterb_test()
                             n = G.UIT.C,
                             config = { align = 'cm', padding = 0, no_fill = true },
                             nodes = { {
-                                n = G.UIT.T, config = { Bond = "Strong", text = localize("k_busterb_enter"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true, func = 'set_button_pip' or nil, focus_args = { button = 'execute_string' } or nil }
+                                n = G.UIT.T, config = { Bond = "Strong", text = localize("k_busterb_enter"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true, func = 'set_button_pip' or nil, focus_args = { button = 'b' } or nil }
                             } }
                         } } 
                     },
@@ -88,7 +88,7 @@ function BustB.busterb_test()
                             n = G.UIT.C,
                             config = { align = 'cm', padding = 0, no_fill = true },
                             nodes = { --[[14]] { --[[15]]
-                                n = G.UIT.T, config = { bond = "Strong", text = localize("k_busterb_help"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true, func = 'set_button_pip' or nil, focus_args = { button = 'busterb_web' } or nil }
+                                n = G.UIT.T, config = { bond = "Strong", text = localize("k_busterb_help"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true, func = 'set_button_pip' or nil, focus_args = { button = 'b' } or nil }
                             } --[[15]] } -- [[14]]
                         } --[[13]] }  --[[12]]
                     }, -- [[11]]
@@ -210,7 +210,7 @@ SMODS.Consumable{
 		G.E_MANAGER:add_event(Event({
             func = function()
 --				G.GAME.dollars = math.abs(G.GAME.dollars) * -1
-				G.GAME.dollars = G.GAME.dollars * -1
+				ease_dollars(-(G.GAME.dollars*2))
                 return true
             end
         }))

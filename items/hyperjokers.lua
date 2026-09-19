@@ -14,10 +14,11 @@ SMODS.Joker {
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
+    demicolon_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    attributes = { "all_bb", "bustj", "xmult", "scaling", "ace", "face", "rank" },
+    attributes = { "bustb_d", "all_bb", "bustj", "xmult", "scaling", "ace", "face", "rank" },
     config = {
         extra = {
             xmult = 6,           
@@ -39,7 +40,7 @@ SMODS.Joker {
     calculate = function(self, card, context)
 
         -- Apply base xmult during main scoring
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
                 Xmult = card.ability.extra.xmult
             }
@@ -136,17 +137,28 @@ SMODS.Joker {
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     pos = { x = 1, y = 0 },
     soul_pos = { x = 1, y = 1 },
-    attributes = { "all_bb", "bustj", "xchips", "scaling", "spectral", "discard" },
+    attributes = { "bustb_d", "all_bb", "bustj", "xchips", "scaling", "spectral", "discard" },
     config = {
         extra = {
             xchips = 1,
-            xchips_mod = 2,
             cards_per_discard = 2
         },
     },
     loc_vars = function(self, info_queue, card)
+        local spec = 1
+        if G.consumeables then
+            for k,v in ipairs(G.consumeables.cards) do
+                if v.config.center.set == "Spectral" then
+                    spec = spec + 1
+                end
+            end
+        else spec = 1 end
         return {
-            vars = { to_big(card.ability.extra.xchips), card.ability.extra.xchips, card.ability.extra.cards_per_discard }
+            vars = { 
+            to_big(card.ability.extra.xchips),
+            card.ability.extra.cards_per_discard,
+            card.ability.extra.xchips*(spec or 1),
+         }
         }
     end,
 calculate = function(self, card, context)
@@ -161,24 +173,22 @@ calculate = function(self, card, context)
             end
         end
         G.GAME.consumeable_buffer = G.GAME.consumeable_buffer - total_created
-        SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "xchips",
-                scalar_value = "xchips_mod",
-                scaling_message = {
-                message = "X" ..(card.ability.extra.xchips + card.ability.extra.xchips_mod).. " Chips",
-                colour = G.C.CHIPS
-            }})
         end
-    if context.joker_main then
-        if to_big(card.ability.extra.xchips) > to_big(1) then
+    if context.joker_main or context.forcetrigger then
+        local spec = 1
+        for k,v in ipairs(G.consumeables.cards) do
+            if v.config.center.set == "Spectral" then
+                spec = spec + 1
+            end
+        end
+        if to_big(card.ability.extra.xchips*spec) > to_big(1) then
             return {
                 message = localize({
                     type = "variable",
                     key = "a_xchips",
-                    vars = { number_format(card.ability.extra.xchips) }
+                    vars = { number_format(card.ability.extra.xchips*spec) }
                 }),
-                xchips = to_big(card.ability.extra.xchips),
+                xchips = to_big(card.ability.extra.xchips*(spec or 1)),
                 sound = "busterb_judgement",
                 colour = G.C.CHIPS,
                 card = card
@@ -202,7 +212,7 @@ SMODS.Joker {
   pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
   pos = { x = 2, y = 0 },
   soul_pos = { x = 2, y = 1 },
-    attributes = { "all_bb", "bustj", "xmult", "scaling", "tarot" },
+    attributes = { "bustb_d", "all_bb", "bustj", "xmult", "scaling", "tarot" },
   config = {
     extra = {
       triggered = false,
@@ -234,14 +244,14 @@ SMODS.Joker {
                 colour = G.C.MULT
             }})
     end
-    if context.joker_main then
+    if context.joker_main or context.forcetrigger then
+        if to_big(card.ability.extra.mult) > to_big(1) then
       return {
-        x_mult = card.ability.extra.xmult,
-        message = "X" .. card.ability.extra.xmult .. "!",
-        colour = G.C.MULT
+        x_mult = card.ability.extra.xmult
       }
     end
   end
+end
 }
 -- Rainbow Dash
 
@@ -250,6 +260,7 @@ SMODS.Joker {
 	atlas = "Atlas_Fantastic",
     unlocked = true,
 	discovered = true,
+    demicolon_compat = true,
     blueprint_compat = true,
     rarity = "busterb_Fantastic",
     cost = 100,
@@ -257,13 +268,35 @@ SMODS.Joker {
     pos = { x = 3, y = 0 },
 	soul_pos = { x = 3, y = 1 },
     config = { extra = { edition = 'e_polychrome', polyapply = true } },
-    attributes = { "all_bb", "bustj", "editions", "retrigger", "modify_card" },
+    attributes = { "bustb_d", "all_bb", "bustj", "editions", "retrigger", "modify_card" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'e_polychrome', set = 'Edition', config = { extra = 1.5 } }
         return { vars = { G.jokers and #G.jokers.cards or 1 } }
     end,
     calculate = function(self, card, context)
-if context.before and G.GAME.current_round.hands_played == 1 then -- or context.after depending on when you want to apply Polychrome
+        if context.forcetrigger then
+        local poly = 0
+            for k, v in ipairs(G.hand.cards) do
+                if v and not (v.edition and v.edition.polychrome) then
+                v:set_edition('e_polychrome', nil, true)
+                poly = poly + 1
+                G.E_MANAGER:add_event(Event({
+                        func = function()
+                            play_sound('polychrome1')
+                            v:juice_up()
+                            return true
+                        end
+                    }))
+            end
+        end
+if poly > 0 then
+                return {
+                    message = "Applied!",
+                    colour = G.C.DARK_EDITION
+                }
+            end
+    end
+    if (context.before and G.GAME.current_round.hands_played == 1) then -- or context.after depending on when you want to apply Polychrome
         local poly = 0
             for k, v in ipairs(context.scoring_hand) do
                 if v and not (v.edition and v.edition.polychrome) then
@@ -303,54 +336,45 @@ SMODS.Joker {
     atlas = "Atlas_Fantastic",
     discovered = true,
     blueprint_compat = true,
+    demicolon_compat = true,
     rarity = "busterb_Fantastic",
     cost = 100,
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     pos = { x = 4, y = 0 },
     soul_pos = { x = 4, y = 1 },
-    attributes = { "all_bb", "bustj", "copying", "scaling" },
+    attributes = { "bustb_d", "all_bb", "bustj", "copying", "scaling" },
     config = {
         extra = { repetitions = 1, morerepeat = 1 },
         immutable = { max_retriggers = 25, morerepeatmax = 5 }
     },
     loc_vars = function(self, info_queue, card)
         if card.area and card.area == G.jokers then
-      local right_joker = nil
-      for i = 1, #G.jokers.cards do
-        if G.jokers.cards[i] == card then
-          right_joker = G.jokers.cards[i + 1]
-        end
-      end
-      local right_compatible = right_joker and right_joker ~= card and right_joker.config.center.blueprint_compat
-
-      local main_end = { {
-        n = G.UIT.C,
-        config = { align = "bm", minh = 0.4 },
-        nodes = { {
-          n = G.UIT.C,
-          config = {
-            ref_table = card,
-            align = "m",
-            colour = right_compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8),
-            r = 0.05,
-            padding = 0.06
-          },
-          nodes = { {
-            n = G.UIT.T,
-            config = {
-              text = ' ' .. localize('k_' .. (right_compatible and 'compatible' or 'incompatible')) .. ' ',
-              colour = G.C.UI.TEXT_LIGHT,
-              scale = 0.32 * 0.8
+            local other_joker
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i + 1] end
+            end
+            local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+            main_end = {
+                {
+                    n = G.UIT.C,
+                    config = { align = "bm", minh = 0.4 },
+                    nodes = {
+                        {
+                            n = G.UIT.C,
+                            config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
+                            nodes = {
+                                { n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+                            }
+                        }
+                    }
+                }
             }
-          } }
-        } }
-      } }
-    end
       return { vars = { 
-            math.min(card.ability.immutable.max_retriggers, card.ability.extra.repetitions),
-            math.min(card.ability.immutable.morerepeatmax, card.ability.extra.morerepeat)
+            number_format(math.min(card.ability.immutable.max_retriggers, card.ability.extra.repetitions) or 0),
+            number_format(math.min(card.ability.immutable.morerepeatmax, card.ability.extra.morerepeat) or 0)
          },
       main_end = main_end }
+    end
 end,
     calculate = function(self, card, context)
         if context.ante_change then
@@ -390,8 +414,9 @@ SMODS.Joker {
     cost = 100,
     unlocked = true,
     blueprint_compat = true,
+    demicolon_compat = true,
     eternal_compat = true,
-    attributes = { "all_bb", "bustj", "xmult", "scaling", "xchips", "economy", "clubs", "suit" },
+    attributes = { "bustb_d", "all_bb", "bustj", "xmult", "scaling", "xchips", "economy", "clubs", "suit" },
     config = {
         extra = {
             xchips_mod = 2,
@@ -455,7 +480,7 @@ SMODS.Joker {
                 ease_dollars(card.ability.extra.dolar)
             end
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
                 x_chips = card.ability.extra.xchips,
                 x_mult = card.ability.extra.xmult,
@@ -500,11 +525,12 @@ SMODS.Joker {
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
+    demicolon_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 2 },
     soul_pos = { x = 1, y = 3 },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
-    attributes = { "all_bb", "bustj", "asc", "economy" },
+    attributes = { "bustb_d", "all_bb", "bustj", "asc", "economy" },
     config = {
         extra = {
             xasc = 6,         
@@ -518,7 +544,7 @@ SMODS.Joker {
     end,
 
     calculate = function(self, card, context)
-        if context.joker_main and G.GAME.dollars > 1 then
+        if (context.joker_main or context.forcetrigger) and G.GAME.dollars > 1 then
             return {
                 asc = (G.GAME.dollars / 2),
                 message = "Destroy!",
@@ -566,10 +592,11 @@ SMODS.Joker {
     discovered = true,
     unlocked = true,
     eternal_compat = true,
+    demicolon_compat = true,
     blueprint_compat = true,
     pos = { x = 2, y = 2 },
     soul_pos = { x = 2, y = 3 },
-    attributes = { "all_bb", "bustj", "spectral", "planet", "hand_type", "boss_blind", "scaling", "xmult", "xchips" },
+    attributes = { "bustb_d", "all_bb", "bustj", "spectral", "planet", "hand_type", "boss_blind", "scaling", "xmult", "xchips" },
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     config = {
         extra = {
@@ -604,13 +631,13 @@ SMODS.Joker {
                 sound = "busterb_lovin"
             }})
         end
-        if context.setting_blind and context.main_eval and G.GAME.blind.boss and not context.repetition then
+        if (context.setting_blind and context.main_eval and G.GAME.blind.boss and not context.repetition) or context.forcetrigger then
     G.E_MANAGER:add_event(Event({
                 trigger = 'after',
                 delay = 0.2,
                 func = function()
                     G.GAME.blind:disable()
-                    play_sound('busterb_laugh')
+                    play_sound('busterb_laugh', 1, 0.5)
                     card:juice_up(0.3, 0.5)
                     return true
                 end
@@ -705,7 +732,7 @@ SMODS.Joker {
     key = "garnet",
     atlas = "Atlas_Fantastic",
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
-    attributes = { "all_bb", "bustj", "xmult", "xchips", "scaling", "hearts", "clubs", "suit" },
+    attributes = { "bustb_d", "all_bb", "bustj", "xmult", "xchips", "scaling", "hearts", "clubs", "suit" },
     config = {
         extra = {
             Sapphire = 1.5,
@@ -727,6 +754,7 @@ SMODS.Joker {
     rarity = "busterb_Fantastic",
     blueprint_compat = true,
     eternal_compat = true,
+    demicolon_compat = true,
     unlocked = true,
     discovered = true,
 
@@ -736,6 +764,22 @@ SMODS.Joker {
 
 
     calculate = function(self, card, context)
+        if context.forcetrigger then
+            card.ability.extra.Sapphire = card.ability.extra.Sapphire * card.ability.extra.Garnet
+            card.ability.extra.Ruby = card.ability.extra.Ruby * card.ability.extra.Garnet
+			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex"), colour = G.C.PURPLE })
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    card:juice_up(0.5, 0.5)
+                    return true
+                end
+            }))
+            return {
+            xchips = card.ability.extra.Sapphire,
+            xmult = card.ability.extra.Ruby,
+			card = card
+            }
+        end
     if context.individual and context.cardarea == G.play and not context.other_card.debuff then
         if context.other_card:is_suit("Clubs") then
                             SMODS.scale_card(card, {
@@ -758,7 +802,7 @@ SMODS.Joker {
             }})
         end
     end
-    if context.joker_main and context.cardarea == G.jokers then
+    if context.joker_main then
         local has_clubs = false
         local has_hearts = false
         for _, c in ipairs(context.full_hand) do
@@ -797,10 +841,11 @@ SMODS.Joker {
     cost = 100,
     rarity = "busterb_Fantastic",
     blueprint_compat = true,
+    demicolon_compat = true,
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "all_bb", "bustj", "modify_card", "scaling", "asc", "chance", "editions" },
+    attributes = { "bustb_d", "all_bb", "bustj", "modify_card", "scaling", "asc", "chance", "editions" },
     config = {
         extra = {
             SA2Asc = 11,
@@ -826,8 +871,12 @@ SMODS.Joker {
     end,
 
     calculate = function(self, card, context)
+        if context.forcetrigger then
+            for k, v in ipairs (G.hand.cards) do
+                v:set_edition({polychrome = true}, true)
+            end
+        end
         if context.individual and context.cardarea == G.play and not context.blueprint then
-
             local is_polychrome = context.other_card.edition and context.other_card.edition.polychrome
             if is_polychrome then
                 SMODS.scale_card(card, {
@@ -871,6 +920,7 @@ SMODS.Joker {
     cost = 20,
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     blueprint_compat = true,
+    demicolon_compat = true,
     perishable_compat = false,
     discovered = true,
     unlocked = true,
@@ -883,7 +933,7 @@ SMODS.Joker {
         x = 0,
         y = 5
     },
-    attributes = { "all_bb", "bustj", "emult", "scaling" },
+    attributes = { "bustb_d", "all_bb", "bustj", "emult", "scaling" },
     config = {
         extra = {
             xmult = 1,
@@ -902,13 +952,13 @@ SMODS.Joker {
     
     -- Check for discards, played cards, scored cards, held cards, used discards, and played hands to add to hypermult
     calculate = function(self, card, context)
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
                 emult = card.ability.extra.xmult,
                 card = card
             }
         end
-        if context.setting_blind and not context.blueprint then
+        if (context.setting_blind and not context.blueprint) or context.forcetrigger then
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "xmult",
@@ -1086,10 +1136,11 @@ SMODS.Joker {
     rarity = "busterb_Fantastic",
     cost = 100,
     blueprint_compat = true,
+    demicolon_compat = true,
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "all_bb", "bustj", "joker_slot", "economy", "vouchers" },
+    attributes = { "bustb_d", "all_bb", "bustj", "joker_slot", "economy", "vouchers" },
     config = {
         extra = {
             joker_slots = 2,
@@ -1116,7 +1167,7 @@ SMODS.Joker {
                 card.ability.extra.triggered = true
         end
         -- Buying a voucher increases moneys and joker slots
-        if context.buying_card and context.card.ability.set == "Voucher" then
+        if (context.buying_card and context.card.ability.set == "Voucher") or context.forcetrigger then
             G.jokers:change_size(math.min(100, card.ability.extra.joker_slots))
             G.consumeables:change_size(math.min(100, card.ability.extra.joker_slots))
             card.ability.extra.dollars = lenient_bignum(card.ability.extra.dollars * card.ability.extra.money_multiplier)
@@ -1143,7 +1194,7 @@ SMODS.Joker {
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "all_bb", "bustj", "consumeables", "planet", "tarot", "spectral", "generation" },
+    attributes = { "bustb_d", "all_bb", "bustj", "consumeables", "planet", "tarot", "spectral", "generation" },
     loc_vars = function(self, info_queue, card)
 		return { vars = { colours = {HEX('b00b69')} } }
     end,
@@ -1181,7 +1232,7 @@ SMODS.Joker{
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "all_bb", "bustj", "retrigger" },
+    attributes = { "bustb_d", "all_bb", "bustj", "retrigger" },
     loc_vars = function(self, info_queue, card)
         return { vars = { 
         } }
@@ -1229,7 +1280,7 @@ SMODS.Joker{
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "all_bb", "bustj","destroy_card", "generation"},
+    attributes = { "bustb_d", "all_bb", "bustj","destroy_card", "generation"},
     loc_vars = function(self, info_queue, card)
 		return { vars = { " ", colours = { SMODS.Gradients["busterb_epileptic"] } } }
     end,

@@ -369,7 +369,7 @@ SMODS.Voucher {
         }))
         G.E_MANAGER:add_event(Event({
             func = function()
-                G.GAME.win_ante = G.GAME.win_ante * card.ability.immutable.win_ante
+                ease_x_ante_win(card.ability.immutable.win_ante)
                 play_sound("slib_eblindsize", 1)
 					attention_text({
 						scale = 2,
@@ -424,7 +424,7 @@ SMODS.Voucher {
         }))
         G.E_MANAGER:add_event(Event({
             func = function()
-                G.GAME.win_ante = G.GAME.win_ante * card.ability.immutable.win_ante
+                ease_x_ante_win(card.ability.immutable.win_ante)
                 play_sound("slib_eblindsize", 1)
 					attention_text({
 						scale = 2,

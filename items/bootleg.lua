@@ -1,11 +1,4 @@
 SMODS.Atlas {
-    key = "s_packs",
-    path = "bootpacks.png",
-    px = 71,
-    py = 95
-}
-
-SMODS.Atlas {
     key = "a_boot",
     path = "boot.png",
     px = 71,
@@ -266,12 +259,14 @@ use = function(self, card, area, copier)
                     delay = 0.1,
                     func = function()
                         local total = 0
-                    for k, v in pairs(SMODS.Sticker.obj_table) do
-                        if G.jokers.highlighted[i].ability and G.jokers.highlighted[i].ability[k] then
-                            G.jokers.highlighted[i]:remove_sticker(k)
-                            total = total + 1
-                        end
-                end
+                            for k, v in pairs(SMODS.Sticker.obj_table) do
+                                if --[[G.jokers.highlighted[i].ability and]] G.jokers.highlighted[i].ability[k] then
+                                    G.jokers.highlighted[i]:remove_sticker(k)
+--                                    G.jokers.highlighted[i]:set_weak(false)
+--                                    G.jokers.highlighted[i]:set_fragile(false)
+                                    total = total + 1
+                                end
+                            end
                         return true
                     end
                 }))
@@ -361,17 +356,27 @@ SMODS.Consumable{
     atlas = 'a_boot',
     pos = { x = 3, y = 1 },
     cost = 4,
-    config = { cards = 5, mod_conv = 'm_busterb_nanotech' },
+    config = { extra = { count = 5 }, immutable = { negative = 0.75 } },
         loc_vars = function(self, info_queue, card)
-            info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.mod_conv]
-            return { vars = { self.config.cards, self.config.mod_conv, localize { type = 'name_text', set = 'Enhanced', key = card.ability.mod_conv } } }
+            return { vars = { card.ability.immutable.negative*100, card.ability.extra.count } }
     end,
     can_use = function(self,card)
-        return G.GAME.blind.in_blind
+        return #G.hand.highlighted == 1
     end,
     use = function(self, card, area, copier)
-        for i = 1, self.config.cards do
-            SMODS.add_card{set = "Playing Card", enhancement = self.config.mod_conv }
+                for i = 1, card.ability.extra.count do
+                     G.E_MANAGER:add_event(Event({
+                    func = function()
+                    local copy = copy_card(G.hand.highlighted[1])
+                    Spectrallib.manipulate(copy, { value = card.ability.immutable.negative })
+                    if Incantation then
+						copy:setQty(1)
+					end
+                    G.hand:emplace(copy)
+                    return true
+                end
+            }))
+--            SMODS.calculate_effect{message = localize("k_duplicated_ex"), colour = G.C.GREEN, card = G.hand.highlighted[1]}
         end
     end
 }
@@ -382,14 +387,36 @@ SMODS.Consumable{
     atlas = 'a_boot',
     pos = { x = 0, y = 2 },
     cost = 4,
-    config = { cards = 5, mod_conv = 'm_busterb_nanotech' },
-    can_use = function(self,card)
-        return true
+    config = { immutable = { max_highlighted = 1 } },
+        loc_vars = function(self, info_queue, card)
+            return { vars = { math.max(1,card.ability.immutable.max_highlighted) } }
     end,
-    use = function(self, card, area, copier)
-        local freemoney = (2*(G.GAME.round * G.GAME.round_resets.ante))
-        ease_dollars(freemoney)
+    can_use = function(self,card)
+        return #G.jokers.highlighted <= card.ability.immutable.max_highlighted and #G.jokers.highlighted > 0
+	end,
+  use = function(self, card, area, copier)
+    for i = 1, #G.jokers.highlighted do
+        G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.4,
+                func = function()
+                    SMODS.add_card{set="Joker",rarity=G.jokers.highlighted[i].config.center.rarity}
+                    play_sound('tarot1')
+                    G.jokers.highlighted[i]:juice_up(0.3, 0.5)
+                    return true
+                end
+            }))
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.4,
+                func = function()
+                    G.jokers:unhighlight_all()
+                    return true
+                end
+            }))
+
         end
+    end
 }
 
 
@@ -502,7 +529,7 @@ SMODS.Consumable{
         max_highlighted = 1,
         repetitions = 1,
         minval = 110,
-        maxval = 1000
+        maxval = 500
     }
   },
 loc_vars = function(self, info_queue, card)
@@ -539,72 +566,30 @@ SMODS.Consumable {
     pos = { x = 0, y = 3 },
     config = {
     extra = {
-        max_highlighted = 5,
+        max_highlighted = 2,
     }
   },
-loc_vars = function(self, info_queue, card)
+loc_vars = function(self, q, card)
+        q[#q+1] = {set="Other", key = "busterb_electronic"}
 		return { vars = { card.ability.extra.max_highlighted } }
 	end,
     can_use = function(self, card)
-        local selected = Spectrallib.get_highlighted_cards({ G.hand }, nil, 1, card.ability.extra.max_highlighted)
+        local selected = Spectrallib.get_highlighted_cards({G.jokers, G.consumeables, G.hand}, card, 1, card.ability.extra.max_highlighted)
         return #selected > 0 and #selected <= card.ability.extra.max_highlighted
 	end,
     use = function(self, card, area, copier)
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.4,
-            func = function()
-                play_sound('tarot1')
-                card:juice_up(0.3, 0.5)
-                return true
-            end
-        }))
-        for i = 1, #G.hand.highlighted do
-            local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+local cards = Spectrallib.get_highlighted_cards({G.jokers, G.consumeables, G.hand}, card, 1, card.ability.max_highlighted)
+        for i, v in pairs(cards) do
+            local card = cards[i]
             G.E_MANAGER:add_event(Event({
-                trigger = 'after',
-                delay = 0.15,
                 func = function()
-                    G.hand.highlighted[i]:flip()
-                    play_sound('card1', percent)
-                    G.hand.highlighted[i]:juice_up(0.3, 0.3)
+                    v:add_sticker('busterb_electronic',true)
+                    v:juice_up(0.3, 0.3)
+                            play_sound("tarot1")
                     return true
                 end
-            }))
+            }))    
         end
-        delay(0.2)
-        for i = 1, #G.hand.highlighted do
-            G.E_MANAGER:add_event(Event({
-                trigger = 'after',
-                delay = 0.1,
-                func = function()
-                    G.hand.highlighted[i]:add_sticker('eternal',true)
-                    return true
-                end
-            }))
-        end
-        for i = 1, #G.hand.highlighted do
-            local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
-            G.E_MANAGER:add_event(Event({
-                trigger = 'after',
-                delay = 0.15,
-                func = function()
-                    G.hand.highlighted[i]:flip()
-                    play_sound('tarot2', percent, 0.6)
-                    G.hand.highlighted[i]:juice_up(0.3, 0.3)
-                    return true
-                end
-            }))
-        end
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.2,
-            func = function()
-                G.hand:unhighlight_all()
-                return true
-            end
-        }))
-        delay(0.5)
     end,
 }
 SMODS.Consumable{
@@ -764,8 +749,8 @@ SMODS.Consumable{
 
 SMODS.Booster {
     key = 's_pack_1',
-    atlas = 's_packs', 
-    pos = { x = 0, y = 0 },
+    atlas = 'a_pack', 
+    pos = { x = 4, y = 0 },
     pools = {["s_packs"] = true, ["booster"] = true},
     discovered = true,
     disable_shine = true,
@@ -810,8 +795,8 @@ SMODS.Booster {
 
 SMODS.Booster {
     key = 's_pack_2',
-    atlas = 's_packs', 
-    pos = { x = 1, y = 0 },
+    atlas = 'a_pack', 
+    pos = { x = 5, y = 0 },
     pools = {["s_packs"] = true, ["booster"] = true},
     discovered = true,
     disable_shine = true,
@@ -856,8 +841,8 @@ SMODS.Booster {
 
 SMODS.Booster {
     key = 's_pack_j',
-    atlas = 's_packs', 
-    pos = { x = 2, y = 0 },
+    atlas = 'a_pack',
+    pos = { x = 6, y = 0 },
     pools = {["s_packs"] = true, ["booster"] = true},
     discovered = true,
     disable_shine = true,
@@ -902,8 +887,8 @@ SMODS.Booster {
 
 SMODS.Booster {
     key = 's_pack_m',
-    atlas = 's_packs', 
-    pos = { x = 3, y = 0 },
+    atlas = 'a_pack', 
+    pos = { x = 7, y = 0 },
     pools = {["s_packs"] = true, ["booster"] = true},
     discovered = true,
     disable_shine = true,

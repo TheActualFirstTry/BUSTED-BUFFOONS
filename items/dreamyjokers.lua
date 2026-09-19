@@ -11,11 +11,10 @@ SMODS.Joker {
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
-    attributes = { "all_bb", "bustj", "passive" },
+    attributes = { "bustb_d", "all_bb", "bustj", "passive" },
     config = {
         extra = {  
         }
@@ -50,23 +49,104 @@ SMODS.Joker {
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = true, 
+    demicolon_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
     config = {
         extra = {  
         },
-        immutable = { ante = -8 }
+        immutable = { ante = 2 }
     },
-    attributes = { "all_bb", "bustj", "prevents_death", "space" },
+    attributes = { "bustb_d", "all_bb", "bustj", "prevents_death", "space", "hand_level" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.immutable.ante } }
     end,
 
     calculate = function(self, card, context)
+        if context.forcetrigger then
+            ease_d_ante(math.abs(card.ability.immutable.ante))
+                    update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
+            { handname = localize('k_all_hands'), chips = '...', mult = '...', level = '' })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                G.TAROT_INTERRUPT_PULSE = true
+                return true
+            end
+        }))
+        update_hand_text({ delay = 0 }, { mult = '+', StatusText = true })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                return true
+            end
+        }))
+        update_hand_text({ delay = 0 }, { chips = '+', StatusText = true })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                G.TAROT_INTERRUPT_PULSE = nil
+                return true
+            end
+        }))
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.9, delay = 0 }, { level = '+1' })
+        delay(1.3)
+        SMODS.upgrade_poker_hands({ instant = true })
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
+            { mult = 0, chips = 0, handname = '', level = '' })
+
+    end
         if context.end_of_round and context.game_over and context.main_eval then
-            ease_ante(card.ability.immutable.ante)
+            ease_d_ante(math.abs(card.ability.immutable.ante))
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
+            { handname = localize('k_all_hands'), chips = '...', mult = '...', level = '' })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                G.TAROT_INTERRUPT_PULSE = true
+                return true
+            end
+        }))
+        update_hand_text({ delay = 0 }, { mult = '+', StatusText = true })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                return true
+            end
+        }))
+        update_hand_text({ delay = 0 }, { chips = '+', StatusText = true })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                G.TAROT_INTERRUPT_PULSE = nil
+                return true
+            end
+        }))
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.9, delay = 0 }, { level = '+1' })
+        delay(1.3)
+        SMODS.upgrade_poker_hands({ instant = true })
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
+            { mult = 0, chips = 0, handname = '', level = '' })
                 G.E_MANAGER:add_event(Event({
                     func = function()
                         G.hand_text_area.blind_chips:juice_up()
@@ -105,55 +185,49 @@ SMODS.Joker{
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
     rarity = "busterb_Dreamy",
     cost = 16,
-    blueprint_compat = true,
+    blueprint_compat = true, 
+    demicolon_compat = true,
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "all_bb", "bustj", "scaling", "xmult", "mult", "chips", "xchips", "economy" },
+    attributes = { "bustb_d", "all_bb", "hand_level", "hand_type" },
     config = {
-        extra = { mult = 4, chips = 10, xmult = 2, xchips = 2.5, money = 3, valueincrease = 2 },
-        immutable = { powincreasecap = 10, pow = 1, powcap = 100, valueincreasecap = 100, reset = 0 }
+        extra = { p_chips = 10, p_chips_inc = 20 },
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { 
-          math.min(card.ability.immutable.valueincreasecap, card.ability.extra.valueincrease), 
-          card.ability.immutable.reset, 
-          card.ability.immutable.pow, 
-          card.ability.immutable.powincreasecap, 
-          " ",
-          card.ability.immutable.powcap,
-        card.ability.extra.mult, 
-        card.ability.extra.chips, 
-        card.ability.extra.xmult, 
-        card.ability.extra.xchips, 
-        card.ability.extra.money }}
+        return { vars = { card.ability.extra.p_chips , card.ability.extra.p_chips_inc }}
     end,
-calculate = function(self, card, context)
-  if context.before then
-    local powincrease = pseudorandom(pseudoseed("busterb_ko"), 1, 5)
-  card.ability.immutable.pow = card.ability.immutable.pow + powincrease
-  SMODS.calculate_effect({ message = localize("k_upgrade_ex"), colour = G.C.DARK_EDITION}, card)
-  if to_big(card.ability.immutable.pow) >= to_big(card.ability.immutable.valueincreasecap) then
-    card.ability.extra.mult = card.ability.extra.mult * to_number(math.min(card.ability.immutable.valueincreasecap, card.ability.extra.valueincrease))
-    card.ability.extra.chips = card.ability.extra.chips * to_number(math.min(card.ability.immutable.valueincreasecap, card.ability.extra.valueincrease))
-    card.ability.extra.xmult = card.ability.extra.xmult * to_number(math.min(card.ability.immutable.valueincreasecap, card.ability.extra.valueincrease))
-    card.ability.extra.xchips = card.ability.extra.xchips * to_number(math.min(card.ability.immutable.valueincreasecap, card.ability.extra.valueincrease))
-    card.ability.extra.money = card.ability.extra.money * to_number(math.min(card.ability.immutable.valueincreasecap, card.ability.extra.valueincrease))
-            SMODS.calculate_effect({ message = "X" ..to_number(math.min(card.ability.immutable.valueincreasecap, card.ability.extra.valueincrease)), colour = G.C.DARK_EDITION}, card)
-      card.ability.immutable.pow = card.ability.immutable.reset 
-    SMODS.calculate_effect({ message = "POW Meter Reset!", colour = G.C.DARK_EDITION}, card)
-		end
-  end
-  if context.joker_main then
-        return({
-            mult = lenient_bignum(card.ability.extra.mult), 
-            chips = lenient_bignum(card.ability.extra.chips),
-            xmult = lenient_bignum(card.ability.extra.xmult), 
-            xchips = lenient_bignum(card.ability.extra.xchips), 
-            dollars = lenient_bignum(card.ability.extra.money), 
-        })
+    calculate = function(self, card, context)
+        if context.using_consumeable then
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "p_chips",
+                scalar_value = "p_chips_inc",
+                scaling_message = {
+                message = "+" .. (card.ability.extra.p_chips + card.ability.extra.p_chips_inc).." Chips",
+                colour = G.C.CHIPS
+            }})
+        end
+        if (context.end_of_round and context.main_eval) or context.forcetrigger then
+            local _handname, _played = 'High Card', -1
+            for hand_key, hand in pairs(G.GAME.hands) do
+                if hand.played > _played then
+                    _played = hand.played
+                    _handname = hand_key
+                end
+            end
+            local most_played = _handname
+            SMODS.upgrade_poker_hands{
+                hands = { most_played },
+                level_up = false,
+                parameters = { "chips" },
+                func = function (base, hand, param)
+                    return base + card.ability.extra.p_chips
+                end
+ 
+            }
+        end
     end
-end
 }
 
 SMODS.Joker {
@@ -163,11 +237,12 @@ SMODS.Joker {
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = true, 
+    demicolon_compat = true,
     eternal_compat = true,
     pos = { x = 2, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
-    attributes = { "all_bb", "bustj", "passive", "value_manip" },
+    attributes = { "bustb_d", "all_bb", "bustj", "passive", "value_manip" },
     config = {
         extra = { vm = 1.1, triggered = false }
     },
@@ -184,21 +259,15 @@ SMODS.Joker {
     if context.open_booster then
       card.ability.extra.triggered = false
     end
-    if context.skipping_booster and not context.blueprint then
-                 local mypos = nil
-		        for i = 1, #G.jokers.cards do
-			        if G.jokers.cards[i] == card then
-				        mypos = i
-			    	    break
-		    	    end
-		        end
-                if G.jokers.cards[mypos - 1] then
-					Spectrallib.manipulate(G.jokers.cards[mypos-1], { value = card.ability.extra.vm })
-                SMODS.calculate_effect({ message = "X" ..card.ability.extra.vm, colour = G.C.FILTER}, G.jokers.cards[mypos-1])
+    if (context.skipping_booster and not context.blueprint) or context.forcetrigger then
+        local left, right = card.area.cards[card.rank-1], card.area.cards[card.rank+1]
+                if left and left.config.center.key ~= "j_busterb_peridot" then
+					Spectrallib.manipulate(right, { value = card.ability.extra.vm })
+                SMODS.calculate_effect({ message = "X" ..card.ability.extra.vm, colour = G.C.FILTER}, left)
 				end 
-                if G.jokers.cards[mypos + 1] then
-					Spectrallib.manipulate(G.jokers.cards[mypos+1], { value = card.ability.extra.vm })
-                SMODS.calculate_effect({ message = "X".. card.ability.extra.vm, colour = G.C.FILTER}, G.jokers.cards[mypos+1])
+                if right and right.config.center.key ~= "j_busterb_peridot" then
+					Spectrallib.manipulate(right, { value = card.ability.extra.vm })
+                SMODS.calculate_effect({ message = "X".. card.ability.extra.vm, colour = G.C.FILTER}, right)
 				end
         end
     end
@@ -210,99 +279,79 @@ SMODS.Joker {
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = true, 
+    demicolon_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
-    attributes = { "all_bb", "bustj", "scaling", "generation" },
+    attributes = { "bustb_d", "all_bb", "bustj", "scaling", "generation" },
     config = { immutable = { roll_rounds = 0, total_rounds = 3, round_add = 1 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.immutable.roll_rounds, card.ability.immutable.total_rounds, colours = { HEX('b00b69'), HEX('5e7297') } } }
+        local rarity = (G.GAME.current_round.busterb_isaac_rarity or {}).rarity or 'busterb_Dreamy'
+        return { vars = { card.ability.immutable.roll_rounds, card.ability.immutable.total_rounds, localize(rarity, "isaac_rarities"), colours = { HEX('b00b69'), HEX('5e7297') } } }
     end,
     calculate = function(self, card, context)
+        if context.forcetrigger then
+                            G.E_MANAGER:add_event(Event{
+                    trigger = 'after',
+                        delay = 0.4,
+                        func = function()
+                            local c = SMODS.add_card({ set = "Joker", attributes = { "bustb_d" }, area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
+--                            local c = SMODS.add_card({ set = "Joker", attributes = { "bustb_d" }, area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
+                            SMODS.calculate_effect({ message = "Added!", colour = G.C.GRANDIOSE}, c)
+                            return true
+                        end
+                    })
+
+        end
         if context.end_of_round and context.main_eval then
---            SMODS.calculate_effect({ message = card.ability.immutable.roll_rounds .."/".. card.ability.immutable.total_rounds , colour = G.C.FILTER}, card)
             SMODS.scale_card(card, {
                 ref_table = card.ability.immutable,
                 ref_value = "roll_rounds",
                 scalar_value = "round_add",
---                message = card.ability.immutable.roll_rounds .."/".. card.ability.immutable.total_rounds,
---                colour = G.C.RED
             })
         if (to_big(card.ability.immutable.roll_rounds) >= to_big(card.ability.immutable.total_rounds)) then
-            local randomjoker = pseudorandom(pseudoseed("busterb_isaac"), 1, 6)
-            if randomjoker == 1 then
                 G.E_MANAGER:add_event(Event{
                     trigger = 'after',
                         delay = 0.4,
                         func = function()
-                local c = SMODS.add_card({ set = "Joker", rarity = "Common", edition = 'e_negative', key_append = "busterb_isaac" })
-                SMODS.calculate_effect({ message = "1", colour = G.C.RARITY.Common}, c)
-                return true
-                        end
-                    })
-            end
-            if randomjoker == 2 then
-                G.E_MANAGER:add_event(Event{
-                    trigger = 'after',
-                        delay = 0.4,                    
-                        func = function()
-                local c = SMODS.add_card({ set = "Joker", rarity = "Uncommon", edition = 'e_negative', key_append = "busterb_isaac" })
-                SMODS.calculate_effect({ message = "2", colour = G.C.RARITY.Uncommon}, c)
+                            local c = SMODS.add_card({ set = "Joker", attributes = { "bustb_d" }, area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
+--                            local c = SMODS.add_card({ set = "Joker", attributes = { "bustb_d" }, area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
+                            SMODS.calculate_effect({ message = "Added!", colour = G.C.GRANDIOSE}, c)
                             return true
                         end
                     })
-            end
-            if randomjoker == 3 then
-                G.E_MANAGER:add_event(Event{
-                    trigger = 'after',
-                        delay = 0.4,
-                        func = function()
-                local c = SMODS.add_card({ set = "Joker", rarity = "Rare", edition = 'e_negative', key_append = "busterb_isaac" })
-                SMODS.calculate_effect({ message = "3", colour = G.C.RARITY.Rare}, c)
-                return true
-                        end
-                    })
-            end
-            if randomjoker == 4 then
-                G.E_MANAGER:add_event(Event{
-                    trigger = 'after',
-                        delay = 0.4,
-                        func = function()
-                            local c = SMODS.add_card({ set = "Dreamy", area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
-                            SMODS.calculate_effect({ message = "4", colour = HEX('5e7297')}, c)
-                            return true
-                        end
-                    })
-            end
-            if randomjoker == 5 then
-                G.E_MANAGER:add_event(Event{
-                    trigger = 'after',
-                        delay = 0.4,
-                        func = function()
-                            local c = SMODS.add_card({ set = "Joker", rarity = "Legendary", edition = 'e_negative', key_append = "busterb_isaac" })
-                            SMODS.calculate_effect({ message = "5", colour = G.C.RARITY.Legendary}, c)
-                            return true
-                        end
-                    })
-            end
-            if randomjoker == 6 then
-                G.E_MANAGER:add_event(Event{
-                    trigger = 'after',
-                        delay = 0.4,
-                        func = function()
-                            local c = SMODS.add_card({ set = "Fantastic", area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
-                            SMODS.calculate_effect({ message = "6", colour = HEX('b00b69')}, c)
-                            return true
-                        end
-                    })
-            end
-            card.ability.immutable.roll_rounds = 0
+                card.ability.immutable.roll_rounds = 0
             SMODS.calculate_effect({ message = "Reset!", colour = G.C.FILTER}, card)
-            end
         end
     end
+end
 }
+--[[]]
+local function reset_busterb_isaac_rarity()
+-- one for main use
+G.GAME.current_round.busterb_isaac_rarity = G.GAME.current_round.busterb_isaac_rarity or { rarity = "busterb_Dreamy" }
+    local raritytable = {}
+    for k, v in ipairs({ "Common", "Uncommon", "Rare", "busterb_Dreamy", "Legendary", "busterb_Fantastic" }) do
+        if v ~= G.GAME.current_round.busterb_isaac_rarity.rarity then raritytable[#raritytable+1] = v end
+        end
+    local jkr = pseudorandom_element(raritytable, "busterb_isaac".. G.GAME.round_resets.ante)
+    G.GAME.current_round.busterb_isaac_rarity.rarity = jkr
+-- one for display
+G.GAME.current_round.busterb_isaac_rarity = G.GAME.current_round.busterb_isaac_rarity or { display = "Dreamy" }
+    local display = {}
+    for k, v in ipairs({ "Common", "Uncommon", "Rare", "Dreamy", "Legendary", "Fantastic" }) do
+        if v ~= G.GAME.current_round.busterb_isaac_rarity.display then display[#display+1] = v end
+        end
+    local jkrd = pseudorandom_element(display, "busterb_isaac".. G.GAME.round_resets.ante)
+G.GAME.current_round.busterb_isaac_rarity.display = jkrd
+end
+
+function SMODS.current_mod.reset_game_globals(run_start)
+    reset_busterb_isaac_rarity()
+end
+--]]
+
 SMODS.Joker{
     key = "harley",
     atlas = "djkr",
@@ -310,10 +359,10 @@ SMODS.Joker{
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = true, 
     eternal_compat = true,
     pos = { x = 2, y = 1 },
-    attributes = { "all_bb", "bustj", "retrigger" },
+    attributes = { "bustb_d", "all_bb", "bustj", "retrigger" },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
 calculate = function(self, card, context)
 		if
@@ -350,10 +399,10 @@ SMODS.Joker{
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = true, 
     eternal_compat = true,
     pos = { x = 1, y = 1 },
-    attributes = { "all_bb", "bustj", "boss_blind", "destroy_card", "generation", "spectral" },
+    attributes = { "bustb_d", "all_bb", "bustj", "boss_blind", "destroy_card", "generation", "spectral" },
     config = { immutable = { boss_size = 1.25 } },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
     loc_vars = function(self, info_queue, center)
@@ -391,7 +440,7 @@ SMODS.Joker{
             and not context.retrigger_joker
 			and not context.blueprint
 			and G.GAME.blind.boss)
-			or context.force_trigger)
+			or context.forcetrigger)
 			and not card.gone
 		then
 			G.E_MANAGER:add_event(Event({
@@ -440,10 +489,11 @@ SMODS.Joker{
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = true, 
+    demicolon_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 1 },
-    attributes = { "all_bb", "bustj", "asc","scaling", "hands" },
+    attributes = { "bustb_d", "all_bb", "bustj", "asc","scaling", "hands" },
     config = { 
         extra = { 
             asc = 4,
@@ -468,7 +518,7 @@ SMODS.Joker{
             }
             })
         end
-        if context.joker_main then
+        if (context.joker_main or context.forcetrigger) and card.ability.extra.asc > to_big(1) then
             SMODS.calculate_effect({ asc = card.ability.extra.asc}, card)
         end
     end
@@ -480,10 +530,11 @@ SMODS.Joker{
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = true, 
+    demicolon_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 2 },
-    attributes = { "all_bb", "bustj", "infinity", "generation", "hands" },
+    attributes = { "bustb_d", "all_bb", "bustj", "infinity", "generation", "hands" },
     config = { 
         extra = { 
         } 
@@ -493,7 +544,7 @@ SMODS.Joker{
 		return { vars = { card.ability.extra.mult, card.ability.extra.xmult, card.ability.extra.powerup, colours = {HEX('FFB570')} } }
 	end,
     calculate = function(self, card, context)
-        if SMODS.last_hand_oneshot and context.after and context.main_eval and not context.blueprint then
+        if (SMODS.last_hand_oneshot and context.after and context.main_eval and not context.blueprint) or context.forcetrigger then
         SMODS.add_card{set="Infinity"}
         SMODS.calculate_effect({message = "+1 Infinity Card", colour = HEX('FFB570')}, card)
         end
@@ -509,7 +560,7 @@ SMODS.Joker{
     blueprint_compat = false,
     eternal_compat = true,
     pos = { x = 1, y = 2 },
-    attributes = { "all_bb", "bustj", "xchips", "passive", "suit", "clubs", "seals", "enhancements", "editions" },
+    attributes = { "bustb_d", "all_bb", "bustj", "xchips", "passive", "suit", "clubs", "seals", "enhancements", "editions" },
     config = { 
         extra = { 
             xchips = 2
@@ -561,13 +612,14 @@ SMODS.Joker {
     key = "peppino",
     unlocked = true, 
     atlas = "djkr",
-    blueprint_compat = true,
+    blueprint_compat = true, 
+    demicolon_compat = true,
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
 --    pino = true,
     rarity = "busterb_Dreamy",
     cost = 16,
     pos = { x = 2, y = 2 },
-    attributes = { "all_bb", "bustj", "generation", "pizza", "scaling", "xmult" },
+    attributes = { "bustb_d", "all_bb", "bustj", "generation", "pizza", "scaling", "xmult" },
     config = { extra = { xmult = 1, xmult_mod = .5 }, immutable = { odds = 25 } },
     loc_vars = function(self, info_queue, card)
         local pinorare, pinoodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_pinorare')
@@ -592,10 +644,10 @@ SMODS.Joker {
             end
     end,
         can_use = function(self, card)
-        return (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) and G.GAME.dollars >= 5
+        return (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) and ((G.GAME.dollars - G.GAME.bankrupt_at) >= 5)
         end,
     calculate = function(self, card, context)
-        if context.pinobuy and (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) and G.GAME.dollars >= 5 then
+        if context.pinobuy and (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) and ((G.GAME.dollars - G.GAME.bankrupt_at) >= 5) then
             if SMODS.pseudorandom_probability(card, 'busterb_pinorare', 1, card.ability.immutable.odds, 'busterb_pinorare', true) then
                 SMODS.add_card({ key = "c_busterb_special" })
                 play_sound('busterb_jackpot')
@@ -635,10 +687,11 @@ SMODS.Joker{
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = true, 
+    demicolon_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 2 },
-    attributes = { "all_bb", "bustj", "passive","hands" },
+    attributes = { "bustb_d", "all_bb", "bustj", "passive","hands" },
     config = { 
         extra = { 
             hand = 1
@@ -661,7 +714,8 @@ SMODS.Joker{
     cost = 16,
     discovered = true,
     unlocked = true,
-    blueprint_compat = true,
+    blueprint_compat = true, 
+    demicolon_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 3 },
     config = { 
@@ -674,7 +728,7 @@ SMODS.Joker{
         } 
     },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
-    attributes = { "all_bb", "bustj", "emult", "echips", "xscore", "modify_card", "economy", "rank", "five", "asc" },
+    attributes = { "bustb_d", "all_bb", "bustj", "emult", "echips", "xscore", "modify_card", "economy", "rank", "five", "asc" },
     loc_vars = function(self, info_queue, card)
 		return { vars = { } }
 	end,
@@ -725,7 +779,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 1, y = 3 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
-    attributes = { "all_bb", "bustj", "prevents_death" },
+    attributes = { "bustb_d", "all_bb", "bustj", "prevents_death" },
     config = {
         extra = {  
         },
@@ -737,7 +791,7 @@ SMODS.Joker {
 
     calculate = function(self, card, context)
         if context.end_of_round and context.game_over and context.main_eval then
-        if G.GAME.dollars > 5 then
+        if ((G.GAME.dollars - G.GAME.bankrupt_at) >= 5) then
             ease_dollars(-(G.GAME.dollars/2))
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -762,8 +816,9 @@ SMODS.Joker {
     rarity = 'busterb_Dreamy',
     atlas = 'djkr',
     pos = { x = 2, y = 3 },
-    blueprint_compat = true,
-    attributes = { "all_bb", "bustj", "copying" },
+    blueprint_compat = true, 
+    demicolon_compat = true,
+    attributes = { "bustb_d", "all_bb", "bustj", "copying" },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true}, 
       loc_vars = function(self, info_queue, card)
     if card.area and card.area == G.jokers then

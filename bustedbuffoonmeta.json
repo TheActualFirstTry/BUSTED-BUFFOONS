@@ -17,7 +17,7 @@
 		"Steamodded (>=1.0.0~BETA-1814b)",
 		"Lovely (>=0.7)",
         "Balatro (>=1.0.1o)",
-		"Spectrallib"
+		"Spectrallib",
 	],
 	"conflicts": [
 	],

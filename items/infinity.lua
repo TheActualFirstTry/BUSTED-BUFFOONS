@@ -32,7 +32,8 @@ can_use = function(self, card)
         local selectable_jokers = {}
 
         for _, v in ipairs(G.P_CENTER_POOLS.Joker) do
-          if not (   v.rarity == "jen_ritualistic" or
+          if not (   
+                v.rarity == "jen_ritualistic" or
                  v.rarity == "jen_transcendent" or
                  v.rarity == "jen_omegatranscendent" or
                  v.rarity == "jen_omnipotent" or 
@@ -116,13 +117,22 @@ SMODS.Consumable {
     set = 'Infinity',
     atlas = "a_ic",
     cost = 4, pos = { x = 1, y = 0 },
-    config = {
-  },
+    config = { immutable = { v = 50 }},
 can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
 	end,
 
  use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.discount_percent = G.GAME.discount_percent - card.ability.immutable.v
+                for _, v in pairs(G.I.CARD) do
+                    if v.set_cost then v:set_cost() end
+                end
+                return true
+            end
+        }))
+
     G.E_MANAGER:add_event(Event({
             trigger = 'after',
             delay = 0.4,
@@ -439,10 +449,10 @@ SMODS.Consumable {
     set = 'Infinity',
     atlas = "a_ic",
     cost = 4, pos = { x = 3, y = 1 },
-        config = { extra = { jokers = 1 } },
+        config = { extra = { jokers = 1 }, immutable = { xscore = 1.25 } },
 
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.jokers } }
+        return { vars = { card.ability.extra.jokers, card.ability.immutable.xscore } }
     end,
 
     can_use = function(self, card)
@@ -455,6 +465,7 @@ SMODS.Consumable {
             local copy = copy_card(c)
             copy:set_edition("e_negative", true)
             G.jokers:emplace(copy)
+            Spectrallib.add_bonus_effect(copy, "busterb_immutable_xblindsize", {immutable = card.ability.immutable.xscore})
         end
     end,
 
@@ -531,8 +542,7 @@ SMODS.Consumable {
                 end
             }))
             SMODS.calculate_effect{message = localize("k_duplicated_ex"), colour = G.C.DARK_EDITION, card = G.consumeables.cards[1]}
-                end
-	
+        end	
     end,
 
  

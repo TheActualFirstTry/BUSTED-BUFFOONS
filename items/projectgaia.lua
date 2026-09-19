@@ -73,7 +73,7 @@ local GaiaYap = {
 }
 
 SMODS.Joker{
-    key = "gaia",
+    key = "codegaia",
     atlas = "gaia",
     pos = { x = 0, y = 0 },
     soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
@@ -93,7 +93,7 @@ SMODS.Joker{
     config = {
         extra = { vm = 2
         },
-        immutable = { odds = 25 }
+        immutable = { odds = 25, timer = 0, interval = .1 }
     },
     loc_vars = function(self, info_queue, card)
       local gaiarare, gaiaodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_gaiarare')
@@ -102,7 +102,45 @@ SMODS.Joker{
           GaiaYap[math.random(#GaiaYap)], gaiarare, gaiaodds,
           colours = {SMODS.Gradients["busterb_technopotentgradient"], SMODS.Gradients["busterb_epileptic"]}} }
     end,
-    
+  update = function(self, card, dt)
+    card.ability.immutable.timer = card.ability.immutable.timer + G.real_dt
+    if card.ability.immutable.timer >= card.ability.immutable.interval then
+    card.ability.immutable.timer = card.ability.immutable.timer - card.ability.immutable.interval
+            G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.3,
+            func = function()
+              attention_text({
+                text = tostring(math.random(0,9)),
+								scale = math.random(0.5,1),
+                hold = 1,
+                backdrop_colour = G.C.BBBLACK,
+                colour = G.C.GREEN,
+								align = 'cm',
+        				major = card,
+								offset = {x = math.random(-G.CARD_W*.5,G.CARD_W*.5), y = math.random(-G.CARD_H*.5,G.CARD_H*.5)}
+							})
+              return true
+            end
+          }))
+          G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.5,
+            func = function()
+              attention_text({
+                text = '',
+								scale = math.random(0.01,10),
+                hold = 1,
+                backdrop_colour = G.C.GREEN,
+								align = 'cm',
+        				major = card,
+								offset = {x = math.random(-G.CARD_W,G.CARD_W), y = math.random(-G.CARD_H,G.CARD_H)}
+							})
+              return true
+            end
+          }))
+      end
+  end,
     use = function(self, card, area, copier)
                     if SMODS.pseudorandom_probability(card, 'busterb_gaiarare', 1, card.ability.immutable.odds, 'busterb_gaiarare', true) then
                 local c = SMODS.add_card({ key = "c_busterb_admin" })

@@ -15,8 +15,9 @@ SMODS.Consumable {
             0.1 + 0.03 * math.sin(1.8 * G.TIMERS.REAL), nil, 0.6)
         card.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, card.children.center, scale_mod, rotate_mod)
     end,},
-    soul_rate = 0.001,
+    hidden = true,
     can_repeat_soul = true,
+    soul_rate = 0.01,
     soul_set = 'Spectral',
 loc_vars = function(self, info_queue, card)
 		return { vars = { colours = {HEX('b00b69')} } }
@@ -135,10 +136,12 @@ SMODS.Consumable {
     soul_rate = 0.1,
     can_repeat_soul = true,
     soul_set = 'Spectral',
+    config = { immutable = { moneyset = -0.1 } },
 loc_vars = function(self, info_queue, card)
-		return { vars = { colours = {HEX('2735cf')} } }
+		return { vars = { card.ability.immutable.moneyset, colours = {HEX('2735cf')} } }
 	end,
     use = function(self, card, area, copier)
+        ease_x_dollars((card.ability.immutable.moneyset))
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
             delay = 0.4,
@@ -493,4 +496,40 @@ SMODS.Consumable {
             end
         }))
     end,
+}
+
+SMODS.Consumable {
+    key = 'trial',
+    set = 'Spectral',
+    atlas = "non",
+    pos = { x = 5, y = 8 },
+    soul_pos = { x = 7, y = 8, new = { x = 6, y = 8} },
+    hidden = true,
+    soul_rate = 0.00001,
+    can_repeat_soul = true,
+    soul_set = 'Spectral',
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = {key = "desc_busterb_mythical_blind", set = "Other"}
+		return { vars = { colours = {SMODS.Gradients["busterb_grand"]} } }
+	end,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'before',
+               func = function()
+                mythical_blind_spawn()
+               return true
+           end
+        }))
+        delay(1)
+        G.blind_select:remove()
+        G.blind_prompt_box:remove()
+    end,
+    can_use = function(self, card)
+            return G.STATE == G.STATES.BLIND_SELECT
+    end,
+    draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
+    end
 }

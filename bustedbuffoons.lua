@@ -10,6 +10,7 @@ SMODS.Sound{
 
 BustB = {}
 BustB.current_mod = SMODS.current_mod
+BustB.current_mod.config = SMODS.current_mod.config or {} --is this nil check needed? idk but i saw crash reports related to this
 
 SMODS.current_mod.spectrallib_features = { "ascension_power" }
 
@@ -20,12 +21,21 @@ SMODS.Atlas{
 	px = 240,
 	py = 263
 }
+
 SMODS.Atlas{
 	key = "non",
 	path = "nonjoker.png",
 	px = 71,
 	py = 95
 }
+
+SMODS.Atlas {
+    key = "a_pack",
+    path = "Packs.png",
+    px = 71,
+    py = 95
+}
+
 SMODS.Shader({ key = 'atomic', path = 'atomic.fs' })
 
 SMODS.Atlas({
@@ -44,7 +54,8 @@ SMODS.Atlas {
   px = 34,
   py = 34,
   atlas_table = 'ANIMATION_ATLAS',
-  frames = 8
+  frames = 8,
+  fps = 8,
 }
 
 SMODS.Sound{
@@ -81,9 +92,31 @@ SMODS.Sound {
 }
 
 SMODS.Sound{
+    key = "bang",
+    path = "mus_explosion.wav"
+}
+
+SMODS.Sound{
+    key = "orch",
+    path = "mus_f_orchhit.wav"
+}
+
+SMODS.Sound{
+    key = "gonerlaugh",
+    path = "mus_sfx_hypergoner_laugh.ogg"
+}
+
+SMODS.Sound{
+    key = "note",
+    path = "mus_f_endnote.wav"
+}
+
+
+SMODS.Sound{
     key = "mus",
     path = "mus_create.wav"
 }
+
 
 SMODS.Sound{
     key = "locknload",
@@ -157,7 +190,7 @@ SMODS.Gradient{
         G.C.CHIPS
     },
     cycle = 4,
-    interpolation = 'trig',
+    interpolation = update_exp_colour,
 }
 SMODS.Gradient{
     key = "SecretG",
@@ -288,6 +321,7 @@ G.ARGS.LOC_COLOURS.busterb_fantastic = HEX('b00b69')
 G.ARGS.LOC_COLOURS.busterb_Thomas = SMODS.Gradients["busterb_Thomasgradient"]
 G.ARGS.LOC_COLOURS.busterb_gfreddy = SMODS.Gradients["busterb_GoldenFreddyGradient"]
 G.ARGS.LOC_COLOURS.busterb_balatro = SMODS.Gradients["busterb_balatro"]
+G.ARGS.LOC_COLOURS.busterb_bbblack = HEX('3F3F3F')
 G.ARGS.LOC_COLOURS.busterb_infinity = HEX('E36956')
 G.ARGS.LOC_COLOURS.busterb_pizza = HEX('bc1006')
 G.ARGS.LOC_COLOURS.busterb_hedra = SMODS.Gradients["busterb_hedera"]
@@ -296,6 +330,7 @@ G.ARGS.LOC_COLOURS.busterb_unstable = SMODS.Gradients["busterb_unstable"]
 G.ARGS.LOC_COLOURS.busterb_secrets = SMODS.Gradients["busterb_SecretG"]
 G.ARGS.LOC_COLOURS.busterb_technopotent = SMODS.Gradients["busterb_technopotent"]
 G.ARGS.LOC_COLOURS.busterb_grahkon = SMODS.Gradients["busterb_grahkongradient"]
+G.C.BBBLACK = HEX('3F3F3F')
 G.C.INFINITY = HEX('E36956')
 G.C.PIZZA = HEX('bc1006')
 G.C.DREAMY = HEX('5e7297')
@@ -304,6 +339,9 @@ G.C.THOMAS = SMODS.Gradients["busterb_Thomasgradient"]
 G.C.GRANDIOSE = SMODS.Gradients["busterb_grand"]
 G.C.BALATRO = SMODS.Gradients["busterb_balatro"]
 G.C.EPILEPSY = SMODS.Gradients["busterb_epileptic"]
+G.C.GRAHKON = SMODS.Gradients["busterb_grahkongradient"]
+G.C.BBSECRET = SMODS.Gradients["busterb_SecretG"]
+G.C.TECHNO = SMODS.Gradients["busterb_technopotent"]
 -- Jokers Pool
 
 SMODS.ObjectType{
@@ -509,8 +547,153 @@ function moony_planet(card, new_card, area)
 end
 
 
+BustB.charUNT = {
+    "",
+    " ",
+    "  ",
+    "   ",
+    "    ",
+    "     ",
+    "      ",
+    "       ",
+    "        ",
+    "+",
+    "X",
+    "/",
+    "<",
+    ">",
+    "#",
+    "^",
+    "!",
+    "-",
+    "%",
+    "?",
+    "||",
+    "$",
+    "*",
+    ";",
+    "[",
+    "(",
+    "{",
+    "]",
+    ")",
+    "}",
+    ":",
+    "--",
+    "--@",
+    "<@>",
+    "table:[",
+    "table:{",
+    "table:",
+    "invalid",
+    "table",
+    "@",
+    "lovely",
+    "version",
+    "Version",
+    "ver",
+    "SMODS",
+    "global",
+    "double",
+    "func(",
+    "func",
+    "func()",
+    "int",
+    "string",
+    "busterb",
+    "_busterb_",
+    "BustB.",
+    "BustB",
+    "local",
+    "()",
+    "print",
+    "print(",
+    "print()",
+    "debug",
+    "blind",
+    "score",
+    "mult",
+    "chips",
+    "card",
+    "bool",
+    "false",
+    "true",
+    "none",
+    "missing",
+    "???",
+    "ERR",
+    "nil",
+    "nan",
+    "inf",
+    "ERROR",
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "0",
+}
+
+
 -- Loads
 
+assert(SMODS.load_file("items/newcalcs.lua"))()
 assert(SMODS.load_file("items/otherfunctionalities.lua"))()
 assert(SMODS.load_file("items/bonuses.lua"))()
 assert(SMODS.load_file("items/stickers.lua"))()
@@ -541,6 +724,7 @@ assert(SMODS.load_file("items/uiforace.lua"))()
 assert(SMODS.load_file("items/ace.lua"))()
 assert(SMODS.load_file("items/summusic.lua"))()
 assert(SMODS.load_file("items/tag.lua"))()
+assert(SMODS.load_file("items/blinds.lua"))()
 assert(SMODS.load_file("items/projectgaia.lua"))()
 --assert(SMODS.load_file("unused for now/testingjokers.lua"))() -- for future jokers
 --assert(SMODS.load_file("unused for now/buttonjoker.lua"))()
@@ -640,7 +824,7 @@ SMODS.Shader({
         }
     end
 })
-
+--[[
 local badgeHook = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
     badgeHook(obj, badges)
@@ -655,6 +839,7 @@ function SMODS.create_mod_badges(obj, badges)
         end
     end
 end
+--]]
 
 
 SMODS.Atlas{
@@ -696,6 +881,8 @@ function create_badge(_string, _badge_col, _text_col, scaling)
 end
 
 
+-- CROSSMODS
+
 -- 900n1 Gambapack
 if next(SMODS.find_mod("900N1GAMBLE")) then assert(SMODS.load_file("items/crossmodshit/silencedenhancement.lua"))() assert(SMODS.load_file("items/crossmodshit/crk.lua"))() end
 
@@ -717,176 +904,69 @@ if next(SMODS.find_mod("mayhem")) then assert(SMODS.load_file("items/crossmodshi
 -- Entropy
 -- if next(SMODS.find_mod("entr")) then assert(SMODS.load_file("items/crossmodshit/entropydefinitions.lua"))() assert(SMODS.load_file("items/crossmodshit/invert.lua"))()assert(SMODS.load_file("items/crossmodshit/alternateentropy.lua"))() end
 
-
-function updatehandtext()
-            update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
-            { handname = "text", chips = '...', mult = '...', level = '' })
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.2,
-            func = function()
-                play_sound('tarot1')
-                G.TAROT_INTERRUPT_PULSE = true
-                return true
-            end
-        }))
-        delay(1.3)
-        update_hand_text({ delay = 0 }, { chips = '^'})
-        ease_colour(G.C.UI_CHIPS, SMODS.Gradients["busterb_bigbang"])
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.9,
-            func = function()
-            attention_text({
-                text = "   ^",
-                scale = 1.2, 
-                hold = 1,
-                cover = G.HUD:get_UIE_by_ID('hand_chips').parent,
-                cover_colour = G.C.BLACK,
-                colour = SMODS.Gradients["busterb_bigbang"],
-                align = 'cm',
-                offset = { x = 0, y = 0.02}
-              })
-                play_sound('slib_echips')
-                return true
-            end
-        }))
-        delay(1.3)
-        update_hand_text({ delay = 0 }, { mult = '^' })
-        ease_colour(G.C.UI_MULT, SMODS.Gradients["busterb_bigbang"])
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.9,
-            func = function()
-            attention_text({
-                text = "^   ",
-                scale = 1.2, 
-                hold = 1,
-                cover = G.HUD:get_UIE_by_ID('hand_mult').parent,
-                cover_colour = G.C.BLACK,
-                colour = SMODS.Gradients["busterb_bigbang"],
-                align = 'cm',
-                offset = { x = 0, y = 0.02}
-              })
-                play_sound('slib_emult')
-                G.TAROT_INTERRUPT_PULSE = nil
-                return true
-            end
-        }))
-        delay(1.3)
-            G.E_MANAGER:add_event(Event({
-              trigger = "after",
-              blockable = false,
-              blocking = false,
-              delay = 1.2,
-              func = function()
-                ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
-                ease_colour(G.C.UI_MULT, G.C.RED, 1)
-                return true
-              end,
-            }))
-            update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
-        { mult = 0, chips = 0, handname = '', level = '' })
-
+local bbTabs = function()
+	return {
+		{
+			label = localize("k_busterb_music"),
+			tab_definition_function = function()
+				bb_nodes = {
+					{
+						n = G.UIT.R,
+						config = { align = "cm" },
+						nodes = {
+						},
+					},
+				}
+				settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+				settings.nodes[#settings.nodes + 1] = {n = G.UIT.R, config = {align = "cm", padding = 0.1}, nodes = { { n = G.UIT.T, config = {text = localize("k_busterb_music_cred"), colour = G.C.UI.TEXT_LIGHT, scale = 0.5} } }}
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.FANTASTIC,
+					label = localize("k_busterb_calzone"),
+					ref_table = BustB.current_mod.config.BustedBuffoons,
+					ref_value = "fantastic_theme",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.GRANDIOSE,
+					label = localize("k_busterb_ni4ni"),
+					ref_table = BustB.current_mod.config.BustedBuffoons,
+					ref_value = "grandiose_theme",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.BBSECRET,
+					label = localize("k_busterb_event_horizon"),
+					ref_table = BustB.current_mod.config.BustedBuffoons,
+					ref_value = "eldritch_theme",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.BALATRO,
+					label = localize("k_busterb_impasta"),
+					ref_table = BustB.current_mod.config.BustedBuffoons,
+					ref_value = "mythical_theme",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.GRAHKON,
+					label = localize("k_busterb_march"),
+					ref_table = BustB.current_mod.config.BustedBuffoons,
+					ref_value = "techno_theme",
+				})
+				settings.nodes[#settings.nodes + 1] = {n = G.UIT.R, config = {align = "cm", padding = 0.1}, nodes = { { n = G.UIT.T, config = {text = localize("k_busterb_music_desc"), colour = G.C.UI.TEXT_LIGHT, scale = 0.5} } }}
+				config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { settings } }
+				bb_nodes[#bb_nodes + 1] = config
+				return {
+					n = G.UIT.ROOT,
+					config = {
+						emboss = 0.05,
+						minh = 6,
+						r = 0.1,
+						minw = 10,
+						align = "cm",
+						padding = 0.2,
+						colour = G.C.BLACK,
+					},
+					nodes = bb_nodes,
+				}
+			end,
+		},
+	}
 end
-
-function mysterytest()
-    local SymbolsUNT = {
-    "+",
-    "X",
-    "/",
-    "<",
-    ">",
-    "#",
-    "^",
-    "!",
-    "-",
-    "%",
-    "?",
-    "||",
-    "$",
-    "*",
-    ";",
-    ":",
-    "nil",
-    "nan",
-    "inf",
-    "ERROR"
-}
-local CharacterUNT = {
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
-}
-
-        for i = 1, math.random(1,5) do
-		G.hand:change_size(math.random(0.01,5))
-        G.jokers:change_size(math.random(0.01,5))
-        G.consumeables:change_size(math.random(0.01,5))
-        G.GAME.round_resets.hands = G.GAME.round_resets.hands + math.random(0.01,5)
-        ease_hands_played(math.random(0.01,5))
-        G.GAME.round_resets.discards = G.GAME.round_resets.discards + math.random(0.01,5)
-        ease_discard(math.random(0.01,5))
-        SMODS.change_play_limit(math.random(0.01,5))
-		SMODS.change_discard_limit(math.random(0.01,5))
-        change_shop_size(math.random(0.01,5))
-		SMODS.change_voucher_limit(math.random(0.01,5))
-		SMODS.change_booster_limit(math.random(0.01,5))
-		ease_ante(-math.random(0.01,5))
-                        G.E_MANAGER:add_event(Event({
-						trigger = 'before',
-						delay = 0,
-						func = function()
-							attention_text({
-								text = CharacterUNT[math.random(#CharacterUNT)]..SymbolsUNT[math.random(#SymbolsUNT)]..math.random(0.01,100)..CharacterUNT[math.random(#CharacterUNT)]..SymbolsUNT[math.random(#SymbolsUNT)]..math.random(0.01,100),
-								scale = math.random(0.1, 2.5),
-                                hold = 1.5,
-                                backdrop_colour = HEX("3f3f3f"),
-								align = 'cm',
-        						major = G.play,
-								offset = {x = math.random(0.1, 5), y = math.random(0.1, 5)}
-							})
-							play_sound('busterb_mystery',1, 0.5)
-							G.ROOM.jiggle = G.ROOM.jiggle + 35
-							return true
-                        end
-						}))   
-                    end
-end
-
---[[
-            attention_text({
-                text = "^^"..cm,
-                scale = 1.2, 
-                hold = 1,
-                cover = G.HUD:get_UIE_by_ID('game_dollars').parent,
-                cover_colour = G.C.BLACK,
-                colour = SMODS.Gradients["busterb_hedera"],
-                align = 'cm',
-                offset = { x = 0, y = 0.02}
-              })
-                play_sound('slib_eemult')
-]]
+SMODS.current_mod.extra_tabs = bbTabs

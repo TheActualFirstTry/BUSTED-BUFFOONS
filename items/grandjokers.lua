@@ -17,22 +17,23 @@ local IGORTalk = {
     "I can't even buy a home in private...",
     "Take that mask off and tell 'em the truth let's talk about it"
 }
-SMODS.Joker{
+SMODS.Joker {
     key = "igor",
     atlas = "a_g",
     pos = { x = 0, y = 0 },
     soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
     pools = { ["Grandiose"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
-    attributes = { "all_bb", "bustj","hypermult", "enhancements", "face", "scaling", "modify_card"},
+    attributes = { "all_bb", "bustj","hypermult", "enhancements", "face", "scaling", "modify_card" },
     rarity = "busterb_Grandiose",
     cost = 500,
     blueprint_compat = true,
+    demicolon_compat = true,
     eternal_compat = true,
     unlocked = true,
     discovered = true,
     config = {
         extra ={
-            em = 0.01,
+            em = 1,
             emtotal = 1
         }
     },
@@ -58,7 +59,7 @@ SMODS.Joker{
                 ref_value = "emtotal",
                 scalar_value = "em",
                 scaling_message = {
-                message = "^^" ..card.ability.extra.emtotal.. " Mult",
+                message = "^" ..card.ability.extra.emtotal.. " Mult",
                 colour = SMODS.Gradients["busterb_eemultgradient"]
 }
             })
@@ -71,10 +72,9 @@ if faces > 0 then
                 }
             end
         end
-        if context.joker_main then
+        if (context.joker_main or context.forcetrigger) and card.ability.extra.emtotal > to_big(1) then
                 SMODS.calculate_effect ({
-                    eemult = card.ability.extra.emtotal,
-                    message = "^" ..card.ability.extra.emtotal.. " Mult",
+                    emult = card.ability.extra.emtotal,
                     colour = SMODS.Gradients["busterb_eemultgradient"],
                     card = card
                 })
@@ -90,6 +90,7 @@ SMODS.Joker{
     rarity = "busterb_Grandiose",
     cost = 500,
     blueprint_compat = true,
+    demicolon_compat = true,
     eternal_compat = true,
     unlocked = true,
     discovered = true,
@@ -109,6 +110,8 @@ SMODS.Joker{
         end
     end,
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.c_busterb_dream
+        info_queue[#info_queue + 1] = G.P_CENTERS.c_soul
         return { vars = {
             card.ability.extra.emult,
             card.ability.extra.echips,
@@ -126,19 +129,7 @@ SMODS.Joker{
     if context.open_booster then
       card.ability.extra.triggered = false
     end
-    if context.using_consumeable then
-        if context.consumeable.config.center.key == "c_soul" then
-                SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "echips",
-                scalar_value = "echips_gain",
-                scaling_message = {
-                message = "^" ..card.ability.extra.echips.. " Chips",
-                colour = SMODS.Gradients["busterb_eechipsgradient"]
-            }
-            })
-        end 
-    if context.consumeable.config.center.key == "c_busterb_dream" then
+    if context.using_consumeable and (context.consumeable.config.center_key == ("c_busterb_dream" or "c_soul")) then
                 SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "emult",
@@ -149,13 +140,12 @@ SMODS.Joker{
             }
             })
     end
-    end
-    if context.joker_main then
+        if (context.joker_main or context.forcetrigger) and card.ability.extra.emult > to_big(1) then
       return {
         e_mult = card.ability.extra.emult,
-        e_chips = card.ability.extra.echips
       }
     end
+--]]
       if context.skipping_booster then
         local hopesanddreams = pseudorandom_element(G.P_CENTER_POOLS.Spectral, pseudoseed('asrielspawnsaspectral')).key
         SMODS.add_card({key = hopesanddreams, area = G.consumeables, edition = "e_negative", key_append = "asrielspawnsaspectral"})
@@ -172,7 +162,7 @@ SMODS.Joker{
     cost = 500,
     blueprint_compat = true,
     eternal_compat = true,
-    forcetrigger_compat = true,
+    demicolon_compat = true,
     unlocked = true,
     discovered = true,
     attributes = { "all_bb", "bustj","passive", "value_manip"},
@@ -257,7 +247,7 @@ SMODS.Joker{
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
-    forcetrigger_compat = true,
+    demicolon_compat = true,
     eternal_compat = true,
     attributes = { "all_bb", "bustj","generation", "boss_blind"},
     config = {
@@ -327,7 +317,7 @@ SMODS.Joker{
     cost = 500,
     blueprint_compat = true,
     eternal_compat = true,
-    forcetrigger_compat = true,
+    demicolon_compat = true,
     unlocked = true,
     discovered = true,
     config = {extra = {emult = 1},
@@ -417,7 +407,7 @@ SMODS.Joker{
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
-    forcetrigger_compat = true,
+    demicolon_compat = true,
     eternal_compat = true,
     attributes = { "all_bb", "bustj","emult", "xmult", "scaling", "generation"},
     config = {
@@ -441,11 +431,14 @@ SMODS.Joker{
         } }
     end,
     calculate = function(self, card, context)
-        if context.joker_main then
+        if (context.joker_main or context.forcetrigger) then
             return{
+                remove_default_message = true,
+                mesage = "LMAO",
                 xmult = card.ability.extra.xmult,
                 emult = card.ability.extra.emult,
                 sound = "busterb_explode",
+                volume = 0.5,
                 colour = SMODS.Gradients["busterb_eemultgradient"]
             }
         end
@@ -493,26 +486,27 @@ key = "doise",
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
-    forcetrigger_compat = true,
+    demicolon_compat = true,
     eternal_compat = true,
     attributes = { "all_bb", "bustj","xchips", "echips", "chance"},
     config = {
         extra = {
-            odds = 2
+            max_uses = 1,
+            use_gain = 1,
+            echips = 1,
+            echips_mod = 1
         },
         immutable = {
-            minchips = 100,
-            maxchips = 1e100
+            use_minus = -1
         }
     },
     loc_vars = function(self, info_queue, card)
-        local doisechance, doiseodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_doisechange')
+        info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
         return { vars = {
-             card.ability.immutable.maxchips,
-             card.ability.immutable.minchips,
-             " ",
-             doisechance,
-             doiseodds,
+            card.ability.extra.echips,
+            card.ability.extra.max_uses,
+            card.ability.extra.echips_mod,
+            card.ability.extra.use_gain,
              colours = {HEX('48A0F8'),SMODS.Gradients["busterb_eechipsgradient"]}
             } }
     end,
@@ -520,23 +514,54 @@ key = "doise",
         play_sound("busterb_doiseded")
     end,
     calculate = function(self, card, context)
-        if context.joker_main then
-            if SMODS.pseudorandom_probability(card, 'busterb_doisechange', 1, card.ability.extra.odds, 'busterb_doisechange') then
-            return {
-                xchips = pseudorandom('busterb_doisexchips', card.ability.immutable.maxchips, card.ability.immutable.minchips),
-                message = "Woag",
+        if context.before then
+            for k,v in ipairs(G.play.cards) do
+                if SMODS.has_enhancement(v, "m_stone") then
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "echips",
+                scalar_value = "echips_mod",
+                scaling_message = {
+                message = "^"..card.ability.extra.echips+card.ability.extra.echips_mod.. " Chips",
+                colour = Spectrallib.echips
+                }})
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "max_uses",
+                scalar_value = "use_gain",
+                scaling_message = {
+                message = "Doag!",
+                colour = Spectrallib.echips,
                 sound = "busterb_doag"
-            }
-        else
-            return {
-                echips = pseudorandom('busterb_doiseechips', card.ability.immutable.maxchips, card.ability.immutable.minchips),
-                message = "DOAG",
-                sound = "busterb_doawaw",
-                colour = SMODS.Gradients["busterb_eechipsgradient"]
-            }
+                }})
+                SMODS.destroy_cards(v)
+                end
+            end
         end
+        if context.joker_main or context.forcetrigger then
+            return {
+                echips = card.ability.extra.echips,
+                remove_default_message = true,
+                message = "DOAG!",
+                sound = "busterb_doawaw"
+            }
     end
-end
+end,
+        can_use = function(self, card)
+            return G.hand and card.ability.extra.max_uses > 0
+        end,
+        use = function(self, card, area, copier)
+            SMODS.add_card{set = "Playing Card", enhancement = "m_stone"}
+                            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "max_uses",
+                scalar_value = "use_minus",
+                scalar_table = card.ability.immutable,
+                silent = true
+            })
+    end,
+
+
 }
 SMODS.Joker{
     key = "tsc",
@@ -567,7 +592,7 @@ SMODS.Joker{
             " "} }
     end,
     calculate = function(self, card, context)
-        if context.using_consumeable then
+        if context.using_consumeable or context.forcetrigger then
         for i, joker in ipairs(G.jokers.cards) do
             if joker.config.center.key ~= "j_busterb_tsc" then
                 Spectrallib.manipulate(joker, { value = card.ability.extra.vmod, type = "+" })
@@ -595,7 +620,7 @@ SMODS.Joker{
     pools = { ["Grandiose"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     atlas = "a_g",
     blueprint_compat = true,
-    forcetrigger_compat = true,
+    demicolon_compat = true,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
@@ -648,7 +673,7 @@ SMODS.Joker{
         if context.discard then
             context.other_card:set_ability('m_busterb_bloodmarked', nil, true)
         end
-        if context.joker_main or context.forcetrigger then
+        if (context.joker_main or context.forcetrigger) and card.ability.extra.eemult > to_big(1) then
             return { eemult = card.ability.extra.eemult }
         end
     end,
@@ -660,7 +685,7 @@ SMODS.Joker{
     pools = { ["Grandiose"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     atlas = "a_g",
     blueprint_compat = true,
-    forcetrigger_compat = true,
+    demicolon_compat = true,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
@@ -672,7 +697,7 @@ SMODS.Joker{
         extra = {
             eemult = 1,
             gauge = 1,
-            gauge_gain = 1
+            gauge_gain = 0.5
         },
         immutable = {
         }
@@ -696,8 +721,8 @@ SMODS.Joker{
                 ref_value = "gauge",
                 scalar_value = "gauge_gain",
                 scaling_message = {
-                        message = ( card.ability.extra.gauge + card.ability.extra.gauge_gain ) .. " Gauge",
-                        colour = HEX("BC1006"),
+                        message = ( card.ability.extra.gauge + card.ability.extra.gauge_gain ) .. " Mult",
+                        colour = Spectrallib.emult,
                     },
             })
         end
@@ -719,7 +744,7 @@ SMODS.Joker{
                     },
                 })
     end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return{
                 emult = card.ability.extra.gauge,
                 eemult = card.ability.extra.eemult,
@@ -734,9 +759,8 @@ SMODS.Joker{
     rarity = "busterb_Grandiose",
     pools = { ["Grandiose"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     atlas = "a_g",
-    caine = true,
     blueprint_compat = true,
-    forcetrigger_compat = true,
+    demicolon_compat = true,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
@@ -746,46 +770,43 @@ SMODS.Joker{
     attributes = { "all_bb", "bustj","vouchers", "scaling"},
     config = {
         extra = {
-            more = 1,
-            redeem = 1
         },
         immutable = {
-            more = 1,
-            redeem = 1
+            chance = 1,
+            odds = 5,
+            choice = 3
         }
     },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.redeem,
-                card.ability.extra.more,
-                 " ",
+                card.ability.immutable.choice
             },
         }
     end,
-
     calculate = function(self, card, context)
-        if context.end_of_round and context.main_eval and not context.blueprint then
-            if context.beat_boss then
-                SMODS.scale_card(card, {
-                    ref_table = card.ability.extra,
-                    ref_value = "redeem",
-                    scalar_value = "more",
-                    scaling_message = {
-                        message = "+" .. card.ability.extra.more .. " Redeem",
-                        colour = HEX("48A0F8"),
-                    },
-                })
-            end
-        end
-        if context.cainebutton and card.ability.extra.redeem > 0 then
-            SMODS.add_card{set="Voucher",area=G.consumeables}
-            card.ability.extra.redeem = card.ability.extra.redeem - 1
-            return {
-                message = "-1",
-                colour = SMODS.Gradients["busterb_grand"]
-             }
-        end
+        if context.create_shop_card then --1
+            card:juice_up(0.3, 0.5)
+            if SMODS.pseudorandom_probability(card, 'busterb_caine', card.ability.immutable.chance, card.ability.immutable.odds, 'busterb_caine', true) then --2
+            local setpool = {
+                "Voucher",
+                "Booster",
+                "Back"
+            }
+            local g = pseudorandom_element(setpool, "busterb_caine")
+                return {
+                    shop_create_flags = {
+                        set = g
+                }
+            }
+        end--2
+    end--1
+end,
+        add_to_deck = function(self, card, from_debuff)
+            change_shop_size(card.ability.immutable.choice)
+    end,
+        remove_from_deck = function(self, card, from_debuff)
+            change_shop_size(-card.ability.immutable.choice)
     end
 }
 SMODS.Joker{
@@ -794,7 +815,7 @@ SMODS.Joker{
     pools = { ["Grandiose"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     atlas = "a_g",
     blueprint_compat = true,
-    forcetrigger_compat = true,
+    demicolon_compat = true,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
@@ -818,7 +839,7 @@ SMODS.Joker{
         }
     end,
     calculate = function(self, card, context)
-        if context.before and G.GAME.current_round.hands_left == 0 then
+        if (context.before and G.GAME.current_round.hands_left == 0) or context.forcetrigger then
             update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
             { handname = context.scoring_name, chips = '...', mult = '...', level = '' })
         G.E_MANAGER:add_event(Event({
@@ -907,7 +928,7 @@ SMODS.Joker{
     pools = { ["Grandiose"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
     atlas = "a_g",
     blueprint_compat = true,
-    forcetrigger_compat = true,
+    demicolon_compat = true,
     discovered = true,
     unlocked = true,
     eternal_compat = true,
@@ -928,7 +949,7 @@ SMODS.Joker{
         }
     end,
     calculate = function(self, card, context)
-        if context.after and G.GAME.current_round.hands_left == 1 then
+        if (context.after and G.GAME.current_round.hands_left == 1) or context.forcetrigger then
         local amt = amt or 0
         local me = copier or card
         delay(0.4)
@@ -1009,7 +1030,6 @@ SMODS.Joker{
     cost = 500,
     blueprint_compat = false,
     eternal_compat = true,
-    forcetrigger_compat = true,
     unlocked = true,
     discovered = true,
     attributes = { "all_bb", "bustj","value_manip", "scaling"},
@@ -1092,7 +1112,6 @@ SMODS.Joker{
     discovered = true,
     unlocked = true,
     blueprint_compat = true,
-    forcetrigger_compat = true,
     eternal_compat = true,
     attributes = { "all_bb", "bustj","asc", "easc", "xasc", "perma_bonus", "enhancements","modify_card"},
     config = {

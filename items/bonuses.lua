@@ -7,8 +7,47 @@ end
 local function g_loc_vars(_, _, _, eff_table)
     return { vars = { eff_table.config.extra }}
 end
+local function im_loc_vars(_, _, _, eff_table)
+    return { vars = { eff_table.config.immutable }}
+end
+local function sim_loc_vars(_, _, _, eff_table)
+    return { vars = { SMODS.signed(eff_table.config.immutable) }}
+end
+
     Spectrallib.BonusEffect {
-        key = "busterb_consumable",
+        key = "immutable_xblindsize",
+        calculate = function(self, card, eff_table, context)
+            if context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+                return { xblindsize = eff_table.config.immutable }
+            end
+        end,
+        loc_vars = im_loc_vars,
+        attributes = { "xblindsize" }
+    }
+        Spectrallib.BonusEffect {
+        key = "dollars",
+        calculate = function(self, card, eff_table, context)
+            if context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+                ease_dollars(eff_table.config.extra)
+            end
+        end,
+        loc_vars = g_loc_vars,
+        attributes = { "economy" }
+    }
+--[[
+    Spectrallib.BonusEffect {
+        key = "xdollars",
+        calculate = function(self, card, eff_table, context)
+            if context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+                ease_dollars(G.GAME.dollars*(eff_table.config.extra-1))
+            end
+        end,
+        loc_vars = g_loc_vars,
+        attributes = { "economy" }
+    }
+--]]    
+    Spectrallib.BonusEffect {
+        key = "consumable",
         calculate = function(self, card, eff_table, context)
         if context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
             local c = SMODS.create_card({set = "Consumeables"})
@@ -25,7 +64,7 @@ end
         attributes = { "generation" }
     }
     Spectrallib.BonusEffect {
-        key = "busterb_rare_card",
+        key = "rare_card",
         calculate = function(self, card, eff_table, context)
         if context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
                 local pool = {}
@@ -46,9 +85,9 @@ end
         attributes = { "generation" }
     }
     Spectrallib.BonusEffect {
-        key = "busterb_hand_level",
+        key = "hand_level",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
                     SMODS.upgrade_poker_hands{
                         from = card,
                         parameters = { "chips", "mult"},
@@ -62,9 +101,9 @@ end
     }
 
         Spectrallib.BonusEffect {
-        key = "busterb_ascend",
+        key = "ascend",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
                     SMODS.upgrade_poker_hands{
                         from = card,
                         parameters = { "chips", "mult"},
@@ -78,9 +117,9 @@ end
     }        
     
     Spectrallib.BonusEffect {
-        key = "busterb_plus_hands",
+        key = "plus_hands",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
                     SMODS.upgrade_poker_hands{
                         from = card,
                         parameters = { "chips", "mult"},
@@ -98,9 +137,9 @@ end
     }
 
     Spectrallib.BonusEffect {
-        key = "busterb_x_hands",
+        key = "x_hands",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
                     SMODS.upgrade_poker_hands{
                         from = card,
                         parameters = { "chips", "mult"},
@@ -116,24 +155,37 @@ end
         loc_vars = g_loc_vars,
         attributes = { "hand_type" }
     }
-        Spectrallib.BonusEffect {
-        key = "busterb_x_adj_joker",
+    Spectrallib.BonusEffect {
+        key = "create_copy",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
-                local mypos = nil
-		        for i = 1, #G.jokers.cards do
-			        if G.jokers.cards[i] == card then
-				        mypos = i
-			    	    break
-		    	    end
-		        end
-                if G.jokers.cards[mypos - 1] then
-					Spectrallib.manipulate(G.jokers.cards[mypos-1], { value = eff_table.config.extra })
-                SMODS.calculate_effect({ message = "X" ..eff_table.config.extra, colour = G.C.DARK_EDITION}, G.jokers.cards[mypos-1])
+        if (context.end_of_round and context.main_eval) or context.forcetrigger then
+            if not (card.edition or {}).negative then
+                    G.E_MANAGER:add_event(Event({
+                    func = function()
+                    local copy = copy_card(card)
+                    copy:set_edition("e_negative", true)
+                    card.area:emplace(copy)
+                    return true
+                    end
+                }))
+            end
+        end
+    end,
+        loc_vars = g_loc_vars,
+        attributes = { "hand_type" }
+    }
+        Spectrallib.BonusEffect {
+        key = "x_adj_joker",
+        calculate = function(self, card, eff_table, context)
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
+                local left, right = card.area.cards[card.rank-1], card.area.cards[card.rank+1]
+                if left then
+					Spectrallib.manipulate(left, { value = eff_table.config.extra })
+                SMODS.calculate_effect({ message = "X" ..eff_table.config.extra, colour = G.C.DARK_EDITION}, left)
 				end 
-                if G.jokers.cards[mypos + 1] then
-					Spectrallib.manipulate(G.jokers.cards[mypos+1], { value = eff_table.config.extra })
-                SMODS.calculate_effect({ message = "X".. eff_table.config.extra, colour = G.C.DARK_EDITION}, G.jokers.cards[mypos+1])
+                if right then
+					Spectrallib.manipulate(right, { value = eff_table.config.extra })
+                SMODS.calculate_effect({ message = "X".. eff_table.config.extra, colour = G.C.DARK_EDITION}, right)
 				end
 
             end
@@ -143,23 +195,17 @@ end
     }
 
         Spectrallib.BonusEffect {
-        key = "busterb_plus_adj_joker",
+        key = "plus_adj_joker",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
-                local mypos = nil
-		        for i = 1, #G.jokers.cards do
-			        if G.jokers.cards[i] == card then
-				        mypos = i
-			    	    break
-		    	    end
-		        end
-                if G.jokers.cards[mypos - 1] then
-					Spectrallib.manipulate(G.jokers.cards[mypos-1], { value = eff_table.config.extra, type = "+" })
-                SMODS.calculate_effect({ message = "+" ..eff_table.config.extra, colour = G.C.FILTER}, G.jokers.cards[mypos-1])
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
+                local left, right = card.area.cards[card.rank-1], card.area.cards[card.rank+1]
+                if left then
+					Spectrallib.manipulate(left, { value = eff_table.config.extra, type = "+" })
+                SMODS.calculate_effect({ message = "+" ..eff_table.config.extra, colour = G.C.FILTER}, left)
 				end 
-                if G.jokers.cards[mypos + 1] then
-					Spectrallib.manipulate(G.jokers.cards[mypos+1], { value = eff_table.config.extra, type = "+" })
-                SMODS.calculate_effect({ message = "+".. eff_table.config.extra, colour = G.C.FILTER}, G.jokers.cards[mypos+1])
+                if right then
+					Spectrallib.manipulate(right, { value = eff_table.config.extra, type = "+" })
+                SMODS.calculate_effect({ message = "+".. eff_table.config.extra, colour = G.C.FILTER}, right)
 				end
 
             end
@@ -168,23 +214,17 @@ end
         attributes = { "value_manip" }
     }
         Spectrallib.BonusEffect {
-        key = "busterb_e_adj_joker",
+        key = "e_adj_joker",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
-                local mypos = nil
-		        for i = 1, #G.jokers.cards do
-			        if G.jokers.cards[i] == card then
-				        mypos = i
-			    	    break
-		    	    end
-		        end
-                if G.jokers.cards[mypos - 1] then
-					Spectrallib.manipulate(G.jokers.cards[mypos-1], { value = eff_table.config.extra, type = "^" })
-                SMODS.calculate_effect({ message = "^" ..eff_table.config.extra, colour = G.C.BLACK, text_colour = G.C.DARK_EDITION}, G.jokers.cards[mypos-1])
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
+                local left, right = card.area.cards[card.rank-1], card.area.cards[card.rank+1]
+                if left then
+					Spectrallib.manipulate(left, { value = eff_table.config.extra, type = "^" })
+                SMODS.calculate_effect({ message = "^" ..eff_table.config.extra, colour = G.C.BLACK, text_colour = G.C.DARK_EDITION}, left)
 				end 
-                if G.jokers.cards[mypos + 1] then
-					Spectrallib.manipulate(G.jokers.cards[mypos+1], { value = eff_table.config.extra, type = "^" })
-                SMODS.calculate_effect({ message = "^".. eff_table.config.extra, colour = G.C.BLACK, text_colour = G.C.DARK_EDITION}, G.jokers.cards[mypos+1])
+                if right then
+					Spectrallib.manipulate(right, { value = eff_table.config.extra, type = "^" })
+                SMODS.calculate_effect({ message = "^".. eff_table.config.extra, colour = G.C.BLACK, text_colour = G.C.DARK_EDITION}, right)
 				end
 
             end
@@ -194,21 +234,15 @@ end
     }
 
         Spectrallib.BonusEffect {
-        key = "busterb_forcetrigger",
+        key = "forcetrigger",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
-                local mypos = nil
-		        for i = 1, #G.jokers.cards do
-			        if G.jokers.cards[i] == card then
-				        mypos = i
-			    	    break
-		    	    end
-		        end
-                if G.jokers.cards[mypos - 1] then
-                    Spectrallib.forcetrigger(G.jokers.cards[mypos-1])
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
+                local left, right = card.area.cards[card.rank-1], card.area.cards[card.rank+1]
+                if left then
+                    Spectrallib.forcetrigger(left)
 				end 
-                if G.jokers.cards[mypos + 1] then
-                    Spectrallib.forcetrigger(G.jokers.cards[mypos+1])
+                if right then
+                    Spectrallib.forcetrigger(right)
 				end
 
             end
@@ -218,9 +252,9 @@ end
     }
 
         Spectrallib.BonusEffect {
-        key = "busterb_x_selfmanip",
+        key = "x_selfmanip",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
             	Spectrallib.manipulate(card, { value = eff_table.config.extra, type = "X" })
                 SMODS.calculate_effect({ message = "X" ..eff_table.config.extra, colour = G.C.DARK_EDITION}, card)
             end
@@ -229,40 +263,34 @@ end
         attributes = { "value_manip" }
     }
         Spectrallib.BonusEffect {
-        key = "busterb_plus_selfmanip",
+        key = "plus_selfmanip",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
             	Spectrallib.manipulate(card, { value = eff_table.config.extra, type = "+" })
                 SMODS.calculate_effect({ message = "+" ..eff_table.config.extra, colour = G.C.FILTER}, card)
-            end
-        end,
-        loc_vars = g_loc_vars,
-        attributes = { "value_manip" }
-    }
-        Spectrallib.BonusEffect {
-        key = "busterb_e_selfmanip",
-        calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
-            	Spectrallib.manipulate(card, { value = eff_table.config.extra, type = "^" })
-                SMODS.calculate_effect({ message = "^" ..eff_table.config.extra, colour = G.C.BLACK, text_colour = G.C.DARK_EDITION}, card)
             end
         end,
         loc_vars = s_loc_vars,
         attributes = { "value_manip" }
     }
         Spectrallib.BonusEffect {
-        key = "busterb_random_jade",
+        key = "e_selfmanip",
+        calculate = function(self, card, eff_table, context)
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
+            	Spectrallib.manipulate(card, { value = eff_table.config.extra, type = "^" })
+                SMODS.calculate_effect({ message = "^" ..eff_table.config.extra, colour = G.C.BLACK, text_colour = G.C.DARK_EDITION}, card)
+            end
+        end,
+        loc_vars = g_loc_vars,
+        attributes = { "value_manip" }
+    }
+        Spectrallib.BonusEffect {
+        key = "random_jade",
         calculate = function(self, card, eff_table, context)
         if context.setting_blind or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
-                local mypos = nil
-		        for i = 1, #G.jokers.cards do
-			        if G.jokers.cards[i] == card then
-				        mypos = i
-			    	    break
-		    	    end
-		        end
-                if G.jokers.cards[mypos - 1] then
-                        Spectrallib.add_bonus_effect(G.jokers.cards[mypos-1], BustB.poll_BB_effect_jade("busterb_jade") )
+                local left, right = card.area.cards[card.rank-1], card.area.cards[card.rank+1]
+                if left then
+                        Spectrallib.add_bonus_effect(left, BustB.poll_BB_effect_jade("busterb_jade") )
                         G.E_MANAGER:add_event(Event({
 						trigger = 'before',
 						delay = 0.5 + math.random() * 0.4,
@@ -274,18 +302,18 @@ end
                                 backdrop_colour = G.C.BLACK,
 								colour = G.C.DARK_EDITION,
 								align = 'cm',
-								major = G.jokers.cards[mypos-1],
+								major = left,
 								offset = {x = 0, y = 0}
 							})
-							play_sound('holo1',1, 0.5)
-							G.jokers.cards[mypos-1]:juice_up(1, 0.2)
-							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							play_sound('busterb_mus',1, 0.5)
+							left:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 20
 							return true
                         end
 						}))   
 				end 
-                if G.jokers.cards[mypos + 1] then
-                        Spectrallib.add_bonus_effect(G.jokers.cards[mypos+1], BustB.poll_BB_effect_jade("busterb_jade") )
+                if right then
+                        Spectrallib.add_bonus_effect(right, BustB.poll_BB_effect_jade("busterb_jade") )
                         G.E_MANAGER:add_event(Event({
 						trigger = 'before',
 						delay = 0.5 + math.random() * 0.4,
@@ -297,12 +325,12 @@ end
                                 backdrop_colour = G.C.BLACK,
 								colour = G.C.DARK_EDITION,
 								align = 'cm',
-								major = G.jokers.cards[mypos+1],
+								major = right,
 								offset = {x = 0, y = 0}
 							})
-							play_sound('holo1',1, 0.5)
-							G.jokers.cards[mypos+1]:juice_up(1, 0.2)
-							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							play_sound('busterb_mus',1, 0.5)
+							right:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 20
 							return true
                         end
 						}))   
@@ -313,9 +341,9 @@ end
         attributes = { "passive" }
     }
         Spectrallib.BonusEffect {
-        key = "busterb_all_hands",
+        key = "all_hands",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
                     update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
             { handname = localize('k_all_hands'), chips = '...', mult = '...', level = '' })
         G.E_MANAGER:add_event(Event({
@@ -361,9 +389,9 @@ end
     }
 
         Spectrallib.BonusEffect {
-        key = "busterb_all_asc",
+        key = "all_asc",
         calculate = function(self, card, eff_table, context)
-        if context.before or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
             local amt = amt or 0
         local me = copier or card
         delay(0.4)
@@ -416,6 +444,11 @@ end
     }
 
     BustB.BB_effect_pool_jade = {
+    {key = "slib_score", min = 12, max = 150, factor = 0.1,},
+    {key = "slib_chips", min = 1, max = 20 },
+    {key = "slib_mult", min = 1, max = 15 },
+    {key = "slib_asc", min = 12, max = 100, factor = 0.1,},
+    {key = "slib_x_asc", min = 12, max = 100, factor = 0.1,},
     {key = "slib_xchips", min = 15, max = 125, factor = 0.1, },
     {key = "slib_echips", min = 105, max = 1250, factor = 0.01, },
     {key = "slib_xmult", min = 15, max = 130, factor = 0.1, },
@@ -461,11 +494,16 @@ function BustB.poll_BB_effect_jade(seed)
 end
 
     BustB.BB_effect_pool = {
+    {key = "slib_score", min = 12, max = 150, factor = 0.1,},
+    {key = "slib_chips", min = 1, max = 20 },
+    {key = "slib_mult", min = 1, max = 15 },
+    {key = "slib_asc", min = 12, max = 100, factor = 0.1,},
     {key = "slib_xchips", min = 15, max = 125, factor = 0.1, },
     {key = "slib_echips", min = 105, max = 1250, factor = 0.01, },
     {key = "slib_xmult", min = 15, max = 130, factor = 0.1, },
     {key = "slib_emult", min = 110, max = 1350, factor = 0.01, },
     {key = "slib_xscore", min = 12, max = 150, factor = 0.1,},
+    {key = "slib_x_asc", min = 12, max = 100, factor = 0.1,},
     {key = "slib_balance"},
     {key = "slib_partial_swap", min = 10, max = 100, factor = 0.01, },
     {key = "slib_hands", min = 1, max = 5,},
@@ -489,6 +527,58 @@ end
 function BustB.poll_BB_effect(seed)
     seed = seed or "BustB_effects"
     local eff_table = pseudorandom_element(BustB.BB_effect_pool, seed.."_type")
+    local config = {}
+    if eff_table.get_config then
+        config = eff_table.get_config(seed)
+    elseif eff_table.min and eff_table.max then
+        config.extra = pseudorandom(seed, eff_table.min, eff_table.max) * (eff_table.factor or 1)
+    end
+    return eff_table.key, config
+end
+
+    BustB.BB_nano_pool = {
+    {key = "slib_chips", min = 1, max = 20 },
+    {key = "slib_mult", min = 1, max = 15 },
+    {key = "slib_xchips", min = 15, max = 145, factor = 0.1, },
+    {key = "slib_xmult", min = 15, max = 100, factor = 0.1, },
+    {key = "slib_asc", min = 12, max = 100, factor = 0.1,},
+    {key = "slib_score", min = 12, max = 150, factor = 0.1,},
+    {key = "slib_xscore", min = 12, max = 150, factor = 0.1,},
+    {key = "slib_partial_swap", min = 10, max = 100, factor = 0.01, },
+    {key = "slib_hands", min = 1, max = 5,},
+    {key = "slib_discards", min = 1, max = 5,},
+    {key = "slib_h_size", min = 1, max = 5,},
+    {key = "busterb_hand_level", min = 1, max = 10},
+    {key = "busterb_ascend", min = 1, max = 5},
+    {key = "busterb_plus_hands", min = 1, max = 10},
+    {key = "busterb_x_hands", min = 12, max = 50, factor = 0.1},
+    {key = "busterb_plus_selfmanip", min = 1, max = 250, factor = 0.1},
+}
+
+function BustB.poll_nano_effect(seed)
+    seed = seed or "BustB_effects"
+    local eff_table = pseudorandom_element(BustB.BB_nano_pool, seed.."_type")
+    local config = {}
+    if eff_table.get_config then
+        config = eff_table.get_config(seed)
+    elseif eff_table.min and eff_table.max then
+        config.extra = pseudorandom(seed, eff_table.min, eff_table.max) * (eff_table.factor or 1)
+    end
+    return eff_table.key, config
+end
+
+BustB.BB_hestia_pool = {
+    {key = "slib_echips", min = -105, max = -1250, factor = 0.01, },
+    {key = "slib_emult", min = -110, max = -1350, factor = 0.01, },
+    {key = "slib_xchips", min = -150, max = -1450, factor = 0.1, },
+    {key = "slib_xmult", min = -150, max = -1000, factor = 0.1, },
+    {key = "slib_asc", min = -120, max = -1000, factor = 0.1,},
+    {key = "slib_xscore", min = -120, max = -1500, factor = 0.1,},
+}
+
+function BustB.poll_hestia(seed)
+    seed = seed or "BustB_hestia"
+    local eff_table = pseudorandom_element(BustB.BB_hestia_pool, seed.."_type")
     local config = {}
     if eff_table.get_config then
         config = eff_table.get_config(seed)
