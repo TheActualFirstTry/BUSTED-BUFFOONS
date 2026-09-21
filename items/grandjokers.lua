@@ -268,24 +268,16 @@ SMODS.Joker{
     end,
     calculate = function(self, card, context)
         if context.end_of_round and context.main_eval and context.beat_boss or context.forcetrigger then
---            local souldream = pseudorandom(pseudoseed("busterb_gfreddysoul"), 1, 2)
---            if souldream == 1 then 
---                local c = SMODS.create_card({key = "c_busterb_dream", edition = "e_negative"})
---                    c:add_to_deck()
---                    G.consumeables:emplace(c)
---            end
---            if souldream == 2 then 
---                local c = SMODS.create_card({key = "c_busterb_slumber", edition = "e_negative"})
---                    c:add_to_deck()
---                    G.consumeables:emplace(c)
---            end
-                local pool = {}
+--[[
+            local pool = {}
                     for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
                       if v.hidden  and not ( v.set == "jen_omegaconsumable" or v.set == "jen_ability" ) then pool[#pool+1] = v.key end
                 end
                 local random_key = pseudorandom_element(pool, "random_rare_consumeable")
                     if random_key then SMODS.add_card{key = random_key} end
-                return {
+--]]
+                    BustB.rarespawn("busterb_gfreddy")
+                    return {
                     message = "Har Har Har!",
                     sound = "busterb_gfreddygiggle",
                     colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
@@ -791,7 +783,6 @@ SMODS.Joker{
             local setpool = {
                 "Voucher",
                 "Booster",
-                "Back"
             }
             local g = pseudorandom_element(setpool, "busterb_caine")
                 return {

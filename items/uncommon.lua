@@ -156,16 +156,16 @@ demicolon_compat = true,
     rarity = 2,
     cost = 4,
     pos = { x = 3, y = 0 },
-    config = { extra = {  } },
+    config = { extra = { speed_mult = 16 } },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "chips" },
     loc_vars = function(self, info_queue, card)
-        local speedvalue = G.SETTINGS.GAMESPEED * 16
+        local speedvalue = G.SETTINGS.GAMESPEED * card.ability.extra.speed_mult
         return { vars = { speedvalue, " " } }
     end,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             return {
-                chips = G.SETTINGS.GAMESPEED * 16
+                chips = G.SETTINGS.GAMESPEED * card.ability.extra.speed_mult
             }
         end
     end
@@ -210,7 +210,7 @@ demicolon_compat = true,
     rarity = 2,
     cost = 4,
     pos = { x = 1, y = 1 },
-    config = { extra = {  }, immutable = { reduce = 0.75 } },
+    config = { extra = {  }, immutable = { reduce = 0.90 } },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "boss_blind", "xblindsize" },
     loc_vars = function(self, info_queue, card)
         local value = card.ability.immutable.reduce
@@ -222,7 +222,7 @@ demicolon_compat = true,
         local display = string.format("%d%%",(1-value)*100)
             if (context.individual and context.cardarea == G.play and G.GAME.blind.boss) or context.forcetrigger then
                 if context.other_card:get_id() == 14 then
-                    return{card = card, remove_default_message = true, xblindsize = value, message = display, colour = G.C.BLACK}
+                    return{card = card, remove_default_message = true, xblindsize = value, message = display, colour = G.C.BBBLACK}
                 end
             end
         end,

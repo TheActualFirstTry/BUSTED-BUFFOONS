@@ -8,6 +8,22 @@
 
 
 -- Deck #1 -- True Kinda Deck
+
+local TDD = function()
+    local suits = {
+     dark = 0,
+     light = 0
+    }
+    for k,v in ipairs(G.playing_cards or {}) do
+        if v:is_suit("Clubs") then
+            suits.dark = suits.dark + 1
+        end
+        if v:is_suit("Hearts") then
+            suits.light = suits.light + 1
+        end
+    end
+    return suits
+end
 SMODS.Atlas {
     key = "atlas_truekinda",
     path = "truekinda.png",
@@ -18,18 +34,18 @@ SMODS.Back {
     key = "truekinda",
     atlas = "atlas_truekinda",
     pos = { x = 0, y = 0 },
-    config =  {},
+    config =  { bonus = 1 },
     apply = function(self, back)
         G.E_MANAGER:add_event(Event({
         func = function()
             local flipchance = pseudorandom(pseudoseed("busterb_truekinda"), 1, 2)
            if flipchance == 1 then 
-                local c = SMODS.create_card({key = "j_busterb_spinel", edition = "e_negative"})
+                local c = SMODS.create_card({key = "j_busterb_spinel"})
                     c:add_to_deck()
                     G.jokers:emplace(c)
             end
             if flipchance == 2 then 
-                local c = SMODS.create_card({key = "j_busterb_garnet", edition = "e_negative"})
+                local c = SMODS.create_card({key = "j_busterb_garnet"})
                     c:add_to_deck()
                     G.jokers:emplace(c)
             end
@@ -46,7 +62,73 @@ SMODS.Back {
             return true
         end
     }))
-end
+end,
+    calculate = function(self, back, context)
+        if context.discard and context.other_card then
+            local card = context.other_card
+            if card:is_suit('Clubs') then
+                card:change_suit('Hearts')
+                card_eval_status_text(card, 'extra', nil, nil, nil, {
+                    message = "Heart!",
+                    colour = G.C.SUITS.Hearts
+                })
+            elseif card:is_suit('Hearts') then
+                card:change_suit('Clubs')
+                card_eval_status_text(card, 'extra', nil, nil, nil, {
+                    message = "Club!",
+                    colour = G.C.SUITS.Clubs
+                })
+            elseif card:is_suit('Spades') then
+                card:change_suit('Clubs')
+                card_eval_status_text(card, 'extra', nil, nil, nil, {
+                    message = "Club!",
+                    colour = G.C.SUITS.Clubs
+                })
+            elseif card:is_suit('Diamonds') then
+                card:change_suit('Hearts')
+                card_eval_status_text(card, 'extra', nil, nil, nil, {
+                    message = "Heart!",
+                    colour = G.C.SUITS.Hearts
+                })
+            else
+                Spectrallib.level_suit(suit, card, level_amt, chips, mult, true, nil)
+                card:start_dissolve()                
+                card_eval_status_text(G.deck, 'extra', nil, nil, nil, {
+                    message = localize("k_upgrade_ex"),
+                    colour = G.C.PURPLE
+                })
+            end
+        end
+        if context.joker_main then
+    local suits = {
+     dark = 0,
+     light = 0
+    }
+    for k,v in ipairs(G.playing_cards or {}) do
+        if v:is_suit("Clubs") then
+            suits.dark = suits.dark + 1
+        end
+        if v:is_suit("Hearts") then
+            suits.light = suits.light + 1
+        end
+    end
+        end
+    end,
+    loc_vars = function(self, info_queue, back)
+            local suits = {
+     dark = 0,
+     light = 0
+    }
+    for k,v in ipairs(G.playing_cards or {}) do
+        if v:is_suit("Clubs") then
+            suits.dark = suits.dark + 1
+        end
+        if v:is_suit("Hearts") then
+            suits.light = suits.light + 1
+        end
+    end
+    return { vars = {suits.light, suits.dark} }
+    end
 -- I feel like there should be a loc_vars here somewhere.
 }
 

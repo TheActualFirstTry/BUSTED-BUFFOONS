@@ -396,26 +396,31 @@ SMODS.Joker {
     rarity = 1,
     cost = 2,
     pos = { x = 2, y = 2 },
-    config = { extra = {  } },
+    config = { extra = { chance = 1, odds = 4 } },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "enhancements","modify_card" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_nanotech
-        return { vars = { } }
+        local nanorare, nanoodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_nanorare')
+        return { vars = { nanorare, nanoodds } }
     end,
     calculate = function(self, card, context)
-        if context.before and not context.blueprint and #context.full_hand == 1 then
-            for k, v in ipairs(context.scoring_hand) do
-                    v:set_ability('m_busterb_nanotech', nil, true)
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            v:juice_up()
-                            return true
-                        end
-                    }))
-                    SMODS.calculate_effect{message = "Nanotech!", colour = G.C.GREEN, card = v}
-            end
+            local nano = false
+            if context.joker_main then
+        for k, v in ipairs(context.scoring_hand) do
+            if SMODS.has_enhancement(v, "m_busterb_nanotech") then nano = true end 
         end
-
+    end
+                if nano and (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) then
+                    if SMODS.pseudorandom_probability(card, 'busterb_nanorare', 1, card.ability.extra.odds, 'busterb_nanorare', true) then
+                G.E_MANAGER:add_event(Event({
+                func = function()
+                    SMODS.add_card{set="Bootleg",soulable=true}
+                    play_sound("tarot1")
+                    return true
+                end
+            }))
+        end
+    end
     end,
 }
 
@@ -528,7 +533,7 @@ demicolon_compat = true,
     pools = { ["bustjokers"] = true, ["all_bb_joker"] = true },
     cost = 2,
     discovered = true,
-    config = { extra = { mult = 0, gain = 2 }, },
+    config = { extra = { mult = 0, gain = 0.2 }, },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "mult", "two", "scaling", "rank" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.gain } }
@@ -678,14 +683,14 @@ demicolon_compat = true,
     rarity = 1,
     cost = 2,
     pos = { x = 0, y = 4 },
-    config = { extra = { mult = 4 }, immutable = { mult_loss = 1 } },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "scaling", "food", "xmult" },
+    config = { extra = { bal = 0.25 }, immutable = { bal_loss = 0.05 } },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "scaling", "food", "balance" },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult, card.ability.immutable.mult_loss } }
+        return { vars = { card.ability.extra.bal*100, card.ability.immutable.bal_loss*100 } }
     end,
     calculate = function(self, card, context)
-        if context.end_of_round and G.GAME.blind.boss and context.game_over == false and context.main_eval and not context.blueprint then
-            if card.ability.extra.mult < 1 then
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint and not context.repetition then
+            if card.ability.extra.bal < card.ability.immutable.bal_loss  then
                 SMODS.destroy_cards(card, nil, nil, true)
                 return {
                     message = "Dead!",
@@ -693,17 +698,17 @@ demicolon_compat = true,
                 }
             else
                 -- See note about SMODS Scaling Manipulation on the wiki
-                card.ability.extra.mult = card.ability.extra.mult - card.ability.immutable.mult_loss
+                card.ability.extra.bal = card.ability.extra.bal - card.ability.immutable.bal_loss
                 return {
-                    message = "X"..card.ability.extra.mult.." Mult",
-                    colour = G.C.MULT
+                    message = card.ability.extra.bal.."%",
+                    colour = G.C.PURPLE
                 }
             end
         end
-        if context.joker_main and (G.GAME.blind and G.GAME.blind.boss) or context.forcetrigger then
-            if (card.ability.extra.mult > to_big(1)) then
+        if context.final_scoring_step or context.forcetrigger then
+            if (card.ability.extra.bal > to_big(0)) then
             return {
-                xmult = card.ability.extra.mult
+                cry_broken_swap = card.ability.extra.bal
             }
         end
     end

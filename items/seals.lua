@@ -8,7 +8,7 @@ loc_vars = function(self, info_queue, card)
 return { vars = {  } }
 end,
 calculate = function(self, card, context)
-            if context.final_scoring_step or context.forcetrigger then
+            if (context.main_scoring and (context.cardarea == G.play)) or context.forcetrigger then
                 return { balance = true }
             end
 end,

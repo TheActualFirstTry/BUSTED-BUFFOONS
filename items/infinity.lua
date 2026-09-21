@@ -79,7 +79,7 @@ SMODS.Consumable {
     extra = { val = 1.5 }
   },
 loc_vars = function(self, info_queue, card)
-		return { vars = { number_format(self.config.extra.val) } }
+		return { vars = { card.ability.extra.val } }
 	end,
 can_use = function(self, card)
     return #G.jokers.cards > 0
@@ -89,21 +89,12 @@ can_use = function(self, card)
     local check = false
 			for i, v in pairs(G.jokers.cards) do
 				if v ~= card then
-					if not Card.no(v, "immutable", true) then
-						Spectrallib.manipulate(v, { value = self.config.extra.val })
+						Spectrallib.manipulate(v, { value = card.ability.extra.val })
 						check = true
-					end
 				end
 			end
 			if check then
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_upgrade_ex"), colour = HEX('E36956') }
-				)
+                return { message = localize("k_upgrade_ex"), colour = HEX('E36956'), card = self }
 			end
   end,
    draw = function(self, card, layer)
@@ -174,29 +165,45 @@ SMODS.Consumable {
     cost = 4, pos = { x = 2, y = 0 },
     config = {
     extra = {
-        min = 10,
-        max = 1000
+        xlevel = 2
     }
   },
+loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xlevel, colours = {HEX('E36956')} } }
+	end,
 can_use = function(self, card)
-    return #G.hand.cards > 0
+    return true
   end,
 
   use = function(self, card, area, copier)
-    for i, v in ipairs(G.hand.cards) do
-        local randomxmult = (pseudorandom(pseudoseed("busterb_randomxmult"), self.config.extra.min, self.config.extra.max) / 100)
-				if v ~= card then
-                    G.E_MANAGER:add_event(Event({
-                        trigger = 'after',
-                        func = function()
-                            v.ability.perma_x_mult = v.ability.perma_x_mult + randomxmult
-                            v:juice_up(0.3, 0.3)
-                            play_sound("tarot1")
-                            return true
-                        end
-                    }))
-                end
-            end
+        update_hand_text({delay = 0}, {
+        handname = localize("k_all_hands"),
+        level = "...",
+        mult = "#",
+        chips = "..."
+    })
+    delay(2)
+    Spectrallib.event(function ()
+        play_sound('tarot1')
+        return true
+    end)
+    update_hand_text({delay = 0}, {
+        handname = localize("k_level_mult"),
+        chips = "...",
+        mult = "X"
+    })
+    delay(1)
+    BustB.JUICE_CARD_EVENT(card, 0.2)
+    for k,v in pairs(G.GAME.hands) do
+	G.GAME.hands[k].l_mult = G.GAME.hands[k].l_mult * card.ability.extra.xlevel
+    end
+    update_hand_text(BustB.uht_snd(0.7, 0.9, 0), {
+        mult = "X"..card.ability.extra.xlevel,
+        StatusText = true
+    })
+    delay(2)
+	Spectrallib.reset_to_none()
+
         end,
    draw = function(self, card, layer)
         if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
@@ -211,29 +218,45 @@ SMODS.Consumable {
     cost = 4, pos = { x = 3, y = 0 },
     config = {
     extra = {
-        min = 10,
-        max = 1000
+        xlevel = 2
     }
   },
+loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xlevel, colours = {HEX('E36956')} } }
+	end,
 can_use = function(self, card)
-    return #G.hand.cards > 0
+    return true
   end,
 
   use = function(self, card, area, copier)
-    for i, v in ipairs(G.hand.cards) do
-        local randomxchips = (pseudorandom(pseudoseed("busterb_randomxchips"), self.config.extra.min, self.config.extra.max) / 100)
-				if v ~= card then
-                    G.E_MANAGER:add_event(Event({
-                        trigger = 'after',
-                        func = function()
-                            v.ability.perma_x_chips = v.ability.perma_x_chips + randomxchips
-                            v:juice_up(0.3, 0.3)
-                            play_sound("tarot1")
-                            return true
-                        end
-                    }))
-                end
-            end
+        update_hand_text({delay = 0}, {
+        handname = localize("k_all_hands"),
+        level = "...",
+        mult = "...",
+        chips = "#"
+    })
+    delay(2)
+    Spectrallib.event(function ()
+        play_sound('tarot1')
+        return true
+    end)
+    update_hand_text({delay = 0}, {
+        handname = localize("k_level_chips"),
+        chips = "X",
+        mult = "..."
+    })
+    delay(1)
+    BustB.JUICE_CARD_EVENT(card, 0.2)
+    for k,v in pairs(G.GAME.hands) do
+	G.GAME.hands[k].l_chips = G.GAME.hands[k].l_chips * card.ability.extra.xlevel
+    end
+    update_hand_text(BustB.uht_snd(0.7, 0.9, 0), {
+        chips = "X"..card.ability.extra.xlevel,
+        StatusText = true
+    })
+    delay(2)
+	Spectrallib.reset_to_none()
+
         end,
    draw = function(self, card, layer)
         if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
@@ -428,7 +451,7 @@ SMODS.Consumable {
 		}))
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				ease_ante(1)
+				ease_x_ante(2)
 				return true
 			end,
 		}))
@@ -497,7 +520,7 @@ SMODS.Consumable {
         for i, v in pairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
             if not v.entr_aleph or v.busterb_omega then
                 v:start_dissolve()
-                ease_dollars(math.abs(G.GAME.dollars))
+                ease_x_dollars{2}
             end
         end
     end,
@@ -522,7 +545,6 @@ SMODS.Consumable {
 		info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
 		return { vars = { card.ability.extra.num_copies } }
 	end,
-	cost = 4,
 	    can_use = function(self, card)
         return #G.consumeables.cards > 0 and (G.consumeables.cards[1].config.center_key ~= "c_busterb_meija")
     end,
@@ -566,7 +588,7 @@ SMODS.Consumable {
     extra = { val = 1.5 }
   },
 loc_vars = function(self, info_queue, card)
-		return { vars = { number_format(self.config.extra.val) } }
+		return { vars = { card.ability.extra.val } }
 	end,
 can_use = function(self, card)
     return #G.consumeables.cards > 0
@@ -576,21 +598,12 @@ can_use = function(self, card)
     local check = false
 			for i, v in pairs(G.consumeables.cards) do
 				if v ~= card then
-					if not Card.no(v, "immutable", true) then
-						Spectrallib.manipulate(v, { value = self.config.extra.val })
+						Spectrallib.manipulate(v, { value = card.ability.extra.val })
 						check = true
-					end
 				end
 			end
 			if check then
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_upgrade_ex"), colour = HEX('E36956') }
-				)
+                return { message = localize("k_upgrade_ex"), colour = HEX('E36956'), card = self }
 			end
   end,
    draw = function(self, card, layer)
@@ -686,7 +699,7 @@ SMODS.Consumable {
     extra = { val = 1.5}
   },
 loc_vars = function(self, info_queue, card)
-		return { vars = { number_format(self.config.extra.val) } }
+		return { vars = { card.ability.extra.val } }
 	end,
 can_use = function(self, card)
     return #G.hand.cards > 0
@@ -696,21 +709,12 @@ can_use = function(self, card)
     local check = false
 			for i, v in pairs(G.hand.cards) do
 				if v ~= card then
-					if not Card.no(v, "immutable", true) then
-						Spectrallib.manipulate(v, { value = self.config.extra.val })
+						Spectrallib.manipulate(v, { value = card.ability.extra.val })
 						check = true
-					end
 				end
 			end
 			if check then
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_upgrade_ex"), colour = HEX('E36956') }
-				)
+                return { message = localize("k_upgrade_ex"), colour = HEX('E36956'), card = self }
 			end
   end,
    draw = function(self, card, layer)

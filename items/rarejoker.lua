@@ -1035,20 +1035,20 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 3, y = 4 },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "xmult", "ace", "face", "rank" },
-    config = { extra = { xmult = 1, xmult_mod = 6 }, immutable = { } },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "mult", "ace", "face", "rank" },
+    config = { extra = { mult = 1, mult_mod = 6 }, immutable = { } },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.xmult,
-                card.ability.extra.xmult_mod,                
+                card.ability.extra.mult,
+                card.ability.extra.mult_mod,                
             }
         }
     end,
     calculate = function(self, card, context)
-        if to_big(card.ability.extra.xmult) > to_big(1) then
+        if to_big(card.ability.extra.mult) > to_big(1) then
             if context.joker_main or context.forcetrigger then
-            return {xmult = card.ability.extra.xmult}
+            return {mult = card.ability.extra.mult}
     end
 end
     if context.before then
@@ -1065,10 +1065,10 @@ end
             if ace_count >= 4 or face_count >= 4 then
                 SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
-                ref_value = "xmult",
-                scalar_value = "xmult_mod",
+                ref_value = "mult",
+                scalar_value = "mult_mod",
                 scaling_message = {
-                message = "X" ..(card.ability.extra.xmult + card.ability.extra.xmult_mod).. " Mult",
+                message = "+" ..(card.ability.extra.mult + card.ability.extra.mult_mod).. " Mult",
                 colour = G.C.MULT
             }})
             end

@@ -12,8 +12,8 @@ SMODS.Consumable {
     config = {
     extra = {
         max_highlighted = 3,
-        chips = 10,
-        mult = 4
+        chips = 15,
+        mult = 5
     }
   },
 loc_vars = function(self, info_queue, card)
@@ -50,11 +50,12 @@ SMODS.Consumable {
     config = {
     extra = {
         max_highlighted = 3,
-        dollars = 3,
+        dollars = 2,
+        h_dollars = 3,
     }
   },
 loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.max_highlighted, card.ability.extra.dollars, colours = {HEX('E36956')} } }
+		return { vars = { card.ability.extra.max_highlighted, card.ability.extra.dollars, card.ability.extra.h_dollars, colours = {HEX('E36956')} } }
 	end,
     can_use = function(self, card)
         local selected = Spectrallib.get_highlighted_cards({ G.hand }, nil, 1, card.ability.extra.max_highlighted)
@@ -69,6 +70,7 @@ loc_vars = function(self, info_queue, card)
                         trigger = 'after',
                         func = function()
                             highlighted.ability.perma_p_dollars = highlighted.ability.perma_p_dollars + card.ability.extra.dollars
+                            highlighted.ability.perma_h_dollars = highlighted.ability.perma_h_dollars + card.ability.extra.h_dollars
                             highlighted:juice_up(0.3, 0.3)
                             play_sound("tarot1")
                             return true
@@ -87,10 +89,11 @@ SMODS.Consumable {
     extra = {
         max_highlighted = 2,
         x_mult = 0.2,
+        h_x_mult = 0.5
     }
   },
 loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.max_highlighted, card.ability.extra.x_mult, colours = {HEX('E36956')} } }
+		return { vars = { card.ability.extra.max_highlighted, card.ability.extra.x_mult, card.ability.extra.h_x_mult, colours = {HEX('E36956')} } }
 	end,
     can_use = function(self, card)
         local selected = Spectrallib.get_highlighted_cards({ G.hand }, nil, 1, card.ability.extra.max_highlighted)
@@ -105,6 +108,7 @@ loc_vars = function(self, info_queue, card)
                         trigger = 'after',
                         func = function()
                             highlighted.ability.perma_x_mult = highlighted.ability.perma_x_mult + card.ability.extra.x_mult
+                            highlighted.ability.perma_h_x_mult = highlighted.ability.perma_h_x_mult + card.ability.extra.h_x_mult
                             highlighted:juice_up(0.3, 0.3)
                             play_sound("tarot1")
                             return true
@@ -122,11 +126,12 @@ SMODS.Consumable {
     config = {
     extra = {
         max_highlighted = 2,
-        x_chips = 0.2,
+        x_chips = 0.25,
+        h_x_chips = 0.75,
     }
   },
 loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.max_highlighted, card.ability.extra.x_chips, colours = {HEX('E36956')} } }
+		return { vars = { card.ability.extra.max_highlighted, card.ability.extra.x_chips, card.ability.extra.h_x_chips, colours = {HEX('E36956')} } }
 	end,
     can_use = function(self, card)
         local selected = Spectrallib.get_highlighted_cards({ G.hand }, nil, 1, card.ability.extra.max_highlighted)
@@ -141,6 +146,7 @@ loc_vars = function(self, info_queue, card)
                         trigger = 'after',
                         func = function()
                             highlighted.ability.perma_x_chips = highlighted.ability.perma_x_chips + card.ability.extra.x_chips
+                            highlighted.ability.perma_h_x_chips = highlighted.ability.perma_h_x_chips + card.ability.extra.h_x_chips
                             highlighted:juice_up(0.3, 0.3)
                             play_sound("tarot1")
                             return true
@@ -195,12 +201,11 @@ SMODS.Consumable {
     config = {
     extra = {
         max_highlighted = 1,
-        repetitions = 1,
-        dollars = 1,
-        chips = 10,
-        mult = 4,
-        x_mult = 0.1,
-        x_chips = 0.1,
+        dollars = 3,
+        chips = 15,
+        mult = 5,
+        x_mult = 0.2,
+        x_chips = 0.2,
     }
   },
 loc_vars = function(self, info_queue, card)
@@ -210,7 +215,6 @@ loc_vars = function(self, info_queue, card)
          card.ability.extra.mult, -- 4
          card.ability.extra.x_mult, -- 5
          card.ability.extra.x_chips, -- 6
-         card.ability.extra.repetitions, -- 7
          colours = {HEX('E36956')} } }
 	end,
     can_use = function(self, card)
@@ -230,7 +234,6 @@ loc_vars = function(self, info_queue, card)
                             highlighted.ability.perma_mult = highlighted.ability.perma_mult + card.ability.extra.mult
                             highlighted.ability.perma_x_mult = highlighted.ability.perma_x_mult + card.ability.extra.x_mult
                             highlighted.ability.perma_x_chips = highlighted.ability.perma_x_chips + card.ability.extra.x_chips
-                            highlighted.ability.perma_repetitions = highlighted.ability.perma_repetitions + card.ability.extra.repetitions
                             highlighted:juice_up(0.3, 0.3)
                             play_sound("tarot1")
                             return true
@@ -408,6 +411,7 @@ loc_vars = function(self, info_queue, card)
 SMODS.Consumable {
     key = 'ghost',
     set = 'Pizza',
+    soul_set = "Spectral",
     atlas = "a_pizza",
     pos = { x = 3, y = 1 },
     config = {

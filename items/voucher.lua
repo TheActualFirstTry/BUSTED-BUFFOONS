@@ -262,12 +262,14 @@ SMODS.Voucher {
     end,    
     calculate = function (self, card, context)
     local d = card.ability.immutable.divide
+    if not next(SMODS.find_card("v_busterb_bigshot")) then
         if context.money_altered and context.amount < 0 then
                 if SMODS.pseudorandom_probability(card, 'busterb_dealmaker', 1, card.ability.extra.odds, 'busterb_dealmaker') then
                     ease_dollars(math.abs(context.amount*d))
                 end
             end
         end
+    end
 }
 
 SMODS.Voucher {
@@ -284,7 +286,7 @@ SMODS.Voucher {
     end,    
     calculate = function (self, card, context)
         if context.money_altered and context.amount < 0 then
-                    ease_dollars(math.abs(context.amount))
+                    ease_dollars(math.abs(context.amount*d))
                 end
             end
 }
@@ -332,7 +334,7 @@ SMODS.Voucher {
         }))
     end,
 }
-
+--[[
 SMODS.Voucher {
     key = "endurance",
     atlas = "vouch",
@@ -441,7 +443,7 @@ SMODS.Voucher {
     end,
 
 }
-
+--]]
 SMODS.Voucher {
     key = "treasure_hunter",
     atlas = "vouch",

@@ -148,7 +148,8 @@ return {
 		["Other"] = {
 			["busterb_butterfly_seal"] = {
 				["name"] = "Butterfly Seal",
-				["text"] = { "Always {C:purple}balances {C:chips}Chips{} and {C:mult}Mult" }
+				["text"] = { "{C:purple}Balances {C:chips}Chips{} and {C:mult}Mult",
+			"when scored" }
 			},
 			["busterb_periwinkle_seal"] = {
 				["name"] = "Periwinkle Seal",
@@ -173,7 +174,8 @@ return {
 			},
 			["busterb_pizza_seal_seal"] = {
 				["name"] = "Pizza Seal",
-				["text"] = { "Creates a {C:busterb_pizza}Pizza{} card",
+				["text"] = { "Creates a {C:busterb_pizza}Pizza{}",
+				"when scored",
 			"{C:inactive}(Must have room)" }
 			},
 			["busterb_galaxy_seal"] = {
@@ -571,8 +573,7 @@ return {
 			["j_busterb_caine"] = {
 				["name"] = "{C:busterb_grand}CAINE{}",
 				["text"] = {
-					"{C:attention}Vouchers{}, {C:attention}Boosters{}",
-					"and {C:attention}Decks",
+					"{C:attention}Vouchers{} and {C:attention}Boosters{}",
 					"can spawn in shop",
 					"{C:attention}+#1#{} Shop Slots"
 				},
@@ -1097,9 +1098,9 @@ return {
 			["j_busterb_reset_spinel"] = {
 				["name"] = "Reset Spinel",
 				["text"] = {
-					"Gains {X:mult,C:white}X#2#{} Mult",
+					"Gains {C:mult}+#2#{} Mult",
 					"every {C:attention}4 Aces{} or {C:attention}4 Face cards{} scored",
-					"{C:inactive}(Currently: {X:mult,C:white}X#1#{}{C:inactive})",
+					"{C:inactive}(Currently: {C:mult}+#1#{}{C:inactive})",
 				},
 			},
 			["j_busterb_garn47"] = {
@@ -1320,9 +1321,6 @@ return {
 				["text"] = {
 					"Gives {C:white,X:chips}XChips{} by {C:attention}x4{}",
 					"the {C:spectral}Current Speed Setting",
-					"{s:0.75,C:white,X:spectral}Sonic#2#Says:{}",
-					"{s:0.75,C:spectral}Install HandyBalatro",
-					"{s:0.75,C:spectral}for more {s:0.75,C:white,X:chips}XChips",
 					"{C:inactive}(Currently: {C:white,X:chips}X#1#{}{C:inactive})",
 				},
 			},
@@ -1331,7 +1329,6 @@ return {
 				["text"] = {
 					"Gives {C:chips}Chips{} by {C:attention}x16{}",
 					"the {C:spectral}Current Speed Setting",
-					"{C:inactive}instal handybalto pls",
 					"{C:inactive}(Currently: {C:chips}+#1#{}{C:inactive})",
 				},
 			},
@@ -1456,15 +1453,17 @@ return {
 			["j_busterb_bf"] = {
 				["name"] = "Boyfriend",
 				["text"] = {
-					"Scored{C:attention} 2s{},{C:attention} 4s{},{C:attention} 6s{}, and {C:attention} 8s{}",
-					"give {C:chips}+#1#{}, {C:chips}+#2#{}, {C:chips}+#3#{}, and {C:chips}+#4#{} Chips"
+					"Scored{C:attention} 2s{},{C:attention} 4s{},{C:attention} 6s{}, and{C:attention} 8s{}",
+					"give {C:chips}+#1#{}, {C:chips}+#2#{}, {C:chips}+#3#{}, and {C:chips}+#4#{} Chips",
+					"Respectively"
 				},
 			},
 			["j_busterb_gf"] = {
 				["name"] = "Girlfriend",
 				["text"] = {
-					"Scored{C:attention} 2s{},{C:attention} 4s{},{C:attention} 6s{}, and {C:attention} 8s{}",
-					"give {C:mult}+#1#{}, {C:mult}+#2#{}, {C:mult}+#3#{}, and {C:mult}+#4#{} Mult"
+					"Scored{C:attention} 2s{},{C:attention} 4s{},{C:attention} 6s{}, and{C:attention} 8s{}",
+					"give {C:mult}+#1#{}, {C:mult}+#2#{}, {C:mult}+#3#{}, and {C:mult}+#4#{} Mult",
+					"Respectively"
 				},
 			},
 			["j_busterb_brick"] = {
@@ -1533,10 +1532,10 @@ return {
 			["j_busterb_roz"] = {
 				["name"] = "Roz",
 				["text"] = {
-					"If played hand contains",
-					"only {C:attention}1{} card",
-					"convert it into a",
-					"{C:green}Nanotech Card"
+					"{C:green}#1# in #2#{} chance",
+					"if played hand contains a",
+					"{C:busterb_technopotentgradient}Nanotech Card{} to create",
+					"a {C:busterb_technopotentgradient}Bootleg{} card"
 				},
 			},
 			["j_busterb_jax"] = {
@@ -1586,9 +1585,9 @@ return {
 			["j_busterb_frylock"] = {
 				["name"] = "Frylock",
 				["text"] = {
-					"{C:white,X:red}X#1#{} Mult on {C:attention}Boss Blinds",
-					"lose {X:red,C:white}X#2#{} Mult at the",
-					"end of a {C:attention}Boss Blind"
+					"{C:purple}Swaps{C:chips} Chips{} and {C:mult}Mult",
+					"by {C:purple}#1#%{}, lose {C:purple}#2#%{}",
+					"at the end of round"
 				},
 			},
 			["j_busterb_lancer"] = {
@@ -2073,8 +2072,9 @@ return {
 		["v_busterb_bigshot"] = {
 				["name"] = "[[BIG SHOT]]",
 				["text"] = {
-					"Gain back {C:gold}ALL{} of", 
-					"the {C:money}money{} you lost"
+					"Gain back {C:gold}50%{} of", 
+					"the {C:money}money{} you lost",
+					"{C:green}Guaranteed"
 					},
 			},
 		["v_busterb_scrap_merch"] = {
@@ -2203,13 +2203,14 @@ return {
 				["name"] = "Black Berserker",
 				["text"] = {
 					"{C:red}All{} of your {C:attention}Jokers{} become {C:dark_edition}Negative{},",
-					"{C:attention}+1{} Ante",
+					"{C:blue,X:black}X2{} Ante",
 				},
 			},
 			["c_busterb_blue_sky"] = {
 				["name"] = "Blue Sky",
 				["text"] = {
-					"{C:attention}All cards in hand{} gain {C:green}random {X:chips,C:white}XChips{}",
+					"Upgrade all Poker Hands' {C:chips}Chips",
+					"{C:attention}leveling{} by {C:white,X:chips}X#1#",
 				},
 			},
 			["c_busterb_demiurgos"] = {
@@ -2234,13 +2235,15 @@ return {
 			["c_busterb_marshall"] = {
 				["name"] = "Marshall",
 				["text"] = {
-					"{C:attention}All jokers owned{} gain {C:attention}x#1#{} values",
+					"{C:attention}All jokers owned{}",
+					"gain {C:attention}x#1#{} values",
 				},
 			},
 			["c_busterb_crazycat"] = {
 				["name"] = "Crazy Catastrophe",
 				["text"] = {
-					"{C:attention}All consumables owned{} gain {C:attention}x#1#{} values",
+					"{C:attention}All consumables owned{}",
+					"gain {C:attention}x#1#{} values",
 				},
 			},
 			["c_busterb_metamon"] = {
@@ -2269,7 +2272,8 @@ return {
 			["c_busterb_blackc"] = {
 				["name"] = "Black Core",
 				["text"] = {
-					"{C:attention}All cards in hand owned{} gain {C:attention}x#1#{} values",
+					"{C:attention}All cards in hand owned{}",
+					"gain {C:attention}x#1#{} values",
 				},
 			},
 			["c_busterb_soulabyss"] = {
@@ -2289,7 +2293,8 @@ return {
 			["c_busterb_prison_flame"] = {
 				["name"] = "Prison Flame",
 				["text"] = {
-					"{C:attention}All cards in hand{} gain {C:green}random {X:mult,C:white}XMult{}",
+					"Upgrade all Poker Hands' {C:mult}Mult",
+					"{C:attention}leveling{} by {C:white,X:mult}X#1#",
 				},
 			},
 			["c_busterb_virtuality"] = {
@@ -2318,7 +2323,7 @@ return {
 			["c_busterb_pineapple"] = {
 				["name"] = "Pineapple Pizza",
 				["text"] = {
-					"Apply {C:money}$#2#{}",
+					"Apply {C:money}$#2#{} and held {C:money}$#3#{}",
 					"to {C:attention}#1#{} selected cards",
 				},
 			},
@@ -2326,6 +2331,7 @@ return {
 				["name"] = "Pepperoni Pizza",
 				["text"] = {
 					"Apply {C:white,X:mult}X#2#{} Mult",
+					"and {C:white,X:mult}X#3#{} held Mult",
 					"to {C:attention}#1#{} selected cards",
 				},
 			},
@@ -2333,6 +2339,7 @@ return {
 				["name"] = "Mushroom Pizza",
 				["text"] = {
 					"Apply {C:white,X:chips}X#2#{} Chips",
+					"and {C:white,X:chips}X#3#{} held Chips",
 					"to {C:attention}#1#{} selected cards",
 				},
 			},
@@ -2347,7 +2354,7 @@ return {
 				["name"] = "Supreme Pizza",
 				["text"] = {
 					"Apply {C:money}$#2#{}, {C:chips}+#3#{} Chips, {C:mult}+#4#{} Mult",
-					"{X:mult,C:white}X#5#{} Mult, {X:chips,C:white}X#6#{} Chips, and {C:attention}+#7#{} repetitions",
+					"{X:mult,C:white}X#5#{} Mult and {X:chips,C:white}X#6#{} Chips",
 					"to {C:attention}#1#{} selected card",
 				},
 			},

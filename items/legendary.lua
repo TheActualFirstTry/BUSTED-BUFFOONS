@@ -7,7 +7,7 @@ SMODS.Atlas{
 
 SMODS.Joker {
     key = "sonic",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     demicolon_compat = true,
@@ -16,16 +16,16 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    config = { extra = { } },
+    config = { extra = { speed_mult = 4 } },
     attributes = { "bustj", "bustb_d", "xchips" },
     loc_vars = function(self, info_queue, card)
-        local speedvalue = G.SETTINGS.GAMESPEED * 4
+        local speedvalue = G.SETTINGS.GAMESPEED * card.ability.extra.speed_mult
         return { vars = { speedvalue, " " } }
     end,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             return {
-                xchips = G.SETTINGS.GAMESPEED * 4
+                xchips = G.SETTINGS.GAMESPEED * card.ability.extra.speed_mult
             }
         end
     end
@@ -33,7 +33,7 @@ SMODS.Joker {
 
 SMODS.Joker {
     key = "tails",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     demicolon_compat = true,
@@ -143,7 +143,7 @@ local ZagreusTalk = {
 
 SMODS.Joker {
     key = "zag",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     demicolon_compat = true,
@@ -206,7 +206,7 @@ SMODS.Joker {
 
 SMODS.Joker {
     key = "steve",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     demicolon_compat = true,
@@ -239,7 +239,7 @@ SMODS.Joker {
 
 SMODS.Joker {
     key = "pomni",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     demicolon_compat = true,
@@ -270,7 +270,7 @@ SMODS.Joker {
 
 SMODS.Joker {
     key = "steven",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     pools = { ["bustjokers"] = true },
@@ -315,7 +315,7 @@ end
 
 SMODS.Joker {
     key = "stormbringer",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     demicolon_compat = true,
@@ -378,7 +378,7 @@ SMODS.Sound{
 }
 SMODS.Joker {
     key = "spamton",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     pools = { ["bustjokers"] = true },
@@ -461,7 +461,7 @@ SMODS.Joker {
 
 SMODS.Joker {
     key = "eggman",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     pools = { ["bustjokers"] = true },
@@ -491,7 +491,7 @@ end
 
 SMODS.Joker {
     key = "bill",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     demicolon_compat = true,
@@ -561,7 +561,7 @@ SMODS.Joker {
 
 SMODS.Joker {
     key = "bill",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     pools = { ["bustjokers"] = true },
@@ -602,7 +602,7 @@ SMODS.Joker {
 ]]
 SMODS.Joker {
     key = "moony",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     pools = { ["bustjokers"] = true },
@@ -632,7 +632,7 @@ SMODS.Joker {
 
 SMODS.Joker {
     key = "ultra_greed",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     demicolon_compat = true,
@@ -670,7 +670,7 @@ SMODS.Joker {
 
 SMODS.Joker {
     key = "hastur",
-    unlocked = false, 
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     demicolon_compat = true,

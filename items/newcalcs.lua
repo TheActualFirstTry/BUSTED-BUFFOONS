@@ -75,7 +75,7 @@ function ease_d_ante(mod)
             align = 'cm',
             })
           --Play a chip sound
-          play_sound('highlight2', 0.685, 0.2)
+          play_sound('highlight2', 0.65, 0.4)
           play_sound('generic1', 0.77)
           play_sound('xchips', 0.77)
           return true
@@ -123,7 +123,7 @@ function ease_e_ante(mod)
             align = 'cm',
             })
           --Play a chip sound
-          play_sound('highlight2', 0.585, 0.2)
+          play_sound('highlight2', 0.59, 0.6)
           play_sound('generic1', 0.67)
           play_sound('slib_echips', 0.77)
           return true
@@ -168,7 +168,7 @@ function ease_x_ante_win(mod)
             align = 'cm',
             })
           --Play a chip sound
-          play_sound('highlight2', 0.685, 0.2)
+          play_sound('highlight2', 0.585, 0.4)
           play_sound('generic1', 0.77)
           play_sound('xchips', 0.77)
           return true

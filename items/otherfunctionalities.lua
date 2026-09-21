@@ -593,3 +593,23 @@ if next(SMODS.find_mod("NotJustYet")) then
         return true
     end
 end
+
+function BustB.uht_snd(volume, pitch, delay)
+    return {
+        sound = "button", volume = volume,
+        pitch = pitch, delay = delay
+    }
+end
+function BustB.JUICE_CARD_EVENT(card, delay)
+    Spectrallib.event{
+        function ()
+            if card and card.juice_up then
+                card:juice_up(0.8, 0.5)
+            end
+            G.TAROT_INTERRUPT_PULSE = nil
+            return true
+        end,
+        trigger = 'after',
+        delay = delay or 0.9
+    }
+end
