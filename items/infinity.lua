@@ -316,7 +316,7 @@ can_use = function(self, card)
     return true
     end,
 loc_vars = function(self, q, card)
-        q[#q+1] = {set="Other", key = "busterb_electronic"}
+--        q[#q+1] = {set="Other", key = "busterb_electronic"}
 		return { vars = { card.ability.extra.interest, colours = {HEX('E36956')} } }
 	end,
     use = function(self, card, area, copier)
