@@ -179,7 +179,7 @@ SMODS.Consumable {
     set = 'Bootleg',
     atlas = 'a_boot',
     pos = { x = 3, y = 0 },
-    config = { select = 1 },
+    config = { select = 1e100 },
             can_use = function(self, card)
             return G.STATE == G.STATES.BLIND_SELECT or G.STATE == G.STATES.SHOP
         end,
@@ -583,10 +583,11 @@ local cards = Spectrallib.get_highlighted_cards({G.jokers, G.consumeables, G.han
             local card = cards[i]
             G.E_MANAGER:add_event(Event({
                 func = function()
-                    v:add_sticker('busterb_electronic',true)
-                    v:juice_up(0.3, 0.3)
-                            play_sound("tarot1")
-                    return true
+                v:add_sticker('busterb_electronic',true)
+                v.ability.busterb_electronic = true
+                v:juice_up(0.3, 0.3)
+                play_sound("tarot1")
+                return true
                 end
             }))    
         end

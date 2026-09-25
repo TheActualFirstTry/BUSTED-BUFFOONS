@@ -4,6 +4,7 @@ SMODS.Atlas{
     px = 71,
     py = 95
 }
+--[[
 SMODS.Joker{
     key = "apollyon",
     atlas = "a_apollyon",
@@ -36,7 +37,7 @@ SMODS.Joker{
             colours = {SMODS.Gradients["busterb_epileptic"]}} }
     end,
     calculate = function(self, card, context)
-if context.end_of_round and not card.getting_sliced and (context.individual or context.repetition) then
+        if context.end_of_round and not (context.individual or context.repetition) then
             if G.consumeables and #G.consumeables.cards > 0 then
                 local itemcut = {}
                 for i = 1, #G.consumeables.cards do
@@ -51,12 +52,12 @@ if context.end_of_round and not card.getting_sliced and (context.individual or c
                             card:juice_up(0.8, 0.8)
                             card:start_dissolve({G.C.RED}, nil, 1.6)
                         return true end }))
-                        SMODS.calculate_effect{message = "!!!"}
+                        SMODS.calculate_effect{message = "Destroyed!"}
                     end
                     local retted
         for i, v in pairs(itemcut) do
-            local dummy = Entropy.GetDummy(G.P_CENTERS[v], G.consumeables.cards, card, true)
-            local ret, retr = Cryptid.forcetrigger(dummy, context)
+            local dummy = Spectrallib.get_dummy(G.P_CENTERS[v], G.consumeables.cards, card, true)
+            local ret, retr = Spectrallib.forcetrigger(dummy, context)
             if ret or retr then SMODS.calculate_effect{message =  localize{type = "name_text", set = G.P_CENTERS[v].set, key = v}, card = card} end
             if ret and ret.card == dummy then ret.card = card end
             for index, effect in pairs(ret or {}) do
@@ -68,6 +69,50 @@ if context.end_of_round and not card.getting_sliced and (context.individual or c
         if retted then return nil, true end
     end
 end
-end 
+end
+end
+}
+--]]
+SMODS.Joker{
+    key = "geryon",
+    atlas = "Grandholder",
+    rarity = "busterb_Insanity",
+    pools = { ["Insanity"] = true, ["bustjokers"] = true },
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 0, y = 2, new = { x = 0, y = 1 } },
+    cost = 250,
+    discovered = true,
+    unlocked = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    config = {
+        extra = {
+        },
+        immutable = {
+        }
+    },
+    loc_txt = {
+        name = "{V:1}Geryon{}",
+        text = {
+            "{C:attention}Prismatic cards",
+            "can appear in shop"
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+		return { vars = { 
+            colours = {SMODS.Gradients["busterb_epileptic"]}} }
+    end,
+    calculate = function(self, card, context)
+        if context.create_shop_card then --1
+            if SMODS.pseudorandom_probability(card, 'busterb_geryon', 1, 5, 'busterb_geryon', true) then --2
+                return {
+                    shop_create_flags = {
+                        set = "Enhanced",
+                        enhancement = "m_entr_prismatic"
+                }
+            }
+        end--2
+    end--1
+
 end
 }

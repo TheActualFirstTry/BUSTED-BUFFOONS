@@ -112,7 +112,8 @@ G.FUNCS.busterb_select_joker = function(e)
 
         SMODS.add_card {
           key = c1.config.center_key,
-          area = e.config.data[1]
+          area = e.config.data[1],
+          edition = e.config.data[2] or nil
         }
 
         return true
@@ -121,7 +122,7 @@ G.FUNCS.busterb_select_joker = function(e)
   end
 end
 
-function busterb_create_select_card_ui(card, area)
+function busterb_create_select_card_ui(card, area, edition)
   local t2 = {
     n = G.UIT.ROOT,
     config = {
@@ -135,7 +136,7 @@ function busterb_create_select_card_ui(card, area)
       minh = 0.3,
       one_press = true,
       button = 'busterb_select_joker',
-      data = { area },
+      data = { area, edition },
       hover = true
     },
     nodes = {
@@ -286,7 +287,7 @@ function gjoker()
               no_materialize = true,
               modify_card = function(other_card, center)
                 other_card.sticker = get_joker_win_sticker(center)
-                busterb_create_select_card_ui(other_card, G.jokers)
+                busterb_create_select_card_ui(other_card, G.jokers, nil)
               end,
               h_mod = 1.05,
             }
@@ -321,7 +322,7 @@ function gconsumable()
               no_materialize = true,
               modify_card = function(other_card, center)
                 other_card.sticker = get_joker_win_sticker(center)
-                busterb_create_select_card_ui(other_card, G.consumeables)
+                busterb_create_select_card_ui(other_card, G.consumeables, nil)
               end,
               h_mod = 1.05,
             }
@@ -351,7 +352,7 @@ function gbooster()
               no_materialize = true,
               modify_card = function(other_card, center)
                 other_card.sticker = get_joker_win_sticker(center)
-                busterb_create_select_card_ui(other_card, G.consumeables)
+                busterb_create_select_card_ui(other_card, G.consumeables, nil)
               end,
               h_mod = 1.05,
             }
@@ -382,7 +383,7 @@ function gvoucher()
               no_materialize = true,
               modify_card = function(other_card, center)
                 other_card.sticker = get_joker_win_sticker(center)
-                busterb_create_select_card_ui(other_card, G.consumeables)
+                busterb_create_select_card_ui(other_card, G.consumeables, nil)
               end,
               h_mod = 1.05,
             }

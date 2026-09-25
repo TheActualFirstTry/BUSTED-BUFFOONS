@@ -715,7 +715,7 @@ assert(SMODS.load_file("items/dreamyjokers.lua"))()
 assert(SMODS.load_file("items/legendary.lua"))()
 assert(SMODS.load_file("items/evilbuttons.lua"))()
 assert(SMODS.load_file("items/hyperjokers.lua"))()
---assert(SMODS.load_file("items/deck.lua"))()
+assert(SMODS.load_file("items/deck.lua"))()
 assert(SMODS.load_file("items/grandjokers.lua"))()
 assert(SMODS.load_file("items/secret_jokers.lua"))()
 assert(SMODS.load_file("items/edition.lua"))()
@@ -902,8 +902,23 @@ if next(SMODS.find_mod("mayhem")) then assert(SMODS.load_file("items/crossmodshi
 --if next(SMODS.find_mod("Cryptid")) then return nil else assert(SMODS.load_file("items/uiforace.lua"))() end
 
 -- Entropy
--- if next(SMODS.find_mod("entr")) then assert(SMODS.load_file("items/crossmodshit/entropydefinitions.lua"))() assert(SMODS.load_file("items/crossmodshit/invert.lua"))()assert(SMODS.load_file("items/crossmodshit/alternateentropy.lua"))() end
-
+--[[
+if next(SMODS.find_mod("entr")) then 
+    Entropy.EnhancementPoints = {
+        m_busterb_electric = 3.7,
+        m_busterb_crystallized = 4.8,
+        m_busterb_nanotech = 5,
+        m_busterb_bloodmarked = 7.7,
+        m_busterb_frost = 7.7,
+        m_busterb_glittery = 15,
+        m_busterb_solar = 6.5,
+        m_busterb_nebular = 6,
+}
+    assert(SMODS.load_file("items/crossmodshit/entropydefinitions.lua"))() 
+    assert(SMODS.load_file("items/crossmodshit/invert.lua"))()
+    assert(SMODS.load_file("items/crossmodshit/alternateentropy.lua"))() 
+    end
+--]]
 local bbTabs = function()
 	return {
 		{

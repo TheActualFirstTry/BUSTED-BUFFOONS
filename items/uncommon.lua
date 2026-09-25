@@ -610,13 +610,17 @@ SMODS.Joker {
     unlocked = true, 
     atlas = "joker_u",
     blueprint_compat = true,
-demicolon_compat = true,
+    demicolon_compat = true,
     pools = { ["bustjokers"] = true, ["all_bb_joker"] = true },
     rarity = 2,
     cost = 4,
     pos = { x = 3, y = 3 },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "hand_size" },
-    config = { extra = { value = 0, gain = 1, hand = 1 }, immutable = { req = 5, inc = 2, handmax = 0 } },
+    config = { 
+        extra = { value = 0, gain = 1, hand = 1 }, 
+        immutable = { req = 5, inc = 2, handmax = 0 } 
+    },
+    
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -628,28 +632,37 @@ demicolon_compat = true,
         }
     end,
     calculate = function(self, card, context)
+        local additive = card.ability.extra.hand
         if context.forcetrigger then
-		local additive = card.ability.extra.hand
-        G.hand:change_size(additive)
-        SMODS.calculate_effect{message = localize("k_upgrade_ex"), colour = G.C.CHIPS, card = card}
+            G.hand:change_size(additive)
+            card.ability.immutable.handmax = card.ability.immutable.handmax + additive
+            return {
+                message = localize("k_upgrade_ex"),
+                colour = G.C.CHIPS,
+                card = card
+            }
         end
-		local additive = card.ability.extra.hand
         if context.individual and context.cardarea == G.play then
-        card.ability.extra.value = card.ability.extra.value + card.ability.extra.gain
-        if card.ability.extra.value >= card.ability.immutable.req then
-        card.ability.extra.value = 0
-        card.ability.immutable.req = card.ability.immutable.req * card.ability.immutable.inc 
-        card.ability.immutable.handmax = card.ability.immutable.handmax + additive
-		G.hand:change_size(additive)
-        SMODS.calculate_effect{message = localize("k_upgrade_ex"), colour = G.C.CHIPS, card = card}
+            card.ability.extra.value = card.ability.extra.value + card.ability.extra.gain 
+            if card.ability.extra.value >= card.ability.immutable.req then
+                card.ability.extra.value = 0
+                card.ability.immutable.req = card.ability.immutable.req * card.ability.immutable.inc 
+                card.ability.immutable.handmax = card.ability.immutable.handmax + additive
+                G.hand:change_size(additive)
+                return {
+                    message = localize("k_upgrade_ex"),
+                    colour = G.C.CHIPS,
+                    card = card
+                }
+            end
         end
-    end
-end,
-        remove_from_deck = function(self, card, from_debuff)
-                G.hand:change_size(-card.ability.immutable.handmax)
-                SMODS.calculate_effect{card = card, message = "Reset!", colour = G.C.CHIPS}
     end,
-
+    remove_from_deck = function(self, card, from_debuff)
+        if card.ability.immutable.handmax > 0 then
+            G.hand:change_size(-card.ability.immutable.handmax)
+            card.ability.immutable.handmax = 0
+        end
+    end,
 }
 SMODS.Joker {
     key = "power",

@@ -721,7 +721,7 @@ SMODS.Joker{
     if context.end_of_round and context.main_eval and not context.blueprint then
         card.ability.extra.gauge = card.ability.extra.gauge * 0.25
         SMODS.calculate_effect ({
-                    message = card.ability.extra.gauge .. " Gauge",
+                    message = card.ability.extra.gauge .. " Mult",
                     colour = HEX("BC1006"),
                     card = card
                 })
@@ -778,7 +778,6 @@ SMODS.Joker{
     end,
     calculate = function(self, card, context)
         if context.create_shop_card then --1
-            card:juice_up(0.3, 0.5)
             if SMODS.pseudorandom_probability(card, 'busterb_caine', card.ability.immutable.chance, card.ability.immutable.odds, 'busterb_caine', true) then --2
             local setpool = {
                 "Voucher",

@@ -469,7 +469,7 @@ SMODS.Atlas {
   fps = 20,
 }
 SMODS.Atlas {
-  key = "Grah",
+  key = "Gr",
   path =  "Grahkon2.png",
   px = 71,
   py = 95,
@@ -482,9 +482,9 @@ SMODS.Joker{
     pools = { ["all_bb_joker"] = true},
     atlas = "Grahkon",
     pos = { x = 0, y = 0 },
-    soul_atlas = "Grah",
+    soul_atlas = "Gr",
     soul_pos = { x = 1, y = 0, extra = { x = 0, y = 0 } },
-    soul_extra_atlas = "busterb_Grah",
+    soul_extra_atlas = "busterb_Gr",
     cost = 1e50,
     discovered = true,
     unlocked = true,

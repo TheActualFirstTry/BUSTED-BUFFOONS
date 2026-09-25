@@ -309,32 +309,34 @@ SMODS.Consumable {
     cost = 4, pos = { x = 1, y = 1 },
     config = {
     extra = {
-        min = 10,
-        max = 1000
+        interest = 1.5
     }
   },
 can_use = function(self, card)
-    return #G.hand.cards > 0
+    return true
     end,
-loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra, colours = {HEX('E36956')} } }
+loc_vars = function(self, q, card)
+        q[#q+1] = {set="Other", key = "busterb_electronic"}
+		return { vars = { card.ability.extra.interest, colours = {HEX('E36956')} } }
 	end,
-  use = function(self, card, area, copier)
-    for i, v in ipairs(G.hand.cards) do
-        local randommoney = (pseudorandom(pseudoseed("busterb_randommoney"), self.config.extra.min, self.config.extra.max) / 100)
-				if v ~= card then
-                    G.E_MANAGER:add_event(Event({
-                        trigger = 'after',
-                        func = function()
-                            v.ability.perma_p_dollars = v.ability.perma_p_dollars + randommoney
-                            v:juice_up(0.3, 0.3)
-                            play_sound("tarot1")
-                            return true
-                        end
-                    }))
-                end
-            end
-        end,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+               func = function()
+                G.GAME.interest_amount = G.GAME.interest_amount * card.ability.extra.interest
+               return true
+           end
+        }))
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+               func = function()
+                ease_dollars(-G.GAME.dollars)
+               return true
+           end
+        }))
+end,
    draw = function(self, card, layer)
         if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
             card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
@@ -349,31 +351,91 @@ SMODS.Consumable {
     cost = 4, pos = { x = 2, y = 1 },
     config = {
     extra = {
-        min = 1,
-        max = 5
+        levels = 0,
+        level_up = 0.25
     }
   },
 can_use = function(self, card)
-    return #G.hand.cards > 0
-    end,
-loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra, colours = {HEX('E36956')} } }
-	end,
-  use = function(self, card, area, copier)
-    for i, v in ipairs(G.hand.cards) do
-        local randomrepeat = (pseudorandom(pseudoseed("busterb_randomrepeat"), self.config.extra.min, self.config.extra.max))
-				if v ~= card then
-                    G.E_MANAGER:add_event(Event({
-                        trigger = 'after',
-                        func = function()
-                            v.ability.perma_repetitions = v.ability.perma_repetitions + randomrepeat
-                            v:juice_up(0.3, 0.3)
-                            play_sound("tarot1")
-                            return true
-                        end
-                    }))
+        if G.hand and G.hand.cards then
+            for _, v in ipairs(G.hand.cards) do
+                if v:is_face() then
+                    return true
                 end
             end
+        end
+    end,
+loc_vars = function(self, info_queue, card)
+        local l = 0
+        if G.hand and G.hand.cards then
+            for _, v in ipairs(G.hand.cards) do
+                if v:is_face() then
+                    l = l + card.ability.extra.level_up
+                else l = l + 0 end
+            end
+        end
+		return { vars = { l, card.ability.extra.level_up, colours = {HEX('E36956')} } }
+	end,
+  use = function(self, card, area, copier)
+    local cardtable = {}
+    for i, v in ipairs(G.hand.cards) do
+        if v:is_face() then
+            cardtable[#cardtable+1] = v
+            card.ability.extra.levels = card.ability.extra.levels + card.ability.extra.level_up
+            end
+            end
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.2,
+                   func = function()
+                    SMODS.destroy_cards(cardtable)
+                   return true
+               end
+            }))
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.2,
+                   func = function()
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
+            { handname = localize('k_all_hands'), chips = '...', mult = '...', level = '' })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                G.TAROT_INTERRUPT_PULSE = true
+                return true
+            end
+        }))
+        update_hand_text({ delay = 0 }, { mult = '+', StatusText = true })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                return true
+            end
+        }))
+        update_hand_text({ delay = 0 }, { chips = '+', StatusText = true })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.9,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.8, 0.5)
+                G.TAROT_INTERRUPT_PULSE = nil
+                return true
+            end
+        }))
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.9, delay = 0 }, { level = '+'.. tostring(math.abs(card.ability.extra.levels)) })
+        delay(1.3)
+        SMODS.upgrade_poker_hands({ level_up = math.abs(card.ability.extra.levels), instant = true })
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
+            { mult = 0, chips = 0, handname = '', level = '' })
+                   return true
+               end
+            }))
         end,
    draw = function(self, card, layer)
         if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
@@ -451,7 +513,7 @@ SMODS.Consumable {
 		}))
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				ease_x_ante(2)
+				G.GAME.modifiers.scaling = (G.GAME.modifiers.scaling or 1) + 1
 				return true
 			end,
 		}))
@@ -475,6 +537,8 @@ SMODS.Consumable {
         config = { extra = { jokers = 1 }, immutable = { xscore = 1.25 } },
 
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+        info_queue[#info_queue+1] = {set="Other", key = "busterb_fragile"}
         return { vars = { card.ability.extra.jokers, card.ability.immutable.xscore } }
     end,
 
@@ -488,7 +552,9 @@ SMODS.Consumable {
             local copy = copy_card(c)
             copy:set_edition("e_negative", true)
             G.jokers:emplace(copy)
-            Spectrallib.add_bonus_effect(copy, "busterb_immutable_xblindsize", {immutable = card.ability.immutable.xscore})
+            copy:add_sticker('busterb_fragile',true)
+            copy:set_fragile(true)
+--            Spectrallib.add_bonus_effect(copy, "busterb_immutable_xblindsize", {immutable = card.ability.immutable.xscore})
         end
     end,
 
@@ -520,7 +586,7 @@ SMODS.Consumable {
         for i, v in pairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
             if not v.entr_aleph or v.busterb_omega then
                 v:start_dissolve()
-                ease_x_dollars{2}
+                ease_x_dollars(2)
             end
         end
     end,

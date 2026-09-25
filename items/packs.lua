@@ -33,7 +33,7 @@ SMODS.Booster {
 	end,
 
     weight = 1,
-    cost = 4,
+    cost = 8,
     kind = "Infinity",
     
 
@@ -81,7 +81,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 4,
+    cost = 8,
     kind = "Infinity",
     ease_background_colour = function(self)
 		ease_colour(HEX("272736"), HEX("3f3f3f"))
@@ -133,7 +133,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 6,
+    cost = 12,
     kind = "Infinity",
     ease_background_colour = function(self)
 		ease_colour(HEX("272736"), HEX("3f3f3f"))
@@ -185,7 +185,7 @@ SMODS.Booster {
     end,
 
     weight = 1,
-    cost = 8,
+    cost = 16,
     kind = "Infinity",
     ease_background_colour = function(self)
 		ease_colour(HEX("272736"), HEX("3f3f3f"))

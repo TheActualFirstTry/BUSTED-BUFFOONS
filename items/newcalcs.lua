@@ -175,6 +175,40 @@ function ease_x_ante_win(mod)
       end
     }))
 end
+function ease_ante_win(mod)
+    G.E_MANAGER:add_event(Event({
+      trigger = 'immediate',
+      func = function()
+          local ante_UI = G.hand_text_area.ante
+          mod = mod or 0
+          local text = '+'
+          local col = G.C.FILTER
+          local ccol = G.C.WHITE
+          if mod < 0 then
+              text = '-'
+              col = G.C.RED
+              ccol = G.C.WHITE
+          end
+          G.GAME.win_ante = G.GAME.win_ante + mod
+          ante_UI.config.object:update()
+          G.HUD:recalculate()
+          --Popup text next to the chips in UI showing number of chips gained/lost
+          attention_text({
+            text = text..tostring(math.abs(mod)),
+            scale = 1, 
+            hold = 2,
+            cover = ante_UI.parent,
+            cover_colour = col,
+            colour = ccol,
+            align = 'cm',
+            })
+          --Play a chip sound
+          play_sound('highlight2', 0.685, 0.2)
+          play_sound('generic1')
+          return true
+      end
+    }))
+end
 
 function ease_x_dollars(mod, instant)
     local function _mod(mod)

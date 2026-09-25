@@ -43,7 +43,7 @@ end
 }
 local start_dissolveref = Card.start_dissolve
 function Card:start_dissolve(...)
-    if not self.ability.busterb_omega or self.bypass_selfdestruct or self.children.price then
+    if not self.ability.busterb_omega or self.ability.bypass_omega or self.bypass_selfdestruct or self.children.price then
         return start_dissolveref(self, ...)
     end
 end
@@ -148,10 +148,10 @@ SMODS.Sticker({
 	loc_vars = function(self, info_queue, card)
 		return { vars = { SMODS.get_probability_vars(card, 1, 10, "Fragile Sticker") } }
 	end,
-    default_compat = false,
-    compat_exceptions = { sets = { Joker = true } },
+--    default_compat = false,
+--    compat_exceptions = { sets = { Joker = true } },
     should_apply = function(self, card, center, area, bypass_roll)
-        return not card.eternal
+        return not card.eternal or not card.ability.busterb_omega == true
     end,
     apply = function(self, card, val)
     if card.debuff then card:set_debuff(false) end
@@ -200,8 +200,8 @@ SMODS.Sticker({
 	loc_vars = function(self, info_queue, card)
 		return { vars = { SMODS.get_probability_vars(card, 1, 2, "Weak Sticker") } }
 	end,
-    default_compat = false,
-    compat_exceptions = { sets = { Joker = true } },
+--    default_compat = false,
+--    compat_exceptions = { sets = { Joker = true } },
     apply = function(self, card, val)
         card.ability[self.key] = val
         if card.ability[self.key] then print("applied") Spectrallib.manipulate(card, { value = 0.5, type = "X" }) end 

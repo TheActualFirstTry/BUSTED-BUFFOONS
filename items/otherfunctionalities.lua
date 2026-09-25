@@ -231,6 +231,14 @@ end
               return true
             end
         }))
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+               func = function()
+                SMODS.calculate_context({ boss_mythical_beaten = true })
+               return true
+           end
+        }))
 end
 
 function eldritchspawn(deez)
@@ -381,10 +389,10 @@ BustB.rarity_map = {
   ocstobal_absolute_curse = "ocstobal_beyondexotic",
   ocstobal_cursed = "ocstobal_unique"
 }
-function BustB.random_rarity_spawn(seed)
+function BustB.random_rarity_spawn(seed, edition)
 local _, key = pseudorandom_element(SMODS.Rarities, seed)
-    key = rarity_map[key] or key
-    SMODS.add_card { set = "Joker", rarity = key, edition = 'e_negative', area = G.jokers }
+    key = BustB.rarity_map[key] or key
+    SMODS.add_card { set = "Joker", rarity = key, edition = edition or nil, area = G.jokers }
 end
 
 function BustB.rarespawn(seed)
@@ -613,3 +621,19 @@ function BustB.JUICE_CARD_EVENT(card, delay)
         delay = delay or 0.9
     }
 end
+
+
+function BustB.flip_joker(card)
+            Spectrallib.flip_then({card}, function()
+            local _, key = pseudorandom_element(SMODS.Rarities, "BustB_flip")
+            local pooop = {}
+                key = BustB.rarity_map[key] or key
+                for k,v in ipairs(G.P_CENTER_POOLS.Joker) do
+                    if v.rarity == key then
+                        pooop[#pooop+1] = v
+                    end
+                end
+                local jokerkey = pseudorandom_element(pooop, "BustB_flipjoker")
+                card:set_ability(jokerkey)
+            end)
+        end

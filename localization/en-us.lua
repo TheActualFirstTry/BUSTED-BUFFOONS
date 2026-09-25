@@ -120,28 +120,32 @@ return {
 		},
 		["Back"] = {
 			["b_busterb_truekinda"] = {
-				["name"] = "True Kinda Deck",
+				["name"] = "True Kinda Love Deck",
 				["text"] = {
-					"Start with {C:hearts,E:1}Spinel{} or {X:hearts,C:clubs,E:1}Gar{X:clubs,C:hearts,E:1}net{}",
-					"and a deck of 52 cards consisting of only",
-					"the {C:hearts}Hearts{} and {C:clubs}Clubs{} suits.",
+					"Levels up the {C:attention}played suits",
+					"If played hand contains",
+					"A {C:attention}pair of suits",
+					"Discarded cards swap suits",
+--					"Start with {C:hearts,E:1}Spinel{} or {X:hearts,C:clubs,E:1}Gar{X:clubs,C:hearts,E:1}net{}",
+--					"and a deck of 52 cards consisting of only",
+--					"the {C:hearts}Hearts{} and {C:clubs}Clubs{} suits.",
 				},
 			},
 			["b_busterb_hate"] = {
 				["name"] = "The Deck of Absolute Hate",
 				["text"] = {
-					"Start with a random",
-					"{B:busterb_grand,C:white}Busted Buffoons{} Joker",
-					"Spawn an extra {C:dark_edition}negative Joker of",
-					"{B:2,C:white}Any#3#Rarity{}",
-					"At the {C:attention}end of round{}",
+					"Start with {C:busterb_Thomas,T:c_busterb_mugen}MUGEN{} and {C:busterb_secrets,T:c_busterb_trial}Trial",
+					"Beat a {C:busterb_gfreddy}Mythical Blind",
+					"to win instead"
 				},
 			},
 			["b_busterb_sttgl"] = {
 				["name"] = "Super Tengen Toppa Deck",
 				["text"] =  {
-				"Operator is {C:white,X:busterb_grand}^",
-				"set Win Ante to {C:red,X:busterb_bbblack}X#1#"
+					"Start with an",
+					"{C:busterb_secrets}Eldritch Joker",
+					"Of your choice",
+					"{C:red}-4{} Joker Slots"
 				},
 			},
 		},
@@ -238,7 +242,7 @@ return {
 				["text"] = {"{X:dark_edition,C:white}X#1#{} values to {C:attention}This Joker"},
 			},
 			["sbe_busterb_plus_selfmanip"] = {
-				["text"] = {"{C:attention}+#1#{} values to {C:attention}This Joker"},
+				["text"] = {"{C:attention}#1#{} values to {C:attention}This Joker"},
 			},
 			["sbe_busterb_e_selfmanip"] = {
 				["text"] = {"{C:dark_edition,X:busterb_bbblack}^#1#{} values to {C:attention}This Joker"},
@@ -859,7 +863,7 @@ return {
             		"All jokers gain {C:busterb_technopotentgradient}+#1#{} values",
 					"whenever a {C:attention}consumable{} is {C:attention}used",
 					"This joker gains {C:busterb_technopotentgradient}+#2#{} more",
-					"incemental value whenever a {C:atttention}consumable{} is",
+					"incemental value whenever a {C:attention}consumable{} is",
 					"instead {C:attention}sold"
 		        },
 			},
@@ -978,8 +982,8 @@ return {
 			["j_busterb_murphy"] = {
 				["name"] = "Murphy",
 				["text"] = {
-					"Scored {C:attention}9s{} gain",
-					"{C:mult}+#1#{} Mult"
+					"Apply a random {C:attention}enhancement",
+					"to held {C:attention}9s"
 				},
 			},
 			["j_busterb_samsontboi"] = {
@@ -1018,7 +1022,7 @@ return {
 					"Scored {C:spades}Spades{} give",
 					"{C:white,X:purple}X#2#{} Score",
 					"Held {C:spades}Spades{} gain",
-					"{C:attention}+#1#{} Retrigger",
+					"{C:white,X:purple}X#1#{} Score",
 					"and give {C:purple}+#3#{} Score"
 				},
 			},
@@ -2202,8 +2206,10 @@ return {
 			["c_busterb_blackberserker"] = {
 				["name"] = "Black Berserker",
 				["text"] = {
-					"{C:red}All{} of your {C:attention}Jokers{} become {C:dark_edition}Negative{},",
-					"{C:blue,X:black}X2{} Ante",
+					"{C:red}All{} of your {C:attention}Jokers{}",
+					"become {C:dark_edition}Negative{},",
+                    "Required score scales",
+                    "faster for each {C:attention}Ante",
 				},
 			},
 			["c_busterb_blue_sky"] = {
@@ -2223,14 +2229,18 @@ return {
 				["c_busterb_jackal"] = {
 				["name"] = "Jackal",
 				["text"] = {
-					"{C:attention}All cards in hand{} gain {C:green}random {C:dark_edition}repetitions{}",
+					"{C:red}Destroy{} all held {C:attention}face cards{}",
+					"Gain {C:planet}+#2#{} levels for each one",
+					"{C:inactive}(Currently: {C:planet}#1#{C:inactive})"
 				},
 			},
 			["c_busterb_manny"] = {
 				["name"] = "Manny",
 				["text"] = {
-					"{C:attention}All cards in hand{} gain {C:green}random {C:gold}money{}",
-				},
+					"Increase {C:attention}Interest{} by {C:money}X2.5",
+                    "sets money to {C:money}$0",
+					"{C:inactive}(Not interest cap)"
+				}
 			},
 			["c_busterb_marshall"] = {
 				["name"] = "Marshall",
@@ -2249,9 +2259,9 @@ return {
 			["c_busterb_metamon"] = {
 				["name"] = "Metamon",
 				["text"] = {
-					"Create a {C:dark_edition}Negative{} copy",
-					"of {C:attention}#1#{} selected Joker",
-					"This copy also gives {X:blind,C:white}X#2#{} Blind Size"
+					"Create a {C:dark_edition}Negative{} and",
+					"{C:attention}Fragile{} copy of",
+					"{C:attention}#1#{} selected Joker",
 				},
 			},
 			["c_busterb_meija"] = {

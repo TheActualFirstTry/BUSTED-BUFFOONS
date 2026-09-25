@@ -236,7 +236,7 @@ SMODS.Joker{
     pos = { x = 3, y = 0 },
     config = {
         extra = {
-            perma = 9
+            perma = 3
         }
     },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "nine", "rank", "mult", "perma_bonus" },
@@ -244,16 +244,17 @@ SMODS.Joker{
                 return {vars = { card.ability.extra.perma }}
             end,
         calculate = function(self, card, context)
-            if context.individual and context.cardarea == G.play then
-                if context.other_card:get_id() == 9 then
-                    context.other_card.ability.perma_mult = (context.other_card.ability.perma_mult or 0) + card.ability.extra.perma
-                    return {
-                message = localize('k_upgrade_ex'),
-                colour = G.C.MULT
-            }
-                end
+        if context.pre_joker then
+            for k, v in pairs(G.hand.cards) do
+                if v:get_id() == 9 and not next(SMODS.get_enhancements(v)) then
+                            local enhancement = SMODS.poll_enhancement({guaranteed = true})
+                            v:set_ability(enhancement)
+                            SMODS.calculate_effect({ message = localize("k_upgrade_ex"), colour = G.C.EPILEPSY, card = v })
+                            play_sound('generic1', math.random()*0.2 + 0.9,0.5)
             end
         end
+    end
+end
 }
 SMODS.Joker{
     key = "samsontboi",
@@ -392,12 +393,12 @@ SMODS.Joker{
     pos = { x = 0, y = 2 },
     config = {
         extra = {
-            perma = 1,
+            perma = 0.5,
             give = 2,
             held = 25
         }
     },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "spades", "suit", "perma_bonus", "modify_card", "score", "retrigger", "xscore" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "spades", "suit", "perma_bonus", "modify_card", "score", "xscore" },
         loc_vars = function(self, info_queue, card)
             local x = card.ability.extra.perma
             local y = card.ability.extra.give
@@ -414,7 +415,7 @@ SMODS.Joker{
                 end
                 if context.cardarea == G.hand and context.other_card:is_suit("Spades") then
                 SMODS.calculate_effect({score = z, card = context.other_card})
-                context.other_card.ability.perma_repetitions = (context.other_card.ability.perma_repetitions or 0) + x
+                context.other_card.ability.perma_x_score = (context.other_card.ability.perma_x_score or 0) + x
                     return { message = localize('k_upgrade_ex'), colour = G.C.PURPLE, card = context.other_card }
             end----
         end----
