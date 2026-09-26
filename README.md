@@ -63,7 +63,4 @@ There is also the mod formerly known as POLTERWORX, now being referred to as BOO
 Support server for Busted Buffoons.
 [Busted Buffoons Bunker](https://discord.gg/P7DY5x9MNS)
 
-Some Rarities use Custom Music, if you are streaming, you may be advised to turn off the game music.
-* [NI4NI](https://www.vyletpony.com/ni4ni)
-* [Thousand March](https://ronandecastel.bandcamp.com/track/thousand-march)
-* [Event Horizon](https://heavenpierceher.bandcamp.com/track/event-horizon-reach-for-the-sun-and-burn-burn-burn)
+Some Rarities use Custom Music, if you are streaming, you may be advised to turn off the game music using the settings.
