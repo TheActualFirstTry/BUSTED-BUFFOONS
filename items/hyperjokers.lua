@@ -18,7 +18,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    attributes = { "bustb_d", "all_bb", "bustj", "xmult", "scaling", "ace", "face", "rank" },
+    attributes = { "bustb_d", "all_bb", "bustj", "xmult", "scaling", "ace", "face", "rank", "gem" },
     config = {
         extra = {
             xmult = 6,           
@@ -732,14 +732,15 @@ SMODS.Joker {
     key = "garnet",
     atlas = "Atlas_Fantastic",
     pools = { ["Fantastic"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
-    attributes = { "bustb_d", "all_bb", "bustj", "xmult", "xchips", "scaling", "hearts", "clubs", "suit" },
+    attributes = { "bustb_d", "all_bb", "bustj", "xmult", "xchips", "scaling", "hearts", "clubs", "suit", "gem" },
     config = {
         extra = {
             Sapphire = 1.5,
             Ruby = 1.5,
             Garnet = 2,
             BaseSapphire = 1.5,
-            BaseRuby = 1.5
+            BaseRuby = 1.5,
+            emc = 1.5
         }
     },
     pos = {
@@ -764,6 +765,20 @@ SMODS.Joker {
 
 
     calculate = function(self, card, context)
+		if context.other_joker and context.other_joker.ability.set == "Joker" and context.other_joker:has_attribute("gem") then
+            SMODS.calculate_effect({
+				emult = lenient_bignum(card.ability.extra.emc),
+				echips = lenient_bignum(card.ability.extra.emc),
+                card = context.other_joker
+			}, context.other_joker)
+		end
+		if context.forcetrigger then
+			return {
+				emult = lenient_bignum(card.ability.extra.emc),
+				echips = lenient_bignum(card.ability.extra.emc),
+			}
+		end
+--[[
         if context.forcetrigger then
             card.ability.extra.Sapphire = card.ability.extra.Sapphire * card.ability.extra.Garnet
             card.ability.extra.Ruby = card.ability.extra.Ruby * card.ability.extra.Garnet
@@ -827,6 +842,7 @@ SMODS.Joker {
 			card = card
  }
     end
+--]]
 end
 }
 

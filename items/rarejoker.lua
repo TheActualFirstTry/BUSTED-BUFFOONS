@@ -270,7 +270,7 @@ SMODS.Joker{
     config = {
         extra = {
             perma = 0.25,
-            give = 1.5,
+            give = 1.25,
             held = 4
         }
     },
@@ -311,7 +311,7 @@ SMODS.Joker{
     config = {
         extra = {
             perma = 0.5,
-            give = 2,
+            give = 1.5,
             held = 10
         }
     },
@@ -352,7 +352,7 @@ SMODS.Joker{
     config = {
         extra = {
             perma = .25,
-            give = 3,
+            give = 2,
             held = 5
         }
     },
@@ -1036,7 +1036,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 3, y = 4 },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "mult", "ace", "face", "rank" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "mult", "ace", "face", "rank", "gem" },
     config = { extra = { mult = 1, mult_mod = 6 }, immutable = { } },
     loc_vars = function(self, info_queue, card)
         return {

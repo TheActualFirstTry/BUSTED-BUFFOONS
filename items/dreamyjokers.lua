@@ -242,7 +242,7 @@ SMODS.Joker {
     eternal_compat = true,
     pos = { x = 2, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
-    attributes = { "bustb_d", "all_bb", "bustj", "passive", "value_manip" },
+    attributes = { "bustb_d", "all_bb", "bustj", "passive", "value_manip", "gem" },
     config = {
         extra = { vm = 1.1, triggered = false }
     },
@@ -560,7 +560,7 @@ SMODS.Joker{
     blueprint_compat = false,
     eternal_compat = true,
     pos = { x = 1, y = 2 },
-    attributes = { "bustb_d", "all_bb", "bustj", "xchips", "passive", "suit", "clubs", "seals", "enhancements", "editions" },
+    attributes = { "bustb_d", "all_bb", "bustj", "xchips", "passive", "suit", "clubs", "seals", "enhancements", "editions", "gem" },
     config = { 
         extra = { 
             xchips = 2

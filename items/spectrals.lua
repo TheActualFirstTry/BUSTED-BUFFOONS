@@ -3,6 +3,7 @@ SMODS.Consumable {
     set = 'Spectral',
     atlas = "non",
     pos = { x = 0, y = 7 },
+    cost = 50,
     soul_pos = { x = 1, y = 7, draw = function(card, scale_mod, rotate_mod)
         local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
             0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
@@ -67,6 +68,7 @@ SMODS.Consumable {
     soul_pos = { x = 4, y = 8, new = { x = 3, y = 8} },
     hidden = true,
     soul_rate = 0.00001,
+    cost = 250,
     can_repeat_soul = true,
     soul_set = 'Spectral',
 loc_vars = function(self, info_queue, card)
@@ -134,6 +136,7 @@ SMODS.Consumable {
     atlas = "non",
     pos = { x = 2, y = 7 },
     soul_rate = 0.1,
+    cost = 16,
     can_repeat_soul = true,
     soul_set = 'Spectral',
     config = { immutable = { moneyset = -0.1 } },
@@ -170,6 +173,7 @@ SMODS.Consumable {
     name = "Continuum",
     set = 'Spectral',
     pos = { x = 4, y = 7 },
+    cost = 4,
     config = { extra = { seal = 'busterb_burgundy' }, max_highlighted = 1 },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
@@ -211,6 +215,7 @@ SMODS.Consumable {
     name = "Spiral",
     set = 'Spectral',
     pos = { x = 5, y = 7 },
+    cost = 4,
     config = { extra = { seal = 'busterb_periwinkle' }, max_highlighted = 1 },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
@@ -253,6 +258,7 @@ SMODS.Consumable {
     set = 'Spectral',
     pos = { x = 6, y = 7 },
     config = { extra = { seal = 'busterb_pizza_seal' }, max_highlighted = 1 },
+    cost = 4,
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
         return { vars = { card.ability.max_highlighted, self.name } }
@@ -293,6 +299,7 @@ SMODS.Consumable {
     name = "Gemini",
     set = 'Spectral',
     pos = { x = 7, y = 7 },
+    cost = 4,
     config = { extra = { seal = 'busterb_lime' }, max_highlighted = 1 },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
@@ -334,6 +341,7 @@ SMODS.Consumable {
     name = "Supernova",
     set = 'Spectral',
     pos = { x = 8, y = 7 },
+    cost = 4,
     config = { extra = { seal = 'busterb_sun' }, max_highlighted = 1 },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
@@ -376,6 +384,7 @@ SMODS.Consumable {
     set = 'Spectral',
     pos = { x = 9, y = 7 },
     config = { extra = { seal = 'busterb_galaxy' }, max_highlighted = 1 },
+    cost = 4,
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
         return { vars = { card.ability.max_highlighted, self.name } }
@@ -416,6 +425,7 @@ SMODS.Consumable {
     key = 'chrysalis',
     name = "Chrysalis",
     set = 'Spectral',
+    cost = 4,
     pos = { x = 8, y = 6 },
     config = { extra = { seal = 'busterb_butterfly' }, max_highlighted = 1 },
     loc_vars = function(self, info_queue, card)
@@ -458,6 +468,7 @@ SMODS.Consumable {
     name = "Exaltation",
     set = 'Spectral',
     hidden = true,
+    cost = 16,
     can_repeat_soul = true,
     soul_set = 'Spectral',
     pos = { x = 9, y = 6 },
@@ -506,6 +517,7 @@ SMODS.Consumable {
     soul_pos = { x = 7, y = 8, new = { x = 6, y = 8} },
     hidden = true,
     soul_rate = 0.00001,
+    cost = 100000,
     can_repeat_soul = true,
     soul_set = 'Spectral',
     loc_vars = function(self, info_queue, card)

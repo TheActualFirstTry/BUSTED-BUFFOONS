@@ -8,7 +8,7 @@ SMODS.Consumable {
     key = 'mugen',
     set = 'Spectral',
     atlas = "non",
-    cost = 4, pos = { x = 3, y = 7 },
+    cost = 8, pos = { x = 3, y = 7 },
     hidden = true,
     can_repeat_soul = true,
     soul_set = 'Infinity',
@@ -74,7 +74,7 @@ SMODS.Consumable {
     key = 'marshall',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 0, y = 0 },
+    cost = 8, pos = { x = 0, y = 0 },
     config = {
     extra = { val = 1.5 }
   },
@@ -107,7 +107,7 @@ SMODS.Consumable {
     key = 'virtuality',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 1, y = 0 },
+    cost = 8, pos = { x = 1, y = 0 },
     config = { immutable = { v = 50 }},
 can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
@@ -162,7 +162,7 @@ SMODS.Consumable {
     key = 'prison_flame',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 2, y = 0 },
+    cost = 8, pos = { x = 2, y = 0 },
     config = {
     extra = {
         xlevel = 2
@@ -215,7 +215,7 @@ SMODS.Consumable {
     key = 'blue_sky',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 3, y = 0 },
+    cost = 8, pos = { x = 3, y = 0 },
     config = {
     extra = {
         xlevel = 2
@@ -268,7 +268,7 @@ SMODS.Consumable {
     key = 'wicked_witch',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 0, y = 1 },
+    cost = 8, pos = { x = 0, y = 1 },
     config = {
     extra = 2
     },
@@ -306,7 +306,7 @@ SMODS.Consumable {
     key = 'manny',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 1, y = 1 },
+    cost = 8, pos = { x = 1, y = 1 },
     config = {
     extra = {
         interest = 1.5
@@ -348,7 +348,7 @@ SMODS.Consumable {
     key = 'jackal',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 2, y = 1 },
+    cost = 8, pos = { x = 2, y = 1 },
     config = {
     extra = {
         levels = 0,
@@ -448,7 +448,7 @@ SMODS.Consumable {
     key = 'blackberserker',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 0, y = 2 },
+    cost = 8, pos = { x = 0, y = 2 },
     config = {
     extra = {
         min = 1,
@@ -533,7 +533,7 @@ SMODS.Consumable {
     key = 'metamon',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 3, y = 1 },
+    cost = 8, pos = { x = 3, y = 1 },
         config = { extra = { jokers = 1 }, immutable = { xscore = 1.25 } },
 
     loc_vars = function(self, info_queue, card)
@@ -570,7 +570,7 @@ SMODS.Consumable {
     key = 'demiurgos',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 1, y = 2 },
+    cost = 8, pos = { x = 1, y = 2 },
         config = { extra = { jokers = 1 } },
 
     loc_vars = function(self, info_queue, card)
@@ -604,7 +604,7 @@ SMODS.Consumable {
     key = 'meija',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 2, y = 2 },
+    cost = 8, pos = { x = 2, y = 2 },
     config = { extra = { num_copies = 3 }, immutable = { selected = 1 } },
 	misprintize_caps = { extra = { num_copies = 100 } },
 	loc_vars = function(self, info_queue, card)
@@ -649,7 +649,7 @@ SMODS.Consumable {
     key = 'crazycat',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 3, y = 2 },
+    cost = 8, pos = { x = 3, y = 2 },
     config = {
     extra = { val = 1.5 }
   },
@@ -683,7 +683,7 @@ SMODS.Consumable {
     key = 'otw',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 0, y = 3 },
+    cost = 8, pos = { x = 0, y = 3 },
     config = {
     select = 1,
     extra = { jokers = 1 }
@@ -718,7 +718,7 @@ SMODS.Consumable {
     key = 'beatrix',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 1, y = 3 },
+    cost = 8, pos = { x = 1, y = 3 },
     config = {
     extra = { max_highlighted = 1, multiuse = 2 }
   },
@@ -760,7 +760,7 @@ SMODS.Consumable {
     key = 'blackc',
     set = 'Infinity',
     atlas = "a_ic",
-    cost = 4, pos = { x = 2, y = 3 },
+    cost = 8, pos = { x = 2, y = 3 },
     config = {
     extra = { val = 1.5}
   },
@@ -797,7 +797,7 @@ SMODS.Consumable {
     can_repeat_soul = true,
     soul_set = 'Infinity',
 
-    cost = 4, pos = { x = 3, y = 3 },
+    cost = 8, pos = { x = 3, y = 3 },
     config = { extra = { jokers = 1 } },
 
     loc_vars = function(self, info_queue, card)

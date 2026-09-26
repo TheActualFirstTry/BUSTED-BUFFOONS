@@ -754,7 +754,7 @@ demicolon_compat = true,
     cost = 2,
     pos = { x = 2, y = 4 },
     config = { extra = { scoring = 3 }, immutable = {  } },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "xchips", "hands" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "xchips", "hands", "gem" },
     loc_vars = function(self, info_queue, card)
         local s = card.ability.extra.scoring
         return { vars = { s } }
@@ -776,7 +776,7 @@ demicolon_compat = true,
     cost = 2,
     pos = { x = 3, y = 4 },
     config = { extra = { scoring = 2 }, immutable = {  } },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "hands", "xmult" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "hands", "xmult", "gem" },
     loc_vars = function(self, info_queue, card)
         local s = card.ability.extra.scoring
         return { vars = { s } }

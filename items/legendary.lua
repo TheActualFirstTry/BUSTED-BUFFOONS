@@ -279,7 +279,7 @@ SMODS.Joker {
     pos = { x = 1, y = 2 },
     soul_pos = { x = 1, y = 3 },
     config = { extra = { } },
-    attributes = { "bustj", "bustb_d", "modify_card", "enhancements", "mod_chance" },
+    attributes = { "bustj", "bustb_d", "modify_card", "enhancements", "mod_chance", "gem", "passive" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_crystallized
         return { vars = { } }

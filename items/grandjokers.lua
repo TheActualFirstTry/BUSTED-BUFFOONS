@@ -480,7 +480,7 @@ key = "doise",
     blueprint_compat = true,
     demicolon_compat = true,
     eternal_compat = true,
-    attributes = { "all_bb", "bustj","xchips", "echips", "chance"},
+    attributes = { "all_bb", "bustj", "echips", "enhancements"},
     config = {
         extra = {
             max_uses = 1,
@@ -1103,7 +1103,7 @@ SMODS.Joker{
     unlocked = true,
     blueprint_compat = true,
     eternal_compat = true,
-    attributes = { "all_bb", "bustj","asc", "easc", "xasc", "perma_bonus", "enhancements","modify_card"},
+    attributes = { "all_bb", "bustj","asc", "easc", "xasc", "perma_bonus", "enhancements","modify_card", "gem"},
     config = {
         extra = {
             asc = 4,
