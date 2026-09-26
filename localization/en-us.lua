@@ -969,6 +969,11 @@ return {
 			["j_busterb_garnet"] = {
 				["name"] = "{X:clubs,C:hearts}GAR{}{X:hearts,C:clubs}NET{}",
 				["text"] = {
+					"All Jokers from",
+					"{C:attention}Steven Universe",
+					"Give {C:white,X:dark_edition}^#1#{} Chips and Mult",
+					"{C:inactive}(Garnet Included)"
+--[[
 					"{X:chips,C:white}X#4#{} Chips and {X:mult,C:white}X#5#{} Mult",
 					"{C:attention}+#1#{} {X:chips,C:white}XChips{} when",
 					"{C:clubs}Clubs{} are played",
@@ -977,7 +982,8 @@ return {
 					"{C:attention}X#3#{} incremental value",
 					"If hand contains",
 					"both {C:clubs}Clubs{} and {C:hearts}Hearts{}",
-				},
+-]]
+					},
 			},
 			["j_busterb_murphy"] = {
 				["name"] = "Murphy",
