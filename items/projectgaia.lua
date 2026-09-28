@@ -65,10 +65,10 @@ local GaiaYap = {
   "Yo Hawaii",
   "Yo Thomas",
   "Yo Theia",
-  "Yo Nxkoo",
+  "Yo Not Mario",
   "Yo Vessel",
   "Yo Hedera",
-  "Yo JP",
+  "Yo Jade",
   gaiatable1
 }
 
@@ -103,42 +103,49 @@ SMODS.Joker{
           colours = {SMODS.Gradients["busterb_technopotentgradient"], SMODS.Gradients["busterb_epileptic"]}} }
     end,
   update = function(self, card, dt)
+    if G.SETTINGS.paused == false and G.STATE ~= G.STATES.HAND_PLAYED and G.STATE ~= G.STATES.GAME_OVER then
     card.ability.immutable.timer = card.ability.immutable.timer + G.real_dt
     if card.ability.immutable.timer >= card.ability.immutable.interval then
     card.ability.immutable.timer = card.ability.immutable.timer - card.ability.immutable.interval
-            G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.3,
-            func = function()
               attention_text({
                 text = tostring(math.random(0,9)),
 								scale = math.random(0.5,1),
-                hold = 1,
-                backdrop_colour = G.C.BBBLACK,
+                hold = math.random(0.1,1),
+                backdrop_colour = G.C.CLEAR,
+                colour = G.C.BBBLACK,
+								align = 'cm',
+        				major = card,
+								offset = {x = math.random(-G.CARD_W*.5,G.CARD_W*.5), y = math.random(-G.CARD_H*.5,G.CARD_H*.5)}
+							})
+              attention_text({
+                text = tostring(math.random(0,9)),
+								scale = math.random(0.5,1),
+                hold = math.random(0.5,1),
+                backdrop_colour = G.C.CLEAR,
                 colour = G.C.GREEN,
 								align = 'cm',
         				major = card,
 								offset = {x = math.random(-G.CARD_W*.5,G.CARD_W*.5), y = math.random(-G.CARD_H*.5,G.CARD_H*.5)}
 							})
-              return true
-            end
-          }))
-          G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.5,
-            func = function()
               attention_text({
                 text = '',
 								scale = math.random(0.01,10),
-                hold = 1,
+                hold = math.random(0.5,1),
                 backdrop_colour = G.C.GREEN,
 								align = 'cm',
         				major = card,
 								offset = {x = math.random(-G.CARD_W,G.CARD_W), y = math.random(-G.CARD_H,G.CARD_H)}
 							})
-              return true
+              attention_text({
+                text = '',
+								scale = math.random(0.01,10),
+                hold = math.random(0.5,1),
+                backdrop_colour = G.C.BBBLACK,
+								align = 'cm',
+        				major = card,
+								offset = {x = math.random(-G.CARD_W,G.CARD_W), y = math.random(-G.CARD_H,G.CARD_H)}
+							})
             end
-          }))
       end
   end,
     use = function(self, card, area, copier)

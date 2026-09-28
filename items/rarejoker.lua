@@ -470,10 +470,10 @@ SMODS.Joker {
     rarity = 3,
     cost = 8,
     pos = { x = 2, y = 2 },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "enhancements", "tarot", "generation", "perma_bonus", "retrigger", "boss_blind" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "enhancements", "passive", "retrigger", "boss_blind" },
     config = { extra = { vmod = 1 }, immutable = { vm = 1 } },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_glittery
+        info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_bloodmarked
         return {
             vars = {
                 card.ability.immutable.vm,
@@ -481,22 +481,18 @@ SMODS.Joker {
         }
     end,
     calculate = function(self, card, context)
-    if context.before then
-        for k,v in ipairs(G.play.cards) do
-            if SMODS.has_enhancement(v,"m_busterb_glittery") then
-                v.ability.perma_repetitions = (v.ability.perma_repetitions or 0) + card.ability.immutable.vm
-                SMODS.calculate_effect({message = "+" ..card.ability.immutable.vm.. " Repetitions", colour = SMODS.Gradients["busterb_grand"], card = v})
-            end
-        end
-    end
-    if (context.setting_blind and G.GAME.blind.boss) or context.forcetrigger then
-        local c = SMODS.add_card{key="c_busterb_unicorn"}
-        SMODS.calculate_effect{
-                    message = "Added!",
-                    colour = SMODS.Gradients["busterb_grand"],
-                    card = c
-                }
-    end
+        		if
+			context.repetition
+			and context.cardarea == G.play
+            and SMODS.has_enhancement(context.other_card, "m_busterb_bloodmarked")
+		then
+			return {
+				message = localize("k_again_ex"),
+				repetitions = 1,
+				card = card,
+			}
+		end
+
 end,
 }
 --[[
@@ -817,7 +813,7 @@ SMODS.Joker {
                     return ret
         end
         if context.setting_blind and G.GAME.blind.boss then
-        card:juice_up(100,100)
+        card:juice_up(50,100)
         SMODS.calculate_effect({
                 sound = "busterb_star",
                 volume = 0.4,
@@ -910,6 +906,7 @@ SMODS.Joker {
             ret.chips = card.ability.extra.chips
             ret.xscore = card.ability.extra.score
             ret.asc = card.ability.extra.asc
+            return ret
         end
         if context.individual and context.cardarea == G.play then
             if context.other_card:is_suit("Hearts") then

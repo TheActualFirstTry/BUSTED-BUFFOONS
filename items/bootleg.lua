@@ -565,33 +565,35 @@ SMODS.Consumable {
     atlas = "a_boot",
     pos = { x = 0, y = 3 },
     config = {
-    extra = {
-        max_highlighted = 2,
-    }
+        select = 2,
   },
 loc_vars = function(self, q, card)
         q[#q+1] = {set="Other", key = "busterb_electronic"}
-		return { vars = { card.ability.extra.max_highlighted } }
+		return { vars = { card.ability.select } }
 	end,
-    can_use = function(self, card)
-        local selected = Spectrallib.get_highlighted_cards({G.jokers, G.consumeables, G.hand}, card, 1, card.ability.extra.max_highlighted)
-        return #selected > 0 and #selected <= card.ability.extra.max_highlighted
-	end,
+    can_use = function(self,card)
+        local num = #Spectrallib.get_highlighted_cards({G.jokers, G.consumeables, G.hand}, card, 1, card.ability.select)
+        return num > 0 and num <= card.ability.select
+    end,
     use = function(self, card, area, copier)
-local cards = Spectrallib.get_highlighted_cards({G.jokers, G.consumeables, G.hand}, card, 1, card.ability.max_highlighted)
+        local cards = Spectrallib.get_highlighted_cards({G.jokers, G.consumeables, G.hand}, card, 1, card.ability.select)
         for i, v in pairs(cards) do
             local card = cards[i]
             G.E_MANAGER:add_event(Event({
                 func = function()
-                v:add_sticker('busterb_electronic',true)
+                if not v.ability.busterb_electronic == true then
                 v.ability.busterb_electronic = true
-                v:juice_up(0.3, 0.3)
-                play_sound("tarot1")
-                return true
+                v:add_sticker('busterb_electronic',true)
+                v:set_electronic(true)
                 end
-            }))    
+                    v:juice_up(0.3, 0.3)
+                            play_sound("tarot1")
+                    return true
+                end
+            }))
         end
-    end,
+    end
+
 }
 SMODS.Consumable{
     key = "row",

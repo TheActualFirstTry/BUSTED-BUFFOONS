@@ -164,7 +164,17 @@ BustB.mythic = false
     end
     end
         if context.individual and context.cardarea == "unscored" then
-                return {eblindsize = 0.5, card = context.other_card}
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.2,
+                   func = function()
+                G.GAME.blind.chips = G.GAME.blind.chips ^ 0.75
+                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                G.hand_text_area.blind_chips:juice_up()
+                   return true
+               end
+            }))
+            SMODS.calculate_effect({ colour = G.C.PURPLE, message = "^0.75 Blind Size", sound = "xblindsize"}, context.other_card)
         end
     end
 }

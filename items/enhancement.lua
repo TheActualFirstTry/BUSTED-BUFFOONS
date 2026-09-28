@@ -101,7 +101,7 @@ SMODS.Enhancement {
         if context.cardarea == G.play and context.main_scoring or context.forcetrigger then
             return { emult = card.ability.extra.Emult }
         end
-		if (context.pre_discard and context.cardarea == G.hand and card.highlighted) then 
+		if (context.pre_discard and context.cardarea == G.hand and card.highlighted) and not next(SMODS.find_card("j_busterb_reda")) then 
             SMODS.destroy_cards(card)
         end
 	end,

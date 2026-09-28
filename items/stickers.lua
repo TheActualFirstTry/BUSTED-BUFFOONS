@@ -62,6 +62,11 @@ SMODS.Sticker {
     end
 }
 
+function Card:set_electronic(_electronic)
+	self.ability.busterb_electronic = _electronic
+end
+
+
 SMODS.Sticker {
     key = "faulty",
     atlas = "non",

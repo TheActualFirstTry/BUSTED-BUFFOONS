@@ -285,25 +285,26 @@ SMODS.Joker {
     pos = { x = 3, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
     attributes = { "bustb_d", "all_bb", "bustj", "scaling", "generation" },
-    config = { immutable = { roll_rounds = 0, total_rounds = 3, round_add = 1 } },
+    config = { immutable = { roll_rounds = 0, total_rounds = 6, round_add = 1 } },
     loc_vars = function(self, info_queue, card)
         local rarity = (G.GAME.current_round.busterb_isaac_rarity or {}).rarity or 'busterb_Dreamy'
         return { vars = { card.ability.immutable.roll_rounds, card.ability.immutable.total_rounds, localize(rarity, "isaac_rarities"), colours = { HEX('b00b69'), HEX('5e7297') } } }
     end,
     calculate = function(self, card, context)
         if context.forcetrigger then
-                            G.E_MANAGER:add_event(Event{
+                G.E_MANAGER:add_event(Event{
                     trigger = 'after',
                         delay = 0.4,
                         func = function()
-                            local c = SMODS.add_card({ set = "Joker", attributes = { "bustb_d" }, area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
---                            local c = SMODS.add_card({ set = "Joker", attributes = { "bustb_d" }, area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
-                            SMODS.calculate_effect({ message = "Added!", colour = G.C.GRANDIOSE}, c)
+                        SMODS.scale_card(card, {
+                                ref_table = card.ability.immutable,
+                                ref_value = "roll_rounds",
+                                scalar_value = "round_add",
+                            })
                             return true
                         end
                     })
-
-        end
+                end
         if context.end_of_round and context.main_eval then
             SMODS.scale_card(card, {
                 ref_table = card.ability.immutable,
@@ -620,7 +621,7 @@ SMODS.Joker {
     cost = 16,
     pos = { x = 2, y = 2 },
     attributes = { "bustb_d", "all_bb", "bustj", "generation", "pizza", "scaling", "xmult" },
-    config = { extra = { xmult = 1, xmult_mod = .5 }, immutable = { odds = 25 } },
+    config = { extra = { xmult = 1, xmult_mod = .25 }, immutable = { odds = 25 } },
     loc_vars = function(self, info_queue, card)
         local pinorare, pinoodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_pinorare')
         return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod, pinorare, pinoodds } }

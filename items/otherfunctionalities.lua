@@ -312,11 +312,13 @@ BustB.mblinds = {
                 "bl_busterb_hestia",
                 --]]
 }
-for k,v in pairs(G.P_BLINDS) do
-    if v.mblind == true then
-        BustB.mblinds[#BustB.mblinds+1] = v
-    end
-end
+
+        for k,v in pairs(G.P_BLINDS) do
+            if v.mblind then
+                table.insert(BustB.mblinds, v.key)
+            end
+        end
+
 --[[
 function BustB.m_blind_randomizer(k)
 for k,v in pairs(G.P_BLINDS) do

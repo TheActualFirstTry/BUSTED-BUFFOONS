@@ -1156,7 +1156,7 @@ SMODS.Joker {
     eternal_compat = true,
     unlocked = true,
     discovered = true,
-    attributes = { "bustb_d", "all_bb", "bustj", "joker_slot", "economy", "vouchers" },
+    attributes = { "bustb_d", "all_bb", "bustj", "joker_slot", "economy", "vouchers", "passive" },
     config = {
         extra = {
             joker_slots = 2,
@@ -1178,18 +1178,29 @@ SMODS.Joker {
     calculate = function(self, card, context)
         --Spawn a random free voucher in the shop.
         if context.starting_shop and not card.ability.extra.triggered then
-                local voucher = SMODS.add_voucher_to_shop()
+            local vpool = {}
+            for k,v in ipairs(G.P_CENTER_POOLS.Voucher) do
+                vpool[#vpool+1] = v.key
+            end
+            if #vpool > 1 then
+            local rnd = pseudorandom_element(vpool,"busterb_dreamena")
+                local voucher = SMODS.add_voucher_to_shop(rnd)
                 voucher.cost = 0
                 card.ability.extra.triggered = true
+            end
         end
         -- Buying a voucher increases moneys and joker slots
         if (context.buying_card and context.card.ability.set == "Voucher") or context.forcetrigger then
             G.jokers:change_size(math.min(100, card.ability.extra.joker_slots))
             G.consumeables:change_size(math.min(100, card.ability.extra.joker_slots))
-            card.ability.extra.dollars = lenient_bignum(card.ability.extra.dollars * card.ability.extra.money_multiplier)
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "dollars",
+                scalar_value = "money_multiplier",
+                operation = "X",
+                scaling_message = { message = "$"..card.ability.extra.dollars, sound = "busterb_cashregister", colour = G.C.GOLD }
+            })
             card.ability.extra.triggered = false
-            play_sound("busterb_cashregister")
-            SMODS.calculate_effect({message = "$"..card.ability.extra.dollars, colour = G.C.GOLD}, card)
         end
     end,
        calc_dollar_bonus = function(self, card)
