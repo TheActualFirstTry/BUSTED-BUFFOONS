@@ -545,8 +545,6 @@ end
     {key = "slib_score", min = 12, max = 150, factor = 0.1,},
     {key = "slib_xscore", min = 12, max = 150, factor = 0.1,},
     {key = "slib_partial_swap", min = 10, max = 100, factor = 0.01, },
-    {key = "slib_hands", min = 1, max = 5,},
-    {key = "slib_discards", min = 1, max = 5,},
     {key = "slib_h_size", min = 1, max = 5,},
     {key = "busterb_hand_level", min = 1, max = 10},
     {key = "busterb_ascend", min = 1, max = 5},
