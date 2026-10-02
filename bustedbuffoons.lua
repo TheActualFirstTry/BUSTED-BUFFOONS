@@ -95,6 +95,10 @@ SMODS.Sound{
     key = "bang",
     path = "mus_explosion.wav"
 }
+SMODS.Sound{
+    key = "gigatalk",
+    path = "mus_sfx_a_gigatalk.wav",
+}
 
 SMODS.Sound{
     key = "orch",
@@ -794,17 +798,6 @@ local pool = {}
                 local random_key = pseudorandom_element(pool, "random_rare_consumeable")
                     if random_key then SMODS.add_card{key = random_key, edition = "e_negative"} end
             end
-
-SMODS.current_mod.calculate = function(self, context)
-    if context.fix_probability and Card.is(context.trigger_obj, Card) then
-        if context.trigger_obj.ability.busterb_nilcard then
-    return {denominator = 0}
-        end
-        if context.trigger_obj.ability.busterb_stevencard then
-    return {numerator = 0}
-        end
-    end
-end
 
 SMODS.Shader({
     key = "mod_badge",

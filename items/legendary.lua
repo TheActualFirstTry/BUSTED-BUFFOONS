@@ -101,7 +101,7 @@ SMODS.Joker {
 }
 SMODS.Joker {
     key = "marie",
-    unlocked = false,
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = false,
     demicolon_compat = true,
@@ -130,16 +130,34 @@ SMODS.Joker {
 
 local ZagreusTalk = {
     'Not a chance.',
-    'I would not allow it.',
     "No.",
     "I refuse!",
     "Argh! No!",
     "We're not done yet.",
+    "Ah, so you thought!",
+    "Don't you dare!",
+    "I reject!",
+    "Sorry, but no.",
+    "Very funny.",
+    "How inconvenient.",
+    "Impressive.",
+    "I believe not.",
+}
+
+local ZagreusSpeech = {
+    'I would not allow it.',
+    "I beg to differ.",
+    "I cannot allow this to happen!",
     "Care for another chance?",
     "Let's not get ahead of ourselves...",
-    "Ah, so you thought!",
+    "I believe you misunderstood the circumstances...",
+    "There is no stopping me.",
+    "You almost got me there.",
+    "Don't get ahead of yourself.",
+    "I have got one more in me!",
     "That blue fellow has some skeletons hidden somewhere..."
 }
+
 
 SMODS.Joker {
     key = "zag",
@@ -167,15 +185,35 @@ SMODS.Joker {
                         return true
                     end
                 }))
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.2,
+                       func = function()
+                play_sound("busterb_gigatalk", 1, 0.9)
+                attention_text({
+                       text = tostring(ZagreusTalk[math.random(#ZagreusTalk)]),
+                       scale = 2,
+                       hold = 2,
+                       backdrop_colour = G.C.BBBLACK,
+                       colour = G.C.RED,
+                       align = 'cm',
+                       major = card,
+                       offset = {x = 0, y = G.CARD_H}
+                })
+                card:juice_up(0.3,0.5)
+                G.ROOM.jiggle = G.ROOM.jiggle + 35
+                       return true
+                   end
+                }))
                 SMODS.calculate_effect ({
-                    message = ZagreusTalk[math.random(#ZagreusTalk)],
-                    saved = "Death Defied!",
-                    colour = G.C.DARK_EDITION,
+                    text = "",
+                    saved = ZagreusSpeech[math.random(#ZagreusSpeech)],
+                    colour = G.C.CLEAR,
                     card = card
                 })
             card.ability.extra.deathdefiance = false
             card.ability.immutable.counter = 0
-            SMODS.calculate_effect({message = "Reset!", colour = G.C.DARK_EDITION}, card)
+--            SMODS.calculate_effect({message = "Reset!", colour = G.C.DARK_EDITION}, card)
         end
 --        if context.before and next(context.poker_hands["Flush"]) and card.ability.immutable.counter <= 3 and not card.ability.extra.deathdefiance == true and not context.blueprint then
         if not card.ability.extra.deathdefiance == true and card.ability.immutable.counter <= card.ability.immutable.goal then
@@ -351,7 +389,7 @@ SMODS.Joker {
 
 SMODS.Joker {
     key = "rare_akuma",
-    unlocked = false,
+    unlocked = true,
     atlas = "bb_legendary",
     blueprint_compat = true,
     pools = { ["bustjokers"] = true },

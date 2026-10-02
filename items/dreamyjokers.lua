@@ -347,10 +347,10 @@ G.GAME.current_round.busterb_isaac_rarity = G.GAME.current_round.busterb_isaac_r
     local jkrd = pseudorandom_element(display, "busterb_isaac".. G.GAME.round_resets.ante)
 G.GAME.current_round.busterb_isaac_rarity.display = jkrd
 end
-
 function SMODS.current_mod.reset_game_globals(run_start)
     reset_busterb_isaac_rarity()
 end
+
 --]]
 
 SMODS.Joker{

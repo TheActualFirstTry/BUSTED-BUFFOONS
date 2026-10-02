@@ -639,3 +639,69 @@ function BustB.flip_joker(card)
                 card:set_ability(jokerkey)
             end)
         end
+
+SMODS.current_mod.calculate = function(self, context)
+    if context.fix_probability and Card.is(context.trigger_obj, Card) then
+        if context.trigger_obj.ability.busterb_nilcard then
+    return {denominator = 0}
+        end
+        if context.trigger_obj.ability.busterb_stevencard then
+    return {numerator = 0}
+        end
+    end
+end
+
+SMODS.Joker:take_ownership('cavendish', {
+    calculate = function(self, card, context)
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+            if SMODS.pseudorandom_probability(card, 'vremade_cavendish', 1, card.ability.extra.odds) then
+                G.GAME.pool_flags.busterb_cavendish_extinct = true
+            end
+        end
+    end
+}, true)
+
+function AstroPower()
+end
+
+-- Convert a card or set of cards into the card(s) after it, with the order being based on the Collection.
+---@param cards Card|Card[]
+---@param from_card Card The card causing the conversion.
+---@return nil
+function BustB.increase_cards(cards, from_card)
+    if cards.ability then cards = {cards} end
+    Spectrallib.flip_then(cards, function(cardd)
+        local ind = BustB.increment_index(cardd, cardd.config.center.set, true)
+        if G.P_CENTER_POOLS.Joker[ind] then
+            cardd:set_ability(G.P_CENTER_POOLS.Joker[ind])
+        end
+        cardd.area:remove_from_highlighted(from_card)
+    end)
+end
+
+---@param card Card
+---@param pool string Index of G.P_CENTER_POOLS
+---@param strict? boolean If true, the card considered "previous" must actually be able to appear in gameplay.
+---@return integer
+function BustB.increment_index(card, pool, strict)
+    local i = 0
+    for x, v in pairs(G.P_CENTER_POOLS[pool]) do
+        if card.config and v.key == card.config.center_key then
+            i = x + 1 -- previous
+            break
+        end
+    end
+    if strict then
+        while (
+            G.P_CENTER_POOLS[pool]
+            and G.P_CENTER_POOLS[pool][i]
+            and (
+                G.P_CENTER_POOLS[pool][i].no_doe
+                or G.P_CENTER_POOLS[pool][i].no_collection
+            )
+        )
+        do i = i + 1 end
+    end
+    if i > 1 then i = 1 end
+    return i
+end

@@ -165,8 +165,8 @@ SMODS.Sticker({
     if card.debuff then card:set_debuff(false) end
 		if
 			context.end_of_round
+			and context.main_eval
 			and not context.repetition
-			and not context.individual
 		then
 			card:calculate_fragile()
 		end

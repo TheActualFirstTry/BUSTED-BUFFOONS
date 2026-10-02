@@ -813,8 +813,15 @@ SMODS.Consumable {
         for i, v in pairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.jokers)) do
             if not v.entr_aleph or v.busterb_omega then
                 v:start_dissolve()
-                G.GAME.banned_keys[v.config.center.key] = true
-                local pool = {}
+                     G.E_MANAGER:add_event(Event({
+			            trigger = "before",
+            			delay = 0.75,
+			            func = function()
+                            G.GAME.slib_banished_keys[v.config.center_key] = true
+                            return true
+			            end,
+            		}))
+                       local pool = {}
                     for _,v in ipairs(G.P_CENTER_POOLS.Consumeables) do
                       if v.hidden  and not ( v.set == "jen_omegaconsumable" or v.set == "jen_ability" ) then pool[#pool+1] = v.key end
                 end

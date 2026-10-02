@@ -52,11 +52,11 @@ function ease_d_ante(mod)
       func = function()
           local ante_UI = G.hand_text_area.ante
           mod = mod or 0
-          local text = '/'
+          local text = '÷'
           local col = G.C.PURPLE
           local ccol = G.C.RED
           if mod < 0 then
-              text = '/-'
+              text = '÷-'
               col = G.C.RED
               ccol = G.C.PURPLE
           end
@@ -273,11 +273,11 @@ function ease_d_dollars(mod, instant)
     local function _mod(mod)
         local dollar_UI = G.HUD:get_UIE_by_ID('dollar_text_UI')
         mod = mod or 0
-        local text = '/'..localize('$')
+        local text = '÷'..localize('$')
         local ccol = G.C.GOLD
         local col = G.C.RED
         if mod < 0 then
-            text = '-/'..localize('$')
+            text = '-÷'..localize('$')
             ccol = G.C.RED
             col = G.C.GOLD
         else
@@ -466,7 +466,7 @@ function mysterypower(min,max)
     local SymbolsUNT = {
     "+",
     "X",
-    "/",
+    "÷",
     "<",
     ">",
     "#",

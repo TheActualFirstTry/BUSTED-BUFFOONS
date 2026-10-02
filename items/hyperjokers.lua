@@ -533,27 +533,24 @@ SMODS.Joker {
     attributes = { "bustb_d", "all_bb", "bustj", "asc", "economy" },
     config = {
         extra = {
-            xasc = 6,         
-            money = 6,       
-            xasc_mod = 6,    
-            dollar_mod = 6     
+            money = 2,
         },
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { math.abs(G.GAME.dollars), " " } }
+        return { vars = { (math.abs(G.GAME.dollars)/2), card.ability.extra.money } }
     end,
 
     calculate = function(self, card, context)
         if (context.joker_main or context.forcetrigger) and G.GAME.dollars > 1 then
             return {
-                asc = (G.GAME.dollars / 2),
+                asc = (math.abs(G.GAME.dollars) / 2),
                 message = "Destroy!",
                 sound = "busterb_destroy",
                 colour = G.C.GOLD
             }
         end
         if context.setting_blind and context.main_eval and not context.blueprint and G.GAME.blind.boss then
-            ease_dollars(math.abs(G.GAME.dollars))
+            ease_x_dollars(math.abs(card.ability.extra.money))
             play_sound("busterb_keepemcoming")
         end
     end
@@ -1229,7 +1226,7 @@ SMODS.Joker {
         -- For every card held in hand, create a random negative consumable
     if context.joker_main then
         for k, v in ipairs(context.full_hand) do
-            local c = SMODS.create_card({set = "Consumeables", edition = "e_negative"})
+            local c = SMODS.create_card({set = "Consumeables", soulable = true, edition = "e_negative"})
                     c:add_to_deck()
                     G.consumeables:emplace(c)
         end

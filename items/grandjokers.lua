@@ -340,13 +340,17 @@ if to_big(card.ability.extra.emult) > to_big(1) then
     }
 end    
 end
+if context.forcetrigger then
+    card.ability.immutable.dp = card.ability.immutable.dp + card.ability.immutable.gain
+    SMODS.calculate_effect({message = "+" ..card.ability.immutable.gain.. " Revive", sound = "busterb_pepyell", colour = HEX('d868a0'), card = card})
+end
 if context.end_of_round then
         if context.main_eval and context.beat_boss then
     card.ability.immutable.dp = card.ability.immutable.dp + card.ability.immutable.gain
     SMODS.calculate_effect({message = "+" ..card.ability.immutable.gain.. " Revive", sound = "busterb_pepyell", colour = HEX('d868a0'), card = card})
 end
 
-if (context.game_over and card.ability.immutable.dp > 0.99) or context.forcetrigger then
+if (context.game_over and card.ability.immutable.dp > 0.99) then
     card.ability.immutable.dp = card.ability.immutable.dp - card.ability.immutable.deduction
     SMODS.calculate_effect ({
                     message = "-" ..card.ability.immutable.deduction.. " Revive",

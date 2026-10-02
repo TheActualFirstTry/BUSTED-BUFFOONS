@@ -76,8 +76,8 @@ SMODS.Joker {
     rarity = 1,
     cost = 2,
     pos = { x = 2, y = 0 },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "joker_slot" },
-    config = { extra = { slots = 2 } },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "joker_slot", "passive" },
+    config = { extra = { slots = 1 }, extra_slots_used = -1 },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.slots } }
     end,
@@ -101,27 +101,20 @@ demicolon_compat = true,
     cost = 2,
     pos = { x = 3, y = 0 },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "ace" },
-    config = { extra = { chips = 0, gain = 10 } },
+    config = { extra = { chips = 10 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.chips, card.ability.extra.gain } }
+        return { vars = { card.ability.extra.chips } }
     end,
     calculate = function(self, card, context)
-        if context.joker_main or context.forcetrigger then
-            return { chips = card.ability.extra.chips }
-        end
         if context.individual and context.cardarea == G.play then
-            if context.other_card:get_id() == 14 then
-                SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "chips",
-                scalar_value = "gain",
-                scaling_message = {
-                message = "+" .. (card.ability.extra.chips + card.ability.extra.gain),
+            context.other_card.ability.perma_bonus = (context.other_card.ability.perma_bonus or 0) +
+                card.ability.extra.chips
+            return {
+                message = localize('k_upgrade_ex'),
                 colour = G.C.CHIPS
-            }})
+            }
         end
     end
-end
 }
 SMODS.Joker {
     key = "morshu",
@@ -132,7 +125,7 @@ demicolon_compat = true,
     rarity = 1,
     cost = 2,
     pos = { x = 0, y = 1 },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "tag", "money" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "money","generation", "consumeables" },
     config = { extra = { }, immutable = { spent = 0 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.immutable.spent } }
@@ -143,24 +136,16 @@ demicolon_compat = true,
         end
         if context.ending_shop or context.forcetrigger then
             if card.ability.immutable.spent >= 10 then
-        local tag_pool = get_current_pool('Tag')
-        local selected_tag = pseudorandom_element(tag_pool, 'busterb_morshu')
-        local it = 1
-        while selected_tag == 'UNAVAILABLE' do
-            it = it + 1
-            selected_tag = pseudorandom_element(tag_pool, 'busterb_morshu_resample'..it)
-        end
-        add_tag(Tag(selected_tag, false, 'Small'))
+                SMODS.add_card{ set = "Consumeables" }
             card.ability.immutable.spent = 0
             play_sound('busterb_cashregister')
-            SMODS.calculate_effect({message = "Reset!", colour = G.C.DARK_EDITION}, card)
+            SMODS.calculate_effect({message = "Reset!", colour = G.C.CHIPS}, card)
     end
     end
 end
 }
 
 local PostalDude = {
-    "I regret nothing.",
     "Guns don't kill people, i do.",
     "Butt Sauce!",
     "And one for your mother.",
@@ -170,7 +155,6 @@ local PostalDude = {
     "Didn't you just save?",
     "Did I ask for cheese?",
     "Give me some money!",
-    "Go long!",
     "Man, i gotta stop smoking this crap",
     "Have a nice day!",
     "This can't be good for me but I feel great",
@@ -182,21 +166,41 @@ SMODS.Joker {
     key = "dude",
     atlas = "joker_c",
     blueprint_compat = true,
-demicolon_compat = true,
+    demicolon_compat = true,
     pools = { ["bustjokers"] = true, ["all_bb_joker"] = true },
     rarity = 1,
     cost = 2,
     pos = { x = 1, y = 1 },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "clubs","spades","economy","face" },
-    config = { extra = { chips = 30 } },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj" },
+    config = { select = 1, extra = { trigger = true } },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = G.P_CENTERS.m_gold
+        return { vars = {card.ability.select, card.ability.extra.trigger and "Active" or "Inactive" } }
+    end,
+            can_use = function(self, card)
+        local num = #Spectrallib.get_highlighted_cards({G.jokers, G.consumeables, G.shop_jokers}, card, 1, card.ability.select)
+        return num > 0 and num <= card.ability.select and card.ability.extra.trigger == true
+        end,
+        use = function(self, card, area, copier)
+            SMODS.calculate_effect({ message = PostalDude[math.random(#PostalDude)] }, card)
+            local cards = Spectrallib.get_highlighted_cards({G.jokers, G.consumeables, G.hand}, card, 1, card.ability.select)
+        for i, v in pairs(cards) do
+            local c = cards[i].config.center.key
+            G.E_MANAGER:add_event(Event({
+			    trigger = "before",
+        		delay = 0.75,
+	            func = function()
+                    SMODS.destroy_cards(cards)
+                    G.GAME.slib_banished_keys[c] = true
+                    return true
+	            end,
+            }))
+            end
+            card.ability.extra.trigger = false
     end,
     calculate = function(self, card, context)
-        if context.discard and context.other_card:is_face() and (context.other_card:is_suit("Clubs") or context.other_card:is_suit("Spades")) then
-            context.other_card:set_ability("m_gold", nil, true)
-            return { message = PostalDude[math.random(#PostalDude)], colour = G.C.GOLD }
-        end
+            if context.ante_change and context.end_ante then
+                card.ability.extra.trigger = true
+            end
     end,
 }
 SMODS.Joker {
@@ -209,7 +213,7 @@ demicolon_compat = true,
     cost = 2,
     pos = { x = 2, y = 1 },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "economy", "destroy_card" },
-    config = { extra = { dollar = 1, dollar_bonus = 3 } },
+    config = { extra = { dollar = 0, dollar_bonus = 2 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.dollar, card.ability.extra.dollar_bonus } }
     end,
@@ -274,11 +278,12 @@ demicolon_compat = true,
     rarity = 1,
     cost = 2,
     pos = { x = 0, y = 2 },
-    config = { extra = {  } },
+    config = { extra = { odds = 6 } },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "tarot", "ace", "king", "generation" },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.c_death
-        return { vars = { } }
+        local doomrare, doomodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_doomrare')
+        return { vars = { doomrare, doomodds } }
     end,
     calculate = function(self, card, context)
         if context.forcetrigger then
@@ -300,6 +305,7 @@ demicolon_compat = true,
         end
     end
                 if ace and king and (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) then
+                if SMODS.pseudorandom_probability(card, 'busterb_doomrare', 1, card.ability.extra.odds, 'busterb_doomrare', true) then
                 G.E_MANAGER:add_event(Event({
                 func = function()
                     SMODS.add_card{key= "c_death" }
@@ -308,7 +314,8 @@ demicolon_compat = true,
                 end
             }))
         end
-    end,
+    end
+end,
 }
 SMODS.Joker {
     key = "nyancat",
@@ -322,7 +329,7 @@ demicolon_compat = true,
     config = { extra = {  } },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "editions","modify_card" },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = G.P_CENTERS.e_polychrome
+        info_queue[#info_queue + 1] = G.P_CENTERS.e_holographic
         return { vars = { } }
     end,
     calculate = function(self, card, context)
@@ -357,7 +364,7 @@ demicolon_compat = true,
                 trigger = 'after',
                 delay = 0.1,
                 func = function()
-                nyan:set_edition('e_polychrome',true)
+                nyan:set_edition('e_holographic',true)
                 nyan:juice_up(0.3, 0.3)
                     return true
                 end
@@ -579,7 +586,7 @@ demicolon_compat = true,
         end
     end
                 if five and (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) then
-                    if SMODS.pseudorandom_probability(card, 'busterb_ghostrare', 1, card.ability.extra.odds, 'busterb_ghostrare', true) then
+            if SMODS.pseudorandom_probability(card, 'busterb_ghostrare', 1, card.ability.extra.odds, 'busterb_ghostrare', true) then
                 G.E_MANAGER:add_event(Event({
                 func = function()
                     SMODS.add_card{set="Spectral",soulable=true}
@@ -649,26 +656,26 @@ demicolon_compat = true,
     rarity = 1,
     cost = 2,
     pos = { x = 3, y = 3 },
-    config = { extra = { xchips = 1, gain = 0.1 } },
+    config = { extra = { chips = 0, gain = 20 } },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "tarot", "xchips", "scaling" },
     loc_vars = function(self, info_queue, card)
          info_queue[#info_queue + 1] = G.P_CENTERS.c_devil
-        return { vars = { card.ability.extra.xchips, card.ability.extra.gain } }
+        return { vars = { card.ability.extra.chips, card.ability.extra.gain } }
     end,
     calculate = function(self, card, context)
         if ( ( context.using_consumeable and context.consumeable.config.center_key == "c_devil" ) and not context.blueprint and not context.retrigger_joker ) or context.forcetrigger then
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
-                ref_value = "xchips",
+                ref_value = "chips",
                 scalar_value = "gain",
                 scaling_message = {
-                message = "X" .. (card.ability.extra.xchips + card.ability.extra.gain).. " Chips",
+                message = "+" .. (card.ability.extra.chips + card.ability.extra.gain).. " Chips",
                 colour = G.C.CHIPS
             }})
         end
         if context.joker_main or context.forcetrigger then
             if card.ability.extra.xchips > to_big(1) then
-            return { xchips = card.ability.extra.xchips }
+            return { chips = card.ability.extra.chips }
         end
     end
 end,
@@ -753,7 +760,7 @@ demicolon_compat = true,
     rarity = 1,
     cost = 2,
     pos = { x = 2, y = 4 },
-    config = { extra = { scoring = 3 }, immutable = {  } },
+    config = { extra = { scoring = 50 }, immutable = {  } },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "xchips", "hands", "gem" },
     loc_vars = function(self, info_queue, card)
         local s = card.ability.extra.scoring
@@ -762,7 +769,7 @@ demicolon_compat = true,
     calculate = function(self, card, context)
         local s = card.ability.extra.scoring
         if (context.joker_main and (G.GAME.round % 2 == 1 and G.GAME.round >= 0)) or context.forcetrigger then
-            return{ xchips = s }
+            return{ chips = s }
             end
         end,
 }
@@ -775,7 +782,7 @@ demicolon_compat = true,
     rarity = 1,
     cost = 2,
     pos = { x = 3, y = 4 },
-    config = { extra = { scoring = 2 }, immutable = {  } },
+    config = { extra = { scoring = 8 }, immutable = {  } },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "hands", "xmult", "gem" },
     loc_vars = function(self, info_queue, card)
         local s = card.ability.extra.scoring
@@ -784,7 +791,7 @@ demicolon_compat = true,
     calculate = function(self, card, context)
         local s = card.ability.extra.scoring
         if (context.joker_main and (G.GAME.round % 2 == 0 and G.GAME.round >= 0)) or context.forcetrigger then
-            return{ xmult = s }
+            return{ mult = s }
             end
         end,
 }

@@ -295,26 +295,15 @@ demicolon_compat = true,
         }
     end,
         calculate = function(self, card, context)
-        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
-            if SMODS.pseudorandom_probability(card, 'busterb_pbj', 1, card.ability.extra.odds, 'busterb_pbj') then
-                SMODS.destroy_cards(card, nil, nil, true)
-                return {
-                    message = localize('k_extinct_ex')
-                }
-            else
-                card.ability.extra.odds = card.ability.extra.odds / card.ability.immutable.divider
-                return {
-                    message = localize('k_safe_ex')
-                }
-            end
-        end
         if context.joker_main or context.forcetrigger then
             return {
                 emult = card.ability.extra.mult
             }
         end
     end,
-}
+    in_pool = function(self, args) -- equivalent to `no_pool_flag = 'vremade_gros_michel_extinct'`
+        return G.GAME.pool_flags.busterb_cavendish_extinct
+    end}
 
 SMODS.Joker {
     key = "sunky",

@@ -34,18 +34,6 @@ SMODS.Joker {
     return {vars = {acechance, aceodds, card.ability.extra.acemult}}
     end,
     calculate = function(self, card, context)
-    if next(SMODS.find_mod("starspace")) then
-        if context.other_card and 
-        context.cardarea == G.play and 
-        context.other_card:get_id() == 14 and 
-        context.other_card:is_suit("Hearts") and 
-        context.other_card.config.center.key == 'c_base' and 
-        context.scoring_name == "High Card" and 
-        G.GAME.hands["High Card"].level <= to_big(10)
-        then
-            SMODS.add_card{ key = "j_busterb_ralsei", edition = 'e_negative', stickers = {'eternal'}, force_stickers = true }
-        end
-    end
     if context.before or context.forcetrigger then
             if SMODS.pseudorandom_probability(card, 'busterb_susies_idea', 1, card.ability.extra.aceodds, 'busterb_susies_idea') then
                 SMODS.add_card{ set = "Base", rank = "A", enhancement = "m_steel", edition = "e_polychrome", seal = "Red" }
@@ -310,19 +298,45 @@ SMODS.Joker{
     pos = { x = 2, y = 1 },
     config = {
         extra = {
-            perma = 0.5,
-            give = 1.5,
-            held = 10
+            chips = 1,
+            chips_mod = 0.1
         }
     },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "clubs", "suit", "perma_bonus", "modify_card", "xchips", "chips" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "clubs", "suit", "xchips" },
         loc_vars = function(self, info_queue, card)
-            local x = card.ability.extra.perma
-            local y = card.ability.extra.give
-            local z = card.ability.extra.held
-                return {vars = { x, y, z }}
+            local c = card.ability.extra.chips_mod
+                if G.hand and G.hand.cards then
+                    for k,v in ipairs(G.hand.cards) do
+                        if v:is_suit("Clubs") then
+                            c = c + 1
+                        end
+                    end
+                else c = 0
+            end
+                return {vars = { card.ability.extra.chips, card.ability.extra.chips_mod, c }}
             end,
         calculate = function(self, card, context)--
+        if context.before then
+            local c = card.ability.extra.chips_mod
+            for k,v in ipairs(G.hand.cards) do
+                if v:is_suit("Clubs") then
+                    c = c + 1
+                end
+            end
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "chips",
+                scalar_value = "gain",
+                scalar_table = { gain = c },
+                scaling_message = {
+                message = localize("k_upgrade_ex"),
+                colour = G.C.CHIPS
+            }})
+        end
+        if context.joker_main and to_big(card.ability.extra.chips) > to_big(1) then
+            return{xchips = card.ability.extra.chips}
+        end
+--[[
             local x = card.ability.extra.perma
             local y = card.ability.extra.give
             local z = card.ability.extra.held
@@ -336,6 +350,7 @@ SMODS.Joker{
                     return { message = localize('k_upgrade_ex'), colour = G.C.CHIPS, card = context.other_card }
             end----
         end----
+--]]
     end---
 }
 SMODS.Joker{
@@ -351,33 +366,49 @@ SMODS.Joker{
     pos = { x = 3, y = 1 },
     config = {
         extra = {
-            perma = .25,
-            give = 2,
-            held = 5
+            dollars = 4,
+            asc = 4
+        },
+        immutable = {
+            d = 0,
+            d_max = 4
         }
     },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "diamonds", "suit", "perma_bonus", "modify_card", "asc", "economy" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "diamonds", "suit", "asc", "economy" },
         loc_vars = function(self, info_queue, card)
-            local x = card.ability.extra.perma
-            local y = card.ability.extra.give
-            local z = card.ability.extra.held
-                return {vars = { x, y, z }}
+            local x = card.ability.extra.dollars
+            local y = card.ability.extra.asc
+                return {vars = { x, y }}
             end,
-        calculate = function(self, card, context)--
-            local x = card.ability.extra.perma
-            local y = card.ability.extra.give
-            local z = card.ability.extra.held
-            if context.individual then---
-                if context.cardarea == G.play and context.other_card:is_suit("Diamonds") then
-                    return { asc = y, card = context.other_card}
+        calculate = function(self, card, context)
+            if context.after then
+                card.ability.immutable.d = 0
+            end
+            local x = card.ability.extra.dollars
+            local y = card.ability.extra.asc
+            if context.before then
+            for k,v in ipairs(context.full_hand) do
+                if v:is_suit("Diamonds") then
+                    card.ability.immutable.d = card.ability.immutable.d + 1
                 end
-                if context.cardarea == G.hand and context.other_card:is_suit("Diamonds") then
-                SMODS.calculate_effect({dollars = z, card = context.other_card})
-                context.other_card.ability.slib_perma_plus_asc = (context.other_card.ability.slib_perma_plus_asc or 0) + x
-                    return { message = localize('k_upgrade_ex'), colour = G.C.GOLD, card = context.other_card }
-            end----
-        end----
-    end---
+            end
+            if card.ability.immutable.d >= card.ability.immutable.d_max then
+                return { dollars = x }
+            end
+        end
+        if context.joker_main then
+            local c = false
+            for k,v in ipairs(G.hand.cards) do
+                if v:is_suit("Diamonds") then
+                    c = true
+                    break
+                end
+            end
+            if c == true then
+                return { asc = y }
+            end
+        end
+    end
 }
 
 SMODS.Joker{
@@ -393,33 +424,20 @@ SMODS.Joker{
     pos = { x = 0, y = 2 },
     config = {
         extra = {
-            perma = 0.5,
-            give = 2,
-            held = 25
+            score = 1.5,
         }
     },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "spades", "suit", "perma_bonus", "modify_card", "score", "xscore" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "spades", "suit", "xscore" },
         loc_vars = function(self, info_queue, card)
-            local x = card.ability.extra.perma
-            local y = card.ability.extra.give
-            local z = card.ability.extra.held
-                return {vars = { x, y, z }}
+            local x = card.ability.extra.score
+                return {vars = { x }}
             end,
         calculate = function(self, card, context)--
-            local x = card.ability.extra.perma
-            local y = card.ability.extra.give
-            local z = card.ability.extra.held
-            if context.individual then---
-                if context.cardarea == G.play and context.other_card:is_suit("Spades") then
-                    return { xscore = y, card = context.other_card}
+            local x = card.ability.extra.score
+            if context.individual and context.other_card:is_suit("Spades") and (context.cardarea == G.play or context.cardarea == G.hand) then
+                    return { xscore = x, card = context.other_card }
                 end
-                if context.cardarea == G.hand and context.other_card:is_suit("Spades") then
-                SMODS.calculate_effect({score = z, card = context.other_card})
-                context.other_card.ability.perma_x_score = (context.other_card.ability.perma_x_score or 0) + x
-                    return { message = localize('k_upgrade_ex'), colour = G.C.PURPLE, card = context.other_card }
-            end----
-        end----
-    end---
+            end
 }
 
 SMODS.Joker {
@@ -788,7 +806,7 @@ SMODS.Joker {
 						delay = 0.5 + math.random() * 0.4,
 						func = function()
 							attention_text({
-								text = "[ ]",
+								text = "X",
 								scale = 5,
                                 hold = 1.5,
 								colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
@@ -837,7 +855,7 @@ SMODS.Joker {
 						delay = 0.5 + math.random() * 0.4,
 						func = function()
 							attention_text({
-								text = "[ ]",
+								text = "X",
 								scale = 5,
                                 hold = 1.5,
 								colour = SMODS.Gradients["busterb_GoldenFreddyGradient"],
