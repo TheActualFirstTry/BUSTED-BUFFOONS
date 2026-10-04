@@ -364,7 +364,7 @@ demicolon_compat = true,
                 trigger = 'after',
                 delay = 0.1,
                 func = function()
-                nyan:set_edition('e_holographic',true)
+                nyan:set_edition('e_holo',true)
                 nyan:juice_up(0.3, 0.3)
                     return true
                 end

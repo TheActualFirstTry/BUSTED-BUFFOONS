@@ -1350,7 +1350,7 @@ return {
 				["text"] = {
 					"{C:attention}Sell{} this {C:attention}Joker",
 					"to {C:red}beat{} the {C:attention}Blind",
-					"{C:inactive}(Cannot {C:red}beat{} the {C:attention}Blind{C:inactive})"
+					"{C:inactive}(Cannot beat Boss Blind)"
 				},
 			},
 			["j_busterb_dandy"] = {

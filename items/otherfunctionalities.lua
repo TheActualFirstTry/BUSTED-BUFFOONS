@@ -662,6 +662,7 @@ SMODS.Joker:take_ownership('cavendish', {
 }, true)
 
 function AstroPower()
+
 end
 
 -- Convert a card or set of cards into the card(s) after it, with the order being based on the Collection.

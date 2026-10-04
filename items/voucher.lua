@@ -286,7 +286,7 @@ SMODS.Voucher {
     end,    
     calculate = function (self, card, context)
         if context.money_altered and context.amount < 0 then
-                    ease_dollars(math.abs(context.amount*d))
+                    ease_dollars(math.abs(context.amount*0.5))
                 end
             end
 }
