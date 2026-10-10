@@ -247,7 +247,7 @@ SMODS.Joker {
         extra = { vm = 1.1, triggered = false }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.vm } }
+        return { vars = { number_format(card.ability.extra.vm) } }
     end,
 
     calculate = function(self, card, context)
@@ -503,7 +503,7 @@ SMODS.Joker{
     },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
     loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.asc, card.ability.extra.powerup } }
+		return { vars = { number_format(card.ability.extra.asc), number_format(card.ability.extra.powerup) } }
 	end,
     calculate = function(self, card, context)
         if context.before and G.GAME.current_round.hands_left == 0 then
@@ -542,12 +542,12 @@ SMODS.Joker{
     },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
     loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.mult, card.ability.extra.xmult, card.ability.extra.powerup, colours = {HEX('FFB570')} } }
+		return { vars = { number_format(card.ability.extra.mult), number_format(card.ability.extra.xmult), number_format(card.ability.extra.powerup), colours = {HEX('FFB570')} } }
 	end,
     calculate = function(self, card, context)
         if (SMODS.last_hand_oneshot and context.after and context.main_eval and not context.blueprint) or context.forcetrigger then
-        SMODS.add_card{set="Infinity"}
-        SMODS.calculate_effect({message = "+1 Infinity Card", colour = HEX('FFB570')}, card)
+        local c = SMODS.add_card{set="Infinity"}
+        SMODS.calculate_effect({message = "Added!", colour = HEX('FFB570')}, c)
         end
     end
 }
@@ -569,7 +569,7 @@ SMODS.Joker{
     },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
     loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.xchips } }
+		return { vars = { number_format(card.ability.extra.xchips) } }
 	end,
     calculate = function(self, card, context)
         if context.modify_scoring_hand and not context.blueprint then
@@ -624,7 +624,7 @@ SMODS.Joker {
     config = { extra = { xmult = 1, xmult_mod = .25 }, immutable = { odds = 25 } },
     loc_vars = function(self, info_queue, card)
         local pinorare, pinoodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_pinorare')
-        return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod, pinorare, pinoodds } }
+        return { vars = { number_format(card.ability.extra.xmult), number_format(card.ability.extra.xmult_mod), number_format(pinorare), number_format(pinoodds) } }
     end,
     use = function(self, card, area, copier)
                     if SMODS.pseudorandom_probability(card, 'busterb_pinorare', 1, card.ability.immutable.odds, 'busterb_pinorare', true) then
@@ -700,7 +700,7 @@ SMODS.Joker{
     },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
     loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.mult, card.ability.extra.xmult, card.ability.extra.powerup } }
+		return { vars = { number_format(card.ability.extra.mult), number_format(card.ability.extra.xmult), number_format(card.ability.extra.powerup) } }
 	end,
     calculate = function(self, card, context)
         if context.joker_main and G.GAME.current_round.hands_left == 0 then

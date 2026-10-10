@@ -628,14 +628,7 @@ end
 function BustB.flip_joker(card)
             Spectrallib.flip_then({card}, function()
             local _, key = pseudorandom_element(SMODS.Rarities, "BustB_flip")
-            local pooop = {}
-                key = BustB.rarity_map[key] or key
-                for k,v in ipairs(G.P_CENTER_POOLS.Joker) do
-                    if v.rarity == key then
-                        pooop[#pooop+1] = v
-                    end
-                end
-                local jokerkey = pseudorandom_element(pooop, "BustB_flipjoker")
+                local jokerkey = pseudorandom_element(G.P_CENTER_POOLS.Joker, "BustB_flipjoker")
                 card:set_ability(jokerkey)
             end)
         end
@@ -705,4 +698,51 @@ function BustB.increment_index(card, pool, strict)
     end
     if i > 1 then i = 1 end
     return i
+end
+
+function get_next_rarity(c)
+    local current_rarity = c.config.center.rarity
+    local target_rarity = nil
+    if current_rarity == 1 then
+        target_rarity = 2
+    elseif current_rarity == 2 then
+        target_rarity = 3
+    elseif current_rarity == 3 then
+        target_rarity = "busterb_Dreamy"
+    elseif current_rarity == "busterb_Dreamy" or current_rarity == "cry_epic" or current_rarity == "entr_void" or current_rarity == "valk_renowned" then
+        target_rarity = 4
+    elseif current_rarity == 4 then
+        target_rarity = "busterb_Fantastic"
+    elseif current_rarity == "busterb_Fantastic" or current_rarity == "cry_exotic" or current_rarity == "entr_entropic" or current_rarity == "valk_exquisite" or current_rarity == "unik_ancient" then
+        target_rarity = "busterb_Grandiose"
+    elseif current_rarity == "busterb_Grandiose" then
+        target_rarity = "busterb_Secret"
+    else
+        target_rarity = "busterb_Secret"
+    end
+
+    local pool = {}
+    for k, v in pairs(G.P_CENTERS) do
+        if v.set == "Joker" and v.rarity == target_rarity and not v.unlocked == false then
+            table.insert(pool, k)
+        end
+    end
+
+    if #pool > 0 then
+        return pseudorandom_element(pool, pseudoseed("transcend"))
+    end
+
+    return nil
+end
+
+function BustB.upgrade_joker(card)
+    local next_key = get_next_rarity(card)
+    if next_key and G.P_CENTERS[next_key] then
+        local target_center = G.P_CENTERS[next_key]
+        
+        Spectrallib.flip_then({card}, function()
+            card:set_ability(target_center)
+--            SMODS.calculate_effect({message = localize("k_busterb_upgrade"), colour = G.C.BBBLACK, text_colour = G.C.GRANDIOSE},card)
+        end)
+    end
 end

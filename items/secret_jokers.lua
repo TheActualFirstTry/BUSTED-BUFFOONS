@@ -20,59 +20,54 @@ SMODS.Joker{
     blueprint_compat = true,
     demicolon_compat = true,
     eternal_compat = true,
-    attributes = { "eldritch", "bustj", "all_bb", "hyperchips", "scaling"},
+    attributes = { "eldritch", "bustj", "all_bb", "scaling"},
     config = {
         extra = {
-            eechips = 1,
-            eechipsincrement = 0.1,
-            eechipsincrementmultiplier = 2,
-            jokerslot = 1,
+            select = 1,
+            max_uses = 1,
+            use_gain = 1 
         },
-        immutable = {
-            slotlimit = 100
-        }
+        immutable = { use_minus = -1 }
     },
 
     loc_vars = function(self, info_queue, card)
-		return { vars = { 
-            card.ability.extra.eechips, 
-            card.ability.extra.eechipsincrement, 
-            card.ability.extra.eechipsincrementmultiplier, 
-            colours = {HEX('00FFFF'), Spectrallib.echips}} }
+		return { vars = { number_format(card.ability.extra.max_uses), number_format(card.ability.extra.use_gain), number_format(card.ability.extra.select) } }
     end,
+    
     calculate = function(self, card, context)
-            if context.card_added and context.card.config.center.key == "j_star_astro" then
-                G.jokers:change_size((-G.jokers.config.card_limit) + math.min(G.jokers.config.card_limit + card.ability.extra.jokerslot, card.ability.immutable.slotlimit))
-                end
-        if (context.joker_main or context.forcetrigger) and card.ability.extra.eechips > to_big(1) then
-            return {
-                eechips = card.ability.extra.eechips
-            }
-        end
-        if context.end_of_round and context.main_eval then
+        if (context.individual and context.cardarea == G.play and context.other_card:is_suit("Spades")) or context.forcetrigger then
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
-                ref_value = "eechips",
-                scalar_value = "eechipsincrement",
-                scaling_message = {
-                message = "^^" ..card.ability.extra.eechips.. " Chips",
-                colour = Spectrallib.echips
-            }
-            })
-            end
-        if context.ante_change then
-                        SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "eechipsincrement",
-                operation = "X",
-                scalar_value = "eechipsincrementmultiplier",
+                ref_value = "max_uses",
+                scalar_value = "use_gain",
                 scaling_message = {
                 message = "Hee hee hee!",
-                colour = HEX('00FFFF')
-            }
-            })
+                colour = G.C.BBBLACK,
+                text_colour = Spectrallib.echips,
+                sound = "busterb_vineboom"
+                }})
+            end
+    end,
+    use = function(self, card, area, copier)
+        for i, c in pairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.select)) do
+            BustB.flip_joker(c)
         end
-    end
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "max_uses",
+                scalar_value = "use_minus",
+                scalar_table = card.ability.immutable,
+                block_overrides = {
+                value = true,
+                },
+                silent = true
+            })
+    end,
+    can_use = function(self, card)
+        local cards = Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.select)
+        return (#cards > 0 and #cards <= card.ability.extra.select) and card.ability.extra.max_uses > 0
+	end,
+
 }
 local ThomasYap = {
     "I'm hiding something.",
@@ -120,9 +115,9 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = {key = "c_busterb_mugen", set = "Spectral"}
 		return { vars = { 
-            card.ability.extra.eemult,
-            card.ability.extra.eemult_gain,
-            card.ability.extra.gain_gain,
+            number_format(card.ability.extra.eemult),
+            number_format(card.ability.extra.eemult_gain),
+            number_format(card.ability.extra.gain_gain),
             colours = { SMODS.Gradients["busterb_Thomasgradient"], Spectrallib.emult }
         } }
     end,
@@ -194,7 +189,6 @@ SMODS.Joker{
         extra = {
             bonus = 2,
             bank  = 0,
-            -- jokerslot = ?  -- if you actually use this, define it here
         },
         immutable = {
             slotlimit = 100,
@@ -206,9 +200,11 @@ SMODS.Joker{
 
 
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_SEALS["Gold"]
+        info_queue[#info_queue + 1] = G.P_CENTERS.m_gold
         return {
             vars = {
-                card.ability.extra.bonus,
+                number_format(card.ability.extra.bonus),
             }
         }
     end,
@@ -288,8 +284,8 @@ SMODS.Joker{
         local cnt = count_mod()
 		return {
             vars = {
-                (((card.ability.extra.cm * cnt) + 1)),
-                card.ability.extra.cm,
+                number_format(((card.ability.extra.cm * cnt) + 1)),
+                number_format(card.ability.extra.cm),
             },
         }
     end,
@@ -496,7 +492,7 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
             local grahkonvm = (pseudorandom(pseudoseed("busterb_grahkonvm"), card.ability.immutable.vmin, card.ability.immutable.vmax) / 100)
 --        info_queue[#info_queue+1] = {key = "grahkon_list", set = "Other"}
-        return { vars = { card.ability.extra.chipmult, grahkonvm, card.ability.extra.slots } }
+        return { vars = { number_format(card.ability.extra.chipmult), grahkonvm, number_format(card.ability.extra.slots) } }
     end,
     calculate = function (self, card, context)
         if context.joker_main then
@@ -672,9 +668,9 @@ SMODS.Joker{
         card.ability.immutable.discards, 
         card.ability.immutable.discards_remaining, 
         " ", 
-        card.ability.extra.select_mod, 
-        card.ability.extra.dollars, 
-        tribvalue or 0 } }
+        number_format(card.ability.extra.select_mod), 
+        number_format(card.ability.extra.dollars), 
+        number_format(tribvalue or 0) } }
     end,
     calculate = function (self, card, context)
         -- Perkeo's Spirit
@@ -747,7 +743,7 @@ SMODS.Joker{
     attributes = { "eldritch", "bustj", "all_bb", "mod_chance", "emult", "scaling", "passive"},
     config = { extra = { emult = 1, vmod = 1 }, immutable = { vmod = 1 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.vmod, colours = { HEX("BC1006") }  } }
+        return { vars = { number_format(card.ability.extra.vmod), colours = { HEX("BC1006") }  } }
     end,
     calculate = function (self, card, context)
         if context.scaling_card and context.scalar > 0 then
@@ -834,7 +830,7 @@ SMODS.Joker{
     attributes = { "eldritch", "bustj", "all_bb", "emult", "modify_card", "discard"},
     config = { extra = { emult = 1 }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.emult } }
+        return { vars = { number_format(card.ability.extra.emult) } }
     end,
     calculate = function (self, card, context)
       if context.pre_discard then
@@ -958,7 +954,7 @@ SMODS.Joker{
     attributes = { "eldritch", "bustj", "all_bb", "emult", "generation"},
     config = { extra = { emult = 2 }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.emult } }
+        return { vars = { number_format(card.ability.extra.emult) } }
     end,
     calculate = function (self, card, context)
         if context.setting_blind or context.forcetrigger then
@@ -1050,7 +1046,7 @@ SMODS.Joker{
     attributes = { "eldritch", "bustj", "all_bb", "passive", "asc", "xasc", "scaling"},
     config = { extra = { asc = 1, x_asc = 1, stack = 2, stack_mod = 1, stack_re = 1 }, immutable = { final_stack = 1 } },
   loc_vars = function(self, info_queue, card)
-    return {vars = {card.ability.extra.asc, card.ability.extra.x_asc, card.ability.extra.stack, card.ability.extra.stack_mod, G.play and #G.play.cards or 0, " "}}
+    return {vars = {number_format(card.ability.extra.asc), number_format(card.ability.extra.x_asc), number_format(card.ability.extra.stack), number_format(card.ability.extra.stack_mod), G.play and #G.play.cards or 0, " "}}
   end,
         add_to_deck = function(self, card, from_debuff)
         SMODS.change_play_limit(1e100)

@@ -30,11 +30,12 @@ SMODS.Joker {
     },
     loc_vars = function(self, info_queue, card)
         return { 
-            vars = { card.ability.extra.xmult, 
-            card.ability.extra.xmult_mod, 
-            card.ability.extra.stack, 
-            card.ability.extra.stack_return, 
-            card.ability.extra.stack_add },
+            vars = { 
+            number_format(card.ability.extra.xmult), 
+            number_format(card.ability.extra.xmult_mod), 
+            number_format(card.ability.extra.stack), 
+            number_format(card.ability.extra.stack_return), 
+            number_format(card.ability.extra.stack_add) },
         }
     end,
     calculate = function(self, card, context)
@@ -58,7 +59,7 @@ SMODS.Joker {
                 }
             end
             return {
-                message = "Accumulating X" .. total_xmult .. " Mult",
+                message = "X" .. number_format(total_xmult) .. " Mult",
                 colour = G.C.RED,
                 card = card
             }
@@ -155,9 +156,9 @@ SMODS.Joker {
         else spec = 1 end
         return {
             vars = { 
-            to_big(card.ability.extra.xchips),
-            card.ability.extra.cards_per_discard,
-            card.ability.extra.xchips*(spec or 1),
+            number_format(card.ability.extra.xchips),
+            number_format(card.ability.extra.cards_per_discard),
+            number_format(card.ability.extra.xchips*(spec or 1)),
          }
         }
     end,
@@ -222,7 +223,7 @@ SMODS.Joker {
     immutable = { multiplier = 2 }
   },
   loc_vars = function(self, info_queue, card)
-    return { vars = { card.ability.extra.xmult, card.ability.extra.multiplier} }
+    return { vars = { number_format(card.ability.extra.xmult), number_format(card.ability.extra.multiplier)} }
   end,
   calculate = function(self, card, context)
     if context.starting_shop and not card.ability.extra.triggered then
@@ -537,7 +538,7 @@ SMODS.Joker {
         },
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { (math.abs(G.GAME.dollars)/2), card.ability.extra.money } }
+        return { vars = { number_format(math.abs(G.GAME.dollars)/2), number_format(card.ability.extra.money) } }
     end,
 
     calculate = function(self, card, context)
@@ -605,7 +606,7 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.c_black_hole
         return {
-            vars = { to_big(card.ability.extra.multiplier), to_big(card.ability.extra.add) }
+            vars = { number_format(card.ability.extra.multiplier), number_format(card.ability.extra.add) }
         }
     end,
 	 add_to_deck = function(self, card, from_debuff)
@@ -757,7 +758,7 @@ SMODS.Joker {
     discovered = true,
 
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.Sapphire, card.ability.extra.Ruby, card.ability.extra.Garnet, card.ability.extra.BaseSapphire, card.ability.extra.BaseRuby } }
+        return { vars = { number_format(card.ability.extra.emc) } }
     end,
 
 
@@ -875,10 +876,10 @@ SMODS.Joker {
         local polychance, polyodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_peacock_polychrome')
         return {
             vars = {
-                card.ability.extra.SA2Asc,
-                card.ability.extra.SA2Mod,
-                polychance,
-                polyodds
+                number_format(card.ability.extra.SA2Asc),
+                number_format(card.ability.extra.SA2Mod),
+                number_format(polychance),
+                number_format(polyodds)
             }
         }
     end,
@@ -948,40 +949,38 @@ SMODS.Joker {
     },
     attributes = { "bustb_d", "all_bb", "bustj", "emult", "scaling" },
     config = {
-        extra = {
-            xmult = 1,
-            xmult_add = 1,
+        immutable = {
+            scale = 3
         }
     },
     
     loc_vars = function(self, info_queue, card)
         return {
             vars = { 
-                card.ability.extra.xmult, 
-                card.ability.extra.xmult_add, 
+                number_format(card.ability.immutable.scale),
+                number_format(card.ability.immutable.scale*1),
+                number_format(card.ability.immutable.scale*2),
+                number_format(card.ability.immutable.scale*3),
+                number_format(card.ability.immutable.scale*4),
             }
         }
     end,
     
-    -- Check for discards, played cards, scored cards, held cards, used discards, and played hands to add to hypermult
     calculate = function(self, card, context)
-        if context.joker_main or context.forcetrigger then
-            return {
-                emult = card.ability.extra.xmult,
-                card = card
+    if context.scaling_card and context.scalar > 0 then
+            context.scalar_table[context.scalar_value] = context.scalar * card.ability.immutable.scale
+            local new_scalar = context.scalar_table[context.scalar_value]
+				return {
+            override_scalar = new_scalar,
+            override_message = {
+            message = localize("k_busterb_upgrade"),
+            text_colour = G.C.GRANDIOSE,
+            colour = G.C.BBBLACK,
+            sound = "slib_forcetrigger"
             }
-        end
-        if (context.setting_blind and not context.blueprint) or context.forcetrigger then
-            SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "xmult",
-                scalar_value = "xmult_add",
-                scaling_message = {
-                message = "^" .. (card.ability.extra.xmult * card.ability.extra.xmult_add) .. " Mult",
-                colour = SMODS.Gradients["busterb_eemultgradient"]
-            }})
-        end
+		}
     end
+end
 }
 
 -- The Unholy Joker that is Sisyphus Prime v2, it's not finished yet, and i don't plan to finish it anytime soon, so i will leave it here to rot as if it was a dead god.
@@ -1165,9 +1164,9 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.money_multiplier,
+                number_format(card.ability.extra.money_multiplier),
                 math.min(100, card.ability.extra.joker_slots),
-				card.ability.extra.dollars
+				number_format(card.ability.extra.dollars)
             }
         }
     end,

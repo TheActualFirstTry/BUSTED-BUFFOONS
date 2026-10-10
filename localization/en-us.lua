@@ -62,6 +62,9 @@ return {
 			["k_busterb_event_horizon"] = "Heaven Pierce Her - Event Horizon (Eldritch Joker Theme)",
 			["k_busterb_impasta"] = "Mr. Sauceman - Impasta Syndrome (Mythical Blind Theme)",
 			["k_busterb_march"] = "Mr. Sauceman - Thousand March (Her Theme)",
+			["k_busterb_upgrade"] = "UPGRADED!",
+			["k_busterb_active"] = "Active!",
+			["k_busterb_inactive"] = "Inactive!",
 		},
 		["labels"] = {
 			["k_busterb_secret"] = "Eldritch",
@@ -874,13 +877,13 @@ return {
 			["j_busterb_upgrade"] = {
 				["name"] = "{C:busterb_technopotentgradient}UPGRADE",
 				["text"] = {
-            		"On {C:attention}Blind Select{}, temporarily",
-					"multiply {C:attention}All Jokers' Values",
-					"by {X:busterb_technopotentgradient,C:white}X#1#{} each round",
-					"Add the {C:dark_edition}scale value{} of any",
-					"active {C:attention}scaling Jokers{} to this",
-					"Joker's {C:busterb_technopotentgradient}multiplier",
-					"whenever scaling occurs"
+					{"Use this Joker to {C:busterb_technopotentgradient,X:busterb_bbblack}Upgrade{}",
+					"the {C:attention}leftmost{} Joker into another",
+					"Joker of a {C:busterb_grand}higher rarity",
+					"{C:inactive}({C:busterb_technopotentgradient}Upgrade {C:inactive}excluded)"},
+					{"Gains {C:attention}+#2#{} Use after",
+					"{C:attention}#4#{C:inactive}[#3#]{} rounds"},
+					{"{C:inactive}(Currently: {C:attention}#1#{C:inactive})"}
 		        },
 			},
 			["j_busterb_pizzaface"] = {
@@ -975,7 +978,7 @@ return {
 				["text"] = {
 					"All Jokers from",
 					"{C:attention}Steven Universe",
-					"Give {C:white,X:dark_edition}^#1#{} Chips and Mult",
+					"Give {C:white,B:busterb_secrets}^#1#{} Chips and Mult",
 					"{C:inactive}(Garnet Included)"
 --[[
 					"{X:chips,C:white}X#4#{} Chips and {X:mult,C:white}X#5#{} Mult",
@@ -1218,9 +1221,10 @@ return {
 			["j_busterb_true_hyper_sonic"] = {
 				["name"] = "{C:enhanced}TRUE HYPER SONIC{}",
 				["text"] = {
-					"Increases {C:white,X:slib_emult}^Mult{}",
-					"by {C:white,X:slib_emult}+#2#{} on {C:attention}Blind Select",
-					"{C:inactive}(Currently {}{X:slib_emult,C:white}^#1#{}{C:inactive} Mult){}",
+					"All Scaling Cards",
+					"scale by {C:busterb_grand,B:busterb_bbblack}X#1#{}",
+					"their {C:attention}usual rate",
+					"{s:0.75,C:inactive}(ex. +#2#, +#3#, +#4#, +#5#){}"
 				},
 			},
 			["j_busterb_minosprime"] = {
@@ -1264,15 +1268,15 @@ return {
 			},
 			["j_busterb_astro"] = {
 				["name"] = {
-					"{V:1,s:2}Astro{}",
+					"{C:busterb_eechips,s:2}Astro{}",
 					"The Star of Everything in Space",
 				},
 				["text"] = {
-					{"Gains {B:busterb_bbblack,C:slib_echips}^^#2#{} Chips",
-					"at the end of the round",
-					"Multiply gained {B:busterb_bbblack,C:slib_echips}^^Chips{}",
-					"by {B:busterb_bbblack,C:slib_echips}X#3#{} when ante changes",
-					"{C:inactive}(Currently {B:busterb_bbblack,C:slib_echips}^^#1#{C:inactive} Chips){}",},
+					{"Gain {C:attention}+#2#{} use when",
+					"{C:spades}Spade{} cards are scored"},
+					{"Use this Joker to {C:attention}randomize",
+					"{C:attention}#3#{} selected Joker"},
+					{"{C:inactive}(Currently: {C:attention}#1#{C:inactive})"}
 				},
 			},
 			["j_busterb_doise"] = {
@@ -1291,7 +1295,7 @@ return {
 				["text"] = {
 					"Free {C:spectral}Mega Spectral Pack{}",
 					"in the shop",
-					"Gain {B:slib_emult,C:white}^#3#{} Mult when",
+					"Gain {B:slib_emult,C:white}^#2#{} Mult when",
 					"{C:spectral}Dream{} or {C:spectral}Soul{} is used",
 					"When skipping a",
 					"{C:attention}Booster Pack{} spawn a",
@@ -1591,8 +1595,8 @@ return {
 			["j_busterb_uknux"] = {
 				["name"] = "Ugandan Knuckles",
 				["text"] = {
-					"Gain {C:chips}+#2#{} Chips",
-					"each time {C:tarot}The Devil{} is {C:attention}used",
+					"Gain {C:chips}+#2#{} Chips each time",
+					"{C:tarot}The Devil{} is {C:attention}used",
 					"{C:inactive}(Currently: {C:chips}+#1#{C:inactive})"
 				},
 			},			
@@ -1731,9 +1735,9 @@ return {
 			["j_busterb_eggman"] = {
 				["name"] = "Dr. Robotnik",
 				["text"] = {
-					"Gains {X:slib_emult,C:white}^#2#{} Mult",
-					"whenever a {C:green}Bootleg Card{} is used",
-					"{C:inactive}(Currently: {C:white,X:slib_emult}^#1#{C:inactive})"
+					"Creates a {C:attention}Booster{} in your",
+					"Consumable tray after {C:attention}#2#{C:inactive}[#1#]",
+					"{C:busterb_technopotentgradient}Bootleg cards{} are used"
 				},
 			},
 			["j_busterb_bill"] = {

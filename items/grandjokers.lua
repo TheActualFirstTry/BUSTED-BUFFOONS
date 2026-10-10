@@ -39,7 +39,7 @@ SMODS.Joker {
     },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_crystallized
-        return { vars = { card.ability.extra.em, card.ability.extra.emtotal, colours = {HEX('f7b4c6'), SMODS.Gradients["busterb_eemultgradient"]}} }
+        return { vars = { number_format(card.ability.extra.em), number_format(card.ability.extra.emtotal), colours = {HEX('f7b4c6'), SMODS.Gradients["busterb_eemultgradient"]}} }
     end,
     calculate = function(self, card, context)
         if context.before then
@@ -113,10 +113,8 @@ SMODS.Joker{
         info_queue[#info_queue + 1] = G.P_CENTERS.c_busterb_dream
         info_queue[#info_queue + 1] = G.P_CENTERS.c_soul
         return { vars = {
-            card.ability.extra.emult,
-            card.ability.extra.echips,
-            card.ability.extra.emult_gain,
-            card.ability.extra.echips_gain,
+            number_format(card.ability.extra.emult),
+            number_format(card.ability.extra.emult_gain),
             colours = {HEX('DBD8FF'),SMODS.Gradients["busterb_eechipsgradient"],SMODS.Gradients["busterb_eemultgradient"]}
         } }
     end,
@@ -172,7 +170,7 @@ SMODS.Joker{
         immutable = { valuemodification = 4, valuecap = 1e100 }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.immutable.valuemodification, " ", colours = {SMODS.Gradients["busterb_balatro"], SMODS.Gradients["busterb_epileptic"]}} }
+        return { vars = { number_format(card.ability.immutable.valuemodification), " ", colours = {SMODS.Gradients["busterb_balatro"], SMODS.Gradients["busterb_epileptic"]}} }
     end,
 calculate = function(self, card, context)
   if context.ante_change or context.forcetrigger then
@@ -317,12 +315,12 @@ SMODS.Joker{
     immutable = { gain = .5, dp = 1, tallyup = 1, tally = 0, deduction = 1}},
     loc_vars = function(self, info_queue, card)
         return { vars = {
-             card.ability.immutable.dp,
-             card.ability.immutable.gain,
-             card.ability.extra.emult,
-             card.ability.immutable.tally,
-             card.ability.immutable.deduction,
-             card.ability.immutable.tallyup,
+             number_format(card.ability.immutable.dp),
+             number_format(card.ability.immutable.gain),
+             number_format(card.ability.extra.emult),
+             number_format(card.ability.immutable.tally),
+             number_format(card.ability.immutable.deduction),
+             number_format(card.ability.immutable.tallyup),
              " ",
              colours = {HEX('d868a0'),SMODS.Gradients["busterb_eemultgradient"]}
             } }
@@ -420,10 +418,10 @@ SMODS.Joker{
             background_colour = G.C.BLACK,
             text_colour = G.C.WHITE,
             vars = { 
-            card.ability.extra.xmult,
-            card.ability.extra.emult,
-            card.ability.extra.xmultmod,
-            card.ability.extra.emultmod
+            number_format(card.ability.extra.xmult),
+            number_format(card.ability.extra.emult),
+            number_format(card.ability.extra.xmultmod),
+            number_format(card.ability.extra.emultmod)
         } }
     end,
     calculate = function(self, card, context)
@@ -499,10 +497,10 @@ key = "doise",
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
         return { vars = {
-            card.ability.extra.echips,
-            card.ability.extra.max_uses,
-            card.ability.extra.echips_mod,
-            card.ability.extra.use_gain,
+            number_format(card.ability.extra.echips),
+            number_format(card.ability.extra.max_uses),
+            number_format(card.ability.extra.echips_mod),
+            number_format(card.ability.extra.use_gain),
              colours = {HEX('48A0F8'),SMODS.Gradients["busterb_eechipsgradient"]}
             } }
     end,
@@ -548,11 +546,15 @@ end,
         end,
         use = function(self, card, area, copier)
             SMODS.add_card{set = "Playing Card", enhancement = "m_stone"}
-                            SMODS.scale_card(card, {
+                SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "max_uses",
                 scalar_value = "use_minus",
                 scalar_table = card.ability.immutable,
+                block_overrides = {
+                value = true,
+                scalar = true,
+                },
                 silent = true
             })
     end,
@@ -583,8 +585,8 @@ SMODS.Joker{
     },
     loc_vars = function(self, info_queue, card)
 		return { vars = { 
-            card.ability.extra.vmod, 
-            card.ability.extra.vmod_mod, 
+            number_format(card.ability.extra.vmod), 
+            number_format(card.ability.extra.vmod_mod), 
             " "} }
     end,
     calculate = function(self, card, context)
@@ -634,8 +636,8 @@ SMODS.Joker{
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_bloodmarked
         return {
             vars = {
-                card.ability.extra.eemult,
-                card.ability.extra.eemult_gain,
+                number_format(card.ability.extra.eemult),
+                number_format(card.ability.extra.eemult_gain),
                 colours = { HEX("BC1006") }
             },
         }
@@ -701,9 +703,9 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.eemult,
-                card.ability.extra.gauge,
-                card.ability.extra.gauge_gain,
+                number_format(card.ability.extra.eemult),
+                number_format(card.ability.extra.gauge),
+                number_format(card.ability.extra.gauge_gain),
                  " ",
                 colours = { HEX("BC1006") }
             },
@@ -776,7 +778,7 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.immutable.choice
+                number_format(card.ability.immutable.choice)
             },
         }
     end,
@@ -826,8 +828,8 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.pokerhand,
-                card.ability.extra.asc,
+                number_format(card.ability.extra.pokerhand),
+                number_format(card.ability.extra.asc),
                  " ",
             },
         }
@@ -931,14 +933,14 @@ SMODS.Joker{
     cost = 500,
     attributes = { "all_bb", "bustj","hands", "asc_power", "hand_type"},
     config = {
-        extra = {
+        immutable = {
             super = 5
         },
     },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                 " ", card.ability.extra.super, colours = { HEX('237efc') }
+                 " ", number_format(card.ability.immutable.super), colours = { HEX('237efc') }
             },
         }
     end,
@@ -953,7 +955,7 @@ SMODS.Joker{
         )
                     SMODS.upgrade_poker_hands{
                         from = card,
-                        ascension_power = card.ability.extra.super,
+                        ascension_power = card.ability.immutable.super,
                         instant = true,
                     }
         delay(1.0)
@@ -962,8 +964,8 @@ SMODS.Joker{
           delay = 0.2,
           func = function()
             play_sound("tarot1")
-            ease_colour(G.C.UI_CHIPS, copy_table(Spectrallib.get_asc_colour(1 * amt + card.ability.extra.super)), 0.1)
-            ease_colour(G.C.UI_MULT, copy_table(Spectrallib.get_asc_colour(1 * amt + card.ability.extra.super)), 0.1)
+            ease_colour(G.C.UI_CHIPS, copy_table(Spectrallib.get_asc_colour(1 * amt + card.ability.immutable.super)), 0.1)
+            ease_colour(G.C.UI_MULT, copy_table(Spectrallib.get_asc_colour(1 * amt + card.ability.immutable.super)), 0.1)
             Spectrallib.pulse_flame(0.01, sunlevel)
             me:juice_up(0.8, 0.5)
             G.E_MANAGER:add_event(Event({
@@ -1028,46 +1030,69 @@ SMODS.Joker{
     discovered = true,
     attributes = { "all_bb", "bustj","value_manip", "scaling"},
     config = {
-        extra = { valuemodification = 4
+        extra = { max_uses = 1, use_gain = 1,
         },
-        immutable = { valuemodification = 4, valuecap = 1e100 }
+        immutable = { use_minus = -1, rounds = 0, roundup = 1, goal = 10 }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.immutable.valuemodification, " ", colours = {SMODS.Gradients["busterb_balatro"], SMODS.Gradients["busterb_epileptic"]}} }
+                return { vars = {
+            number_format(card.ability.extra.max_uses),
+            number_format(card.ability.extra.use_gain),
+            number_format(card.ability.immutable.rounds),
+            number_format(card.ability.immutable.goal),
+            } }
     end,
     
 calculate = function(self, card, context)
-if not context.repetition or not context.blueprint then
-    if context.scaling_card and context.scalar > 0 then
-        local new_scale = context.scalar
-        card.ability.immutable.valuemodification = card.ability.immutable.valuemodification + new_scale
-        return{ message = "+ ".. card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = card }
-    end
-    if context.setting_blind or context.forcetrigger then
-    for i, joker in ipairs(G.jokers.cards) do
-        if joker and not joker.config.upgrade_multiply then
-			joker.config.upgrade_multiply = 1
-		end
-		joker.config.upgrade_multiply = joker.config.upgrade_multiply * 2
-        if joker.config.center.key ~= "j_busterb_upgrade" then
-        Spectrallib.manipulate(joker, { value = card.ability.immutable.valuemodification })
-        SMODS.calculate_effect({message = "X" ..card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = joker})
-      end
-    end
-  end
-  if context.end_of_round and context.main_eval then
-    for i, joker in ipairs(G.jokers.cards) do
-        if joker.config.center.key ~= "j_busterb_upgrade" then
-            if joker.config.upgrade_multiply then
-                Spectrallib.manipulate(joker, { value = 1/card.ability.immutable.valuemodification })
-                        SMODS.calculate_effect({message = "/" ..card.ability.immutable.valuemodification, colour = SMODS.Gradients["busterb_technopotentgradient"], card = joker})
-                    joker.config.upgrade_multiply = nil
-    	        end
+if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+            if card.ability.immutable.rounds < card.ability.immutable.goal then
+                card.ability.immutable.rounds = card.ability.immutable.rounds + card.ability.immutable.roundup
+                if card.ability.immutable.rounds >= card.ability.immutable.goal then
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "max_uses",
+                scalar_value = "use_gain",
+                scaling_message = {
+                        message = "+"..card.ability.extra.use_gain,
+                        colour = G.C.BBBLACK,
+                        text_colour = G.C.GREEN
+                }})
+                card.ability.immutable.rounds = 0
+                    return {
+                    	message = localize("k_reset"),
+                    	colour = G.C.BBBLACK,
+                        text_colour = G.C.GREEN
+                }
+                else
+                return {
+                        message = (card.ability.immutable.rounds+card.ability.immutable.roundup).."/"..card.ability.immutable.goal,
+                        colour = G.C.BBBLACK,
+                        text_colour = G.C.GREEN
+                }
+                end
             end
         end
-    end
-end
-end,
+    end,
+        can_use = function(self, card)
+        return (G.jokers and G.jokers.cards and G.jokers.cards[1] and (G.jokers.cards[1] ~= self and G.jokers.cards[1] ~= card and G.jokers.cards[1] ~= "j_busterb_upgrade")) and card.ability.extra.max_uses > 0
+        end,
+        use = function(self, card, area, copier)
+            if G.jokers and G.jokers.cards and G.jokers.cards[1] and (G.jokers.cards[1] ~= self and G.jokers.cards[1] ~= card and G.jokers.cards[1] ~= "j_busterb_upgrade") then
+            BustB.upgrade_joker(G.jokers.cards[1])
+            end
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "max_uses",
+                scalar_value = "use_minus",
+                scalar_table = card.ability.immutable,
+                block_overrides = {
+                value = true,
+                scalar = true,
+                },
+                silent = true
+            })
+    end,
+
 
 --[[
 calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
@@ -1117,8 +1142,8 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_electric
         return { vars = {
-             card.ability.extra.asc,
-             card.ability.extra.asc_mod,
+             number_format(card.ability.extra.asc),
+             number_format(card.ability.extra.asc_mod),
              colours = {HEX('48A0F8'),SMODS.Gradients["busterb_eechipsgradient"]}
             } }
     end,

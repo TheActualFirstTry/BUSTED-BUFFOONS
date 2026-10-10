@@ -31,7 +31,7 @@ SMODS.Joker {
         info_queue[#info_queue + 1] = G.P_SEALS[card.ability.extra.seal]
         info_queue[#info_queue + 1] = G.P_CENTERS.e_polychrome
         local acechance, aceodds = SMODS.get_probability_vars(card, 1, card.ability.extra.aceodds, 'busterb_susies_idea') -- it is suggested to use an identifier so that effects that modify probabilities can target specific values
-    return {vars = {acechance, aceodds, card.ability.extra.acemult}}
+    return {vars = {number_format(acechance), number_format(aceodds), number_format(card.ability.extra.acemult)}}
     end,
     calculate = function(self, card, context)
     if context.before or context.forcetrigger then
@@ -71,7 +71,7 @@ SMODS.Joker{
         info_queue[#info_queue + 1] = G.P_CENTERS.m_lucky
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_bloodmarked
         local vigichance, vigiodds = SMODS.get_probability_vars(card, 1, card.ability.extra.luckychance, 'busterb_lucky_vigi')
-    return {vars = { vigichance, vigiodds }}
+    return {vars = { number_format(vigichance), number_format(vigiodds) }}
     end,
     	 add_to_deck = function(self, card, from_debuff)
         play_sound("busterb_locknload")
@@ -151,7 +151,7 @@ SMODS.Joker {
     },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "hearts", "spades", "suit", "scaling", "xmult" },
     loc_vars = function(self, info_queue, card)
-    return {vars = {card.ability.extra.xmultmod, card.ability.extra.xmult}}
+    return {vars = {number_format(card.ability.extra.xmultmod), number_format(card.ability.extra.xmult)}}
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
@@ -191,7 +191,7 @@ SMODS.Joker{
     },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "scaling", "king", "face" , "rank", "chance", "retrigger", "xmult" },
     loc_vars = function(self, info_queue, card)
-            return { key = (card.edition and card.edition.negative) and "j_busterb_roffle_heavy" or nil , vars = {card.ability.extra.xmultmod}}
+            return { key = (card.edition and card.edition.negative) and "j_busterb_roffle_heavy" or nil , vars = {number_format(card.ability.extra.xmultmod)}}
     end,
     calculate = function(self, card, context)
     if context.cardarea == G.play then
@@ -267,7 +267,7 @@ SMODS.Joker{
             local x = card.ability.extra.perma
             local y = card.ability.extra.give
             local z = card.ability.extra.held
-                return {vars = { x, y, z }}
+                return {vars = { number_format(x), number_format(y), number_format(z) }}
             end,
         calculate = function(self, card, context)--
             local x = card.ability.extra.perma
@@ -313,9 +313,9 @@ SMODS.Joker{
                     end
                 else c = 0
             end
-                return {vars = { card.ability.extra.chips, card.ability.extra.chips_mod, c }}
+                return {vars = { number_format(card.ability.extra.chips), number_format(card.ability.extra.chips_mod), number_format(c) }}
             end,
-        calculate = function(self, card, context)--
+        calculate = function(self, card, context)
         if context.before then
             local c = card.ability.extra.chips_mod
             for k,v in ipairs(G.hand.cards) do
@@ -378,7 +378,7 @@ SMODS.Joker{
         loc_vars = function(self, info_queue, card)
             local x = card.ability.extra.dollars
             local y = card.ability.extra.asc
-                return {vars = { x, y }}
+                return {vars = { number_format(x), number_format(y) }}
             end,
         calculate = function(self, card, context)
             if context.after then
@@ -430,7 +430,7 @@ SMODS.Joker{
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "spades", "suit", "xscore" },
         loc_vars = function(self, info_queue, card)
             local x = card.ability.extra.score
-                return {vars = { x }}
+                return {vars = { number_format(x) }}
             end,
         calculate = function(self, card, context)--
             local x = card.ability.extra.score
@@ -454,7 +454,7 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.sell_value,
+                number_format(card.ability.extra.sell_value),
             }
         }
     end,
@@ -549,7 +549,6 @@ SMODS.Joker {
         info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
         return {
             vars = {
-                card.ability.extra.vmod,
             }
         }
     end,
@@ -581,7 +580,6 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.vmod,
             }
         }
     end,
@@ -620,7 +618,7 @@ SMODS.Joker {
 
         return {
             vars = {
-                x, face
+                number_format(x), number_format(face)
             }
         }
     end,
@@ -692,8 +690,8 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.ga,
-                card.ability.extra.rn
+                number_format(card.ability.extra.ga),
+                number_format(card.ability.extra.rn)
             }
         }
     end,
@@ -731,8 +729,8 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.immutable.garn,
-                card.ability.immutable.garn_47
+                number_format(card.ability.immutable.garn),
+                number_format(card.ability.immutable.garn_47)
             }
         }
     end,
@@ -910,10 +908,10 @@ SMODS.Joker {
         info_queue[#info_queue + 1] = G.P_CENTERS.m_wild        
         return {
             vars = {
-                card.ability.extra.mult,
-                card.ability.extra.chips,
-                card.ability.extra.asc,
-                card.ability.extra.score
+                number_format(card.ability.extra.mult),
+                number_format(card.ability.extra.chips),
+                number_format(card.ability.extra.asc),
+                number_format(card.ability.extra.score)
             }
         }
     end,
@@ -959,8 +957,8 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.asc,
-                card.ability.extra.gain,            }
+                number_format(card.ability.extra.asc),
+                number_format(card.ability.extra.gain),            }
         }
     end,
     calculate = function(self, card, context)
@@ -1056,8 +1054,8 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.mult,
-                card.ability.extra.mult_mod,                
+                number_format(card.ability.extra.mult),
+                number_format(card.ability.extra.mult_mod),
             }
         }
     end,

@@ -20,7 +20,7 @@ SMODS.Joker {
     attributes = { "bustj", "bustb_d", "xchips" },
     loc_vars = function(self, info_queue, card)
         local speedvalue = G.SETTINGS.GAMESPEED * card.ability.extra.speed_mult
-        return { vars = { speedvalue, " " } }
+        return { vars = { number_format(speedvalue), " ", number_format(card.ability.extra.speed_mult) } }
     end,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
@@ -45,7 +45,7 @@ SMODS.Joker {
     attributes = { "bustj", "bustb_d", "multiuse", "bootleg", "generation" },
     config = { extra = { multiuse = 2 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.multiuse } }
+        return { vars = { number_format(card.ability.extra.multiuse) } }
     end,
     calculate = function(self, card, context)
         if (context.setting_blind and context.main_eval and (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit)) or context.forcetrigger then
@@ -75,7 +75,7 @@ SMODS.Joker {
     config = { extra = { e_mult = 1.25 }, extra_slots_used = -1 },
     attributes = { "emult" },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.e_mult ,colours = {SMODS.Gradients["busterb_eemultgradient"]} } }
+        return { vars = { number_format(card.ability.extra.e_mult) ,colours = {SMODS.Gradients["busterb_eemultgradient"]} } }
     end,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
@@ -255,7 +255,7 @@ SMODS.Joker {
     config = { extra = { xmult = 1, xmult_mod = 1 } },
     attributes = { "bustj", "bustb_d", "food", "scaling", "xmult" },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod } }
+        return { vars = { number_format(card.ability.extra.xmult), number_format(card.ability.extra.xmult_mod) } }
     end,
     calculate = function(self, card, context)
         if context.selling_card and context.card:is_food() then
@@ -289,7 +289,7 @@ SMODS.Joker {
     attributes = { "bustj", "bustb_d", "echips", "emult", "suit", "clubs", "hearts" },
     config = { extra = { emult = 1.5, echips = 1.5 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.echips, card.ability.extra.emult } }
+        return { vars = { number_format(card.ability.extra.echips), number_format(card.ability.extra.emult) } }
     end,
     calculate = function(self, card, context)
         if context.forcetrigger then
@@ -367,7 +367,7 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_electric
         info_queue[#info_queue + 1] = G.P_CENTERS.c_busterb_conductor
-        return { vars = { card.ability.extra.perma_x_mult } }
+        return { vars = { number_format(card.ability.extra.perma_x_mult) } }
     end,
     calculate = function(self, card, context)
     if (context.setting_blind and not context.blueprint) or context.forcetrigger then
@@ -507,19 +507,24 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 0, y = 4 },
     soul_pos = { x = 0, y = 5 },
-    config = { extra = { x = 1, gain = 0.1 } },
+    config = { extra = { x = 1, gain = 0.1 }, immutable = { rolls = 0, roll_max = 3 } },
     attributes = { "bustj", "bustb_d", "bootleg", "emult", "scaling" },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x, card.ability.extra.gain } }
+        return { vars = { number_format(card.ability.immutable.rolls), number_format(card.ability.immutable.roll_max) } }
     end,
     add_to_deck = function(self, card, from_debuff)
 end,
     calculate = function(self, card, context)
         if context.using_consumeable and context.consumeable.ability.set == 'Bootleg' then
-        local copy = moony_planet(context.consumeable,nil,G.conusmeables)
-        if Incantation and context.consumeable.bulkuse then
-        copy:setQty(context.consumeable:getQty())
-        end
+            if card.ability.immutable.rolls == card.ability.immutable.roll_max then
+                local c = SMODS.add_card({set = "Booster", area = G.consumeables})
+                SMODS.calculate_effect({message = "Added"}, c)
+                card.ability.immutable.rolls = 0
+                return { message = localize("k_reset"), colour = G.C.RED }
+            else
+            card.ability.immutable.rolls = card.ability.immutable.rolls + 1
+            return { message = card.ability.immutable.rolls.."/"..card.ability.immutable.roll_max, colour = G.C.RED }
+            end
     end
 end
 }
@@ -541,7 +546,7 @@ SMODS.Joker {
     config = { extra = { level = 0 } },
     attributes = { "bustj", "bustb_d", "asc_power", "ace", "diamonds", "suit", "rank" },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.level+1 } }
+        return { vars = { number_format(card.ability.extra.level+1) } }
     end,
     calculate = function(self, card, context)
         if (context.individual and
@@ -653,7 +658,7 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
     local oddwin, oddnope = SMODS.get_probability_vars(card, 1, card.ability.extra.moonyodds, self.key)
     info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
-    return {vars = {oddwin, oddnope}}
+    return {vars = {number_format(oddwin), number_format(oddnope)}}
     end,
     calculate = function(self, card, context)
     if context.using_consumeable and not (context.consumeable.edition or {}).negative then
@@ -683,7 +688,7 @@ SMODS.Joker {
     attributes = { "bustj", "bustb_d", "xmult", "scaling", "economy" },
     config = { extra = { xmult = 1, xmult_mod = 1.5 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod } }
+        return { vars = { number_format(card.ability.extra.xmult), number_format(card.ability.extra.xmult_mod) } }
     end,
         use = function(self, card, area, copier)
             ease_dollars(-10)
@@ -721,7 +726,7 @@ SMODS.Joker {
     config = { extra = { emult = 10, suit = 'Diamonds', destroyodds = 4 } },
     loc_vars = function(self, info_queue, card)
     local oddwin, oddnope = SMODS.get_probability_vars(card, 1, card.ability.extra.destroyodds, self.key)
-    return {vars = {card.ability.extra.emult, card.ability.extra.suit, oddwin, oddnope}}
+    return {vars = {number_format(card.ability.extra.emult), card.ability.extra.suit, oddwin, oddnope}}
     end,
     calculate = function(self, card, context)
         if context.forcetrigger then

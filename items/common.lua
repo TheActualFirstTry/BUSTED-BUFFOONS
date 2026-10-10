@@ -17,7 +17,7 @@ demicolon_compat = true,
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "chips", "two", "four", "six", "eight", "rank" },
     config = { extra = { chips2 = 10, chips4 = 20, chips6 = 30, chips8 = 40  }, },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.chips2, card.ability.extra.chips4, card.ability.extra.chips6, card.ability.extra.chips8 } }
+        return { vars = { number_format(card.ability.extra.chips2), number_format(card.ability.extra.chips4), number_format(card.ability.extra.chips6), number_format(card.ability.extra.chips8) } }
     end,
     calculate = function(self, card, context)
         if context.forcetrigger then
@@ -49,7 +49,7 @@ demicolon_compat = true,
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "mult", "two", "four", "six", "eight", "rank" },
     config = { extra = { mult2 = 2, mult4 = 4, mult6 = 6, mult8 = 8 }, },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult2,card.ability.extra.mult4,card.ability.extra.mult6,card.ability.extra.mult8 } }
+        return { vars = { number_format(card.ability.extra.mult2),number_format(card.ability.extra.mult4),number_format(card.ability.extra.mult6),number_format(card.ability.extra.mult8) } }
     end,
     calculate = function(self, card, context)
         if context.forcetrigger then
@@ -79,7 +79,7 @@ SMODS.Joker {
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "joker_slot", "passive" },
     config = { extra = { slots = 1 }, extra_slots_used = -1 },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.slots } }
+        return { vars = { number_format(card.ability.extra.slots) } }
     end,
     add_to_deck = function(self, card, from_debuff)
     G.jokers:change_size(card.ability.extra.slots)
@@ -103,10 +103,10 @@ demicolon_compat = true,
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "ace" },
     config = { extra = { chips = 10 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.chips } }
+        return { vars = { number_format(card.ability.extra.chips) } }
     end,
     calculate = function(self, card, context)
-        if context.individual and context.cardarea == G.play then
+        if context.individual and context.cardarea == G.play and context.other_card:get_id() == 14 then
             context.other_card.ability.perma_bonus = (context.other_card.ability.perma_bonus or 0) +
                 card.ability.extra.chips
             return {
@@ -128,7 +128,7 @@ demicolon_compat = true,
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "money","generation", "consumeables" },
     config = { extra = { }, immutable = { spent = 0 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.immutable.spent } }
+        return { vars = { number_format(card.ability.immutable.spent) } }
     end,
     calculate = function(self, card, context)
         if context.money_altered and context.amount < 0 then
@@ -174,7 +174,7 @@ SMODS.Joker {
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj" },
     config = { select = 1, extra = { trigger = true } },
     loc_vars = function(self, info_queue, card)
-        return { vars = {card.ability.select, card.ability.extra.trigger and "Active" or "Inactive" } }
+        return { vars = {number_format(card.ability.select), card.ability.extra.trigger and "Active" or "Inactive" } }
     end,
             can_use = function(self, card)
         local num = #Spectrallib.get_highlighted_cards({G.jokers, G.consumeables, G.shop_jokers}, card, 1, card.ability.select)
@@ -215,7 +215,7 @@ demicolon_compat = true,
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "economy", "destroy_card" },
     config = { extra = { dollar = 0, dollar_bonus = 2 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.dollar, card.ability.extra.dollar_bonus } }
+        return { vars = { number_format(card.ability.extra.dollar), number_format(card.ability.extra.dollar_bonus) } }
     end,
     calculate = function(self, card, context)
         if ( ( context.selling_card and context.card.ability.set == "Joker" ) and not context.blueprint and not context.retrigger_joker ) or context.forcetrigger then
@@ -247,7 +247,7 @@ SMODS.Joker {
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "xscore","hands" },
     loc_vars = function(self, info_queue, card)
         local display = card.ability.immutable.gain*100
-        return { vars = { display, card.ability.extra.score } }
+        return { vars = { number_format(display), number_format(card.ability.extra.score) } }
     end,
     calculate = function(self, card, context)
         if context.before and G.GAME.current_round.hands_left == 0 then
@@ -283,7 +283,7 @@ demicolon_compat = true,
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.c_death
         local doomrare, doomodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_doomrare')
-        return { vars = { doomrare, doomodds } }
+        return { vars = { number_format(doomrare), number_format(doomodds) } }
     end,
     calculate = function(self, card, context)
         if context.forcetrigger then
@@ -408,7 +408,7 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_nanotech
         local nanorare, nanoodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_nanorare')
-        return { vars = { nanorare, nanoodds } }
+        return { vars = { number_format(nanorare), number_format(nanoodds) } }
     end,
     calculate = function(self, card, context)
             local nano = false
@@ -543,7 +543,7 @@ demicolon_compat = true,
     config = { extra = { mult = 0, gain = 0.2 }, },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "mult", "two", "scaling", "rank" },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult, card.ability.extra.gain } }
+        return { vars = { number_format(card.ability.extra.mult), number_format(card.ability.extra.gain) } }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
@@ -576,7 +576,7 @@ demicolon_compat = true,
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "spectral", "five", "generation" },
     loc_vars = function(self, info_queue, card)
         local ghostrare, ghostodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_ghostrare')
-        return { vars = { ghostrare, ghostodds } }
+        return { vars = { number_format(ghostrare), number_format(ghostodds) } }
     end,
     calculate = function(self, card, context)
             local five = false
@@ -618,7 +618,7 @@ demicolon_compat = true,
                 end
             end
             local most_played = _handname
-        return { vars = { card.ability.extra.asc, most_played, card.ability.immutable.rounds, card.ability.immutable.total_rounds } }
+        return { vars = { number_format(card.ability.extra.asc), most_played, card.ability.immutable.rounds, card.ability.immutable.total_rounds } }
     end,
     calculate = function(self, card, context)
         if context.end_of_round and context.main_eval then
@@ -660,7 +660,7 @@ demicolon_compat = true,
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "tarot", "xchips", "scaling" },
     loc_vars = function(self, info_queue, card)
          info_queue[#info_queue + 1] = G.P_CENTERS.c_devil
-        return { vars = { card.ability.extra.chips, card.ability.extra.gain } }
+        return { vars = { number_format(card.ability.extra.chips), number_format(card.ability.extra.gain) } }
     end,
     calculate = function(self, card, context)
         if ( ( context.using_consumeable and context.consumeable.config.center_key == "c_devil" ) and not context.blueprint and not context.retrigger_joker ) or context.forcetrigger then
@@ -693,7 +693,7 @@ demicolon_compat = true,
     config = { extra = { bal = 0.25 }, immutable = { bal_loss = 0.05 } },
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "scaling", "food", "balance" },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.bal*100, card.ability.immutable.bal_loss*100 } }
+        return { vars = { number_format(card.ability.extra.bal*100), card.ability.immutable.bal_loss*100 } }
     end,
     calculate = function(self, card, context)
         if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint and not context.repetition then
@@ -707,7 +707,7 @@ demicolon_compat = true,
                 -- See note about SMODS Scaling Manipulation on the wiki
                 card.ability.extra.bal = card.ability.extra.bal - card.ability.immutable.bal_loss
                 return {
-                    message = card.ability.extra.bal.."%",
+                    message = (card.ability.extra.bal*100).."%",
                     colour = G.C.PURPLE
                 }
             end
@@ -764,7 +764,7 @@ demicolon_compat = true,
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "xchips", "hands", "gem" },
     loc_vars = function(self, info_queue, card)
         local s = card.ability.extra.scoring
-        return { vars = { s } }
+        return { vars = { number_format(s) } }
     end,
     calculate = function(self, card, context)
         local s = card.ability.extra.scoring
@@ -786,7 +786,7 @@ demicolon_compat = true,
     attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "hands", "xmult", "gem" },
     loc_vars = function(self, info_queue, card)
         local s = card.ability.extra.scoring
-        return { vars = { s } }
+        return { vars = { number_format(s) } }
     end,
     calculate = function(self, card, context)
         local s = card.ability.extra.scoring

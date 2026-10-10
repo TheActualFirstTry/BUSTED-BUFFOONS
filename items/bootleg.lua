@@ -181,7 +181,8 @@ SMODS.Consumable {
     pos = { x = 3, y = 0 },
     config = { select = 1e100 },
             can_use = function(self, card)
-            return G.STATE == G.STATES.BLIND_SELECT or G.STATE == G.STATES.SHOP
+            local cards = Spectrallib.get_highlighted_cards({G.shop_jokers, G.shop_vouchers,G.shop_booster}, card, 1, card.ability.select)
+            return (G.STATE == G.STATES.BLIND_SELECT or G.STATE == G.STATES.SHOP) and (#cards > 0 and #cards <= card.ability.select)
         end,
     use = function(self, card2, area, copier)
                 local cards = Spectrallib.get_highlighted_cards({G.shop_jokers, G.shop_vouchers,G.shop_booster}, card2, 1, card2.ability.select)
@@ -296,7 +297,7 @@ use = function(self, card, area, copier)
         end
     end,
     can_use = function(self, card)
-        return (#G.jokers.highlighted == 1)
+        return Spectrallib.get_highlighted_cards({ G.jokers }, nil, 1, 1)
     end,
 }
 SMODS.Sound{
@@ -358,13 +359,14 @@ SMODS.Consumable{
     cost = 4,
     config = { extra = { count = 5 }, immutable = { negative = 0.75 } },
         loc_vars = function(self, info_queue, card)
-            return { vars = { card.ability.immutable.negative*100, card.ability.extra.count } }
+            return { vars = { card.ability.immutable.negative*100, number_format(math.min(card.ability.extra.count,25)) } }
     end,
     can_use = function(self,card)
-        return #G.hand.highlighted == 1
+            local cards = Spectrallib.get_highlighted_cards({G.hand}, card, 1, math.min(card.ability.extra.count,25))
+            return (#cards > 0 and #cards <= card.ability.extra.count)
     end,
     use = function(self, card, area, copier)
-                for i = 1, card.ability.extra.count do
+                for i = 1, math.min(card.ability.extra.count,25) do
                      G.E_MANAGER:add_event(Event({
                     func = function()
                     local copy = copy_card(G.hand.highlighted[1])
@@ -392,7 +394,7 @@ SMODS.Consumable{
             return { vars = { math.max(1,card.ability.immutable.max_highlighted) } }
     end,
     can_use = function(self,card)
-        return #G.jokers.highlighted <= card.ability.immutable.max_highlighted and #G.jokers.highlighted > 0
+        return Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.immutable.max_highlighted)
 	end,
   use = function(self, card, area, copier)
     for i = 1, #G.jokers.highlighted do
@@ -536,11 +538,11 @@ loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.max_highlighted, (card.ability.extra.minval/100), card.ability.extra.maxval/100 } }
 	end,
     can_use = function(self, card)
-        local selected = Spectrallib.get_highlighted_cards({ G.jokers }, card, 1, card.ability.extra.max_highlighted)
-        return #selected > 0 and #selected <= card.ability.extra.max_highlighted
+        local selected = Spectrallib.get_highlighted_cards({ G.jokers, G.hand, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers }, card, 1, card.ability.extra.max_highlighted)
+        return #selected > 0 and #selected <= card.ability.extra.max_highlighted and selected ~= self
 	end,
   use = function(self, card, area, copier)
-		local cards = Spectrallib.get_highlighted_cards({ G.jokers }, card, 1, card.ability.extra.max_highlighted)
+		local cards = Spectrallib.get_highlighted_cards({ G.jokers, G.hand, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers }, card, 1, card.ability.extra.max_highlighted)
         local randomval = (pseudorandom(pseudoseed("busterb_randomval"), self.config.extra.minval, self.config.extra.maxval) / 100)
 		for i = 1, #cards do
 			local highlighted = cards[i]
