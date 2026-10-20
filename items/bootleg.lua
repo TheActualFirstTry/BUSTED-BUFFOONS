@@ -300,10 +300,6 @@ use = function(self, card, area, copier)
         return Spectrallib.get_highlighted_cards({ G.jokers }, nil, 1, 1)
     end,
 }
-SMODS.Sound{
-    key = "token",
-    path = "e_gilded.ogg"
-}
 SMODS.Consumable{
     key = 'comp',
     set = 'Bootleg',
@@ -314,15 +310,8 @@ SMODS.Consumable{
         return true
     end,
     use = function(self, card, area, copier)
-        local tag_pool = get_current_pool('Tag')
-    local selected_tag = pseudorandom_element(tag_pool, 'busterb_comp')
-    local it = 1
-    while selected_tag == 'UNAVAILABLE' do
-    it = it + 1
-    selected_tag = pseudorandom_element(tag_pool, 'busterb_comp_resample'..it)
-    end
-    add_tag(Tag(selected_tag, false, 'Small'))
-            play_sound("busterb_token")
+        BustB.tagspawning("busterb_comp")
+        play_sound("busterb_token")
     end
 }
 SMODS.Consumable{
@@ -402,7 +391,12 @@ SMODS.Consumable{
                 trigger = 'after',
                 delay = 0.4,
                 func = function()
-                    SMODS.add_card{set="Joker",rarity=G.jokers.highlighted[i].config.center.rarity}
+                    local rarity = ({'Common', 'Uncommon', 'Rare', 'Legendary'})[G.jokers.highlighted[i].config.center.rarity] or G.jokers.highlighted[i].config.center.rarity
+                    if G.jokers.highlighted[i].config.center.rarity == "busterb_Eldritch" then
+                    SMODS.add_card{set="Joker",rarity = "busterb_Eldritch"}
+                    else
+                    SMODS.add_card{set="Joker",rarity=rarity}
+                    end
                     play_sound('tarot1')
                     G.jokers.highlighted[i]:juice_up(0.3, 0.5)
                     return true

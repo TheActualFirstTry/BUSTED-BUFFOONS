@@ -135,6 +135,12 @@ SMODS.Sound{
     path = "vigi1.ogg"
 }
 
+SMODS.Sound{
+    key = "token",
+    path = "e_gilded.ogg"
+}
+
+
 SMODS.Gradient{
     key = "technopotentgradient",
     colours = {
@@ -366,7 +372,7 @@ SMODS.ObjectType{
 }
 -- Secret Jokers
 SMODS.ObjectType{
-    key = "Secret",
+    key = "Eldritch",
     default = "j_busterb_astro",
     cards = {},
     inject = function(self)
@@ -532,6 +538,13 @@ SMODS.ObjectType{
     end,
 }
 ]]
+
+local start_dissolveref = Card.start_dissolve
+function Card:start_dissolve(...)
+    if ((not self.ability.busterb_omega) or self.ability.bypass_omega or self.bypass_selfdestruct or self.children.price ) and self.config.center.key ~= "j_busterb_codegaia" then
+        return start_dissolveref(self, ...)
+    end
+end
 
 function moony_planet(card, new_card, area)
     if not card then return nil end
@@ -706,7 +719,6 @@ assert(SMODS.load_file("items/rarities.lua"))()
 assert(SMODS.load_file("items/thanksrattlingsnow.lua"))()
 assert(SMODS.load_file("items/spectrals.lua"))()
 assert(SMODS.load_file("items/infinity.lua"))()
-assert(SMODS.load_file("items/bootleg.lua"))()
 assert(SMODS.load_file("items/enhancement.lua"))()
 assert(SMODS.load_file("items/seals.lua"))()
 assert(SMODS.load_file("items/tarots.lua"))()
@@ -722,6 +734,7 @@ assert(SMODS.load_file("items/hyperjokers.lua"))()
 assert(SMODS.load_file("items/deck.lua"))()
 assert(SMODS.load_file("items/grandjokers.lua"))()
 assert(SMODS.load_file("items/secret_jokers.lua"))()
+assert(SMODS.load_file("items/bootleg.lua"))()
 assert(SMODS.load_file("items/edition.lua"))()
 assert(SMODS.load_file("items/voucher.lua"))()
 assert(SMODS.load_file("items/uiforace.lua"))()

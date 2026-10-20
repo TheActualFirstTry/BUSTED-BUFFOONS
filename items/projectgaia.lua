@@ -31,9 +31,8 @@ local GaiaYap = {
   "My favorite character isn't Sonic or Tails, it's Silver",
   "Jimbo can suck it!!!",
   "M",
-  "* local c =",
-  "* SMODS.add_card{'j_busterb_gaia'};",
-  "* c.config.center.gaia = true",
+  "!! SMODS.add_card{'j_busterb_codegaia'};",
+  "!! G.GAME.busterb_gaia = true",
   "Thomas and Theia are really good friends of mine!",
   "That's right i heard the story over and over again",
   "Thomas a loser for liking Spinel XDDDDDDDD",
@@ -84,7 +83,6 @@ SMODS.Joker{
       return false
     end,
     cost = math.huge,
-    gaia = false,
     no_collection = true,
     blueprint_compat = false,
     eternal_compat = true,
@@ -93,16 +91,17 @@ SMODS.Joker{
     config = {
         extra = { vm = 2
         },
-        immutable = { odds = 25, timer = 0, interval = .1 }
+        immutable = { odds = 25, timer = 0, interval = .1, superodds = 5 }
     },
     loc_vars = function(self, info_queue, card)
       local gaiarare, gaiaodds = SMODS.get_probability_vars(card, 1, card.ability.immutable.odds, 'busterb_gaiarare')
-        return { vars = { 
+        return { key = G.GAME.busterb_gaia == true and "j_busterb_gaia_true" or "j_busterb_codegaia" ,vars = { 
           " ",
           GaiaYap[math.random(#GaiaYap)], gaiarare, gaiaodds,
           colours = {SMODS.Gradients["busterb_technopotentgradient"], SMODS.Gradients["busterb_epileptic"]}} }
     end,
   update = function(self, card, dt)
+    if G.GAME.busterb_gaia == true then
     if G.SETTINGS.paused == false and G.STATE ~= G.STATES.HAND_PLAYED and G.STATE ~= G.STATES.GAME_OVER then
     card.ability.immutable.timer = card.ability.immutable.timer + G.real_dt
     if card.ability.immutable.timer >= card.ability.immutable.interval then
@@ -146,9 +145,26 @@ SMODS.Joker{
 								offset = {x = math.random(-G.CARD_W,G.CARD_W), y = math.random(-G.CARD_H,G.CARD_H)}
 							})
             end
-      end
-  end,
+        end
+    end
+end,
     use = function(self, card, area, copier)
+      if G.GAME.busterb_gaia == true then
+                local c = SMODS.add_card({ key = "c_busterb_admin" })
+                play_sound('busterb_vineboom',1,1.2)
+                play_sound('busterb_fahhh1',1,1.2)
+                attention_text({
+								text = "> <",
+								scale = 5,
+                hold = 1.5,
+                backdrop_colour = G.C.BLACK,
+								colour = G.C.SECONDARY_SET.Spectral,
+								align = 'cm',
+								major = c,
+								offset = {x = 0, y = 0}
+							})
+
+      else
                     if SMODS.pseudorandom_probability(card, 'busterb_gaiarare', 1, card.ability.immutable.odds, 'busterb_gaiarare', true) then
                 local c = SMODS.add_card({ key = "c_busterb_admin" })
                 play_sound('busterb_vineboom',1,1.2)
@@ -172,6 +188,7 @@ SMODS.Joker{
                     card = c
                 }
             end
+          end
     end,
         can_use = function(self, card)
         return true
@@ -195,6 +212,48 @@ calculate = function(self, card, context)
       gvoucher()
 	end
   if context.gaiaability then
+    if SMODS.pseudorandom_probability(card, 'busterb_gaiarare', 1, card.ability.immutable.superodds, 'busterb_gaiarare', true) then
+                        Spectrallib.add_bonus_effect(card, BustB.poll_busted_eff("busterb_busted_effects") )
+                          G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.2,
+                           func = function()
+                            play_sound("busterb_bang")
+                           return true
+                       end
+                    }))
+                    delay(0.4)
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.2,
+                           func = function()
+                            play_sound("busterb_note")
+                            play_sound("busterb_gonerlaugh")
+                            G.ROOM.jiggle = G.ROOM.jiggle + 100
+                           return true
+                       end
+                    }))
+            G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+							attention_text({
+								text = localize("k_busterb_upgrade"),
+								scale = 7.5,
+                                hold = 4,
+                                backdrop_colour = HEX("3f3f3f"),
+								colour = G.C.GRANDIOSE,
+								align = 'cm',
+								major = card,
+								offset = {x = 0, y = 0}
+							})
+							play_sound('busterb_mus',1, 0.5)
+							card:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							return true
+                        end
+						}))
+    else
             Spectrallib.add_bonus_effect(card, BustB.poll_BB_effect_jade("busterb_jade") )
                         G.E_MANAGER:add_event(Event({
 						trigger = 'before',
@@ -215,7 +274,8 @@ calculate = function(self, card, context)
 							G.ROOM.jiggle = G.ROOM.jiggle + 35
 							return true
                         end
-						}))   
+						}))
+          end
   end
 end,
   in_pool = function()

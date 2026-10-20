@@ -159,7 +159,7 @@ end
 ooobuttons = Card.highlight
 function Card:highlight(is_highlighted)
     ooobuttons(self, is_highlighted)
-    if self.highlighted and self.config.center.gaia == true and not self.ability.extra.to_copy then
+    if self.highlighted and G.GAME.busterb_gaia == true and self.config.center.key == "j_busterb_codegaia" and not self.ability.extra.to_copy then
         self.children.love = UIBox({
             definition = gaia_buttons(),
             config = {
@@ -169,7 +169,7 @@ function Card:highlight(is_highlighted)
                 colour = G.C.CLEAR
             }
         })
-    elseif self.children.love and not self.highlighted and self.config.center.gaia == true then
+    elseif self.children.love and not self.highlighted and G.GAME.busterb_gaia == true and self.config.center.key == "j_busterb_codegaia" then
         self.children.love:remove()
         self.children.love = nil
     end

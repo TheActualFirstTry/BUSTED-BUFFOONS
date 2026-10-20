@@ -36,7 +36,13 @@ SMODS.Joker {
     calculate = function(self, card, context)
     if context.before or context.forcetrigger then
             if SMODS.pseudorandom_probability(card, 'busterb_susies_idea', 1, card.ability.extra.aceodds, 'busterb_susies_idea') then
-                SMODS.add_card{ set = "Base", rank = "A", enhancement = "m_steel", edition = "e_polychrome", seal = "Red" }
+                local ace = SMODS.add_card{ set = "Base", rank = "A", enhancement = "m_steel", edition = "e_polychrome", seal = "Red" }
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            SMODS.calculate_context({ playing_card_added = true, cards = { ace } })
+                            return true
+                        end
+                    }))
                 play_sound('busterb_susielaugh')        
             end
     end
@@ -227,7 +233,7 @@ SMODS.Joker{
             perma = 3
         }
     },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "nine", "rank", "mult", "perma_bonus" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "nine", "rank", "enhancements" },
     loc_vars = function(self, info_queue, card)
                 return {vars = { card.ability.extra.perma }}
             end,
@@ -248,7 +254,7 @@ SMODS.Joker{
     key = "samsontboi",
     atlas = "rare",
     rarity = 3,
-    pools = { ["Food"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true },
+    pools = { ["bustjokers"] = true, ["all_bb_joker"] = true },
     cost = 8,
     discovered = true,
     unlocked = true,
@@ -317,12 +323,13 @@ SMODS.Joker{
             end,
         calculate = function(self, card, context)
         if context.before then
-            local c = card.ability.extra.chips_mod
+            local c = 0
             for k,v in ipairs(G.hand.cards) do
                 if v:is_suit("Clubs") then
-                    c = c + 1
+                    c = c + card.ability.extra.chips_mod
                 end
             end
+            if c > 0 then
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "chips",
@@ -332,6 +339,7 @@ SMODS.Joker{
                 message = localize("k_upgrade_ex"),
                 colour = G.C.CHIPS
             }})
+        end
         end
         if context.joker_main and to_big(card.ability.extra.chips) > to_big(1) then
             return{xchips = card.ability.extra.chips}
@@ -570,12 +578,12 @@ SMODS.Joker {
     unlocked = true, 
     atlas = "rare",
     blueprint_compat = false,
-    demicolon_compat = true,
+    demicolon_compat = false,
     pools = { ["bustjokers"] = true, ["all_bb_joker"] = true },
     rarity = 3,
     cost = 8,
     pos = { x = 0, y = 3 },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "passive", "boss_blind" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "queen", "generation", "rank", "playing_card" },
     config = { extra = { triggered = false }, immutable = {  } },
     loc_vars = function(self, info_queue, card)
         return {
@@ -584,21 +592,48 @@ SMODS.Joker {
         }
     end,
     calculate = function(self, card, context)
-   if ((context.starting_shop or context.ending_shop) and card.ability.extra.triggered) or context.forcetrigger then
-    local packs = {
-        "p_busterb_bbpack_1",
-        "p_busterb_bbpack_2",
-        "p_busterb_bbpack_3",
-        "p_busterb_bbpack_4"
-    }
-    local g = pseudorandom_element(packs, "j_busterb_muscle_man")
-     local booster = SMODS.add_booster_to_shop(g)
-      card.ability.extra.triggered = false
-    end
-        if context.end_of_round and context.beat_boss and not card.ability.extra.triggered then
-            card.ability.extra.triggered = true
+   if context.individual and context.cardarea == G.play then
+    if context.other_card:get_id() == 12 and not context.other_card.debuff then
+        local ca = context.other_card
+        local c = true
+    for _,v in ipairs(context.scoring_hand) do
+    if v:get_id() == 12 then
+        if v ~= context.other_card then
+            c = false
         end
-    end,
+        break
+    end
+    end
+    if c then
+            G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+            local card_copied = copy_card(ca, nil, nil, G.playing_card)
+            card_copied:add_to_deck()
+            G.deck.config.card_limit = G.deck.config.card_limit + 1
+            table.insert(G.playing_cards, card_copied)
+            G.hand:emplace(card_copied)
+
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    card_copied:start_materialize()
+                    return true
+                end
+            }))
+            return {
+                message = localize('k_copied_ex'),
+                colour = G.C.CHIPS,
+                func = function() -- This is for timing purposes, it runs after the message
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            SMODS.calculate_context({ playing_card_added = true, cards = { card_copied } })
+                            return true
+                        end
+                    }))
+                end
+            }
+    end
+end
+end
+end,
 }
 
 SMODS.Joker {

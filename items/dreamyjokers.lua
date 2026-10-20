@@ -247,14 +247,17 @@ SMODS.Joker {
         extra = { vm = 1.1, triggered = false }
     },
     loc_vars = function(self, info_queue, card)
+    info_queue[#info_queue+1] = G.P_CENTERS.p_busterb_s_pack_1
         return { vars = { number_format(card.ability.extra.vm) } }
     end,
 
     calculate = function(self, card, context)
-        if context.starting_shop and not card.ability.extra.triggered then
+    if (context.end_of_round and context.beat_boss and not card.ability.extra.triggered) or context.forcetrigger then
+        card.ability.extra.triggered = true
+    end
+        if context.starting_shop and card.ability.extra.triggered == true then
      local booster = SMODS.add_booster_to_shop("p_busterb_s_pack_1")
 	 booster.cost = 0
-      card.ability.extra.triggered = true
     end
     if context.open_booster then
       card.ability.extra.triggered = false
@@ -285,48 +288,58 @@ SMODS.Joker {
     pos = { x = 3, y = 0 },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
     attributes = { "bustb_d", "all_bb", "bustj", "scaling", "generation" },
-    config = { immutable = { roll_rounds = 0, total_rounds = 6, round_add = 1 } },
+    config = { bool = true, immutable = { roll_rounds = 6, total_rounds = 6, round_add = 1 } },
     loc_vars = function(self, info_queue, card)
         local rarity = (G.GAME.current_round.busterb_isaac_rarity or {}).rarity or 'busterb_Dreamy'
-        return { vars = { card.ability.immutable.roll_rounds, card.ability.immutable.total_rounds, localize(rarity, "isaac_rarities"), colours = { HEX('b00b69'), HEX('5e7297') } } }
+                local main_end = nil
+        if card.area and (card.area == G.jokers) then
+            local booltrue = card.ability.bool == true
+            main_end = {
+                {
+                    n = G.UIT.C,
+                    config = { align = "bm", minh = 0.4 },
+                    nodes = {
+                        {
+                            n = G.UIT.C,
+                            config = { ref_table = card, align = "m", colour = booltrue and G.C.GREEN or G.C.RED, r = 0.05, padding = 0.06 },
+                            nodes = {
+                                { n = G.UIT.T, config = { text = ' ' .. localize(booltrue and 'k_busterb_active' or 'k_busterb_inactive') .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.9 } },
+                            }
+                        }
+                    }
+                }
+            }
+        end
+        return { main_end = main_end, vars = { card.ability.immutable.roll_rounds, card.ability.immutable.total_rounds, localize(rarity, "isaac_rarities"), colours = { HEX('b00b69'), HEX('5e7297') } } }
     end,
     calculate = function(self, card, context)
-        if context.forcetrigger then
+        if ((context.end_of_round and context.main_eval) or context.forcetrigger) and not card.ability.bool == true then
+            card.ability.immutable.roll_rounds = card.ability.immutable.roll_rounds + card.ability.immutable.round_add
+           if (to_big(card.ability.immutable.roll_rounds) == 6) then
+            card.ability.bool = true
+            SMODS.calculate_effect({ message = localize("k_busterb_active"), colour = G.C.FILTER}, card)
+           else
+            SMODS.calculate_effect({ message = localize("k_upgrade_ex"), colour = G.C.FILTER}, card)
+        end
+    end
+end,
+    use = function(self, card, area, copier)
                 G.E_MANAGER:add_event(Event{
                     trigger = 'after',
                         delay = 0.4,
                         func = function()
-                        SMODS.scale_card(card, {
-                                ref_table = card.ability.immutable,
-                                ref_value = "roll_rounds",
-                                scalar_value = "round_add",
-                            })
-                            return true
-                        end
-                    })
-                end
-        if context.end_of_round and context.main_eval then
-            SMODS.scale_card(card, {
-                ref_table = card.ability.immutable,
-                ref_value = "roll_rounds",
-                scalar_value = "round_add",
-            })
-        if (to_big(card.ability.immutable.roll_rounds) >= to_big(card.ability.immutable.total_rounds)) then
-                G.E_MANAGER:add_event(Event{
-                    trigger = 'after',
-                        delay = 0.4,
-                        func = function()
-                            local c = SMODS.add_card({ set = "Joker", attributes = { "bustb_d" }, area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
---                            local c = SMODS.add_card({ set = "Joker", attributes = { "bustb_d" }, area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
-                            SMODS.calculate_effect({ message = "Added!", colour = G.C.GRANDIOSE}, c)
+                            local c = SMODS.add_card({ set = "Joker", rarity = G.GAME.current_round.busterb_isaac_rarity.rarity, area = G.jokers, edition = 'e_negative', key_append = "busterb_isaac" })
+                            SMODS.calculate_effect({ message = localize("k_busterb_added"), colour = G.C.GRANDIOSE}, c)
                             return true
                         end
                     })
                 card.ability.immutable.roll_rounds = 0
+                card.ability.bool = false
             SMODS.calculate_effect({ message = "Reset!", colour = G.C.FILTER}, card)
-        end
-    end
-end
+    end,
+        can_use = function(self, card)
+        return card.ability.bool == true
+        end,
 }
 --[[]]
 local function reset_busterb_isaac_rarity()
@@ -407,6 +420,7 @@ SMODS.Joker{
     config = { immutable = { boss_size = 1.25 } },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true},
     loc_vars = function(self, info_queue, center)
+    info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
         info_queue[#info_queue+1] = {key = "c_busterb_Fantasy", set = "Spectral"}
 		return { vars = { center.ability.immutable.boss_size } }
 	end,
@@ -821,6 +835,7 @@ SMODS.Joker {
     demicolon_compat = true,
     attributes = { "bustb_d", "all_bb", "bustj", "copying" },
     pools = { ["Dreamy"] = true, ["bustjokers"] = true, ["all_bb_joker"] = true}, 
+    config = { force = false },
       loc_vars = function(self, info_queue, card)
     if card.area and card.area == G.jokers then
       local left_joker = nil
@@ -873,14 +888,85 @@ SMODS.Joker {
           } }
         } }
       } }
+            local left_force = left_joker and left_joker ~= card and Spectrallib.card_is_forcetriggerable(left_joker)
+      local right_force = right_joker and right_joker ~= card and Spectrallib.card_is_forcetriggerable(right_joker)
 
-      return { main_end = main_end }
+      local main_force = { {
+        n = G.UIT.C,
+        config = { align = "bm", minh = 0.4 },
+        nodes = { {
+          n = G.UIT.C,
+          config = {
+            ref_table = card,
+            align = "m",
+            colour = left_force and G.C.PURPLE or G.C.BBBLACK,
+            r = 0.05,
+            padding = 0.06
+          },
+          nodes = { {
+            n = G.UIT.T,
+            config = {
+              text = ' ' .. localize('k_' .. (left_force and 'compatible' or 'incompatible')) .. ' ',
+              colour = G.C.UI.TEXT_LIGHT,
+              scale = 0.32 * 0.8
+            }
+          } }
+        }, {
+          n = G.UIT.C,
+          config = {
+            ref_table = card,
+            align = "m",
+            colour = right_force and G.C.PURPLE or G.C.BBBLACK,
+            r = 0.05,
+            padding = 0.06
+          },
+          nodes = { {
+            n = G.UIT.T,
+            config = {
+              text = ' ' .. localize('k_' .. (right_force and 'compatible' or 'incompatible')) .. ' ',
+              colour = G.C.UI.TEXT_LIGHT,
+              scale = 0.32 * 0.8
+            }
+          } }
+        } }
+      } }
+
+      return { key = card.ability.force == true and "j_busterb_amazo_force" or "j_busterb_amazo", main_end = card.ability.force == true and main_force or main_end }
+    else
+      return { key = "j_busterb_amazo_nil" }
+
     end
   end,
-    calculate = function(self, card, context)
+    use = function(self, card, area, copier)
+        if card.ability.force == false then
+                G.E_MANAGER:add_event(Event{
+                    trigger = 'after',
+                        delay = 0.4,
+                        func = function()
+                            SMODS.calculate_effect({ message = "Forcetrigger", colour = G.C.PURPLE}, card)
+                            card.ability.force = true
+                            return true
+                        end
+                    })
+                else
+                G.E_MANAGER:add_event(Event{
+                    trigger = 'after',
+                        delay = 0.4,
+                        func = function()
+                            SMODS.calculate_effect({ message = "Copy", colour = G.C.GREEN}, card)
+                            card.ability.force = false
+                            return true
+                        end
+                    })
+                end
+    end,
+        can_use = function(self, card)
+        return true
+        end,    
+        calculate = function(self, card, context)
         if not G.jokers then return nil end
+        if card.ability.force == false then
         local right_effect, left_effect = nil, nil
-
         for i = 1, #G.jokers.cards do
             if G.jokers.cards[i] == card then
                 local right_joker = G.jokers.cards[i + 1]
@@ -909,4 +995,79 @@ SMODS.Joker {
             return nil
         end
     end
+    if card.ability.force == true then
+        if (context.joker_main or (context.main_scoring and context.cardarea == G.play)) then
+                local left, right = card.area.cards[card.rank-1], card.area.cards[card.rank+1]
+                if left and Spectrallib.card_is_forcetriggerable(left) then
+                    Spectrallib.forcetrigger{card = left}
+				end 
+                if right and Spectrallib.card_is_forcetriggerable(right) then
+                    Spectrallib.forcetrigger{card = right}
+				end
+
+            end
+        end
+end
 }
+
+--[[
+
+      loc_vars = function(self, info_queue, card)
+    if card.area and card.area == G.jokers then
+      local left_joker = nil
+      local right_joker = nil
+      for i = 1, #G.jokers.cards do
+        if G.jokers.cards[i] == card then
+          left_joker = G.jokers.cards[i - 1]
+          right_joker = G.jokers.cards[i + 1]
+        end
+      end
+      local left_force = left_joker and left_joker ~= card and Spectrallib.card_is_forcetriggerable(left_joker)
+      local right_force = right_joker and right_joker ~= card and Spectrallib.card_is_forcetriggerable(right_joker)
+
+      local main_force = { {
+        n = G.UIT.C,
+        config = { align = "bm", minh = 0.4 },
+        nodes = { {
+          n = G.UIT.C,
+          config = {
+            ref_table = card,
+            align = "m",
+            colour = left_force and G.C.PURPLE or G.C.BBBLACK,
+            r = 0.05,
+            padding = 0.06
+          },
+          nodes = { {
+            n = G.UIT.T,
+            config = {
+              text = ' ' .. localize('k_' .. (left_force and 'compatible' or 'incompatible')) .. ' ',
+              colour = G.C.UI.TEXT_LIGHT,
+              scale = 0.32 * 0.8
+            }
+          } }
+        }, {
+          n = G.UIT.C,
+          config = {
+            ref_table = card,
+            align = "m",
+            colour = left_force and G.C.PURPLE or G.C.BBBLACK,
+            r = 0.05,
+            padding = 0.06
+          },
+          nodes = { {
+            n = G.UIT.T,
+            config = {
+              text = ' ' .. localize('k_' .. (right_force and 'compatible' or 'incompatible')) .. ' ',
+              colour = G.C.UI.TEXT_LIGHT,
+              scale = 0.32 * 0.8
+            }
+          } }
+        } }
+      } }
+
+      return { main_end = main_end }
+    end
+  end,
+
+
+--]]

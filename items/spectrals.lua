@@ -543,5 +543,18 @@ SMODS.Consumable {
         if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
             card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
         end
-    end
+    end,
+    demicolon_compat = true,
+	force_use = function(self, card, area)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'before',
+               func = function()
+                mythical_blind_spawn()
+               return true
+           end
+        }))
+        delay(1)
+        G.blind_select:remove()
+        G.blind_prompt_box:remove()
+	end,
 }

@@ -7,7 +7,7 @@ SMODS.Rarity {
     end,
 }
 SMODS.Rarity {
-    key = "Secret",
+    key = "Eldritch",
     default_weight = 0,
     badge_colour = SMODS.Gradients["busterb_SecretG"],
     get_weight = function(self, weight, object_type)

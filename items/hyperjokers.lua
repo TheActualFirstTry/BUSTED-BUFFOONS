@@ -223,6 +223,7 @@ SMODS.Joker {
     immutable = { multiplier = 2 }
   },
   loc_vars = function(self, info_queue, card)
+    info_queue[#info_queue+1] = G.P_CENTERS.p_arcana_mega_1
     return { vars = { number_format(card.ability.extra.xmult), number_format(card.ability.extra.multiplier)} }
   end,
   calculate = function(self, card, context)
@@ -349,13 +350,15 @@ SMODS.Joker {
         immutable = { max_retriggers = 25, morerepeatmax = 5 }
     },
     loc_vars = function(self, info_queue, card)
+        local maxre = math.min(card.ability.immutable.max_retriggers, card.ability.extra.repetitions)
+        local morere = math.min(card.ability.immutable.morerepeatmax, card.ability.extra.morerepeat)
         if card.area and card.area == G.jokers then
             local other_joker
             for i = 1, #G.jokers.cards do
                 if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i + 1] end
             end
             local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
-            main_end = {
+            local main_end = {
                 {
                     n = G.UIT.C,
                     config = { align = "bm", minh = 0.4 },
@@ -371,10 +374,16 @@ SMODS.Joker {
                 }
             }
       return { vars = { 
-            number_format(math.min(card.ability.immutable.max_retriggers, card.ability.extra.repetitions) or 0),
-            number_format(math.min(card.ability.immutable.morerepeatmax, card.ability.extra.morerepeat) or 0)
+            number_format(maxre),
+            number_format(morere)
          },
       main_end = main_end }
+        else 
+        return { vars = { 
+            number_format(maxre),
+            number_format(morere)
+         }}
+
     end
 end,
     calculate = function(self, card, context)
@@ -542,7 +551,7 @@ SMODS.Joker {
     end,
 
     calculate = function(self, card, context)
-        if (context.joker_main or context.forcetrigger) and G.GAME.dollars > 1 then
+        if (context.joker_main or context.forcetrigger) and G.GAME.dollars ~= 0 then
             return {
                 asc = (math.abs(G.GAME.dollars) / 2),
                 message = "Destroy!",
@@ -1219,6 +1228,8 @@ SMODS.Joker {
     discovered = true,
     attributes = { "bustb_d", "all_bb", "bustj", "consumeables", "planet", "tarot", "spectral", "generation" },
     loc_vars = function(self, info_queue, card)
+    info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
+        info_queue[#info_queue+1] = {key = "c_busterb_dream", set = "Spectral"}
 		return { vars = { colours = {HEX('b00b69')} } }
     end,
     calculate = function(self, card, context)
@@ -1336,7 +1347,7 @@ calculate = function(self, card, context)
 			})
         local rarity_map = {
   busterb_Grandiose = 'busterb_Dreamy',
-  busterb_Secret = 'busterb_Fantastic',
+  busterb_Eldritch = 'busterb_Fantastic',
   busterb_technopotent = "busterb_Fantastic",
   Common = 'Rare',
   Uncommon = 'Rare',

@@ -48,7 +48,7 @@ key = 'sun',
 pos = { x = 0, y = 6 },
 atlas = 'non',
 badge_colour = SMODS.Gradients['busterb_GoldenFreddyGradient'],
-config = { extra = { asc = 0.25 } },
+config = { extra = { asc = 1 } },
 loc_vars = function(self, info_queue, card)
 return { vars = { self.config.extra.asc } }
 end,

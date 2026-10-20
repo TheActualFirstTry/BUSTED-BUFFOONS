@@ -39,7 +39,7 @@ SMODS.Joker {
     },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_crystallized
-        return { vars = { number_format(card.ability.extra.em), number_format(card.ability.extra.emtotal), colours = {HEX('f7b4c6'), SMODS.Gradients["busterb_eemultgradient"]}} }
+        return { vars = { number_format(card.ability.extra.em), number_format(card.ability.extra.emtotal), colours = {HEX('f7b4c6'), Spectrallib.emult}} }
     end,
     calculate = function(self, card, context)
         if context.before then
@@ -60,7 +60,7 @@ SMODS.Joker {
                 scalar_value = "em",
                 scaling_message = {
                 message = "^" ..card.ability.extra.emtotal.. " Mult",
-                colour = SMODS.Gradients["busterb_eemultgradient"]
+                colour = Spectrallib.emult
 }
             })
             end
@@ -75,7 +75,7 @@ if faces > 0 then
         if (context.joker_main or context.forcetrigger) and card.ability.extra.emtotal > to_big(1) then
                 SMODS.calculate_effect ({
                     emult = card.ability.extra.emtotal,
-                    colour = SMODS.Gradients["busterb_eemultgradient"],
+                    colour = Spectrallib.emult,
                     card = card
                 })
     end
@@ -110,12 +110,11 @@ SMODS.Joker{
         end
     end,
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = G.P_CENTERS.c_busterb_dream
-        info_queue[#info_queue + 1] = G.P_CENTERS.c_soul
+    info_queue[#info_queue+1] = G.P_CENTERS.p_spectral_mega_1
         return { vars = {
             number_format(card.ability.extra.emult),
             number_format(card.ability.extra.emult_gain),
-            colours = {HEX('DBD8FF'),SMODS.Gradients["busterb_eechipsgradient"],SMODS.Gradients["busterb_eemultgradient"]}
+            colours = {HEX('DBD8FF'),SMODS.Gradients["busterb_eechipsgradient"],Spectrallib.emult}
         } }
     end,
     calculate = function(self, card, context)
@@ -127,14 +126,14 @@ SMODS.Joker{
     if context.open_booster then
       card.ability.extra.triggered = false
     end
-    if context.using_consumeable and (context.consumeable.config.center_key == ("c_busterb_dream" or "c_soul")) then
+    if context.using_consumeable and context.consumeable.config.center.hidden == true then
                 SMODS.scale_card(card, {
                 ref_table = card.ability.extra,
                 ref_value = "emult",
                 scalar_value = "emult_gain",
                 scaling_message = {
-                message = "^" ..card.ability.extra.emult.. " Mult",
-                colour = SMODS.Gradients["busterb_eemultgradient"]
+                message = "^" ..(card.ability.extra.emult+card.ability.extra.emult_gain).. " Mult",
+                colour = Spectrallib.emult
             }
             })
     end
@@ -297,6 +296,38 @@ SMODS.Sound{
     path = "peppinoangryscream2.ogg"
 }
 
+local PedditoEX = {
+    "NO!",
+    "FUCK OFF!",
+    "NO WAY!",
+    "I REBUKE!",
+    "SHUT UP!",
+    "GET-A OVER YOURSELF!",
+    "NOPE!",
+    "ARE YOU-A SERIOUS?!",
+    "SCREW-A YOU!",
+    "SHIT!",
+    "BULLSHIT!",
+    "YOU'RE-A FORCING MY HAND!",
+    "YOU STUPID-A MOTHERFUCKER!",
+    "TRY AGAIN!",
+    "DAMN IT!",
+    "HAH, I DON'T-A THINK SO!",
+}
+local PedditoSave = {
+    "You're-a lucky.",
+    "Don't-a mess this up!",
+    "I'm-a watching you, paisano.",
+    "This is some-a wretched bullshit...",
+    "You Fucking Idiot!",
+    "God Damn It!",
+    "Maybe pay attention?? Ever-a heard of that??",
+    "You cannot be serious.",
+    "Okay...",
+    "You can honestly blame the mod developer.",
+    "Watch yourself next time, capiche?"
+}
+
 SMODS.Joker{
     key = "peddito",
     atlas = "a_g",
@@ -322,20 +353,37 @@ SMODS.Joker{
              number_format(card.ability.immutable.deduction),
              number_format(card.ability.immutable.tallyup),
              " ",
-             colours = {HEX('d868a0'),SMODS.Gradients["busterb_eemultgradient"]}
+             colours = {HEX('d868a0'),Spectrallib.emult}
             } }
     end,
     calculate = function(self, card, context)
 if to_big(card.ability.extra.emult) > to_big(1) then
     if context.joker_main then 
-    return{
-    message = "YEEEEOOOW!!!",
+                 G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.2,
+                       func = function()
+                play_sound("busterb_bang", 1, 0.9)
+                play_sound("busterb_pepangry", 1, 0.9)
+                attention_text({
+                       text = "YEEEEOOOW!!!",
+                       scale = 2,
+                       hold = 2,
+                       backdrop_colour = G.C.BBBLACK,
+                       colour = HEX('d868a0'),
+                       align = 'cm',
+                       major = card,
+                       offset = {x = 0, y = G.CARD_H}
+                })
+                card:juice_up(0.3,0.5)
+                G.ROOM.jiggle = G.ROOM.jiggle + 35
+                       return true
+                   end
+                }))
+   SMODS.calculate_effect({
     eemult = card.ability.extra.emult,
     colour = HEX('d868a0'),
-    sound = "busterb_pepangry",
-    pitch = 0.9,
-    card = card
-    }
+    }, card)
 end    
 end
 if context.forcetrigger then
@@ -350,11 +398,34 @@ end
 
 if (context.game_over and card.ability.immutable.dp > 0.99) then
     card.ability.immutable.dp = card.ability.immutable.dp - card.ability.immutable.deduction
-    SMODS.calculate_effect ({
-                    message = "-" ..card.ability.immutable.deduction.. " Revive",
-                    colour = HEX('d868a0'),
-                    card = card
+            G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.hand_text_area.blind_chips:juice_up()
+                        G.hand_text_area.game_chips:juice_up()
+                        play_sound('tarot1')
+                        return true
+                    end
+                }))
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.2,
+                       func = function()
+                play_sound("busterb_gigatalk", 1, 0.9)
+                attention_text({
+                       text = tostring(PedditoEX[math.random(#PedditoEX)]),
+                       scale = 2,
+                       hold = 2,
+                       backdrop_colour = G.C.BBBLACK,
+                        colour = HEX('d868a0'),
+                       align = 'cm',
+                       major = card,
+                       offset = {x = 0, y = G.CARD_H}
                 })
+                card:juice_up(0.3,0.5)
+                G.ROOM.jiggle = G.ROOM.jiggle + 35
+                       return true
+                   end
+                }))
     card.ability.immutable.tally = card.ability.immutable.tally + card.ability.immutable.tallyup
     SMODS.calculate_effect ({
                     message = "+" ..card.ability.immutable.tallyup.. " Tally",
@@ -364,7 +435,7 @@ if (context.game_over and card.ability.immutable.dp > 0.99) then
     card.ability.extra.emult = card.ability.extra.emult + (card.ability.immutable.tally/2)
     SMODS.calculate_effect ({
                     message = "^^" ..card.ability.extra.emult.. " Mult",
-                    colour = SMODS.Gradients["busterb_eemultgradient"],
+                    colour = Spectrallib.emult,
                     card = card
                 })
                 G.E_MANAGER:add_event(Event({
@@ -378,7 +449,7 @@ if (context.game_over and card.ability.immutable.dp > 0.99) then
                 SMODS.calculate_effect ({
                     message = "!!!", sound = "busterb_pepparry",
 --                    message = "-" ..card.ability.immutable.deduction.. " Revive / ^^" ..card.ability.extra.emult.. " Mult",
-                    saved = "You're lucky.",
+                    saved = PedditoSave[math.random(#PedditoSave)],
                     colour = HEX('d868a0'),
                     card = card
                 })
@@ -433,7 +504,7 @@ SMODS.Joker{
                 emult = card.ability.extra.emult,
                 sound = "busterb_explode",
                 volume = 0.5,
-                colour = SMODS.Gradients["busterb_eemultgradient"]
+                colour = Spectrallib.emult
             }
         end
         if context.setting_blind or context.forcetrigger then
@@ -444,7 +515,7 @@ SMODS.Joker{
                 ref_table = card.ability.extra,
                 ref_value = "emult",
                 scalar_value = "emultmod",
-                colour = SMODS.Gradients["busterb_eemultgradient"]
+                colour = Spectrallib.emult
             })
             end
             if context.selling_card and context.card.config.center.key == "j_gros_michel" then
@@ -542,21 +613,11 @@ key = "doise",
     end
 end,
         can_use = function(self, card)
-            return G.hand and card.ability.extra.max_uses > 0
+            return G.hand and G.GAME.blind.in_blind and card.ability.extra.max_uses > 0
         end,
         use = function(self, card, area, copier)
-            SMODS.add_card{set = "Playing Card", enhancement = "m_stone"}
-                SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "max_uses",
-                scalar_value = "use_minus",
-                scalar_table = card.ability.immutable,
-                block_overrides = {
-                value = true,
-                scalar = true,
-                },
-                silent = true
-            })
+            SMODS.add_card{set = "Playing Card", rank = "Ace", suit = "Spades", enhancement = "m_stone"}
+            card.ability.extra.max_uses = card.ability.extra.max_uses + card.ability.immutable.use_minus
     end,
 
 
@@ -738,7 +799,7 @@ SMODS.Joker{
                     scalar_table = { gain = card.ability.extra.gauge * card.ability.extra.eemult },
                     scaling_message = {
                         message = "^^" .. ( card.ability.extra.gauge * card.ability.extra.eemult ) .. " Mult",
-                        colour = SMODS.Gradients["busterb_eemultgradient"]
+                        colour = Spectrallib.emult
                     },
                 })
     end
@@ -1080,17 +1141,7 @@ if context.end_of_round and not context.individual and not context.repetition an
             if G.jokers and G.jokers.cards and G.jokers.cards[1] and (G.jokers.cards[1] ~= self and G.jokers.cards[1] ~= card and G.jokers.cards[1] ~= "j_busterb_upgrade") then
             BustB.upgrade_joker(G.jokers.cards[1])
             end
-                SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "max_uses",
-                scalar_value = "use_minus",
-                scalar_table = card.ability.immutable,
-                block_overrides = {
-                value = true,
-                scalar = true,
-                },
-                silent = true
-            })
+            card.ability.extra.max_uses = card.ability.extra.max_uses + card.ability.immutable.use_minus
     end,
 
 

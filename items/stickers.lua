@@ -38,14 +38,27 @@ draw = function(self, card, layer)
 	end,
 apply = function(self, card, val)
     card.ability.busterb_omega = true
+	if card.ability.busterb_fragile then card.ability.busterb_fragile = false end
+	if card.ability.busterb_weak then card.ability.busterb_weak = false end
+	if card.ability.busterb_perishable then card.ability.perishable = false end
+	if card.ability.busterb_rental then card.ability.rental = false end
     if card.debuff then card:set_debuff(false) end
 end
 }
-local start_dissolveref = Card.start_dissolve
-function Card:start_dissolve(...)
-    if not self.ability.busterb_omega or self.ability.bypass_omega or self.bypass_selfdestruct or self.children.price then
-        return start_dissolveref(self, ...)
-    end
+function Card:set_omega(_omega)
+	self.ability.busterb_omega = _omega
+	if self.ability.busterb_fragile then self.ability.busterb_fragile = false end
+	if self.ability.busterb_weak then self.ability.busterb_weak = false end
+	local total = 0
+                            for k, v in pairs(SMODS.Sticker.obj_table) do
+                                if --[[self.ability and]] self.ability[k] then
+                                    self:remove_sticker(k)
+                                    self:set_weak(false)
+                                    self:set_fragile(false)
+                                    total = total + 1
+                                end
+                            end
+    if self.debuff then self:set_debuff(false) end
 end
 
 SMODS.Sticker {
@@ -56,7 +69,7 @@ SMODS.Sticker {
     rate = 0,
     config = { card_area = 0, card_limit = 1 },
     calculate = function(self, card, context)
-        if context.joker_main or (context.main_scoring and context.cardarea == G.play) then
+        if context.joker_main or (context.main_scoring and context.cardarea == G.play) and Spectrallib.card_is_forcetriggerable(card) then
             Spectrallib.forcetrigger { card = card }
         end
     end

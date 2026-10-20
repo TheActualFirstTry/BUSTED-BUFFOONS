@@ -229,7 +229,7 @@ SMODS.Consumable{
 --end
 end
 ,
-	demicoloncompat = true,
+	demicolon_compat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,

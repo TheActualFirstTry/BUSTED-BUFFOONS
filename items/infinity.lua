@@ -38,7 +38,7 @@ can_use = function(self, card)
                  v.rarity == "jen_omegatranscendent" or
                  v.rarity == "jen_omnipotent" or 
                  v.rarity == "jen_miscellaneous" or
-                 v.rarity == "busterb_Secret" or 
+                 v.rarity == "busterb_Eldritch" or 
                  v.rarity == "busterb_technopotent"
             ) then
             selectable_jokers[#selectable_jokers + 1] = v
@@ -606,17 +606,17 @@ SMODS.Consumable {
     atlas = "a_ic",
     cost = 8, pos = { x = 2, y = 2 },
     config = { extra = { num_copies = 3 }, immutable = { selected = 1 } },
-	misprintize_caps = { extra = { num_copies = 100 } },
+	misprintize_caps = { extra = { num_copies = 25 } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
-		return { vars = { card.ability.extra.num_copies } }
+		return { vars = { number_format(math.min(25,card.ability.extra.num_copies)) } }
 	end,
 	    can_use = function(self, card)
         return #G.consumeables.cards > 0 and (G.consumeables.cards[1].config.center_key ~= "c_busterb_meija")
     end,
 
     use = function(self, card, area, copier)
-                for i = 1, card.ability.extra.num_copies do
+                for i = 1, math.min(25,card.ability.extra.num_copies) do
                      G.E_MANAGER:add_event(Event({
                 func = function()
                     local copy = copy_card(G.consumeables.cards[1])
@@ -690,7 +690,11 @@ SMODS.Consumable {
   },
  use = function(self, card, area, copier)
         for i, card in pairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.select)) do
+            if card.ability.busterb_omega ~= true then
+            card:set_omega(true)
+            card:add_sticker("busterb_omega",true)
             card.ability.busterb_omega = true
+            end
             card:set_edition("e_negative")
             card:juice_up()
 
@@ -723,7 +727,7 @@ SMODS.Consumable {
     extra = { max_highlighted = 1, multiuse = 2 }
   },
 can_use = function(self, card)
-    return #G.consumeables.cards > 0
+    return #G.consumeables.cards > 1
   end,
   use = function(self, card, area, copier)
     local check = false

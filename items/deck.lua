@@ -193,7 +193,7 @@ SMODS.Back {
 
         for _, v in ipairs(G.P_CENTER_POOLS.Joker) do
           if (   
-                 v.rarity == "busterb_Secret"
+                 v.rarity == "busterb_Eldritch"
             ) then
             selectable_jokers[#selectable_jokers + 1] = v
           end

@@ -140,6 +140,97 @@ function ease_e_ante(mod)
         from_scoring = (G.STATE == G.STATES.HAND_PLAYED) or nil,
     })
 end
+
+function ease_hyper_ante(mod, arrows)
+    G.E_MANAGER:add_event(Event({
+      trigger = 'immediate',
+      func = function()
+          local ante_UI = G.hand_text_area.ante
+          mod = mod or 0
+          local text = '{'..tostring(math.abs(arrows))..'}'
+          local col = G.C.BBBLACK
+          local ccol = G.C.RED
+          if mod < 0 then
+              text = '-{'..tostring(math.abs(arrows))..'}'
+              col = G.C.RED
+              ccol = G.C.BBBLACK
+          end
+          G.GAME.round_resets.ante = to_big(G.GAME.round_resets.ante):arrow(arrows, mod)
+          G.GAME.round_resets.ante_disp = to_big(G.GAME.round_resets.ante_disp):arrow(arrows, mod)
+          check_and_set_high_score('furthest_ante', G.GAME.round_resets.ante)
+          ante_UI.config.object:update()
+          G.HUD:recalculate()
+          --Popup text next to the chips in UI showing number of chips gained/lost
+          attention_text({
+            text = text..tostring(math.abs(mod)),
+            scale = 1, 
+            hold = 2,
+            cover = ante_UI.parent,
+            cover_colour = col,
+            colour = ccol,
+            align = 'cm',
+            })
+          --Play a chip sound
+          play_sound('highlight2', 0.59, 0.6)
+          play_sound('generic1', 0.67)
+          play_sound('slib_echips', 0.77)
+          play_sound("talisman_eeechip")
+          return true
+      end
+    }))
+    local initial = G.GAME.round_resets.ante
+    local changed = to_big(G.GAME.round_resets.ante):arrow(arrows, mod)
+    SMODS.calculate_context({
+        ante_change = true,
+        amount = changed,
+        initial = initial,
+        from_shop = (G.STATE == G.STATES.SHOP or G.STATE == G.STATES.SMODS_BOOSTER_OPENED or G.STATE == G.STATES.SMODS_REDEEM_VOUCHER) or nil,
+        from_consumeable = (G.STATE == G.STATES.PLAY_TAROT) or nil,
+        from_scoring = (G.STATE == G.STATES.HAND_PLAYED) or nil,
+    })
+end
+
+
+-- to_big(G.GAME.win_ante):arrow(arrows, mod)
+
+function ease_hyper_ante_win(mod, arrows)
+    G.E_MANAGER:add_event(Event({
+      trigger = 'immediate',
+      func = function()
+          local ante_UI = G.hand_text_area.ante
+          mod = mod or 0
+          local text = '{'..tostring(math.abs(arrows))..'}'
+          local col = G.C.BBBLACK
+          local ccol = G.C.RED
+          if mod < 0 then
+              text = '-{'..tostring(math.abs(arrows))..'}'
+              col = G.C.RED
+              ccol = G.C.BBBLACK
+          end
+          G.GAME.win_ante = to_big(G.GAME.win_ante):arrow(arrows, mod)
+          ante_UI.config.object:update()
+          G.HUD:recalculate()
+          --Popup text next to the chips in UI showing number of chips gained/lost
+          attention_text({
+            text = text..tostring(math.abs(mod)),
+            scale = 1, 
+            hold = 2,
+            cover = ante_UI.parent,
+            cover_colour = col,
+            colour = ccol,
+            align = 'cm',
+            })
+          --Play a chip sound
+          play_sound('highlight2', 0.59, 0.6)
+          play_sound('generic1', 0.67)
+          play_sound('slib_echips', 0.77)
+          play_sound("talisman_eeechip")
+          return true
+      end
+    }))
+end
+
+
 function ease_x_ante_win(mod)
     G.E_MANAGER:add_event(Event({
       trigger = 'immediate',
@@ -389,6 +480,68 @@ function ease_e_dollars(mod, instant)
     })
 end
 
+function ease_hyper_dollars(mod, arrows, instant)
+    local function _mod(mod, arrows)
+        local dollar_UI = G.HUD:get_UIE_by_ID('dollar_text_UI')
+        mod = mod or 0
+        local text = localize('$')..'{'..tostring(math.abs(arrows))..'}'
+        local ccol = G.C.BLACK
+        local col = SMODS.Gradients["busterb_GoldenFreddyGradient"]
+        if mod < 0 then
+            text = localize('$')..'-{'..tostring(math.abs(arrows))..'}'
+            ccol = G.C.BLACK
+            col = Spectrallib.emult
+        else
+          inc_career_stat('c_dollars_earned', mod)
+        end
+        --Ease from current chips to the new number of chips
+        G.GAME.dollars = to_big(G.GAME.dollars):arrow(arrows, mod)
+        check_and_set_high_score('most_money', G.GAME.dollars)
+        check_for_unlock({type = 'money'})
+        dollar_UI.config.object:update()
+        G.HUD:recalculate()
+        --Popup text next to the chips in UI showing number of chips gained/lost
+        attention_text({
+          text = text..tostring(math.abs(mod)),
+          scale = 1.2, 
+          hold = 1.5,
+          cover = dollar_UI.parent,
+          cover_colour = ccol,
+          colour = col,
+          align = 'cm',
+          })
+        --Play a chip sound
+                play_sound('coin6',.35)
+                play_sound('coin7',.35)
+                play_sound('slib_echips',.35)
+                play_sound("talisman_eeechip")
+    end
+    if instant then
+        _mod(mod, arrows)
+    else
+        G.E_MANAGER:add_event(Event({
+        trigger = 'immediate',
+        func = function()
+            _mod(mod, arrows)
+            return true
+        end
+        }))
+    end
+    local initial_dollars = G.GAME.dollars
+    local changed = to_big(G.GAME.dollars):arrow(arrows, mod)
+    SMODS.dollars_changed = changed
+    if SMODS.ease_dollars_calc then return end
+    SMODS.calculate_context({
+        money_altered = true,
+        amount = changed,
+        initial = initial_dollars,
+        from_shop = (G.STATE == G.STATES.SHOP or G.STATE == G.STATES.SMODS_BOOSTER_OPENED or G.STATE == G.STATES.SMODS_REDEEM_VOUCHER) or nil,
+        from_consumeable = (G.STATE == G.STATES.PLAY_TAROT) or nil,
+        from_scoring = (G.STATE == G.STATES.HAND_PLAYED) or nil,
+        from_cashout = SMODS.money_from_cashout or nil,
+    })
+end
+
 
 function updatehandtext()
             update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
@@ -524,10 +677,6 @@ local CharacterUNT = {
         ease_discard(math.random(0.01,5))
         SMODS.change_play_limit(math.random(0.01,5))
 		SMODS.change_discard_limit(math.random(0.01,5))
-        change_shop_size(math.random(0.01,5))
-		SMODS.change_voucher_limit(math.random(0.01,5))
-		SMODS.change_booster_limit(math.random(0.01,5))
-		ease_ante(-math.random(0.01,5))
                         G.E_MANAGER:add_event(Event({
 						trigger = 'before',
 						delay = 0,

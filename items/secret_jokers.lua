@@ -10,7 +10,7 @@ SMODS.Joker{
     display = {name = "Astro", colour = HEX('00FFFF')},
     key = "astro",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 0 },
     soul_pos = { x = 2, y = 0, new = { x = 1, y = 0 } },
@@ -52,16 +52,7 @@ SMODS.Joker{
         for i, c in pairs(Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.select)) do
             BustB.flip_joker(c)
         end
-            SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "max_uses",
-                scalar_value = "use_minus",
-                scalar_table = card.ability.immutable,
-                block_overrides = {
-                value = true,
-                },
-                silent = true
-            })
+            card.ability.extra.max_uses = card.ability.extra.max_uses + card.ability.immutable.use_minus
     end,
     can_use = function(self, card)
         local cards = Spectrallib.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.select)
@@ -91,7 +82,7 @@ SMODS.Joker{
     display = {name = "Thomas", colour = SMODS.Gradients["busterb_Thomasgradient"]},
     key = "thomas",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 1 },
     soul_pos = { x = 2, y = 1, new = { x = 1, y = 1 } },
@@ -174,8 +165,8 @@ SMODS.Joker{
     display = {name = "Samson", colour = G.C.GOLD},
     key = "samsonoc",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
-    pools = { ["Secret"] = true, ["all_bb_joker"] = true},
+    rarity = "busterb_Eldritch",
+    pools = {["all_bb_joker"] = true},
     pos = { x = 0, y = 2 },
     soul_pos = { x = 1, y = 2, new = { x = 2, y = 2 } },
     cost = 1e50,
@@ -257,7 +248,7 @@ SMODS.Joker{
     display = {name = "Hedera", colour = SMODS.Gradients["busterb_hedera"]},
     key = "hedera",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 3 },
     soul_pos = { x = 2, y = 3, new = { x = 1, y = 3 } },
@@ -397,7 +388,7 @@ SMODS.Joker{
     display = {name = "Vessel", colour = SMODS.Gradients["busterb_unstable"]},
     key = "vessel",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 4 },
     soul_pos = { x = 2, y = 4, new = { x = 1, y = 4 } },
@@ -425,7 +416,7 @@ SMODS.Joker{
     display = {name = "Ruby", colour = Spectrallib.emult},
     key = "ruby",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 5 },
     soul_pos = { x = 2, y = 5, new = { x = 1, y = 5 } },
@@ -474,7 +465,7 @@ SMODS.Atlas {
 SMODS.Joker{
     display = {name = "Grahkon", colour = G.C.GRAHKON},
     key = "grahkon",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     atlas = "Grahkon",
     pos = { x = 0, y = 0 },
@@ -544,14 +535,7 @@ SMODS.Joker{
                 colour = SMODS.Gradients["busterb_grahkongradient"],
                 card = card
             })
-        local tag_pool = get_current_pool('Tag')
-        local selected_tag = pseudorandom_element(tag_pool, 'busterb_grahkon')
-        local it = 1
-        while selected_tag == 'UNAVAILABLE' do
-            it = it + 1
-            selected_tag = pseudorandom_element(tag_pool, 'busterb_grahkon_resample'..it)
-        end
-        add_tag(Tag(selected_tag, false, 'Small'))
+        BustB.tagspawning("busterb_grahkon")
     end
     if grahkon == 4 then
                 SMODS.calculate_effect({
@@ -638,7 +622,7 @@ SMODS.Joker{
     display = {name = "Hawaii", colour = G.C.GRANDIOSE},
     key = "hawaii",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 7 },
     soul_pos = { x = 2, y = 7, new = { x = 1, y = 7 } },
@@ -655,14 +639,9 @@ SMODS.Joker{
             if G.deck then
                for _, c in ipairs(G.deck.cards) do
                     if c:is_face() then tribvalue = tribvalue + 1 end
-            end else tribvalue = "0"
+            end else tribvalue = 0
         end
---        info_queue[#info_queue+1] = {key = "hawaii_triboulet", set = "Other"}
---        info_queue[#info_queue+1] = {key = "hawaii_perkeo", set = "Other"}
- --       info_queue[#info_queue+1] = {key = "hawaii_canio", set = "Other"}
- --       info_queue[#info_queue+1] = {key = "hawaii_yorick", set = "Other"}
- --       info_queue[#info_queue+1] = {key = "hawaii_chicot", set = "Other"}
---        info_queue[#info_queue+1] = {key = "hawaii_powers", set = "Other"}
+        info_queue[#info_queue+1] = G.P_CENTERS.j_perkeo
         return { vars = { 
         card.ability.immutable.number, 
         card.ability.immutable.discards, 
@@ -683,18 +662,22 @@ SMODS.Joker{
                 for _, c in ipairs(G.deck.cards) do
                     if c:is_face() then tribvalue = tribvalue + 1 end
             end
+            if tribvalue > 0 then
             return {
                 emult = tribvalue
             }
+        end
         end
         -- Canio's Madness
         if context.individual and context.cardarea == 'unscored' then
             local tribvalue = 0
                 for _, c in ipairs(G.deck.cards) do
                     if c:is_face() then tribvalue = tribvalue + 1 end
-                        ease_x_dollars(tribvalue)
         end
-    end
+        if tribvalue > 0 then
+        ease_x_dollars(tribvalue)
+        end
+        end
         -- Yorick's Truth
         if context.discard and not context.blueprint then
             if card.ability.immutable.discards_remaining <= 1 then
@@ -730,7 +713,7 @@ SMODS.Joker{
     display = {name = "Triangle", colour = HEX("BC1006")},
     key = "notmario",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 8 },
     soul_pos = { x = 2, y = 8, new = { x = 1, y = 8 } },
@@ -784,7 +767,7 @@ SMODS.Joker{
     display = {name = "Crystal", colour = G.C.BLUE},
     key = "crystal",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 9 },
     soul_pos = { x = 2, y = 9, new = { x = 1, y = 9 } },
@@ -818,7 +801,7 @@ SMODS.Joker{
     display = {name = "Sappy", colour = G.C.FILTER},
     key = "sappy",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 10 },
     soul_pos = { x = 2, y = 10, new = { x = 1, y = 10 } },
@@ -879,7 +862,7 @@ SMODS.Joker{
     display = {name = "Revo", colour = G.C.WHITE},
     key = "revo",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 11 },
     soul_pos = { x = 2, y = 11, new = { x = 1, y = 11 } },
@@ -941,7 +924,7 @@ SMODS.Joker{
     display = {name = "Aikoyori", colour = HEX('d868a0')},
     key = "aikoyori",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 12 },
     soul_pos = { x = 2, y = 12, new = { x = 1, y = 12 } },
@@ -988,7 +971,7 @@ SMODS.Joker{
     display = { name = "Jade", colour = SMODS.Gradients["busterb_technopotentgradient"]},
     key = "jade",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 13 },
     soul_pos = { x = 2, y = 13, new = { x = 1, y = 13 } },
@@ -999,12 +982,54 @@ SMODS.Joker{
     demicolon_compat = true,
     eternal_compat = false,
     attributes = { "eldritch", "bustj", "all_bb",  },
-    config = { minimum = 100, maximum = 100000000 },
+    config = { minimum = 100, maximum = 100000000, immutable = { supermin = 5, supermax = 25 } },
   loc_vars = function(self, info_queue, card)
     return {vars = { }}
   end,
   calculate = function(self, card, context)
     if context.setting_blind or context.forcetrigger then
+        if SMODS.pseudorandom_probability(card, 'busterb_jaderare', 1, math.random(card.ability.immutable.supermin,card.ability.immutable.supermax), 'busterb_jaderare', true) then
+                        Spectrallib.add_bonus_effect(card, BustB.poll_busted_eff("busterb_busted_effects") )
+                          G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.2,
+                           func = function()
+                            play_sound("busterb_bang")
+                           return true
+                       end
+                    }))
+                    delay(0.4)
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.2,
+                           func = function()
+                            play_sound("busterb_note")
+                            play_sound("busterb_gonerlaugh")
+                            G.ROOM.jiggle = G.ROOM.jiggle + 100
+                           return true
+                       end
+                    }))
+            G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+							attention_text({
+								text = localize("k_busterb_upgrade"),
+								scale = 7.5,
+                                hold = 4,
+                                backdrop_colour = HEX("3f3f3f"),
+								colour = G.C.GRANDIOSE,
+								align = 'cm',
+								major = card,
+								offset = {x = 0, y = 0}
+							})
+							play_sound('busterb_mus',1, 0.5)
+							card:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							return true
+                        end
+						}))
+    else
         Spectrallib.add_bonus_effect(card, BustB.poll_BB_effect_jade("busterb_jade") )
                         G.E_MANAGER:add_event(Event({
 						trigger = 'before',
@@ -1026,6 +1051,7 @@ SMODS.Joker{
 							return true
                         end
 						}))   
+                    end
     end
 end  
 }
@@ -1034,7 +1060,7 @@ SMODS.Joker{
     display = {name = "Theia", colour = SMODS.Gradients["busterb_GoldenFreddyGradient"]},
     key = "theia",
     atlas = "secjkr",
-    rarity = "busterb_Secret",
+    rarity = "busterb_Eldritch",
     pools = { ["all_bb_joker"] = true},
     pos = { x = 0, y = 14 },
     soul_pos = { x = 2, y = 14, new = { x = 1, y = 14 } },

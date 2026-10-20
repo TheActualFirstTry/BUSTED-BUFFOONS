@@ -171,7 +171,7 @@ SMODS.Joker {
     rarity = 1,
     cost = 2,
     pos = { x = 1, y = 1 },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "destroy_card", "joker" },
     config = { select = 1, extra = { trigger = true } },
     loc_vars = function(self, info_queue, card)
         return { vars = {number_format(card.ability.select), card.ability.extra.trigger and "Active" or "Inactive" } }
@@ -403,32 +403,60 @@ SMODS.Joker {
     rarity = 1,
     cost = 2,
     pos = { x = 2, y = 2 },
-    config = { extra = { chance = 1, odds = 4 } },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "enhancements","modify_card" },
-    loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = G.P_CENTERS.m_busterb_nanotech
-        local nanorare, nanoodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_nanorare')
-        return { vars = { number_format(nanorare), number_format(nanoodds) } }
-    end,
+    config = { extra = { } },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "on_sell" },
     calculate = function(self, card, context)
-            local nano = false
-            if context.joker_main then
-        for k, v in ipairs(context.scoring_hand) do
-            if SMODS.has_enhancement(v, "m_busterb_nanotech") then nano = true end 
-        end
-    end
-                if nano and (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) then
-                    if SMODS.pseudorandom_probability(card, 'busterb_nanorare', 1, card.ability.extra.odds, 'busterb_nanorare', true) then
-                G.E_MANAGER:add_event(Event({
-                func = function()
-                    SMODS.add_card{set="Bootleg",soulable=true}
-                    play_sound("tarot1")
-                    return true
-                end
-            }))
-        end
-    end
-    end,
+		if
+			(context.selling_self and not context.retrigger_joker and not context.blueprint_card)
+			or context.forcetrigger
+		then
+			                local left, right = card.area.cards[card.rank-1], card.area.cards[card.rank+1]
+                if left then
+                        Spectrallib.add_bonus_effect(left, BustB.poll_nano_effect("BustB_effects") )
+                    G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+							attention_text({
+								text = localize("k_upgrade_ex"),
+								scale = 1,
+                                hold = 1.5,
+                                backdrop_colour = G.C.BLACK,
+								colour = G.C.DARK_EDITION,
+								align = 'cm',
+								major = left,
+								offset = {x = 0, y = 0}
+							})
+							play_sound('busterb_cast',1, 0.5)
+							left:juice_up(1, 0.2)
+							return true
+                        end
+				}))   
+				end 
+                if right then
+                        Spectrallib.add_bonus_effect(right, BustB.poll_nano_effect("BustB_effects") )
+                    G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+							attention_text({
+								text = localize("k_upgrade_ex"),
+								scale = 1,
+                                hold = 1.5,
+                                backdrop_colour = G.C.BLACK,
+								colour = G.C.DARK_EDITION,
+								align = 'cm',
+								major = right,
+								offset = {x = 0, y = 0}
+							})
+							play_sound('busterb_cast',1, 0.5)
+							right:juice_up(1, 0.2)
+							return true
+                        end
+				}))   
+				end
+            end
+        end,
 }
 
 SMODS.Joker {
@@ -761,17 +789,25 @@ demicolon_compat = true,
     cost = 2,
     pos = { x = 2, y = 4 },
     config = { extra = { scoring = 50 }, immutable = {  } },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "xchips", "hands", "gem" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "chips", "gem" },
     loc_vars = function(self, info_queue, card)
         local s = card.ability.extra.scoring
         return { vars = { number_format(s) } }
     end,
     calculate = function(self, card, context)
         local s = card.ability.extra.scoring
-        if (context.joker_main and (G.GAME.round % 2 == 1 and G.GAME.round >= 0)) or context.forcetrigger then
-            return{ chips = s }
-            end
-        end,
+		if context.other_joker and context.other_joker.ability.set == "Joker" and context.other_joker:has_attribute("gem") then
+            SMODS.calculate_effect({
+				chips = s,
+                card = context.other_joker
+			}, context.other_joker)
+		end
+		if context.forcetrigger then
+			return {
+				chips = s,
+			}
+		end
+    end
 }
 SMODS.Joker {
     key = "suruby",
@@ -783,15 +819,23 @@ demicolon_compat = true,
     cost = 2,
     pos = { x = 3, y = 4 },
     config = { extra = { scoring = 8 }, immutable = {  } },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "hands", "xmult", "gem" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "mult", "gem" },
     loc_vars = function(self, info_queue, card)
         local s = card.ability.extra.scoring
         return { vars = { number_format(s) } }
     end,
     calculate = function(self, card, context)
         local s = card.ability.extra.scoring
-        if (context.joker_main and (G.GAME.round % 2 == 0 and G.GAME.round >= 0)) or context.forcetrigger then
-            return{ mult = s }
-            end
-        end,
+		if context.other_joker and context.other_joker.ability.set == "Joker" and context.other_joker:has_attribute("gem") then
+            SMODS.calculate_effect({
+				mult = s,
+                card = context.other_joker
+			}, context.other_joker)
+		end
+		if context.forcetrigger then
+			return {
+				mult = s,
+			}
+		end
+    end
 }

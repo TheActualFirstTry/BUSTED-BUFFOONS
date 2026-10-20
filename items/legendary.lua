@@ -16,16 +16,15 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    config = { extra = { speed_mult = 4 } },
-    attributes = { "bustj", "bustb_d", "xchips" },
+    config = { extra = { xchips = 1 } },
+    attributes = { "bustj", "bustb_d", "xchips", "hand_type" },
     loc_vars = function(self, info_queue, card)
-        local speedvalue = G.SETTINGS.GAMESPEED * card.ability.extra.speed_mult
-        return { vars = { number_format(speedvalue), " ", number_format(card.ability.extra.speed_mult) } }
+        return { vars = { number_format(G.GAME.hands["Straight"].played + card.ability.extra.xchips) } }
     end,
     calculate = function(self, card, context)
-        if context.joker_main or context.forcetrigger then
+        if (context.joker_main or context.forcetrigger) and to_big(G.GAME.hands["Straight"].played) > to_big(1) then
             return {
-                xchips = G.SETTINGS.GAMESPEED * card.ability.extra.speed_mult
+                xchips = G.GAME.hands["Straight"].played
             }
         end
     end
@@ -171,9 +170,28 @@ SMODS.Joker {
     pos = { x = 3, y = 0 },
     soul_pos = { x = 3, y = 1 },
     attributes = { "bustj", "bustb_d", "prevents_death", "hand_type" },
-    config = { extra = { deathdefiance = false }, immutable = { counter = 0, goal = 3, addition = 1, adddisplay = 0 } },
+    config = { extra = { deathdefiance = true }, immutable = { counter = 3, goal = 3, addition = 1, adddisplay = 0 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.deathdefiance and "Active" or "Inactive", card.ability.immutable.counter, card.ability.immutable.goal } }
+                        local main_end = nil
+        if card.area and (card.area == G.jokers) then
+            local booltrue = card.ability.extra.deathdefiance == true
+            main_end = {
+                {
+                    n = G.UIT.C,
+                    config = { align = "bm", minh = 0.4 },
+                    nodes = {
+                        {
+                            n = G.UIT.C,
+                            config = { ref_table = card, align = "m", colour = booltrue and G.C.BBBLACK or G.C.UI.TEXT_INACTIVE, r = 0.05, padding = 0.06 },
+                            nodes = {
+                                { n = G.UIT.T, config = { text = ' ' .. localize(booltrue and 'k_busterb_active' or 'k_busterb_inactive') .. ' ', colour = booltrue and G.C.RED or G.C.WHITE, scale = 0.32 * 0.9 } },
+                            }
+                        }
+                    }
+                }
+            }
+        end
+        return { main_end = main_end, vars = {card.ability.immutable.counter, card.ability.immutable.goal } }
     end,
     calculate = function(self, card, context)
         if context.end_of_round and context.game_over and context.main_eval and not card.ability.extra.deathdefiance == false then
@@ -516,13 +534,13 @@ SMODS.Joker {
 end,
     calculate = function(self, card, context)
         if context.using_consumeable and context.consumeable.ability.set == 'Bootleg' then
+            card.ability.immutable.rolls = card.ability.immutable.rolls + 1
             if card.ability.immutable.rolls == card.ability.immutable.roll_max then
                 local c = SMODS.add_card({set = "Booster", area = G.consumeables})
                 SMODS.calculate_effect({message = "Added"}, c)
                 card.ability.immutable.rolls = 0
                 return { message = localize("k_reset"), colour = G.C.RED }
             else
-            card.ability.immutable.rolls = card.ability.immutable.rolls + 1
             return { message = card.ability.immutable.rolls.."/"..card.ability.immutable.roll_max, colour = G.C.RED }
             end
     end
@@ -543,10 +561,10 @@ SMODS.Joker {
     cost = 20,
     pos = { x = 1, y = 4 },
     soul_pos = { x = 1, y = 5 },
-    config = { extra = { level = 0 } },
+    config = { immutable = { level = 1 } },
     attributes = { "bustj", "bustb_d", "asc_power", "ace", "diamonds", "suit", "rank" },
     loc_vars = function(self, info_queue, card)
-        return { vars = { number_format(card.ability.extra.level+1) } }
+        return { vars = { number_format(card.ability.immutable.level) } }
     end,
     calculate = function(self, card, context)
         if (context.individual and
@@ -554,8 +572,7 @@ SMODS.Joker {
         context.other_card:get_id() == 14 and 
         context.other_card:is_suit("Diamonds") and
         #context.full_hand == 1) or context.forcetrigger
-            then
-        local amt = amt or 1
+        then
         local used_consumable = copier or card
         delay(0.4)
         update_hand_text(
@@ -563,7 +580,7 @@ SMODS.Joker {
           { handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
         )
         for i, v in pairs(G.GAME.hands) do
-            G.GAME.hands[i].AscensionPower = to_big(G.GAME.hands[i].AscensionPower or 0) + to_big(G.GAME.hands[i].level) * to_big(amt) + to_big(card.ability.extra.level)
+            G.GAME.hands[i].AscensionPower = to_big(G.GAME.hands[i].AscensionPower or 0) + to_big(card.ability.immutable.level)
         end
         delay(1.0)
         G.E_MANAGER:add_event(Event({
@@ -571,8 +588,8 @@ SMODS.Joker {
           delay = 0.2,
           func = function()
             play_sound("tarot1")
-            ease_colour(G.C.UI_CHIPS, copy_table(Spectrallib.get_asc_colour(to_big(1) * to_big(amt) + to_big(card.ability.extra.level))), 0.1)
-            ease_colour(G.C.UI_MULT, copy_table(Spectrallib.get_asc_colour(to_big(1) * to_big(amt) + to_big(card.ability.extra.level))), 0.1)
+            ease_colour(G.C.UI_CHIPS, copy_table(Spectrallib.get_asc_colour((card.ability.immutable.level))), 0.1)
+            ease_colour(G.C.UI_MULT, copy_table(Spectrallib.get_asc_colour((card.ability.immutable.level))), 0.1)
             Spectrallib.pulse_flame(0.01, sunlevel)
             used_consumable:juice_up(0.8, 0.5)
             G.E_MANAGER:add_event(Event({

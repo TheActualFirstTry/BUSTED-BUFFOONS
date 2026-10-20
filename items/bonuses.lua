@@ -7,9 +7,15 @@ end
 local function g_loc_vars(_, _, _, eff_table)
     return { vars = { eff_table.config.extra }}
 end
+
+local function hyper_loc_vars(_, _, _, eff_table)
+    return { vars = { eff_table.config.arrow, eff_table.config.num }}
+end
+
 local function im_loc_vars(_, _, _, eff_table)
     return { vars = { eff_table.config.immutable }}
 end
+
 local function sim_loc_vars(_, _, _, eff_table)
     return { vars = { SMODS.signed(eff_table.config.immutable) }}
 end
@@ -28,7 +34,7 @@ end
         key = "dollars",
         calculate = function(self, card, eff_table, context)
             if context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
-                ease_dollars(eff_table.config.extra)
+                return { dollars = eff_table.config.extra }
             end
         end,
         loc_vars = g_loc_vars,
@@ -107,7 +113,7 @@ end
                     SMODS.upgrade_poker_hands{
                         from = card,
                         parameters = { "chips", "mult"},
-                        ascension_power = eff_table.config.extra,
+                        ascension_power = math.min(10,eff_table.config.extra),
                         hands = context.scoring_name,
                     }
             end
@@ -135,7 +141,126 @@ end
         loc_vars = s_loc_vars,
         attributes = { "hand_type" }
     }
-
+    Spectrallib.BonusEffect {
+        key = "hypermult",
+        calculate = function(self, card, eff_table, context)
+        if context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+            return { hypermult = {eff_table.config.arrow, eff_table.config.num}, colour = G.C.BBBLACK, text_colour = Spectrallib.emult }
+            end
+        end,
+        loc_vars = hyper_loc_vars,
+        attributes = { "hypermult" }
+    }
+    Spectrallib.BonusEffect {
+        key = "hypermoney",
+        calculate = function(self, card, eff_table, context)
+        if context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+            ease_hyper_dollars(eff_table.config.num, eff_table.config.arrow)
+            end
+        end,
+        loc_vars = hyper_loc_vars,
+        attributes = { "economy" }
+    }
+    Spectrallib.BonusEffect {
+        key = "hyperchips",
+        calculate = function(self, card, eff_table, context)
+        if context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+            return { hyperchips = {eff_table.config.arrow, eff_table.config.num}, colour = G.C.BBBLACK, text_colour = Spectrallib.echips }
+            end
+        end,
+        loc_vars = hyper_loc_vars,
+        attributes = { "hyperchips" }
+    }
+    Spectrallib.BonusEffect {
+        key = "hyperasc",
+        calculate = function(self, card, eff_table, context)
+        if context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+            return { hyper_asc = {eff_table.config.arrow, eff_table.config.num}, message = "{"..tostring(math.abs(eff_table.config.arrow)).."}"..tostring(math.abs(eff_table.config.num)).."Asc", remove_default_message = true, colour = G.C.BBBLACK, text_colour = SMODS.Gradients["busterb_GoldenFreddyGradient"] }
+            end
+        end,
+        loc_vars = hyper_loc_vars,
+        attributes = { "hyperchips" }
+    }
+    Spectrallib.BonusEffect {
+        key = "m_power",
+        calculate = function(self, card, eff_table, context)
+        if (context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger) and not context.blueprint and not context.repetition then
+            mysterypower(1,2)
+            end
+        end,
+        loc_vars = function (_, _, _, eff_table)
+            local txt = BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]..BustB.charUNT[math.random(#BustB.charUNT)]
+            return { vars = { txt }}
+        end,
+        attributes = { "passive" }
+    }
+    Spectrallib.BonusEffect {
+        key = "edollars",
+        calculate = function(self, card, eff_table, context)
+        if context.joker_main or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+            ease_e_dollars(eff_table.config.extra)
+            end
+        end,
+        loc_vars = g_loc_vars,
+        attributes = { "economy" }
+    }
+    Spectrallib.BonusEffect {
+        key = "op_up",
+        add_to_deck = function (self, card, eff_table)
+				play_sound('busterb_mus',1)
+				G.ROOM.jiggle = G.ROOM.jiggle + 35
+                change_operator(math.floor(math.abs(eff_table.config.immutable)))
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1].config.colour = G.C.GRANDIOSE
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1]:juice_up(15,15)
+        end,
+        remove_from_deck = function (self, card, eff_table)
+                change_operator(-(math.floor(math.abs(eff_table.config.immutable))))
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1].config.colour = G.C.RED
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1]:juice_up(15,15)
+        end,        loc_vars = im_loc_vars,
+        attributes = { "passive" }
+    }
+    Spectrallib.BonusEffect {
+        key = "op_1",
+        add_to_deck = function (self, card, eff_table)
+				play_sound('busterb_mus',1)
+				G.ROOM.jiggle = G.ROOM.jiggle + 35
+                change_operator(1)
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1].config.colour = G.C.GRANDIOSE
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1]:juice_up(15,15)
+        end,
+        remove_from_deck = function (self, card, eff_table)
+                change_operator(-1)
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1].config.colour = G.C.RED
+                G.HUD:get_UIE_by_ID('hand_operator_container').children[1]:juice_up(15,15)
+        end,        loc_vars = im_loc_vars,
+        attributes = { "passive" }
+    }
+        Spectrallib.BonusEffect {
+        key = "forcetrigger_all",
+        calculate = function(self, card, eff_table, context)
+        if (context.joker_main or (context.main_scoring and context.cardarea == G.play)) then
+            for k,v in ipairs(card.area.cards) do
+                if v ~= self and Spectrallib.card_is_forcetriggerable(v) then
+                        Spectrallib.forcetrigger{card = v}
+                    end
+				end
+            end
+        end,
+        loc_vars = g_loc_vars,
+        attributes = { "forcetrigger" }
+    }
+        Spectrallib.BonusEffect {
+        key = "deckspawn",
+        calculate = function(self, card, eff_table, context)
+        if ((context.end_of_round and context.main_eval) or context.forcetrigger) and not context.blueprint and not context.repetition then
+            local c = SMODS.add_card{set = "Back", area = G.consumeables}
+            SMODS.calculate_effect({ message = localize("k_busterb_added")}, c)
+        end
+        end,
+        loc_vars = g_loc_vars,
+        attributes = { "passive" }
+    }
     Spectrallib.BonusEffect {
         key = "x_hands",
         calculate = function(self, card, eff_table, context)
@@ -158,7 +283,7 @@ end
     Spectrallib.BonusEffect {
         key = "create_copy",
         calculate = function(self, card, eff_table, context)
-        if (context.end_of_round and context.main_eval) or context.forcetrigger then
+        if ((context.end_of_round and context.main_eval) or context.forcetrigger) and not context.blueprint and not context.repetition then
             if not (card.edition or {}).negative then
                     G.E_MANAGER:add_event(Event({
                     func = function()
@@ -236,13 +361,13 @@ end
         Spectrallib.BonusEffect {
         key = "forcetrigger",
         calculate = function(self, card, eff_table, context)
-        if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
+        if (context.joker_main or (context.main_scoring and context.cardarea == G.play)) then
                 local left, right = card.area.cards[card.rank-1], card.area.cards[card.rank+1]
-                if left then
-                    Spectrallib.forcetrigger(left)
+                if left and Spectrallib.card_is_forcetriggerable(left) then
+                    Spectrallib.forcetrigger{card = left}
 				end 
-                if right then
-                    Spectrallib.forcetrigger(right)
+                if right and Spectrallib.card_is_forcetriggerable(right) then
+                    Spectrallib.forcetrigger{card = right}
 				end
 
             end
@@ -341,6 +466,100 @@ end
         attributes = { "passive" }
     }
         Spectrallib.BonusEffect {
+        key = "rare_effects",
+        calculate = function(self, card, eff_table, context)
+        if context.setting_blind or (context.main_scoring and context.cardarea == G.play) or context.forcetrigger then
+                local left, right = card.area.cards[card.rank-1], card.area.cards[card.rank+1]
+                if left then
+                        Spectrallib.add_bonus_effect(left, BustB.poll_busted_eff("busterb_busted_effects") )
+                          G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.2,
+                           func = function()
+                            play_sound("busterb_bang")
+                           return true
+                       end
+                    }))
+                    delay(0.4)
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.2,
+                           func = function()
+                            play_sound("busterb_note")
+                            play_sound("busterb_gonerlaugh")
+                            G.ROOM.jiggle = G.ROOM.jiggle + 100
+                           return true
+                       end
+                    }))
+            G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+							attention_text({
+								text = localize("k_busterb_upgrade"),
+								scale = 7.5,
+                                hold = 4,
+                                backdrop_colour = HEX("3f3f3f"),
+								colour = G.C.GRANDIOSE,
+								align = 'cm',
+								major = left,
+								offset = {x = 0, y = 0}
+							})
+							play_sound('busterb_mus',1, 0.5)
+							left:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							return true
+                        end
+						}))
+				end 
+                if right then
+                        Spectrallib.add_bonus_effect(right, BustB.poll_busted_eff("busterb_busted_effects") )
+                          G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.2,
+                           func = function()
+                            play_sound("busterb_bang")
+                           return true
+                       end
+                    }))
+                    delay(0.4)
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.2,
+                           func = function()
+                            play_sound("busterb_note")
+                            play_sound("busterb_gonerlaugh")
+                            G.ROOM.jiggle = G.ROOM.jiggle + 100
+                           return true
+                       end
+                    }))
+            G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.5 + math.random() * 0.4,
+						func = function()
+							attention_text({
+								text = localize("k_busterb_upgrade"),
+								scale = 7.5,
+                                hold = 4,
+                                backdrop_colour = HEX("3f3f3f"),
+								colour = G.C.GRANDIOSE,
+								align = 'cm',
+								major = right,
+								offset = {x = 0, y = 0}
+							})
+							play_sound('busterb_mus',1, 0.5)
+							right:juice_up(1, 0.2)
+							G.ROOM.jiggle = G.ROOM.jiggle + 35
+							return true
+                        end
+						}))
+				end
+            end
+        end,
+        loc_vars = g_loc_vars,
+        attributes = { "passive" }
+    }
+        Spectrallib.BonusEffect {
         key = "all_hands",
         calculate = function(self, card, eff_table, context)
         if (context.before or (context.main_scoring and context.cardarea == G.play)) or context.forcetrigger then
@@ -405,8 +624,8 @@ end
           delay = 0.2,
           func = function()
             play_sound("tarot1")
-            ease_colour(G.C.UI_CHIPS, copy_table(Spectrallib.get_asc_colour(1 * amt + eff_table.config.extra)), 0.1)
-            ease_colour(G.C.UI_MULT, copy_table(Spectrallib.get_asc_colour(1 * amt + eff_table.config.extra)), 0.1)
+            ease_colour(G.C.UI_CHIPS, copy_table(Spectrallib.get_asc_colour(1 * amt + math.min(10,eff_table.config.extra))), 0.1)
+            ease_colour(G.C.UI_MULT, copy_table(Spectrallib.get_asc_colour(1 * amt + math.min(10,eff_table.config.extra))), 0.1)
             Spectrallib.pulse_flame(0.01, sunlevel)
             me:juice_up(0.8, 0.5)
             G.E_MANAGER:add_event(Event({
@@ -583,5 +802,42 @@ function BustB.poll_hestia(seed)
     elseif eff_table.min and eff_table.max then
         config.extra = pseudorandom(seed, eff_table.min, eff_table.max) * (eff_table.factor or 1)
     end
+    return eff_table.key, config
+end
+
+BustB.busted_effects = {
+    {key = "sbe_busterb_hypermoney", arrow = { min = 4, max = 10 }, num = { min = 4, max = 10 }},
+    {key = "sbe_busterb_hyperchips", arrow = { min = 4, max = 10 }, num = { min = 4, max = 10 }},
+    {key = "sbe_busterb_hypermult", arrow = { min = 4, max = 10 }, num = { min = 4, max = 10 }},
+    {key = "sbe_busterb_hyperasc", arrow = { min = 4, max = 10 }, num = { min = 4, max = 10 }},
+    {key = "sbe_busterb_edollars", min = 11, max = 100, factor = 0.1},
+    {key = "sbe_busterb_op_1"},
+    {key = "sbe_busterb_m_power"},
+    {key = "sbe_busterb_forcetrigger_all"},
+    {key = "sbe_busterb_deckspawn"},
+    {key = "busterb_rare_card"},
+    {key = "busterb_random_jade"},
+}
+
+function BustB.poll_busted_eff(seed)
+    seed = seed or "BustB_busted_effects"
+    local eff_table = pseudorandom_element(BustB.busted_effects, seed.."_type")
+    local config = {}
+    if eff_table.get_config then
+        config = eff_table.get_config(seed)
+    elseif eff_table.min and eff_table.max then
+        config.extra = pseudorandom(seed, eff_table.min, eff_table.max) * (eff_table.factor or 1)
+        elseif eff_table.immutable then
+        config.immutable = config.immutable or 1
+    else
+        if eff_table.arrow and eff_table.arrow.min and eff_table.arrow.max then
+            config.arrow = pseudorandom(seed .. "_arrow", eff_table.arrow.min, eff_table.arrow.max) * (eff_table.factor or 1)
+        end
+        
+        if eff_table.num and eff_table.num.min and eff_table.num.max then
+            config.num = pseudorandom(seed .. "_num", eff_table.num.min, eff_table.num.max) * (eff_table.factor or 1)
+        end
+    end
+
     return eff_table.key, config
 end

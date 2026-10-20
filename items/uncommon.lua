@@ -157,15 +157,14 @@ demicolon_compat = true,
     cost = 4,
     pos = { x = 3, y = 0 },
     config = { extra = { speed_mult = 16 } },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "chips" },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "chips", "hand_type" },
     loc_vars = function(self, info_queue, card)
-        local speedvalue = G.SETTINGS.GAMESPEED * card.ability.extra.speed_mult
-        return { vars = { number_format(speedvalue), " " } }
+        return { vars = { number_format(G.GAME.hands["Straight"].chips) } }
     end,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             return {
-                chips = G.SETTINGS.GAMESPEED * card.ability.extra.speed_mult
+                chips = G.GAME.hands["Straight"].chips
             }
         end
     end
@@ -450,33 +449,24 @@ demicolon_compat = true,
     rarity = 2,
     cost = 4,
     pos = { x = 0, y = 3 },
-    config = { extra = { mult = 1, gain = 0.2 }, immutable = {  } },
-    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "consumeables", "pizza", "scaling", "xmult" },
+    config = { extra = { odds = 4 }, immutable = {  } },
+    attributes = { "bustb_s", "bustb_d", "all_bb", "bustj", "consumeables", "passive" },
     loc_vars = function(self, info_queue, card)
+        local fakechance, fakeodds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'busterb_fakepep')
         return {
             vars = {
-                number_format(card.ability.extra.mult),
-                number_format(card.ability.extra.gain)
+                fakechance, fakeodds
             }
         }
     end,
     calculate = function(self, card, context)
-        local multgain = pseudorandom(pseudoseed("busterb_fakepep"), 0.01, 2.00)
-        if context.selling_card and context.card.ability.set == "Pizza" then
-            SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "mult",
-                scalar_value = "incremental",
-                scalar_table = { incremental = multgain },
-                scaling_message = {
-                message = "tluM " .. (card.ability.extra.mult + multgain).."X",
-                colour = G.C.MULT
-            }})
-        end
-        if ((context.joker_main or context.forcetrigger) and card.ability.extra.mult > to_big(1)) then
-            return { xmult = card.ability.extra.mult, message = "tluM " .. (card.ability.extra.mult).."X", colour = G.C.CHIPS}
+        if context.using_consumeable and context.consumeable.ability.set == "Pizza" then
+            if SMODS.pseudorandom_probability(card, 'busterb_fakepep', 1, card.ability.extra.odds, 'busterb_fakepep') then
+                local copy = moony_planet(context.consumeable,nil,G.conusmeables)
+                SMODS.calculate_effect({message = localize("k_busterb_added")}, copy)
         end
     end
+end
 }
 SMODS.Joker {
     key = "mysteryman",
@@ -549,6 +539,10 @@ demicolon_compat = true,
         end
         if funval == 11 then
             mysterypower(1,2)
+            change_shop_size(math.random(1,2))
+    		SMODS.change_voucher_limit(math.random(0.01,5))
+    		SMODS.change_booster_limit(math.random(0.01,5))
+	    	ease_ante(-math.random(0.01,5))
         end
     end
     end

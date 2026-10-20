@@ -23,7 +23,7 @@ SMODS.Voucher {
                   if G.STATE == G.STATES.SHOP then
 local rarity_map = {
   busterb_Grandiose = 'busterb_Dreamy',
-  busterb_Secret = 'busterb_Fantastic',
+  busterb_Eldritch = 'busterb_Fantastic',
   busterb_technopotent = "busterb_Fantastic",
   Common = 'Rare',
   Uncommon = 'Rare',
@@ -62,7 +62,7 @@ local _, key = pseudorandom_element(SMODS.Rarities, "cogito")
         if (context.reroll_shop or context.starting_shop) then
             local rarity_map = {
   busterb_Grandiose = 'busterb_Dreamy',
-  busterb_Secret = 'busterb_Fantastic',
+  busterb_Eldritch = 'busterb_Fantastic',
   Common = 'Rare',
   Uncommon = 'Rare',
   cry_cursed = 'cry_exotic',
@@ -101,29 +101,36 @@ SMODS.Voucher {
     
     redeem = function(self, card)
                   if G.STATE == G.STATES.SHOP then
+        local rev = pseudorandom(pseudoseed("busterb_revoucher"), 1, 2)
+        if rev ~= 2 then
         local c = SMODS.create_card { set = "Joker", rarity = "busterb_Grandiose", edition = 'e_negative', stickers = {'busterb_omega'}, force_stickers = true }
         G.shop_jokers:emplace(c)
         create_shop_card_ui(c, "Joker", G.shop_jokers)
         card:set_cost()
-        local c = SMODS.create_card { set = "Joker", rarity = "busterb_Secret", edition = 'e_negative', stickers = {'busterb_omega'}, force_stickers = true }
+        else
+        local c = SMODS.create_card { set = "Joker", rarity = "busterb_Eldritch", edition = 'e_negative', stickers = {'busterb_omega'}, force_stickers = true }
         G.shop_jokers:emplace(c)
         create_shop_card_ui(c, "Joker", G.shop_jokers)
         card:set_cost()
+        end
                   end
     end,
     calculate = function(self, card, context)
-if (context.reroll_shop or context.starting_shop) then
+        if (context.reroll_shop or context.starting_shop) then
+        local rev = pseudorandom(pseudoseed("busterb_revoucher"), 1, 2)
+        if rev ~= 2 then
         local c = SMODS.create_card { set = "Joker", rarity = "busterb_Grandiose", edition = 'e_negative', stickers = {'busterb_omega'}, force_stickers = true }
         G.shop_jokers:emplace(c)
         create_shop_card_ui(c, "Joker", G.shop_jokers)
         card:set_cost()
-        local c = SMODS.create_card { set = "Joker", rarity = "busterb_Secret", edition = 'e_negative', stickers = {'busterb_omega'}, force_stickers = true }
+        else
+        local c = SMODS.create_card { set = "Joker", rarity = "busterb_Eldritch", edition = 'e_negative', stickers = {'busterb_omega'}, force_stickers = true }
         G.shop_jokers:emplace(c)
         create_shop_card_ui(c, "Joker", G.shop_jokers)
         card:set_cost()
-                  end
-
-    end,
+        end
+    end
+end,
 }
 
 SMODS.Voucher {
